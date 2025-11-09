@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
 import { City } from '@/types/masters';
 
+type Params = { id: string };
+
 // This is a temporary in-memory store.
 // In a real application, you would use a database.
 let cities: City[] = [];
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Params }
 ) {
   const { id } = params;
   const city = cities.find((c) => c.id === id);
@@ -21,7 +23,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Params }
 ) {
   const { id } = params;
   try {
@@ -48,7 +50,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Params }
 ) {
   const { id } = params;
   const cityIndex = cities.findIndex((c) => c.id === id);
