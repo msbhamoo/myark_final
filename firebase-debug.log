@@ -1,0 +1,82 @@
+[debug] [2025-10-31T10:30:21.486Z] ----------------------------------------------------------------------
+[debug] [2025-10-31T10:30:21.488Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mahendra.singh\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2025-10-31T10:30:21.488Z] CLI Version:   14.23.0
+[debug] [2025-10-31T10:30:21.488Z] Platform:      win32
+[debug] [2025-10-31T10:30:21.488Z] Node Version:  v22.20.0
+[debug] [2025-10-31T10:30:21.488Z] Time:          Fri Oct 31 2025 16:00:21 GMT+0530 (India Standard Time)
+[debug] [2025-10-31T10:30:21.488Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-31T10:30:21.634Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-31T10:30:21.634Z] > authorizing via signed-in user (mahendrabhamoo@gmail.com)
+[debug] [2025-10-31T10:30:21.634Z] [iam] checking project myark-dbbee for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-10-31T10:30:21.636Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:21.636Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:21.637Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/myark-dbbee:testIamPermissions [none]
+[debug] [2025-10-31T10:30:21.637Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/myark-dbbee:testIamPermissions x-goog-quota-user=projects/myark-dbbee
+[debug] [2025-10-31T10:30:21.637Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/myark-dbbee:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-10-31T10:30:23.176Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/myark-dbbee:testIamPermissions 200
+[debug] [2025-10-31T10:30:23.176Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/myark-dbbee:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-10-31T10:30:23.177Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:23.177Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:23.177Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/myark-dbbee [none]
+[debug] [2025-10-31T10:30:23.637Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/myark-dbbee 200
+[debug] [2025-10-31T10:30:23.637Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/myark-dbbee {"projectId":"myark-dbbee","projectNumber":"1012733770035","displayName":"Myark","name":"projects/myark-dbbee","resources":{"hostingSite":"myark-dbbee"},"state":"ACTIVE","etag":"1_c267842b-a237-407b-ab06-13dfb18bd3c0"}
+[debug] [2025-10-31T10:30:30.934Z] defaultcredentials: writing to file C:\Users\mahendra.singh\AppData\Roaming\firebase\mahendrabhamoo_gmail_com_application_default_credentials.json
+[debug] [2025-10-31T10:30:30.938Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:30.938Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:30.938Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites pageToken=&pageSize=10
+[debug] [2025-10-31T10:30:32.488Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites 200
+[debug] [2025-10-31T10:30:32.488Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites {"sites":[{"name":"projects/myark-dbbee/sites/myark-dbbee","defaultUrl":"https://myark-dbbee.web.app","appId":"1:1012733770035:web:0fc2b6d5a627c05937e646","type":"DEFAULT_SITE"}]}
+[debug] [2025-10-31T10:30:32.489Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:32.489Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:32.489Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:1012733770035:web:0fc2b6d5a627c05937e646/config [none]
+[debug] [2025-10-31T10:30:33.442Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:1012733770035:web:0fc2b6d5a627c05937e646/config 200
+[debug] [2025-10-31T10:30:33.442Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:1012733770035:web:0fc2b6d5a627c05937e646/config {"projectId":"myark-dbbee","appId":"1:1012733770035:web:0fc2b6d5a627c05937e646","storageBucket":"myark-dbbee.firebasestorage.app","apiKey":"AIzaSyAS6sSC9lakDPTcz9OPQfo89tLkvcaX3rY","authDomain":"myark-dbbee.firebaseapp.com","messagingSenderId":"1012733770035","measurementId":"G-DT3CW7GT1B","projectNumber":"1012733770035","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 15.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2025-10-31T10:30:50.973Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:50.973Z] Checked if tokens are valid: true, expires at: 1761909237551
+[debug] [2025-10-31T10:30:50.973Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites/myark-dbbee [none]
+[debug] [2025-10-31T10:30:52.104Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites/myark-dbbee 200
+[debug] [2025-10-31T10:30:52.105Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/myark-dbbee/sites/myark-dbbee {"name":"projects/myark-dbbee/sites/myark-dbbee","defaultUrl":"https://myark-dbbee.web.app","appId":"1:1012733770035:web:0fc2b6d5a627c05937e646","type":"DEFAULT_SITE"}
+[info]    ▲ Next.js 15.3.5
+
+[info]    - Environments: .env.local
+
+
+[info]    Creating an optimized production build ...
+
+[info]  ✓ Compiled successfully in 3.0s
+
+[info]    Linting and checking validity of types ...
+
+[info] Failed to compile.
+
+
+[info] .next/types/app/api/admin/cities/[id]/route.ts:49:7
+Type error: Type '{ __tag__: "GET"; __param_position__: "second"; __param_type__: { params: { id: string; }; }; }' does not satisfy the constraint 'ParamCheck<RouteContext>'.
+  The types of '__param_type__.params' are incompatible between these types.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+
+  47 |     Diff<
+  48 |       ParamCheck<RouteContext>,
+> 49 |       {
+     |       ^
+  50 |         __tag__: 'GET'
+  51 |         __param_position__: 'second'
+  52 |         __param_type__: SecondArg<MaybeField<TEntry, 'GET'>>
+
+[info] Next.js build worker exited with code: 1 and signal: null
+
+[debug] [2025-10-31T10:31:26.316Z] Error: ENOENT: no such file or directory, open 'C:\Users\mahendra.singh\myark\.next\export-marker.json'
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -1,0 +1,153 @@
+[
+  {
+    "id": "national-science-olympiad-2024",
+    "title": "National Science Olympiad 2024",
+    "slug": "national-science-olympiad-2024",
+    "category": "olympiad",
+    "organizer": "Science Foundation",
+    "organizerLogo": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=100&q=80",
+    "gradeEligibility": "6-12",
+    "mode": "online",
+    "startDate": "2024-03-15",
+    "endDate": "2024-03-16",
+    "registrationDeadline": "2024-02-28",
+    "fee": "0",
+    "state": "Delhi",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80",
+    "description": "Prestigious competition to showcase knowledge in Physics, Chemistry, Biology, and General Science.",
+    "eligibility": [
+      "Enrolled in grades 6-12",
+      "Minimum 60% aggregate in the previous academic year"
+    ],
+    "benefits": [
+      "National recognition and certificates",
+      "Scholarship opportunities for higher education"
+    ],
+    "timeline": [
+      { "date": "2024-02-01", "event": "Registration Opens", "status": "completed" },
+      { "date": "2024-03-15", "event": "Day 1 Examination", "status": "upcoming" },
+      { "date": "2024-03-16", "event": "Day 2 Examination", "status": "upcoming" }
+    ],
+    "registrationProcess": [
+      "Visit the official portal",
+      "Create an account",
+      "Submit details and documents"
+    ],
+    "examPattern": {
+      "totalQuestions": 100,
+      "durationMinutes": 120,
+      "negativeMarking": true,
+      "negativeMarksPerQuestion": 0.25,
+      "sections": [
+        { "name": "Physics", "questions": 25, "marks": 25 },
+        { "name": "Chemistry", "questions": 25, "marks": 25 },
+        { "name": "Biology", "questions": 25, "marks": 25 },
+        { "name": "General Science", "questions": 25, "marks": 25 }
+      ]
+    },
+    "contactInfo": {
+      "email": "info@scienceolympiad.org",
+      "phone": "+1-800-123-4567",
+      "website": "https://scienceolympiad.org"
+    },
+    "segments": ["featured", "upcoming"],
+    "status": "published",
+    "searchKeywords": ["science", "olympiad", "competition"]
+  },
+  {
+    "id": "international-math-challenge",
+    "title": "International Math Challenge",
+    "slug": "international-math-challenge",
+    "category": "competition",
+    "organizer": "Math Academy",
+    "gradeEligibility": "8-12",
+    "mode": "hybrid",
+    "startDate": "2024-04-01",
+    "endDate": "2024-04-02",
+    "registrationDeadline": "2024-03-15",
+    "fee": "25",
+    "state": "Maharashtra",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&q=80",
+    "segments": ["featured", "trending"],
+    "status": "published",
+    "searchKeywords": ["math", "challenge", "competition"]
+  },
+  {
+    "id": "stem-excellence-scholarship",
+    "title": "STEM Excellence Scholarship",
+    "slug": "stem-excellence-scholarship",
+    "category": "scholarship",
+    "organizer": "Education Trust",
+    "gradeEligibility": "9-12",
+    "mode": "online",
+    "startDate": "2024-05-01",
+    "endDate": "2024-05-31",
+    "registrationDeadline": "2024-04-20",
+    "fee": "0",
+    "state": "Karnataka",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80",
+    "segments": ["featured", "scholarships"],
+    "status": "published",
+    "searchKeywords": ["scholarship", "stem"]
+  },
+  {
+    "id": "coding-bootcamp-workshop",
+    "title": "Coding Bootcamp Workshop",
+    "slug": "coding-bootcamp-workshop",
+    "category": "workshop",
+    "organizer": "Tech Academy",
+    "gradeEligibility": "7-12",
+    "mode": "offline",
+    "startDate": "2024-03-20",
+    "endDate": "2024-03-22",
+    "registrationDeadline": "2024-03-10",
+    "fee": "50",
+    "state": "Tamil Nadu",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80",
+    "segments": ["featured", "upcoming"],
+    "status": "published",
+    "searchKeywords": ["coding", "bootcamp", "workshop"]
+  },
+  {
+    "id": "creative-writing-contest",
+    "title": "Creative Writing Contest",
+    "slug": "creative-writing-contest",
+    "category": "competition",
+    "organizer": "Literary Society",
+    "gradeEligibility": "6-10",
+    "mode": "online",
+    "startDate": "2024-04-10",
+    "endDate": "2024-04-11",
+    "registrationDeadline": "2024-03-25",
+    "fee": "0",
+    "state": "West Bengal",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=500&q=80",
+    "segments": ["trending"],
+    "status": "published",
+    "searchKeywords": ["writing", "contest"]
+  },
+  {
+    "id": "merit-academic-scholarship",
+    "title": "Merit-Based Academic Scholarship",
+    "slug": "merit-academic-scholarship",
+    "category": "scholarship",
+    "organizer": "University Foundation",
+    "gradeEligibility": "10-12",
+    "mode": "online",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-30",
+    "registrationDeadline": "2024-05-15",
+    "fee": "0",
+    "state": "Uttar Pradesh",
+    "currency": "INR",
+    "image": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&q=80",
+    "segments": ["scholarships"],
+    "status": "published",
+    "searchKeywords": ["scholarship", "merit"]
+  }
+]
