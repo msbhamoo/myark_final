@@ -150,11 +150,11 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
               <Phone className="h-5 w-5 text-pink-400" />
-              <span>+1 (555) 123-4567</span>
+              <span>+91 (555) 123-4567</span>
             </div>
             <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
               <MapPin className="h-5 w-5 text-purple-400" />
-              <span>San Francisco, CA</span>
+              <span>Jaipur, Rajasthan</span>
             </div>
           </div>
           <p className="text-gray-400">
