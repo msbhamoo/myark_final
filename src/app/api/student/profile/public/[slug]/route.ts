@@ -9,12 +9,11 @@ import {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { slug: string } },
-) {
+export async function GET(_request: Request, ctx: any) {
   try {
-    const rawSlug = params.slug ?? '';
+    const params = (ctx && ctx.params) as { slug?: string | string[] } | undefined;
+    const slugParam = params?.slug;
+    const rawSlug = Array.isArray(slugParam) ? slugParam[0] : slugParam ?? '';
     const normalized = rawSlug.trim().toLowerCase();
 
     if (!normalized || !SLUG_REGEX.test(normalized)) {

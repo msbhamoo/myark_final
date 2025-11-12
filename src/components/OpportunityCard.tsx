@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ArrowUpRight, Calendar, Clock, Users } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { MascotBurst } from '@/components/MascotBurst';
 
 interface OpportunityCardProps {
   id: string;
@@ -21,6 +21,27 @@ interface OpportunityCardProps {
   className?: string;
 }
 
+const MODE_STYLES: Record<
+  OpportunityCardProps['mode'],
+  { label: string; className: string }
+> = {
+  online: {
+    label: 'Online',
+    className:
+      'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-200',
+  },
+  offline: {
+    label: 'On campus',
+    className:
+      'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200',
+  },
+  hybrid: {
+    label: 'Hybrid',
+    className:
+      'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-200',
+  },
+};
+
 export default function OpportunityCard({
   id,
   title,
@@ -30,30 +51,19 @@ export default function OpportunityCard({
   registrationDeadline,
   mode,
   fee,
-  image,
   className,
 }: OpportunityCardProps) {
   const normalizedCategory = category?.trim() || 'Opportunity';
-  const normalizedMode =
-    mode === 'online' ? 'Online' : mode === 'offline' ? 'Offline' : mode === 'hybrid' ? 'Hybrid' : 'Online';
-
-  const modeBadgeClass =
-    mode === 'online'
-      ? 'bg-blue-500/15 text-blue-200 border border-blue-500/30'
-      : mode === 'offline'
-        ? 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/30'
-        : 'bg-purple-500/15 text-purple-200 border border-purple-500/30';
+  const normalizedMode = MODE_STYLES[mode] ? mode : 'online';
 
   const trimmedFee = fee?.trim() ?? '';
   const numericFee = trimmedFee ? Number(trimmedFee) : Number.NaN;
   const hasNumericFee = Number.isFinite(numericFee);
   const isFree =
-    !trimmedFee ||
-    trimmedFee.toLowerCase() === 'free' ||
-    (hasNumericFee && numericFee <= 0);
+    !trimmedFee || trimmedFee.toLowerCase() === 'free' || (hasNumericFee && numericFee <= 0);
 
   const feeLabel = (() => {
-    if (isFree) return 'FREE';
+    if (isFree) return 'Free';
     if (hasNumericFee) {
       const fractionDigits = Number.isInteger(numericFee) ? 0 : 2;
       try {
@@ -64,11 +74,15 @@ export default function OpportunityCard({
           maximumFractionDigits: fractionDigits,
         }).format(numericFee);
       } catch {
-        return `₹${numericFee.toFixed(fractionDigits)}`;
+        return `${numericFee.toFixed(fractionDigits)} INR`;
       }
     }
     return trimmedFee;
   })();
+
+  const feeBadgeClass = isFree
+    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200'
+    : 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-200';
 
   const computeDaysLeft = () => {
     if (!registrationDeadline) {
@@ -95,74 +109,72 @@ export default function OpportunityCard({
     if (Number.isNaN(parsed.getTime())) {
       return registrationDeadline;
     }
-    return parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    return parsed.toLocaleDateString(undefined, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
+
+  const gradeLabel = gradeEligibility?.trim() || 'All grades';
 
   return (
     <Card
       className={cn(
-        'group h-full overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur transition-all duration-300 hover:border-orange-400/40 hover:bg-white/10 hover:shadow-xl hover:shadow-orange-500/20',
+        'group relative flex h-full flex-col rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800/60 dark:bg-slate-900',
         className,
       )}
     >
-      <Link href={`/opportunity/${id}`} className="flex h-full flex-col">
-        <div className="relative h-44 overflow-hidden">
-          {image ? (
-            <img
-              src={image}
-              alt={title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-orange-500/10 to-pink-500/10 text-white/50">
-              <span className="text-sm font-semibold">{normalizedCategory}</span>
-            </div>
-          )}
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
-          <div className="absolute left-4 bottom-4 flex items-center gap-2 text-xs font-medium text-white">
-            <Badge variant="outline" className={cn('rounded-full px-3 py-1 text-xs', modeBadgeClass)}>
-              {normalizedMode}
-            </Badge>
-            <Badge
-              variant="outline"
+      <MascotBurst size="sm" className="pointer-events-none absolute right-5 top-5 hidden sm:inline-flex" />
+      <Link href={`/opportunity/${id}`} className="flex h-full flex-col gap-5">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700 dark:bg-sky-500/20 dark:text-sky-200">
+              {gradeLabel}
+            </span>
+            <span
               className={cn(
-                'rounded-full px-3 py-1 text-xs',
-                isFree ? 'bg-green-500/20 text-green-200 border border-green-500/30' : 'bg-white/20 text-white border-white/30',
+                'inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold',
+                MODE_STYLES[normalizedMode].className,
+              )}
+            >
+              {MODE_STYLES[normalizedMode].label}
+            </span>
+            <span
+              className={cn(
+                'inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold',
+                feeBadgeClass,
               )}
             >
               {feeLabel}
-            </Badge>
+            </span>
           </div>
-        </div>
-
-        <div className="flex h-full flex-col px-5 pb-5 pt-6 gap-4 text-white/80">
-          <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/50">
-            <span>{normalizedCategory}</span>
-            <span>{gradeEligibility || 'All Grades'}</span>
-          </div>
-          <h3 className="text-lg font-semibold leading-snug text-white line-clamp-2 transition-colors duration-300 group-hover:text-orange-300">
+          <p className="text-xs font-semibold uppercase tracking-wide text-orange-500 dark:text-orange-200/80">
+            {normalizedCategory}
+          </p>
+          <h3 className="text-lg font-semibold leading-snug text-slate-900 transition group-hover:text-orange-500 dark:text-white">
             {title}
           </h3>
-          <div className="flex items-center gap-2 text-sm text-white/60">
-            <Users className="h-4 w-4 text-white/40" />
+          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+            <Users className="h-4 w-4 text-slate-400" />
             <span className="truncate">{organizer || 'Unknown organizer'}</span>
           </div>
-          <div className="mt-auto flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-sm">
-            <div className="flex items-center gap-2 text-white/70">
-              <Clock className="h-4 w-4 text-orange-300" />
-              <span>{computeDaysLeft()}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/70">
-              <Calendar className="h-4 w-4 text-orange-300" />
-              <span className="text-xs">{formatDisplayDeadline()}</span>
-            </div>
-            <ArrowUpRight className="h-4 w-4 text-white/60 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </div>
+        <div className="grid gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 p-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 sm:grid-cols-2">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-orange-500" />
+            <span>{computeDaysLeft()}</span>
           </div>
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-orange-500" />
+            <span>{formatDisplayDeadline()}</span>
+          </div>
+        </div>
+        <div className="mt-auto flex items-center justify-between rounded-xl bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-600 transition group-hover:bg-orange-100 dark:bg-orange-400/10 dark:text-orange-200">
+          <span>See opportunity details</span>
+          <ArrowUpRight className="h-4 w-4" />
         </div>
       </Link>
     </Card>
   );
 }
-
-

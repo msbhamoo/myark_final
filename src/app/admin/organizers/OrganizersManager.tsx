@@ -164,8 +164,8 @@ export function OrganizersManager() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-        <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit organizer' : 'Create organizer'}</h2>
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
+        <h2 className="text-lg font-semibold text-foreground dark:text-white">{editingId ? 'Edit organizer' : 'Create organizer'}</h2>
         <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-200" htmlFor="org-name">
@@ -225,7 +225,7 @@ export function OrganizersManager() {
               id="org-type"
               value={formState.type}
               onChange={(event) => setFormState((prev) => ({ ...prev, type: event.target.value as any }))}
-              className="h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
             >
               <option value="other">Other</option>
               <option value="government">Government</option>
@@ -242,7 +242,7 @@ export function OrganizersManager() {
               onChange={(event) =>
                 setFormState((prev) => ({ ...prev, visibility: event.target.value as 'public' | 'private' }))
               }
-              className="h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -252,7 +252,7 @@ export function OrganizersManager() {
             <input
               id="org-verified"
               type="checkbox"
-              className="h-4 w-4 rounded border-white/20 bg-slate-900/70 text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60"
+              className="h-4 w-4 rounded border-border/50 dark:border-white/20 bg-slate-900/70 text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60"
               checked={formState.isVerified}
               onChange={(event) =>
                 setFormState((prev) => ({ ...prev, isVerified: event.target.checked }))
@@ -280,9 +280,9 @@ export function OrganizersManager() {
         </form>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Existing Organizers</h2>
+          <h2 className="text-lg font-semibold text-foreground dark:text-white">Existing Organizers</h2>
           <Button variant="outline" size="sm" onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -290,10 +290,10 @@ export function OrganizersManager() {
         <p className="mt-1 text-sm text-slate-300">
           {isLoading ? 'Loading organizers...' : `Showing ${items.length} record(s).`}
         </p>
-        <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+        <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
           <Table>
             <TableHeader>
-              <TableRow className="bg-white/5 hover:bg-white/5">
+              <TableRow className="bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5">
                 <TableHead>Name</TableHead>
                 <TableHead>Website</TableHead>
                 <TableHead>Type</TableHead>
@@ -311,7 +311,7 @@ export function OrganizersManager() {
                 </TableRow>
               )}
               {items.map((item) => (
-                <TableRow key={item.id} className="hover:bg-white/5">
+                <TableRow key={item.id} className="hover:bg-card/80 dark:bg-white/5">
                   <TableCell className="font-medium text-slate-100">{item.name}</TableCell>
                   <TableCell className="text-slate-300">{item.website || '—'}</TableCell>
                   <TableCell className="text-slate-300 capitalize">{item.type}</TableCell>
@@ -343,3 +343,6 @@ export function OrganizersManager() {
     </div>
   );
 }
+
+
+

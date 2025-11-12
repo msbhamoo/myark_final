@@ -59,7 +59,7 @@ export default function OpportunitiesSearch() {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+        className="w-full max-w-lg rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-4 backdrop-blur"
       >
         <div className="space-y-3">
           <Input
@@ -67,7 +67,7 @@ export default function OpportunitiesSearch() {
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
             placeholder="Search by title, organizer, or keywords"
-            className="h-12 bg-white/10 text-white placeholder:text-white/50"
+            className="h-12 bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
             aria-label="Search opportunities"
           />
           <div className="flex items-center gap-3">
@@ -82,11 +82,11 @@ export default function OpportunitiesSearch() {
       </form>
 
       {activeFilters.length > 0 && (
-        <div className="mt-6 flex flex-wrap gap-2 text-xs text-white/60">
+        <div className="mt-6 flex flex-wrap gap-2 text-xs text-muted-foreground dark:text-white/60">
           {activeFilters.map((filter) => (
             <span
               key={`${filter.label}-${filter.value}`}
-              className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-3 py-1 capitalize"
+              className="inline-flex items-center gap-1 rounded-full border border-border/50 dark:border-white/20 bg-card/70 dark:bg-white/10 px-3 py-1 capitalize"
             >
               <span className="text-white/50">{filter.label}:</span>
               <span className="text-white">{filter.value}</span>
@@ -97,3 +97,7 @@ export default function OpportunitiesSearch() {
     </>
   );
 }
+
+
+
+

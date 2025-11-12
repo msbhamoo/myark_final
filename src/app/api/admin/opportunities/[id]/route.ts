@@ -281,12 +281,13 @@ const sanitizeResourcesForResponse = (value: unknown) => {
     );
 };
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, context: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   if (!id) {
     return NextResponse.json({ error: 'Invalid opportunity id' }, { status: 400 });
   }
@@ -323,7 +324,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     if (has('mode')) updates.mode = typeof payload.mode === 'string' ? payload.mode : 'online';
     if (has('state')) {
       const stateValue = typeof payload.state === 'string' ? payload.state.trim() : '';
-      updates.state = INDIAN_STATES_SET.has(stateValue) ? stateValue : '';
+      updates.state = INDIAN_STATES_SET.has(stateValue as any) ? (stateValue as any) : '';
     }
     if (has('status')) updates.status = typeof payload.status === 'string' ? payload.status : 'draft';
     if (has('fee')) updates.fee = typeof payload.fee === 'string' ? payload.fee.trim() : '';
@@ -362,7 +363,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         ...data,
         state: (() => {
           const rawState = typeof data.state === 'string' ? data.state.trim() : '';
-          return INDIAN_STATES_SET.has(rawState) ? rawState : '';
+          return INDIAN_STATES_SET.has(rawState as any) ? rawState : '';
         })(),
         currency: 'INR',
         registrationDeadline: toIsoString(data.registrationDeadline),
@@ -389,12 +390,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, context: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   if (!id) {
     return NextResponse.json({ error: 'Invalid opportunity id' }, { status: 400 });
   }

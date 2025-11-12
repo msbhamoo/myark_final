@@ -87,12 +87,13 @@ const normalizeSegmentPayload = (
   };
 };
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   if (!id) {
     return NextResponse.json({ error: 'Invalid segment id' }, { status: 400 });
   }
@@ -162,12 +163,13 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   if (!id) {
     return NextResponse.json({ error: 'Invalid segment id' }, { status: 400 });
   }

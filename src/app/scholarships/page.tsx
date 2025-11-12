@@ -188,7 +188,7 @@ export default function ScholarshipsPage() {
                   return (
                     <Card key={type.name} className="p-4 hover:shadow-lg transition-shadow cursor-pointer group text-left">
                       <div className={`h-12 w-12 mb-3 rounded-lg bg-gradient-to-br ${type.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <Icon className="h-6 w-6 text-white" />
+                        <Icon className="h-6 w-6 text-foreground dark:text-white" />
                       </div>
                       <h3 className="font-semibold mb-1">{type.name}</h3>
                       <p className="text-xs text-muted-foreground mb-2">{type.description}</p>
@@ -305,7 +305,7 @@ export default function ScholarshipsPage() {
         </div>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-br from-green-600 to-emerald-600 text-white py-16">
+        <section className="bg-gradient-to-br from-green-600 to-emerald-600 text-foreground dark:text-white py-16">
           <div className="container mx-auto px-4 text-center">
             <Award className="h-16 w-16 mx-auto mb-4" />
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -318,7 +318,7 @@ export default function ScholarshipsPage() {
               <Button size="lg" variant="secondary">
                 Create Profile
               </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-green-600">
+              <Button size="lg" variant="outline" className="bg-transparent border-white text-foreground dark:text-white hover:bg-white hover:text-green-600">
                 Application Tips
               </Button>
             </div>

@@ -5,12 +5,15 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 interface RouteContext {
-  params: { id: string };
+  params?: { id?: string | string[] };
 }
 
-export async function GET(_: Request, context: RouteContext) {
+export async function GET(_: Request, ctx: any) {
   try {
-    const opportunity = await getOpportunityByIdOrSlug(context.params.id);
+    const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
+    const idParam = params?.id;
+    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+    const opportunity = await getOpportunityByIdOrSlug(id);
 
     if (!opportunity) {
       return NextResponse.json({ error: 'Opportunity not found' }, { status: 404 });

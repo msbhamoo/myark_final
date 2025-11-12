@@ -197,7 +197,7 @@ export default function CompetitionsPage() {
                   return (
                     <Card key={cat.name} className="p-4 hover:shadow-lg transition-shadow cursor-pointer group">
                       <div className={`h-12 w-12 mx-auto mb-3 rounded-lg bg-gradient-to-br ${cat.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <Icon className="h-6 w-6 text-white" />
+                        <Icon className="h-6 w-6 text-foreground dark:text-white" />
                       </div>
                       <h3 className="font-semibold text-sm mb-1">{cat.name}</h3>
                       <p className="text-2xl font-bold text-primary">{cat.count}</p>
@@ -298,7 +298,7 @@ export default function CompetitionsPage() {
         </div>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-br from-orange-600 to-red-600 text-white py-16">
+        <section className="bg-gradient-to-br from-orange-600 to-red-600 text-foreground dark:text-white py-16">
           <div className="container mx-auto px-4 text-center">
             <Trophy className="h-16 w-16 mx-auto mb-4" />
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -311,7 +311,7 @@ export default function CompetitionsPage() {
               <Button size="lg" variant="secondary">
                 View My Applications
               </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-orange-600">
+              <Button size="lg" variant="outline" className="bg-transparent border-white text-foreground dark:text-white hover:bg-white hover:text-orange-600">
                 Practice Resources
               </Button>
             </div>

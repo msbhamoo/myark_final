@@ -24,6 +24,7 @@ type PreviewRow = {
 };
 
 type PreviewResponse = {
+  fileName?: string;
   headers: string[];
   rows: PreviewRow[];
   totals: {
@@ -241,7 +242,7 @@ export function BulkUploadManager() {
               invalid: updatedRows.length - validAfterUpdate,
             },
           },
-          fileName: preview.fileName,
+          fileName: preview.fileName ?? states[entity].fileName,
         });
       } else {
         updateState(entity, {
@@ -313,7 +314,7 @@ export function BulkUploadManager() {
               <Card className="border-white/10 bg-slate-900/60 p-6">
                 <div className="space-y-3">
                   <div>
-                    <h2 className="text-lg font-semibold text-white">{config.label}</h2>
+                    <h2 className="text-lg font-semibold text-foreground dark:text-white">{config.label}</h2>
                     <p className="text-sm text-slate-300">{config.description}</p>
                     <p className="text-xs text-slate-400 mt-1">{config.helper}</p>
                   </div>
@@ -406,10 +407,10 @@ export function BulkUploadManager() {
                     </Button>
                   </div>
 
-                  <div className="rounded-lg border border-white/10 overflow-hidden">
+                  <div className="rounded-lg border border-border/60 dark:border-white/10 overflow-hidden">
                     <Table>
                       <TableHeader>
-                        <TableRow className="bg-white/5">
+                        <TableRow className="bg-card/80 dark:bg-white/5">
                           <TableHead className="w-16 text-slate-200">Row</TableHead>
                           <TableHead className="w-28 text-slate-200">Status</TableHead>
                           {preview.headers.map((header) => (
@@ -448,7 +449,7 @@ export function BulkUploadManager() {
                   </div>
                 </Card>
               ) : (
-                <Card className="border-dashed border-white/10 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+                <Card className="border-dashed border-border/60 dark:border-white/10 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
                   <p>
                     Upload a CSV template to preview records before importing them into the database.
                   </p>
@@ -461,3 +462,6 @@ export function BulkUploadManager() {
     </div>
   );
 }
+
+
+

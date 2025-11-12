@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { City } from '@/types/masters';
 
-type Params = { id: string };
+// Accept Next.js style route params which can be string or string[]
+type Params = { id?: string | string[] };
 
 // This is a temporary in-memory store.
 // In a real application, you would use a database.
@@ -9,9 +10,12 @@ let cities: City[] = [];
 
 export async function GET(
   request: Request,
-  { params }: { params: Params }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as Params | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+
   const city = cities.find((c) => c.id === id);
 
   if (!city) {
@@ -23,9 +27,11 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: Params }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as Params | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   try {
     const body = await request.json();
     const { name, stateId } = body;
@@ -50,9 +56,12 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Params }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as Params | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+
   const cityIndex = cities.findIndex((c) => c.id === id);
 
   if (cityIndex === -1) {

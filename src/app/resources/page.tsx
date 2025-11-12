@@ -392,7 +392,7 @@ export default function ResourcesPage() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                       <div className="absolute top-2 right-2">
-                        <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-white/90">
+                        <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-muted dark:bg-white/90">
                           <Bookmark className="h-4 w-4" />
                         </Button>
                       </div>
@@ -454,7 +454,7 @@ export default function ResourcesPage() {
                         </div>
                       </div>
                       <div className="absolute bottom-2 right-2">
-                        <Badge className="bg-black/70 text-white">
+                        <Badge className="bg-black/70 text-foreground dark:text-white">
                           <Clock className="h-3 w-3 mr-1" />
                           {video.duration}
                         </Badge>
@@ -595,3 +595,4 @@ export default function ResourcesPage() {
     </div>
   );
 }
+

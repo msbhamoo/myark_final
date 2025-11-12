@@ -124,8 +124,8 @@ export function StatesManager() {
 
   return (
     <div className='space-y-8'>
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
-        <h2 className='text-lg font-semibold text-white'>{editingId ? 'Edit state' : 'Create state'}</h2>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
+        <h2 className='text-lg font-semibold text-foreground dark:text-white'>{editingId ? 'Edit state' : 'Create state'}</h2>
         <form onSubmit={handleSubmit} className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
           <div className='space-y-2'>
             <label className='text-sm font-medium text-slate-200' htmlFor='state-name'>
@@ -149,7 +149,7 @@ export function StatesManager() {
               value={formState.countryId}
               onChange={(event) => setFormState((prev) => ({ ...prev, countryId: event.target.value }))}
               required
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               <option value=''>Select a country</option>
               {countries.map((country) => (
@@ -177,9 +177,9 @@ export function StatesManager() {
         </form>
       </section>
 
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
         <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-semibold text-white'>Existing States</h2>
+          <h2 className='text-lg font-semibold text-foreground dark:text-white'>Existing States</h2>
           <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -187,10 +187,10 @@ export function StatesManager() {
         <p className='mt-1 text-sm text-slate-300'>
           {isLoading ? 'Loading states...' : `Showing ${items.length} record(s).`}
         </p>
-        <div className='mt-4 overflow-hidden rounded-xl border border-white/10'>
+        <div className='mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10'>
           <Table>
             <TableHeader>
-              <TableRow className='bg-white/5 hover:bg-white/5'>
+              <TableRow className='bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5'>
                 <TableHead>Name</TableHead>
                 <TableHead>Country</TableHead>
                 <TableHead className='text-right'>Actions</TableHead>
@@ -205,7 +205,7 @@ export function StatesManager() {
                 </TableRow>
               )}
               {items.map((item) => (
-                <TableRow key={item.id} className='hover:bg-white/5'>
+                <TableRow key={item.id} className='hover:bg-card/80 dark:bg-white/5'>
                   <TableCell className='font-medium text-slate-100'>{item.name}</TableCell>
                   <TableCell className='text-slate-300'>{countries.find(c => c.id === item.countryId)?.name || 'N/A'}</TableCell>
                   <TableCell className='flex justify-end gap-2'>
@@ -230,3 +230,6 @@ export function StatesManager() {
     </div>
   );
 }
+
+
+

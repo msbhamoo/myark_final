@@ -28,7 +28,7 @@ export default function CommunityPage() {
 
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-2xl mx-auto text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground dark:text-white mb-6">
                 Community <span className="text-orange-400">Discussions</span>
               </h1>
               <p className="text-lg text-gray-300 mb-8">
@@ -40,12 +40,12 @@ export default function CommunityPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search discussions by topic or subject..."
-                  className="h-14 pl-12 pr-4 rounded-2xl bg-white/5 border-white/10 text-white placeholder:text-gray-400"
+                  className="h-14 pl-12 pr-4 rounded-2xl bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-gray-400"
                 />
               </div>
             </div>
             <div className="flex justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-orange-500 to-pink-500 text-white">
+              <Button size="lg" className="bg-gradient-to-r from-orange-500 to-pink-500 text-foreground dark:text-white">
                 <MessageSquare className="h-5 w-5 mr-2" />
                 Start New Discussion
               </Button>
@@ -57,7 +57,7 @@ export default function CommunityPage() {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <Tabs defaultValue="trending" className="space-y-8">
-              <TabsList className="w-full justify-start overflow-x-auto flex-wrap bg-white/5 backdrop-blur-sm rounded-xl p-1">
+              <TabsList className="w-full justify-start overflow-x-auto flex-wrap bg-card/80 dark:bg-white/5 backdrop-blur-sm rounded-xl p-1">
                 <TabsTrigger value="trending" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-gray-300">
                   Trending
                 </TabsTrigger>
@@ -94,11 +94,11 @@ export default function CommunityPage() {
                       solved: false,
                     },
                   ].map((discussion, index) => (
-                    <Card key={index} className="bg-white/5 border-white/10 p-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                    <Card key={index} className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm hover:bg-card/70 dark:bg-white/10 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
-                            <Badge variant="outline" className="bg-white/5 text-orange-400 border-orange-500/20">
+                            <Badge variant="outline" className="bg-card/80 dark:bg-white/5 text-orange-400 border-orange-500/20">
                               {discussion.category}
                             </Badge>
                             {discussion.solved && (
@@ -107,7 +107,7 @@ export default function CommunityPage() {
                               </Badge>
                             )}
                           </div>
-                          <h3 className="text-lg font-semibold text-white hover:text-orange-400 transition-colors cursor-pointer">
+                          <h3 className="text-lg font-semibold text-foreground dark:text-white hover:text-orange-400 transition-colors cursor-pointer">
                             {discussion.title}
                           </h3>
                           <div className="flex items-center gap-4 text-sm text-gray-400">
@@ -135,13 +135,13 @@ export default function CommunityPage() {
               <TabsContent value="subject-wise">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {['Physics', 'Chemistry', 'Biology', 'Mathematics'].map((subject) => (
-                    <Card key={subject} className="bg-white/5 border-white/10 p-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                    <Card key={subject} className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm hover:bg-card/70 dark:bg-white/10 transition-colors">
                       <div className="flex items-start gap-4">
                         <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20">
                           <MessageSquare className="h-6 w-6 text-orange-400" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-white mb-2">{subject} Forum</h3>
+                          <h3 className="text-xl font-semibold text-foreground dark:text-white mb-2">{subject} Forum</h3>
                           <p className="text-gray-300 text-sm mb-4">Subject-specific discussions, doubts, and solutions.</p>
                           <Button variant="outline" size="sm" className="w-full">Visit Forum</Button>
                         </div>
@@ -158,13 +158,13 @@ export default function CommunityPage() {
                     { name: 'NEET Study Circle', members: 850, activity: 'Active' },
                     { name: 'Olympiad Champions', members: 500, activity: 'Moderate' },
                   ].map((group, index) => (
-                    <Card key={index} className="bg-white/5 border-white/10 p-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                    <Card key={index} className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm hover:bg-card/70 dark:bg-white/10 transition-colors">
                       <div className="flex items-start gap-4">
                         <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20">
                           <Users className="h-6 w-6 text-orange-400" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-white mb-2">{group.name}</h3>
+                          <h3 className="text-xl font-semibold text-foreground dark:text-white mb-2">{group.name}</h3>
                           <div className="flex items-center gap-2 text-sm text-gray-300 mb-4">
                             <span>{group.members} members</span>
                             <span>•</span>
@@ -194,13 +194,13 @@ export default function CommunityPage() {
                       responses: 890,
                     },
                   ].map((expert, index) => (
-                    <Card key={index} className="bg-white/5 border-white/10 p-6 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                    <Card key={index} className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm hover:bg-card/70 dark:bg-white/10 transition-colors">
                       <div className="flex items-start gap-6">
-                        <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center text-2xl font-semibold text-white">
+                        <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center text-2xl font-semibold text-foreground dark:text-white">
                           {expert.name.charAt(0)}
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-white mb-1">{expert.name}</h3>
+                          <h3 className="text-xl font-semibold text-foreground dark:text-white mb-1">{expert.name}</h3>
                           <p className="text-gray-300 mb-3">{expert.expertise} Expert</p>
                           <div className="flex items-center gap-4 text-sm text-gray-300 mb-4">
                             <span className="flex items-center gap-1">
@@ -222,34 +222,34 @@ export default function CommunityPage() {
         </section>
 
         {/* Stats Section */}
-        <section className="py-12 border-t border-white/10">
+        <section className="py-12 border-t border-border/60 dark:border-white/10">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Card className="bg-white/5 border-white/10 p-6 backdrop-blur-sm">
+              <Card className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm">
                 <div className="text-center">
                   <Sparkles className="h-8 w-8 text-orange-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-white mb-1">10K+</div>
+                  <div className="text-3xl font-bold text-foreground dark:text-white mb-1">10K+</div>
                   <div className="text-sm text-gray-300">Active Discussions</div>
                 </div>
               </Card>
-              <Card className="bg-white/5 border-white/10 p-6 backdrop-blur-sm">
+              <Card className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm">
                 <div className="text-center">
                   <Users className="h-8 w-8 text-pink-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-white mb-1">50K+</div>
+                  <div className="text-3xl font-bold text-foreground dark:text-white mb-1">50K+</div>
                   <div className="text-sm text-gray-300">Community Members</div>
                 </div>
               </Card>
-              <Card className="bg-white/5 border-white/10 p-6 backdrop-blur-sm">
+              <Card className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm">
                 <div className="text-center">
                   <Star className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-white mb-1">100+</div>
+                  <div className="text-3xl font-bold text-foreground dark:text-white mb-1">100+</div>
                   <div className="text-sm text-gray-300">Expert Mentors</div>
                 </div>
               </Card>
-              <Card className="bg-white/5 border-white/10 p-6 backdrop-blur-sm">
+              <Card className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 p-6 backdrop-blur-sm">
                 <div className="text-center">
                   <MessageCircle className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-white mb-1">95%</div>
+                  <div className="text-3xl font-bold text-foreground dark:text-white mb-1">95%</div>
                   <div className="text-sm text-gray-300">Doubts Resolved</div>
                 </div>
               </Card>
@@ -262,3 +262,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+

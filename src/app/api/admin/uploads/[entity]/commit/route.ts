@@ -17,12 +17,13 @@ type CommitRowPayload = {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function POST(request: Request, { params }: { params: { entity: string } }) {
+export async function POST(request: Request, ctx: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { entity } = params;
+  const params = (ctx && ctx.params) as { entity?: string | string[] } | undefined;
+  const entityParam = params?.entity;
+  const entity = Array.isArray(entityParam) ? entityParam[0] : entityParam ?? '';
   if (!isBulkEntity(entity)) {
     return NextResponse.json({ error: 'Unsupported entity' }, { status: 404 });
   }

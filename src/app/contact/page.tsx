@@ -197,7 +197,7 @@ export default function ContactPage() {
                     return (
                       <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
                         <div className={`h-12 w-12 rounded-lg bg-gradient-to-br ${method.color} flex items-center justify-center flex-shrink-0`}>
-                          <Icon className="h-6 w-6 text-white" />
+                          <Icon className="h-6 w-6 text-foreground dark:text-white" />
                         </div>
                         <div>
                           <h4 className="font-semibold mb-1">{method.title}</h4>

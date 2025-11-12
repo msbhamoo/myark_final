@@ -492,7 +492,7 @@ export default function PracticePage() {
                       <div className="p-4 bg-blue-50 rounded-lg">
                         <div className="flex items-center gap-3 mb-2">
                           <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                            <CheckCircle2 className="h-5 w-5 text-white" />
+                            <CheckCircle2 className="h-5 w-5 text-foreground dark:text-white" />
                           </div>
                           <div>
                             <div className="text-2xl font-bold text-blue-700">{userProgress.completed}</div>
@@ -504,7 +504,7 @@ export default function PracticePage() {
                       <div className="p-4 bg-orange-50 rounded-lg">
                         <div className="flex items-center gap-3 mb-2">
                           <div className="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center">
-                            <Clock className="h-5 w-5 text-white" />
+                            <Clock className="h-5 w-5 text-foreground dark:text-white" />
                           </div>
                           <div>
                             <div className="text-2xl font-bold text-orange-700">{userProgress.inProgress}</div>

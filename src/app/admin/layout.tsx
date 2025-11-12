@@ -32,7 +32,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Show admin layout only for authenticated users
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="border-b border-white/10 bg-slate-900/70 backdrop-blur">
+      <header className="border-b border-border/60 dark:border-white/10 bg-slate-900/70 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/admin" className="text-lg font-semibold tracking-tight">
             MyArk Admin
@@ -47,7 +47,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link
               key={link.href}
               href={link.href}
-              className="block rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white"
+              className="block rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-card/70 dark:bg-white/10 hover:text-white"
             >
               {link.label}
             </Link>
@@ -58,3 +58,5 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     </div>
   );
 }
+
+

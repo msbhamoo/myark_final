@@ -12,12 +12,13 @@ import { isBulkEntity } from '@/types/bulk';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function POST(request: Request, { params }: { params: { entity: string } }) {
+export async function POST(request: Request, ctx: any) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  const { entity } = params;
+  const params = (ctx && ctx.params) as { entity?: string | string[] } | undefined;
+  const entityParam = params?.entity;
+  const entity = Array.isArray(entityParam) ? entityParam[0] : entityParam ?? '';
   if (!isBulkEntity(entity)) {
     return NextResponse.json({ error: 'Unsupported entity' }, { status: 404 });
   }
@@ -48,10 +49,10 @@ export async function POST(request: Request, { params }: { params: { entity: str
   }
 
   const db = getDb();
-  const context = await buildValidationContext(entity, db);
+  const validationContext = await buildValidationContext(entity, db);
 
   const rows = parsed.rows.map((row) => {
-    const validation = validateImportRow(entity, row.raw, context as never);
+    const validation = validateImportRow(entity, row.raw, validationContext as never);
     return {
       index: row.index,
       raw: row.raw,
@@ -64,6 +65,7 @@ export async function POST(request: Request, { params }: { params: { entity: str
   const invalidCount = rows.length - validCount;
 
   return NextResponse.json({
+    fileName: file.name ?? 'upload.csv',
     headers: parsed.headers,
     rows,
     totals: {

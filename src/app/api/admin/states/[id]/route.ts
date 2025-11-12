@@ -7,9 +7,11 @@ let states: State[] = [];
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   const state = states.find((s) => s.id === id);
 
   if (!state) {
@@ -21,9 +23,11 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   try {
     const body = await request.json();
     const { name, countryId } = body;
@@ -48,9 +52,11 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
-  const { id } = params;
+  const params = (context && context.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   const stateIndex = states.findIndex((s) => s.id === id);
 
   if (stateIndex === -1) {

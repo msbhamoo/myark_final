@@ -59,11 +59,8 @@ const normalizeMode = (mode?: Opportunity['mode']): Opportunity['mode'] => {
   return 'online';
 };
 
-export default async function OpportunitiesPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function OpportunitiesPage(props: any) {
+  const searchParams = props?.searchParams ?? {};
   const category = typeof searchParams.category === 'string' ? searchParams.category : '';
   const segment = typeof searchParams.segment === 'string' ? searchParams.segment : '';
   const search = typeof searchParams.search === 'string' ? searchParams.search : '';
@@ -76,19 +73,19 @@ export default async function OpportunitiesPage({
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050b3a]">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:bg-[#050b3a]">
       <Header />
       <main className="flex-1">
-        <section className="relative py-14 md:py-20">
-          <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.03]" />
+        <section className="relative overflow-hidden py-14 md:py-20">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_60%)] dark:bg-[url('/images/grid-pattern.svg')] dark:opacity-[0.03]" />
           <div className="container relative mx-auto max-w-[1200px] px-4 md:px-6">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl space-y-3">
-                <p className="text-xs uppercase tracking-[0.3em] text-orange-300">Explore opportunities</p>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">
+                <p className="text-xs uppercase tracking-[0.3em] text-orange-500">Explore opportunities</p>
+                <h1 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">
                   Discover competitions, scholarships, and programs tailored for you
                 </h1>
-                <p className="text-sm md:text-base text-white/70">
+                <p className="text-sm text-slate-600 md:text-base dark:text-white/70">
                   Use search or choose a category from the homepage to find programs that match your goals. Results update with live data from the platform.
                 </p>
               </div>
@@ -100,7 +97,7 @@ export default async function OpportunitiesPage({
         <section className="pb-20">
           <div className="container mx-auto max-w-[1200px] px-4 md:px-6">
             {opportunities.length === 0 && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-16 text-center text-white/60">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 px-6 py-16 text-center text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white/60">
                 No opportunities match your filters yet. Try adjusting the search term or clearing the category filter.
               </div>
             )}
@@ -129,3 +126,7 @@ export default async function OpportunitiesPage({
     </div>
   );
 }
+
+
+
+

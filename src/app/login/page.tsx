@@ -147,22 +147,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-16 text-white">
+    <div className="min-h-screen bg-slate-950 px-4 py-16 text-foreground dark:text-white">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 md:flex-row">
         <div className="flex-1 space-y-6">
-          <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-wide text-white/70">
+          <p className="inline-flex rounded-full border border-border/60 dark:border-white/10 px-3 py-1 text-xs uppercase tracking-wide text-muted-foreground dark:text-white/70">
             MyArk Opportunities Portal
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground dark:text-white md:text-5xl">
             Access opportunities or host new programs with one secure account.
           </h1>
-          <p className="text-lg text-white/70">
+          <p className="text-lg text-muted-foreground dark:text-white/70">
             Sign in to manage your dashboard, or create a business account to publish opportunities
             for review by the MyArk admin team.
           </p>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <h2 className="text-lg font-medium text-white">Need help?</h2>
-            <p className="mt-2 text-sm text-white/70">
+          <div className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
+            <h2 className="text-lg font-medium text-foreground dark:text-white">Need help?</h2>
+            <p className="mt-2 text-sm text-muted-foreground dark:text-white/70">
               Business accounts can review submission guidelines inside the dashboard after
               onboarding. Students, parents, and faculty members can save favourite opportunities
               once signed in.
@@ -170,13 +170,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex-1 rounded-2xl border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/30 backdrop-blur md:p-8">
+        <div className="flex-1 rounded-2xl border border-border/60 dark:border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/30 backdrop-blur md:p-8">
           <Tabs
             value={mode}
             onValueChange={(value) => setMode(value as AuthMode)}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 bg-white/5">
+            <TabsList className="grid w-full grid-cols-2 bg-card/80 dark:bg-white/5">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="register">Create Account</TabsTrigger>
             </TabsList>
@@ -184,7 +184,7 @@ export default function LoginPage() {
             <div className="mt-6 space-y-5">
               {mode === 'register' && (
                 <div className="space-y-2">
-                  <Label htmlFor="accountType" className="text-sm text-white/70">
+                  <Label htmlFor="accountType" className="text-sm text-muted-foreground dark:text-white/70">
                     Account type
                   </Label>
                   <div className="grid grid-cols-1 gap-2">
@@ -195,14 +195,14 @@ export default function LoginPage() {
                         onClick={() => setAccountType(value)}
                         className={`rounded-xl border px-4 py-3 text-left transition-colors ${
                           accountType === value
-                            ? 'border-orange-400/60 bg-orange-500/10 text-white'
-                            : 'border-white/10 bg-white/5 text-white/70 hover:border-white/30 hover:text-white'
+                            ? 'border-orange-400/60 bg-orange-500/10 text-foreground dark:text-white'
+                            : 'border-white/10 bg-card/80 dark:bg-white/5 text-muted-foreground dark:text-white/70 hover:border-border/40 dark:hover:border-white/30 hover:text-white'
                         }`}
                       >
                         <span className="block text-sm font-medium">
                           {ACCOUNT_TYPE_LABELS[value]}
                         </span>
-                        <span className="mt-1 block text-xs text-white/60">
+                        <span className="mt-1 block text-xs text-muted-foreground dark:text-white/60">
                           {value === 'organization'
                             ? 'Share detailed programs to reach the MyArk community.'
                             : 'Save opportunities and get personalized updates.'}
@@ -224,7 +224,7 @@ export default function LoginPage() {
                       autoComplete="email"
                       required
                       placeholder="you@company.com"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
                   </div>
                   <div className="space-y-2">
@@ -236,7 +236,7 @@ export default function LoginPage() {
                       autoComplete="current-password"
                       required
                       placeholder="••••••••"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
                   </div>
                   {error && mode === 'login' && (
@@ -263,7 +263,7 @@ export default function LoginPage() {
                       name="fullName"
                       required
                       placeholder="Alex Johnson"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
                   </div>
 
@@ -276,7 +276,7 @@ export default function LoginPage() {
                           name="organizationName"
                           required
                           placeholder="Bright Future Foundation"
-                          className="bg-white/10 text-white placeholder:text-white/50"
+                          className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                         />
                       </div>
                       <div className="space-y-2">
@@ -287,7 +287,7 @@ export default function LoginPage() {
                           id="register-organization-details"
                           name="organizationDetails"
                           placeholder="Tell us briefly what your organization does."
-                          className="min-h-[120px] bg-white/10 text-white placeholder:text-white/50"
+                          className="min-h-[120px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                         />
                       </div>
                     </>
@@ -302,7 +302,7 @@ export default function LoginPage() {
                       autoComplete="email"
                       required
                       placeholder="you@company.com"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
                   </div>
                   <div className="space-y-2">
@@ -313,9 +313,9 @@ export default function LoginPage() {
                       type="password"
                       required
                       placeholder="Create a secure password"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
-                    <p className="text-xs text-white/50">Must be at least 8 characters.</p>
+                    <p className="text-xs text-muted-foreground dark:text-white/50">Must be at least 8 characters.</p>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-confirm-password">Confirm password</Label>
@@ -325,7 +325,7 @@ export default function LoginPage() {
                       type="password"
                       required
                       placeholder="Confirm your password"
-                      className="bg-white/10 text-white placeholder:text-white/50"
+                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
                     />
                   </div>
                   {error && mode === 'register' && (
@@ -349,3 +349,7 @@ export default function LoginPage() {
     </div>
   );
 }
+
+
+
+

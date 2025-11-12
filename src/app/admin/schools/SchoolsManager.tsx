@@ -182,8 +182,8 @@ export function SchoolsManager() {
 
   return (
     <div className='space-y-8'>
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
-        <h2 className='text-lg font-semibold text-white'>{editingId ? 'Edit school' : 'Create school'}</h2>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
+        <h2 className='text-lg font-semibold text-foreground dark:text-white'>{editingId ? 'Edit school' : 'Create school'}</h2>
         <form onSubmit={handleSubmit} className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
           <div className='md:col-span-2 space-y-2'>
             <label className='text-sm font-medium text-slate-200' htmlFor='school-name'>
@@ -217,7 +217,7 @@ export function SchoolsManager() {
               id='school-country'
               value={formState.countryId}
               onChange={(e) => setFormState(prev => ({...prev, countryId: e.target.value, stateId: '', cityId: ''}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-white/10 px-3 text-sm'
+              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
             >
               <option value=''>Select Country</option>
               {countries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -231,7 +231,7 @@ export function SchoolsManager() {
               id='school-state'
               value={formState.stateId}
               onChange={(e) => setFormState(prev => ({...prev, stateId: e.target.value, cityId: ''}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-white/10 px-3 text-sm'
+              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.countryId}
             >
               <option value=''>Select State</option>
@@ -246,7 +246,7 @@ export function SchoolsManager() {
               id='school-city'
               value={formState.cityId}
               onChange={(e) => setFormState(prev => ({...prev, cityId: e.target.value}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-white/10 px-3 text-sm'
+              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.stateId}
             >
               <option value=''>Select City</option>
@@ -320,7 +320,7 @@ export function SchoolsManager() {
                 type='checkbox'
                 checked={formState.isVerified}
                 onChange={(event) => setFormState((prev) => ({ ...prev, isVerified: event.target.checked }))}
-                className='h-4 w-4 rounded border border-white/20 bg-slate-900/70'
+                className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70'
               />
               <span>Verified</span>
             </div>
@@ -343,9 +343,9 @@ export function SchoolsManager() {
         </form>
       </section>
 
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
         <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-semibold text-white'>Schools</h2>
+          <h2 className='text-lg font-semibold text-foreground dark:text-white'>Schools</h2>
           <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -353,10 +353,10 @@ export function SchoolsManager() {
         <p className='mt-1 text-sm text-slate-300'>
           {isLoading ? 'Loading schools...' : `Showing ${items.length} record(s).`}
         </p>
-        <div className='mt-4 overflow-hidden rounded-xl border border-white/10'>
+        <div className='mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10'>
           <Table>
             <TableHeader>
-              <TableRow className='bg-white/5 hover:bg-white/5'>
+              <TableRow className='bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5'>
                 <TableHead>Name</TableHead>
                 <TableHead>City</TableHead>
                 <TableHead>State</TableHead>
@@ -374,7 +374,7 @@ export function SchoolsManager() {
                 </TableRow>
               )}
               {items.map((item) => (
-                <TableRow key={item.id} className='hover:bg-white/5'>
+                <TableRow key={item.id} className='hover:bg-card/80 dark:bg-white/5'>
                   <TableCell className='font-medium text-slate-100'>{item.name}</TableCell>
                   <TableCell className='text-slate-300'>{cities.find(c => c.id === item.cityId)?.name || '—'}</TableCell>
                   <TableCell className='text-slate-300'>{states.find(s => s.id === item.stateId)?.name || '—'}</TableCell>
@@ -412,3 +412,6 @@ export function SchoolsManager() {
     </div>
   );
 }
+
+
+

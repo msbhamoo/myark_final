@@ -107,8 +107,8 @@ export function CountriesManager() {
 
   return (
     <div className='space-y-8'>
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
-        <h2 className='text-lg font-semibold text-white'>{editingId ? 'Edit country' : 'Create country'}</h2>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
+        <h2 className='text-lg font-semibold text-foreground dark:text-white'>{editingId ? 'Edit country' : 'Create country'}</h2>
         <form onSubmit={handleSubmit} className='mt-6 grid grid-cols-1 gap-4'>
           <div className='space-y-2'>
             <label className='text-sm font-medium text-slate-200' htmlFor='country-name'>
@@ -141,9 +141,9 @@ export function CountriesManager() {
         </form>
       </section>
 
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
         <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-semibold text-white'>Existing Countries</h2>
+          <h2 className='text-lg font-semibold text-foreground dark:text-white'>Existing Countries</h2>
           <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -151,10 +151,10 @@ export function CountriesManager() {
         <p className='mt-1 text-sm text-slate-300'>
           {isLoading ? 'Loading countries...' : `Showing ${items.length} record(s).`}
         </p>
-        <div className='mt-4 overflow-hidden rounded-xl border border-white/10'>
+        <div className='mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10'>
           <Table>
             <TableHeader>
-              <TableRow className='bg-white/5 hover:bg-white/5'>
+              <TableRow className='bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5'>
                 <TableHead>Name</TableHead>
                 <TableHead className='text-right'>Actions</TableHead>
               </TableRow>
@@ -168,7 +168,7 @@ export function CountriesManager() {
                 </TableRow>
               )}
               {items.map((item) => (
-                <TableRow key={item.id} className='hover:bg-white/5'>
+                <TableRow key={item.id} className='hover:bg-card/80 dark:bg-white/5'>
                   <TableCell className='font-medium text-slate-100'>{item.name}</TableCell>
                   <TableCell className='flex justify-end gap-2'>
                     <Button
@@ -192,3 +192,6 @@ export function CountriesManager() {
     </div>
   );
 }
+
+
+

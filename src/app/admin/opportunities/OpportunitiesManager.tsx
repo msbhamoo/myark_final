@@ -108,7 +108,7 @@ type OpportunityFormState = {
   organizerLogo: string;
   gradeEligibility: string;
   mode: string;
-  state: string;
+  state: '' | 'Andhra Pradesh' | 'Arunachal Pradesh' | 'Assam' | 'Bihar' | 'Chhattisgarh' | 'Goa' | 'Gujarat' | 'Haryana' | 'Himachal Pradesh' | 'Jharkhand' | 'Karnataka' | 'Kerala' | 'Madhya Pradesh' | 'Maharashtra' | 'Manipur' | 'Meghalaya' | 'Mizoram' | 'Nagaland' | 'Odisha' | 'Punjab' | 'Rajasthan' | 'Sikkim' | 'Tamil Nadu' | 'Telangana' | 'Tripura' | 'Uttar Pradesh' | 'Uttarakhand' | 'West Bengal' | 'Andaman and Nicobar Islands' | 'Chandigarh' | 'Dadra and Nagar Haveli and Daman and Diu' | 'Lakshadweep' | 'Delhi' | 'Puducherry';
   status: string;
   fee: string;
   currency: string;
@@ -217,6 +217,10 @@ const toNumberOrNull = (value: string) => {
   if (!value.trim()) return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+};
+
+const isValidState = (value: string): value is OpportunityFormState['state'] => {
+  return INDIAN_STATES_SET.has(value as any) || value === '';
 };
 
   export function OpportunitiesManager() {
@@ -334,7 +338,7 @@ const toNumberOrNull = (value: string) => {
       }
       const payload = await response.json();
       const incoming = Array.isArray(payload.items) ? payload.items : [];
-      const normalized = incoming.map((item) => ({
+      const normalized = incoming.map((item: any) => ({
         ...item,
         state: (() => {
           const rawState = typeof item.state === 'string' ? item.state.trim() : '';
@@ -343,8 +347,8 @@ const toNumberOrNull = (value: string) => {
         currency: 'INR',
         segments: Array.isArray(item.segments)
           ? item.segments
-              .map((segment) => (typeof segment === 'string' ? segment.trim() : ''))
-              .filter((segment): segment is string => segment.length > 0)
+              .map((segment: any) => (typeof segment === 'string' ? segment.trim() : ''))
+              .filter((segment: any): segment is string => segment.length > 0)
           : [],
         resources: Array.isArray(item.resources) ? item.resources : [],
       }));
@@ -352,7 +356,7 @@ const toNumberOrNull = (value: string) => {
       setOrganizers((previous) => {
         const byId = new Map(previous.map((org) => [org.id, org]));
         const additions: Organizer[] = [];
-        normalized.forEach((item) => {
+        normalized.forEach((item: any) => {
           if (!item.organizerId) {
             return;
           }
@@ -396,7 +400,7 @@ const toNumberOrNull = (value: string) => {
         }
         if (orgRes.ok) {
           const orgPayload = await orgRes.json();
-          const records = (orgPayload.items ?? []).map((item: Record<string, unknown>) => normalizeOrganizer(item));
+          const records: Organizer[] = (orgPayload.items ?? []).map((item: Record<string, unknown>) => normalizeOrganizer(item));
           setOrganizers((prev) => {
             const merged = new Map(prev.map((entry) => [entry.id, entry]));
             records.forEach((record) => {
@@ -447,7 +451,7 @@ const toNumberOrNull = (value: string) => {
                   order,
                 };
               })
-              .filter((option): option is HomeSegmentOption => Boolean(option))
+              .filter((option: HomeSegmentOption | null): option is HomeSegmentOption => Boolean(option))
           : [];
         options.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
         setAvailableSegments(options);
@@ -480,6 +484,7 @@ const toNumberOrNull = (value: string) => {
 
   const handleEdit = (item: OpportunityItem) => {
     setEditingId(item.id);
+    const validatedState: OpportunityFormState['state'] = isValidState(item.state ?? '') ? (item.state as OpportunityFormState['state']) : '';
     setFormState({
       title: item.title,
       categoryId: item.categoryId,
@@ -487,7 +492,7 @@ const toNumberOrNull = (value: string) => {
       organizerLogo: item.organizerLogo ?? '',
       gradeEligibility: item.gradeEligibility,
       mode: item.mode,
-      state: item.state && INDIAN_STATES_SET.has(item.state) ? item.state : '',
+      state: validatedState,
       status: item.status,
       fee: item.fee ?? '',
       currency: 'INR',
@@ -551,7 +556,7 @@ const toNumberOrNull = (value: string) => {
     const timeline = textToTimeline(formState.timelineText);
     const examSections = textToSections(formState.examSectionsText);
 
-    const normalizedState = INDIAN_STATES_SET.has(formState.state) ? formState.state : '';
+    const normalizedState: OpportunityFormState['state'] = formState.state && INDIAN_STATES_SET.has(formState.state) ? (formState.state as OpportunityFormState['state']) : '';
 
     return {
       title: formState.title,
@@ -777,8 +782,8 @@ const toNumberOrNull = (value: string) => {
           }}
           className={`rounded-full px-4 py-2 text-sm font-medium transition ${
             activeTab === 'opportunities'
-              ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-              : 'text-slate-200 hover:bg-white/10'
+              ? 'bg-orange-500 text-foreground dark:text-white shadow-lg shadow-orange-500/30'
+              : 'text-slate-200 hover:bg-card/70 dark:bg-white/10'
           }`}
         >
           Opportunities
@@ -791,8 +796,8 @@ const toNumberOrNull = (value: string) => {
           }}
           className={`rounded-full px-4 py-2 text-sm font-medium transition ${
             activeTab === 'resources'
-              ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-              : 'text-slate-200 hover:bg-white/10'
+              ? 'bg-orange-500 text-foreground dark:text-white shadow-lg shadow-orange-500/30'
+              : 'text-slate-200 hover:bg-card/70 dark:bg-white/10'
           }`}
         >
           Resources
@@ -801,8 +806,8 @@ const toNumberOrNull = (value: string) => {
 
       {activeTab === 'opportunities' ? (
         <>
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-        <h2 className="text-lg font-semibold text-white">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
+        <h2 className="text-lg font-semibold text-foreground dark:text-white">
           {editingId ? 'Edit opportunity' : 'Create opportunity'}
         </h2>
         <p className="mt-1 text-sm text-slate-300">
@@ -833,7 +838,7 @@ const toNumberOrNull = (value: string) => {
               value={formState.categoryId}
               onChange={(event) => setFormState((prev) => ({ ...prev, categoryId: event.target.value }))}
               required
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               <option value=''>Select a category</option>
               {formState.categoryId &&
@@ -860,7 +865,7 @@ const toNumberOrNull = (value: string) => {
               value={formState.organizerId}
               onChange={(event) => setFormState((prev) => ({ ...prev, organizerId: event.target.value }))}
               required
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               <option value=''>Select an organizer</option>
               {formState.organizerId &&
@@ -914,7 +919,7 @@ const toNumberOrNull = (value: string) => {
               id='op-mode'
               value={formState.mode}
               onChange={(event) => setFormState((prev) => ({ ...prev, mode: event.target.value }))}
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               {modeOptions.map((mode) => (
                 <option key={mode} value={mode}>
@@ -931,10 +936,13 @@ const toNumberOrNull = (value: string) => {
             <select
               id='op-state'
               value={formState.state}
-              onChange={(event) =>
-                setFormState((prev) => ({ ...prev, state: event.target.value }))
-              }
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              onChange={(event) => {
+                const value = event.target.value;
+                if (isValidState(value)) {
+                  setFormState((prev) => ({ ...prev, state: value }));
+                }
+              }}
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               <option value=''>Select state</option>
               {INDIAN_STATES.map((state) => (
@@ -953,7 +961,7 @@ const toNumberOrNull = (value: string) => {
               id='op-status'
               value={formState.status}
               onChange={(event) => setFormState((prev) => ({ ...prev, status: event.target.value }))}
-              className='h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -1058,7 +1066,7 @@ const toNumberOrNull = (value: string) => {
               Opportunities only appear on the home page sections you select below. Hidden segments from the home layout are shown with a warning.
             </p>
 
-            <div className='min-h-[42px] rounded-lg border border-white/10 bg-slate-900/60 p-2'>
+            <div className='min-h-[42px] rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/60 p-2'>
               {selectedSegmentOptions.length === 0 ? (
                 <p className='text-sm text-slate-400'>
                   No segments selected yet.
@@ -1092,8 +1100,8 @@ const toNumberOrNull = (value: string) => {
               )}
             </div>
 
-            <div className='rounded-lg border border-white/10 bg-slate-900/60'>
-              <div className='flex items-center justify-between border-b border-white/10 px-3 py-2'>
+            <div className='rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/60'>
+              <div className='flex items-center justify-between border-b border-border/60 dark:border-white/10 px-3 py-2'>
                 <p className='text-xs font-medium text-slate-200 uppercase tracking-wide'>Available segments</p>
                 {segmentsLoading && <span className='text-[11px] text-slate-400'>Loading...</span>}
               </div>
@@ -1110,14 +1118,14 @@ const toNumberOrNull = (value: string) => {
                     return (
                       <label
                         key={segment.segmentKey}
-                        className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-slate-200 hover:bg-white/5'
+                        className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-slate-200 hover:bg-card/80 dark:bg-white/5'
                       >
                         <div className='flex items-center gap-2'>
                           <input
                             type='checkbox'
                             checked={checked}
                             onChange={() => toggleSegmentSelection(segment.segmentKey)}
-                            className='h-4 w-4 rounded border border-white/20 bg-slate-900/70 text-orange-500 focus:ring-orange-500'
+                            className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70 text-orange-500 focus:ring-orange-500'
                           />
                           <div>
                             <p className='font-medium text-slate-100'>{segment.title}</p>
@@ -1201,7 +1209,7 @@ const toNumberOrNull = (value: string) => {
             />
           </div>
 
-          <div className='md:col-span-2 rounded-xl border border-white/10 bg-slate-900/60 p-4'>
+          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
             <h3 className='text-sm font-semibold text-slate-100'>Exam pattern</h3>
             <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-4'>
               <div className='space-y-2'>
@@ -1244,7 +1252,7 @@ const toNumberOrNull = (value: string) => {
                     onChange={(event) =>
                       setFormState((prev) => ({ ...prev, examNegativeMarking: event.target.checked }))
                     }
-                    className='h-4 w-4 rounded border border-white/20 bg-slate-900/70'
+                    className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70'
                   />
                   <span>Enabled</span>
                 </div>
@@ -1280,7 +1288,7 @@ const toNumberOrNull = (value: string) => {
             </div>
           </div>
 
-          <div className='md:col-span-2 rounded-xl border border-white/10 bg-slate-900/60 p-4'>
+          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
             <h3 className='text-sm font-semibold text-slate-100'>Contact information</h3>
             <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-3'>
               <div className='space-y-2'>
@@ -1347,9 +1355,9 @@ const toNumberOrNull = (value: string) => {
         </form>
       </section>
 
-      <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
+      <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
         <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-semibold text-white'>Existing opportunities</h2>
+          <h2 className='text-lg font-semibold text-foreground dark:text-white'>Existing opportunities</h2>
           <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -1361,11 +1369,11 @@ const toNumberOrNull = (value: string) => {
         <div className="mt-4">
           <div className="grid gap-4">
             {/* Desktop Table View */}
-            <div className="hidden lg:block rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden">
+            <div className="hidden lg:block rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden">
               <div className="w-full overflow-x-auto scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-white/10 border-b border-white/10">
+                    <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10">
                       <TableHead className="w-[25%] text-slate-200 font-semibold">Title & Info</TableHead>
                       <TableHead className="w-[15%] text-slate-200 font-semibold">Category & Mode</TableHead>
                       <TableHead className="w-[20%] text-slate-200 font-semibold">Organizer</TableHead>
@@ -1378,7 +1386,7 @@ const toNumberOrNull = (value: string) => {
                       <TableRow>
                         <TableCell colSpan={5} className="h-32 text-center">
                           <div className="flex flex-col items-center justify-center space-y-2 text-slate-400">
-                            <div className="h-12 w-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                            <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
                               <svg className="h-6 w-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                               </svg>
@@ -1389,10 +1397,10 @@ const toNumberOrNull = (value: string) => {
                       </TableRow>
                     )}
                     {items.map((item) => (
-                      <TableRow key={item.id} className="group border-b border-white/5 hover:bg-white/5">
+                      <TableRow key={item.id} className="group border-b border-border/70 dark:border-white/5 hover:bg-card/80 dark:bg-white/5">
                         <TableCell>
                           <div className="space-y-1">
-                            <div className="font-medium text-white group-hover:text-orange-400 transition-colors">
+                            <div className="font-medium text-foreground dark:text-white group-hover:text-orange-400 transition-colors">
                               {item.title}
                             </div>
                             <div className="flex flex-col space-y-1">
@@ -1414,7 +1422,7 @@ const toNumberOrNull = (value: string) => {
                               {item.category?.name || item.categoryName || 'N/A'}
                             </Badge>
                             <div className="flex items-center">
-                              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-white/5 text-slate-300 border border-white/10">
+                              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10">
                                 {item.mode}
                               </span>
                             </div>
@@ -1422,7 +1430,7 @@ const toNumberOrNull = (value: string) => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-lg border border-white/10 bg-white/5 overflow-hidden flex-shrink-0">
+                            <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
                               <img 
                                 src={item.organizerLogo || 'https://via.placeholder.com/40'} 
                                 alt={item.organizer?.name || item.organizerName || 'Organizer'} 
@@ -1437,7 +1445,7 @@ const toNumberOrNull = (value: string) => {
                                 {item.segments.slice(0, 2).map((segment, index) => (
                                   <span 
                                     key={index}
-                                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-white/5 text-slate-300 border border-white/10"
+                                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10"
                                   >
                                     {segment}
                                   </span>
@@ -1527,16 +1535,16 @@ const toNumberOrNull = (value: string) => {
               {items.map((item) => (
                 <div 
                   key={item.id} 
-                  className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4 hover:border-orange-500/20 transition-colors"
+                  className="rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4 hover:border-orange-500/20 transition-colors"
                 >
                   <div className="flex flex-col gap-4">
                     {/* Header */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-medium text-white truncate">{item.title}</h3>
+                        <h3 className="font-medium text-foreground dark:text-white truncate">{item.title}</h3>
                         <p className="mt-1 text-xs text-slate-400">Added {formatDate(item.startDate)}</p>
                       </div>
-                      <div className="h-10 w-10 rounded-lg border border-white/10 bg-white/5 overflow-hidden flex-shrink-0">
+                      <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
                         <img 
                           src={item.organizerLogo || 'https://via.placeholder.com/40'} 
                           alt={item.organizer?.name || item.organizerName || 'Organizer'}
@@ -1564,7 +1572,7 @@ const toNumberOrNull = (value: string) => {
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-slate-400">Mode:</span>
-                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-white/5 text-slate-300 border border-white/10">
+                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10">
                           {item.mode}
                         </span>
                       </div>
@@ -1593,7 +1601,7 @@ const toNumberOrNull = (value: string) => {
                       {item.segments.map((segment, index) => (
                         <span 
                           key={index}
-                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-white/5 text-slate-300 border border-white/10"
+                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10"
                         >
                           {segment}
                         </span>
@@ -1601,7 +1609,7 @@ const toNumberOrNull = (value: string) => {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex flex-wrap gap-2 pt-2 border-t border-white/10">
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-border/60 dark:border-white/10">
                       <Button
                         variant="outline"
                         size="sm"
@@ -1635,9 +1643,9 @@ const toNumberOrNull = (value: string) => {
               ))}
 
               {items.length === 0 && !isLoading && (
-                <div className="col-span-full rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
+                <div className="col-span-full rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
                   <div className="flex flex-col items-center justify-center space-y-3 text-slate-400">
-                    <div className="h-12 w-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
                       <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                       </svg>
@@ -1653,10 +1661,10 @@ const toNumberOrNull = (value: string) => {
       </section>
         </>
       ) : (
-        <section className='rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur'>
+        <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
           <div className='flex flex-wrap items-center justify-between gap-4'>
             <div>
-              <h2 className='text-lg font-semibold text-white'>Opportunity resources</h2>
+              <h2 className='text-lg font-semibold text-foreground dark:text-white'>Opportunity resources</h2>
               <p className='mt-1 text-sm text-slate-300'>
                 Add helpful links, PDFs, or videos for the selected opportunity.
               </p>
@@ -1666,7 +1674,7 @@ const toNumberOrNull = (value: string) => {
               size='sm'
               onClick={loadItems}
               disabled={isLoading || isResourceSubmitting}
-              className='border-white/20 text-slate-200 hover:bg-white/10'
+              className='border-white/20 text-slate-200 hover:bg-card/70 dark:bg-white/10'
             >
               Refresh
             </Button>
@@ -1681,7 +1689,7 @@ const toNumberOrNull = (value: string) => {
                 id='resource-opportunity'
                 value={selectedOpportunityId}
                 onChange={(event) => setSelectedOpportunityId(event.target.value)}
-                className='w-full rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
+                className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
               >
                 <option value=''>Select an opportunity</option>
                 {items.map((item) => (
@@ -1693,24 +1701,24 @@ const toNumberOrNull = (value: string) => {
             </div>
 
             {!selectedOpportunity ? (
-              <div className='rounded-xl border border-white/10 bg-slate-900/60 p-6 text-center text-sm text-slate-300'>
+              <div className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-6 text-center text-sm text-slate-300'>
                 Choose an opportunity to manage its resources.
               </div>
             ) : (
               <div className='grid gap-6 lg:grid-cols-2'>
                 <div className='space-y-4'>
-                  <div className='rounded-xl border border-white/10 bg-slate-900/60 p-4'>
+                  <div className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
                     <div className='flex flex-col gap-2'>
                       <p className='text-xs uppercase tracking-wide text-slate-400'>Selected opportunity</p>
-                      <h3 className='text-lg font-semibold text-white'>{selectedOpportunity.title}</h3>
+                      <h3 className='text-lg font-semibold text-foreground dark:text-white'>{selectedOpportunity.title}</h3>
                       <div className='flex flex-wrap items-center gap-2 text-xs text-slate-300'>
                         <Badge variant='outline' className='border-orange-500/30 bg-orange-500/10 text-orange-300'>
                           {selectedOpportunity.category?.name || selectedOpportunity.categoryName || 'Uncategorized'}
                         </Badge>
-                        <span className='rounded-full border border-white/10 px-2 py-0.5 text-slate-300'>
+                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-slate-300'>
                           {selectedOpportunity.mode}
                         </span>
-                        <span className='rounded-full border border-white/10 px-2 py-0.5 text-slate-300'>
+                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-slate-300'>
                           {selectedOpportunity.status}
                         </span>
                       </div>
@@ -1719,26 +1727,26 @@ const toNumberOrNull = (value: string) => {
 
                   <div>
                     <div className='flex items-center justify-between'>
-                      <h3 className='text-sm font-semibold text-white'>Existing resources</h3>
+                      <h3 className='text-sm font-semibold text-foreground dark:text-white'>Existing resources</h3>
                       <span className='text-xs text-slate-400'>
                         {selectedOpportunity.resources.length} item(s)
                       </span>
                     </div>
                     <div className='mt-3 space-y-3'>
                       {selectedOpportunity.resources.length === 0 ? (
-                        <div className='rounded-xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-sm text-slate-400'>
+                        <div className='rounded-xl border border-dashed border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 text-center text-sm text-slate-400'>
                           No resources added yet.
                         </div>
                       ) : (
                         selectedOpportunity.resources.map((resource) => (
                           <div
                             key={resource.id}
-                            className='rounded-xl border border-white/10 bg-slate-900/60 p-4 transition hover:border-orange-500/30'
+                            className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4 transition hover:border-orange-500/30'
                           >
                             <div className='flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between'>
                               <div className='space-y-2'>
                                 <div className='flex items-center gap-2'>
-                                  <Badge variant='outline' className='border-white/20 bg-white/10 text-slate-200'>
+                                  <Badge variant='outline' className='border-white/20 bg-card/70 dark:bg-white/10 text-slate-200'>
                                     {resource.type.toUpperCase()}
                                   </Badge>
                                   <a
@@ -1759,7 +1767,7 @@ const toNumberOrNull = (value: string) => {
                                 <Button
                                   variant='outline'
                                   size='sm'
-                                  className='border-white/20 text-slate-200 hover:bg-white/10'
+                                  className='border-white/20 text-slate-200 hover:bg-card/70 dark:bg-white/10'
                                   asChild
                                 >
                                   <a href={resource.url} target='_blank' rel='noreferrer'>
@@ -1787,7 +1795,7 @@ const toNumberOrNull = (value: string) => {
 
                 <div className='space-y-4'>
                   <div>
-                    <h3 className='text-sm font-semibold text-white'>Add new resource</h3>
+                    <h3 className='text-sm font-semibold text-foreground dark:text-white'>Add new resource</h3>
                     <p className='mt-1 text-sm text-slate-400'>
                       Provide a descriptive title and link. URLs will automatically include https:// if missing.
                     </p>
@@ -1835,7 +1843,7 @@ const toNumberOrNull = (value: string) => {
                               type: event.target.value as ResourceDraft['type'],
                             }))
                           }
-                          className='w-full rounded-lg border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
+                          className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
                         >
                           <option value='link'>Reference link</option>
                           <option value='pdf'>PDF / document</option>
@@ -1892,6 +1900,9 @@ const toNumberOrNull = (value: string) => {
     </div>
   );
 }
+
+
+
 
 
 

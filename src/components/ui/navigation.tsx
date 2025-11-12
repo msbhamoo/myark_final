@@ -41,7 +41,7 @@ export function Navigation() {
                 href={item.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                   pathname === item.href
-                    ? "bg-gray-900 text-white"
+                    ? "bg-gray-900 text-foreground dark:text-white"
                     : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                 }`}
               >

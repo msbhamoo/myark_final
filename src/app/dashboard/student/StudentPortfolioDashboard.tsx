@@ -196,6 +196,16 @@ const completionLabels: Record<string, string> = {
   visibility: 'Visibility settings',
 };
 
+const DASHBOARD_SECTIONS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'progress', label: 'Progress' },
+  { id: 'academics', label: 'Academics' },
+  { id: 'achievements', label: 'Achievements' },
+  { id: 'competitions', label: 'Competitions' },
+  { id: 'extracurricular', label: 'Extracurricular' },
+  { id: 'resources', label: 'Resources' },
+] as const;
+
 const PANEL_BASE_CLASSES =
   'rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/60';
 
@@ -885,7 +895,7 @@ export default function StudentPortfolioDashboard({
         <Button
           variant="ghost"
           size="sm"
-          className="h-7 text-xs text-white/70"
+          className="h-7 text-xs text-slate-600 dark:text-white/70"
           onClick={() => setFeedback(null)}
         >
           Dismiss
@@ -897,7 +907,7 @@ export default function StudentPortfolioDashboard({
   if (isLoadingProfile) {
     return (
       <div className="space-y-6">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+        <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-8">
           <div className="flex items-center gap-4">
             <Skeleton className="h-20 w-20 rounded-2xl" />
             <div className="space-y-4">
@@ -923,13 +933,13 @@ export default function StudentPortfolioDashboard({
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Button
             onClick={() => router.refresh()}
-            className="bg-white/10 text-white hover:bg-white/20"
+            className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white hover:bg-card/60 dark:bg-white/20"
           >
             Try again
           </Button>
           <Button
             variant="ghost"
-            className="border border-white/10 text-white"
+            className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white"
             onClick={() => signOut()}
           >
             Sign out
@@ -1059,7 +1069,7 @@ export default function StudentPortfolioDashboard({
                 )}
                 <div className="grid gap-3 sm:grid-cols-2">
                   <Button
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
                     onClick={openBasicsDialog}
                   >
                     <PenLine className="mr-2 h-4 w-4" />
@@ -1102,23 +1112,47 @@ export default function StudentPortfolioDashboard({
           </div>
         </aside>
         <div className="space-y-6">
-          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-500 to-fuchsia-500 p-8 text-white shadow-xl shadow-purple-300/50">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.25),transparent_60%)]" />
-            <div className="absolute -bottom-16 -right-10 h-52 w-52 rounded-full bg-white/10 blur-3xl" />
+          <div className="flex items-center gap-2 overflow-x-auto rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm backdrop-blur md:hidden">
+            {DASHBOARD_SECTIONS.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                {section.label}
+              </a>
+            ))}
+          </div>
+          <nav className="sticky top-20 z-20 hidden items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm backdrop-blur md:flex">
+            {DASHBOARD_SECTIONS.map((section) => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="rounded-full px-3 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
+              >
+                {section.label}
+              </a>
+            ))}
+          </nav>
+
+          <section id="overview" className={cn(PANEL_BASE_CLASSES, 'relative overflow-hidden lg:p-8')}>
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.12),transparent_60%)]" />
+            <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl" />
+            <div className="pointer-events-none absolute -right-16 -bottom-24 h-48 w-48 rounded-full bg-sky-200/30 blur-3xl" />
             <div className="relative z-10 space-y-8">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="space-y-3">
-                  <Badge className="w-fit bg-white/20 px-3 py-1 text-xs font-medium uppercase tracking-wide text-white">
-                    Student portfolio
+                  <Badge className="w-fit bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+                    Portfolio snapshot
                   </Badge>
-                  <h2 className="text-3xl font-semibold leading-tight">Welcome back, {firstName}</h2>
-                  <p className="max-w-2xl text-sm text-white/80">
-                    Keep refining your journey, highlight the wins you are proud of, and share a polished portfolio with mentors and colleges.
+                  <h2 className="text-3xl font-semibold leading-tight text-slate-900">Welcome back, {firstName}</h2>
+                  <p className="max-w-2xl text-sm text-slate-600">
+                    Keep refining your journey, highlight wins you are proud of, and share a polished portfolio with mentors and colleges.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Button
-                    className="bg-white text-indigo-600 shadow-md shadow-purple-300/40 hover:bg-slate-100"
+                    className="bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700"
                     onClick={() => openAcademicDialog()}
                   >
                     <BookOpen className="mr-2 h-4 w-4" />
@@ -1126,11 +1160,19 @@ export default function StudentPortfolioDashboard({
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-white/60 text-white hover:bg-white/20"
+                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
                     onClick={() => openAchievementDialog()}
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Add achievement
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-slate-200 text-slate-700 hover:bg-slate-50"
+                    onClick={() => handleDownload()}
+                  >
+                    <UploadCloud className="mr-2 h-4 w-4" />
+                    Download PDF
                   </Button>
                 </div>
               </div>
@@ -1140,11 +1182,11 @@ export default function StudentPortfolioDashboard({
                   return (
                     <div
                       key={card.key}
-                      className="flex h-full flex-col justify-between rounded-2xl bg-white/95 p-5 text-slate-900 shadow-lg shadow-purple-200/40 backdrop-blur"
+                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/60"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
                             <Icon className="h-5 w-5" />
                           </span>
                           <div>
@@ -1175,7 +1217,7 @@ export default function StudentPortfolioDashboard({
             </div>
           </section>
 
-          <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+          <section id="progress" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-900">Profile progress</h2>
@@ -1218,7 +1260,7 @@ export default function StudentPortfolioDashboard({
             </div>
           </section>
 
-          <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+          <section id="academics" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-900">Academic story</h2>
@@ -1227,7 +1269,7 @@ export default function StudentPortfolioDashboard({
                 </p>
               </div>
               <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
                 onClick={() => openAcademicDialog()}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -1341,7 +1383,7 @@ export default function StudentPortfolioDashboard({
             )}
           </section>
 
-          <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+          <section id="achievements" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-900">Achievements &amp; awards</h2>
@@ -1350,7 +1392,7 @@ export default function StudentPortfolioDashboard({
                 </p>
               </div>
               <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
                 onClick={() => openAchievementDialog()}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -1358,19 +1400,25 @@ export default function StudentPortfolioDashboard({
               </Button>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              {profile.achievements.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-                  Add awards or certifications that highlight your progress.
+            {profile.achievements.length === 0 ? (
+              <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+                Add awards or certifications that highlight your progress.
+              </div>
+            ) : (
+              <div className="mt-6 space-y-3">
+                <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,1fr,auto]">
+                  <span>Achievement</span>
+                  <span>Highlights</span>
+                  <span>Proof &amp; tags</span>
+                  <span className="text-right">Actions</span>
                 </div>
-              ) : (
-                profile.achievements.map((achievement) => (
+                {profile.achievements.map((achievement) => (
                   <div
                     key={achievement.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm shadow-slate-200/50"
+                    className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,1fr,auto]"
                   >
-                    <div className="flex flex-col gap-3">
-                      <div className="flex flex-wrap items-center gap-3">
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap items-center gap-2">
                         <Badge className="flex items-center gap-1.5 bg-amber-100 text-amber-700">
                           <Trophy className="h-3.5 w-3.5 text-amber-500" />
                           {achievement.title}
@@ -1401,6 +1449,18 @@ export default function StudentPortfolioDashboard({
                       {achievement.description && (
                         <p className="text-sm text-slate-600">{achievement.description}</p>
                       )}
+                    </div>
+                    <div className="space-y-2 text-sm text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs uppercase tracking-wide text-slate-500">Level</span>
+                        <span>{ACHIEVEMENT_LEVEL_LABELS[achievement.level ?? ''] ?? achievement.level ?? '-'}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs uppercase tracking-wide text-slate-500">Year</span>
+                        <span>{achievement.year ?? '-'}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
                       {achievement.certificateUrl && (
                         <a
                           href={achievement.certificateUrl}
@@ -1425,30 +1485,30 @@ export default function StudentPortfolioDashboard({
                           ))}
                         </div>
                       )}
-                      <div className="flex flex-wrap gap-3 pt-3">
-                        <Button
-                          variant="outline"
-                          className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                          onClick={() => openAchievementDialog(achievement)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                          onClick={() => handleRemoveAchievement(achievement.id)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
+                      <Button
+                        variant="outline"
+                        className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+                        onClick={() => openAchievementDialog(achievement)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                        onClick={() => handleRemoveAchievement(achievement.id)}
+                      >
+                        Remove
+                      </Button>
                     </div>
                   </div>
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </section>
 
-      <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+      <section id="extracurricular" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-900">Competitions &amp; challenges</h2>
@@ -1457,7 +1517,7 @@ export default function StudentPortfolioDashboard({
             </p>
           </div>
           <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
             onClick={() => openCompetitionDialog()}
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -1465,57 +1525,68 @@ export default function StudentPortfolioDashboard({
           </Button>
         </div>
 
-        <div className="mt-6 space-y-4">
-          {profile.competitions.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-              Add competitions you&apos;ve participated in to showcase your grit and curiosity.
+        {profile.competitions.length === 0 ? (
+          <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+            Add competitions you&apos;ve participated in to showcase your grit and curiosity.
+          </div>
+        ) : (
+          <div className="mt-6 space-y-3">
+            <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,auto]">
+              <span>Competition</span>
+              <span>Highlights</span>
+              <span className="text-right">Actions</span>
             </div>
-          ) : (
-            profile.competitions.map((competition) => (
+            {profile.competitions.map((competition) => (
               <div
                 key={competition.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm shadow-slate-200/50"
+                className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,auto]"
               >
-                <div className="flex flex-col gap-3 md:flex-row md:justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900">{competition.name}</h3>
-                    <div className="mt-2 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      {competition.category && <span>{competition.category}</span>}
-                      {competition.status && (
-                        <span>{EVENT_STATUS_LABELS[competition.status] ?? competition.status}</span>
-                      )}
-                      {competition.result && <span>{competition.result}</span>}
-                      {competition.date && <span>{competition.date}</span>}
-                      {competition.location && <span>{competition.location}</span>}
-                    </div>
-                    {competition.description && (
-                      <p className="mt-3 text-sm text-slate-600">{competition.description}</p>
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-slate-900">{competition.name}</h3>
+                  {competition.description && (
+                    <p className="text-sm text-slate-600">{competition.description}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    {competition.category && <span>{competition.category}</span>}
+                    {competition.status && (
+                      <span>{EVENT_STATUS_LABELS[competition.status] ?? competition.status}</span>
                     )}
-                  </div>
-                  <div className="flex gap-3">
-                    <Button
-                      variant="outline"
-                      className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                      onClick={() => openCompetitionDialog(competition)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                      onClick={() => handleRemoveCompetition(competition.id)}
-                    >
-                      Remove
-                    </Button>
+                    {competition.result && <span>{competition.result}</span>}
                   </div>
                 </div>
+                <div className="space-y-2 text-sm text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wide text-slate-500">Date</span>
+                    <span>{competition.date ?? '-'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wide text-slate-500">Location</span>
+                    <span>{competition.location ?? '-'}</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
+                  <Button
+                    variant="outline"
+                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+                    onClick={() => openCompetitionDialog(competition)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                    onClick={() => handleRemoveCompetition(competition.id)}
+                  >
+                    Remove
+                  </Button>
+                </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+      <section id="competitions" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-900">Extracurricular life</h2>
@@ -1524,7 +1595,7 @@ export default function StudentPortfolioDashboard({
             </p>
           </div>
           <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
             onClick={() => openExtracurricularDialog()}
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -1532,58 +1603,68 @@ export default function StudentPortfolioDashboard({
           </Button>
         </div>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {profile.extracurriculars.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-              Share leadership roles, clubs, volunteering, or creative endeavours you&apos;re proud of.
+        {profile.extracurriculars.length === 0 ? (
+          <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+            Share leadership roles, clubs, volunteering, or creative endeavours you&apos;re proud of.
+          </div>
+        ) : (
+          <div className="mt-6 space-y-3">
+            <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,auto]">
+              <span>Activity</span>
+              <span>Involvement</span>
+              <span className="text-right">Actions</span>
             </div>
-          ) : (
-            profile.extracurriculars.map((activity) => (
+            {profile.extracurriculars.map((activity) => (
               <div
                 key={activity.id}
-                className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-sm shadow-slate-200/50"
+                className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,auto]"
               >
-                <div className="flex flex-col gap-3">
+                <div className="space-y-3">
                   <h3 className="text-lg font-semibold text-slate-900">{activity.name}</h3>
-                  <div className="flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    {activity.role && <span>{activity.role}</span>}
-                    {activity.status && (
-                      <span>{EVENT_STATUS_LABELS[activity.status] ?? activity.status}</span>
-                    )}
-                    {activity.startDate && (
-                      <span>
-                        {activity.startDate}
-                        {activity.endDate ? ` - ${activity.endDate}` : ''}
-                      </span>
-                    )}
-                  </div>
                   {activity.description && (
                     <p className="text-sm text-slate-600">{activity.description}</p>
                   )}
-                  <div className="flex gap-3 pt-2">
-                    <Button
-                      variant="outline"
-                      className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                      onClick={() => openExtracurricularDialog(activity)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                      onClick={() => handleRemoveExtracurricular(activity.id)}
-                    >
-                      Remove
-                    </Button>
+                </div>
+                <div className="space-y-2 text-sm text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wide text-slate-500">Role</span>
+                    <span>{activity.role ?? '-'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wide text-slate-500">Status</span>
+                    <span>{activity.status ? EVENT_STATUS_LABELS[activity.status] ?? activity.status : '-'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-wide text-slate-500">Timeline</span>
+                    <span>
+                      {activity.startDate ?? '-'}
+                      {activity.endDate ? ` - ${activity.endDate}` : ''}
+                    </span>
                   </div>
                 </div>
+                <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
+                  <Button
+                    variant="outline"
+                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+                    onClick={() => openExtracurricularDialog(activity)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                    onClick={() => handleRemoveExtracurricular(activity.id)}
+                  >
+                    Remove
+                  </Button>
+                </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      <section className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
+      <section id="resources" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-900">Saved opportunities</h2>
@@ -1669,7 +1750,7 @@ export default function StudentPortfolioDashboard({
                   </Badge>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
                   >
                     <Link href={`/opportunity/${item.id}`}>View details</Link>
                   </Button>
@@ -1834,7 +1915,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
   return (
     <>
       <Dialog open={basics.open} onOpenChange={(value) => setBasicsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-white/10 bg-slate-950 text-white">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>Profile basics</DialogTitle>
           </DialogHeader>
@@ -1848,7 +1929,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, displayName: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -1859,7 +1940,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, photoUrl: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="https://…"
                 />
               </div>
@@ -1871,7 +1952,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, tagline: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Aspiring engineer | Grade 10 | Science stream"
                 />
               </div>
@@ -1884,7 +1965,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, bio: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Share your journey, motivations, and what excites you."
                 />
               </div>
@@ -1896,7 +1977,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, location: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Mumbai, India"
                 />
               </div>
@@ -1909,7 +1990,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setBasicsDraft({ ...basics.draft!, interests: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Robotics, Debate, Community service"
                 />
               </div>
@@ -1923,7 +2004,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setBasicsOpen(false)}
             >
               Cancel
@@ -1931,7 +2012,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
             <Button
               onClick={handleSubmitBasics}
               disabled={pendingAction === 'basics'}
-              className="bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
+              className="bg-gradient-to-r from-orange-500 to-pink-500 text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600"
             >
               {pendingAction === 'basics' ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -1944,7 +2025,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={extracurricular.open} onOpenChange={(value) => setExtracurricularOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-white">
+        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>
               {extracurricular.draft?.id
@@ -1965,7 +2046,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       name: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -1979,7 +2060,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       role: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Team lead, Volunteer, Performer…"
                 />
               </div>
@@ -1995,7 +2076,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                         startDate: event.target.value,
                       })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                     placeholder="Jan 2023"
                   />
                 </div>
@@ -2010,7 +2091,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                         endDate: event.target.value,
                       })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                     placeholder="Dec 2023"
                   />
                 </div>
@@ -2026,10 +2107,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     })
                   }
                 >
-                  <SelectTrigger className="bg-white/5 text-white">
+                  <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-white">
+                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                     {Object.entries(EVENT_STATUS_LABELS).map(([key, label]) => (
                       <SelectItem key={key} value={key}>
                         {label}
@@ -2050,7 +2131,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       description: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Explain what you do, the impact, or skills you developed."
                 />
               </div>
@@ -2064,7 +2145,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setExtracurricularOpen(false)}
             >
               Cancel
@@ -2085,7 +2166,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={competition.open} onOpenChange={(value) => setCompetitionOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-white">
+        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>
               {competition.draft?.id ? 'Edit competition' : 'Add competition'}
@@ -2101,7 +2182,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setCompetitionDraft({ ...competition.draft!, name: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2115,7 +2196,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       category: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Robotics, Debate, Sports…"
                 />
               </div>
@@ -2127,7 +2208,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setCompetitionDraft({ ...competition.draft!, result: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Winner, Finalist, Participation"
                 />
               </div>
@@ -2140,7 +2221,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setCompetitionDraft({ ...competition.draft!, date: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                     placeholder="July 2024"
                   />
                 </div>
@@ -2152,10 +2233,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       setCompetitionDraft({ ...competition.draft!, status: value })
                     }
                   >
-                    <SelectTrigger className="bg-white/5 text-white">
+                    <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 text-white">
+                    <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                       {Object.entries(EVENT_STATUS_LABELS).map(([key, label]) => (
                         <SelectItem key={key} value={key}>
                           {label}
@@ -2176,7 +2257,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       location: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Delhi, India"
                 />
               </div>
@@ -2192,7 +2273,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       description: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Share highlights, learnings, or results."
                 />
               </div>
@@ -2206,7 +2287,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setCompetitionOpen(false)}
             >
               Cancel
@@ -2214,7 +2295,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
             <Button
               onClick={handleSubmitCompetition}
               disabled={pendingAction === 'competition'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:from-sky-600 hover:to-violet-600"
+              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
             >
               {pendingAction === 'competition' ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -2227,7 +2308,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={achievement.open} onOpenChange={(value) => setAchievementOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-white">
+        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>
               {achievement.draft?.id ? 'Edit achievement' : 'Add achievement'}
@@ -2246,7 +2327,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       title: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2261,7 +2342,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       description: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="What makes this achievement special?"
                 />
               </div>
@@ -2274,10 +2355,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       setAchievementDraft({ ...achievement.draft!, level: value })
                     }
                   >
-                    <SelectTrigger className="bg-white/5 text-white">
+                    <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
                       <SelectValue placeholder="Select level" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 text-white">
+                    <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                       {Object.entries(ACHIEVEMENT_LEVEL_LABELS).map(([key, label]) => (
                         <SelectItem key={key} value={key}>
                           {label}
@@ -2294,7 +2375,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setAchievementDraft({ ...achievement.draft!, year: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                     placeholder="2024"
                   />
                 </div>
@@ -2310,7 +2391,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       certificateUrl: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="https://…"
                 />
               </div>
@@ -2322,7 +2403,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setAchievementDraft({ ...achievement.draft!, tags: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="STEM, Leadership"
                 />
               </div>
@@ -2336,7 +2417,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setAchievementOpen(false)}
             >
               Cancel
@@ -2344,7 +2425,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
             <Button
               onClick={handleSubmitAchievement}
               disabled={pendingAction === 'achievement'}
-              className="bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
+              className="bg-gradient-to-r from-orange-500 to-pink-500 text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600"
             >
               {pendingAction === 'achievement' ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -2357,7 +2438,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={academic.open} onOpenChange={(value) => setAcademicOpen(value)}>
-        <DialogContent className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border-white/10 bg-slate-950 text-white">
+        <DialogContent className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>
               {academic.draft?.id ? 'Edit academic year' : 'Add academic year'}
@@ -2374,7 +2455,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setAcademicDraft({ ...academic.draft!, session: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -2385,7 +2466,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setAcademicDraft({ ...academic.draft!, grade: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   />
                 </div>
               </div>
@@ -2398,7 +2479,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setAcademicDraft({ ...academic.draft!, board: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -2409,7 +2490,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setAcademicDraft({ ...academic.draft!, schoolName: event.target.value })
                     }
-                    className="bg-white/5 text-white"
+                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   />
                 </div>
               </div>
@@ -2422,7 +2503,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setAcademicDraft({ ...academic.draft!, summary: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2437,15 +2518,15 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       teacherComments: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
-              <Separator className="bg-white/10" />
+              <Separator className="bg-card/70 dark:bg-white/10" />
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">Subjects</h3>
+                <h3 className="text-lg font-semibold text-foreground dark:text-white">Subjects</h3>
                 <Button
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
                   onClick={() =>
                     setAcademicDraft({
                       ...academic.draft!,
@@ -2472,13 +2553,13 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                 {academic.draft.subjects.map((subject, index) => (
                   <div
                     key={subject.id}
-                    className="rounded-xl border border-white/10 bg-white/5 p-4"
+                    className="rounded-xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4"
                   >
                     <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-white">Subject {index + 1}</h4>
+                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Subject {index + 1}</h4>
                       <Button
                         variant="ghost"
-                        className="border border-white/10 text-white hover:bg-red-500/10 hover:text-red-100"
+                        className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-red-500/10 hover:text-red-100"
                         onClick={() =>
                           setAcademicDraft({
                             ...academic.draft!,
@@ -2502,7 +2583,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                               ),
                             })
                           }
-                          className="bg-white/5 text-white"
+                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                         />
                       </div>
                       <div className="grid gap-2">
@@ -2517,7 +2598,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                               ),
                             })
                           }
-                          className="bg-white/5 text-white"
+                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                           placeholder="90"
                         />
                       </div>
@@ -2535,7 +2616,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                               ),
                             })
                           }
-                          className="bg-white/5 text-white"
+                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                           placeholder="100"
                         />
                       </div>
@@ -2551,7 +2632,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                               ),
                             })
                           }
-                          className="bg-white/5 text-white"
+                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                           placeholder="A+"
                         />
                       </div>
@@ -2569,7 +2650,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                             ),
                           })
                         }
-                        className="bg-white/5 text-white"
+                        className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                         placeholder="Student demonstrates excellent problem-solving skills."
                       />
                     </div>
@@ -2586,7 +2667,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setAcademicOpen(false)}
             >
               Cancel
@@ -2594,7 +2675,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
             <Button
               onClick={handleSubmitAcademic}
               disabled={pendingAction === 'academic'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:from-sky-600 hover:to-violet-600"
+              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
             >
               {pendingAction === 'academic' ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -2607,7 +2688,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={school.open} onOpenChange={(value) => setSchoolOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-white/10 bg-slate-950 text-white">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>School information</DialogTitle>
           </DialogHeader>
@@ -2621,7 +2702,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setSchoolDraft({ ...school.draft!, schoolName: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Mumbai International School"
                 />
               </div>
@@ -2637,10 +2718,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white/5 text-white">
+                  <SelectTrigger className="w-full bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
                     <SelectValue placeholder="Select board" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-white">
+                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                     {DEFAULT_BOARDS.map((boardName) => (
                       <SelectItem key={boardName} value={boardName === 'Other' ? 'other' : boardName}>
                         {boardName}
@@ -2654,7 +2735,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     onChange={(event) =>
                       setSchoolDraft({ ...school.draft!, otherBoard: event.target.value })
                     }
-                    className="mt-2 bg-white/5 text-white"
+                    className="mt-2 bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                     placeholder="Your board"
                   />
                 )}
@@ -2667,10 +2748,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                     setSchoolDraft({ ...school.draft!, className: value })
                   }
                 >
-                  <SelectTrigger className="w-full bg-white/5 text-white">
+                  <SelectTrigger className="w-full bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
                     <SelectValue placeholder="Select class" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-white">
+                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                     {DEFAULT_CLASSES.map((item) => (
                       <SelectItem key={item} value={item}>
                         {item}
@@ -2690,7 +2771,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       otherSchoolName: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="Optional"
                 />
               </div>
@@ -2704,7 +2785,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setSchoolOpen(false)}
             >
               Cancel
@@ -2725,7 +2806,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={stats.open} onOpenChange={(value) => setStatsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-white/10 bg-slate-950 text-white">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>Academic stats</DialogTitle>
           </DialogHeader>
@@ -2739,7 +2820,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setStatsDraft({ ...stats.draft!, currentClass: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2750,7 +2831,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setStatsDraft({ ...stats.draft!, gpa: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2761,7 +2842,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setStatsDraft({ ...stats.draft!, averageScore: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2772,7 +2853,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   onChange={(event) =>
                     setStatsDraft({ ...stats.draft!, totalAwards: event.target.value })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -2786,7 +2867,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                       competitionsParticipated: event.target.value,
                     })
                   }
-                  className="bg-white/5 text-white"
+                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                 />
               </div>
               {stats.error && (
@@ -2799,7 +2880,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setStatsOpen(false)}
             >
               Cancel
@@ -2807,7 +2888,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
             <Button
               onClick={handleSubmitStats}
               disabled={pendingAction === 'stats'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:from-sky-600 hover:to-violet-600"
+              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
             >
               {pendingAction === 'stats' ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -2820,13 +2901,13 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
         </DialogContent>
       </Dialog>
       <Dialog open={settings.open} onOpenChange={(value) => setSettingsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-white/10 bg-slate-950 text-white">
+        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
           <DialogHeader>
             <DialogTitle>Visibility & sharing</DialogTitle>
           </DialogHeader>
           <div className="space-y-6 py-4">
             <div className="space-y-3">
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-slate-600 dark:text-white/70">
                 Control who can view your portfolio and personalise your shareable link.
               </p>
               <div className="space-y-3">
@@ -2843,13 +2924,13 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                         'flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-colors',
                         profile.visibility === key
                           ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-100'
-                          : 'border-white/10 bg-white/5 text-white/80 hover:bg-white/10',
+                          : 'border-white/10 bg-white/90 dark:bg-white/5 text-foreground dark:text-white/80 hover:bg-card/70 dark:bg-white/10',
                       )}
                     >
                       <Icon className="mt-0.5 h-5 w-5 flex-shrink-0" />
                       <div>
                         <p className="font-medium">{option.title}</p>
-                        <p className="mt-1 text-sm text-white/60">{option.description}</p>
+                        <p className="mt-1 text-sm text-slate-600 dark:text-white/60">{option.description}</p>
                       </div>
                     </button>
                   );
@@ -2857,20 +2938,20 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
               </div>
             </div>
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-card/70 dark:bg-white/10" />
 
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-white">Public profile link</h3>
+              <h3 className="text-lg font-semibold text-foreground dark:text-white">Public profile link</h3>
               <div className="flex flex-col gap-3 md:flex-row md:items-center">
                 <Input
                   value={settings.slug}
                   onChange={(event) => setSlugDraft(event.target.value.toLowerCase())}
-                  className="flex-1 bg-white/5 text-white"
+                  className="flex-1 bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
                   placeholder="mahi-kumar"
                 />
                 <Button
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
                   onClick={handleSlugSave}
                   disabled={pendingAction === 'slug'}
                 >
@@ -2882,22 +2963,22 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   Save link
                 </Button>
               </div>
-              <p className="text-xs text-white/60">
+              <p className="text-xs text-slate-600 dark:text-white/60">
                 Your public profile will be available at{' '}
-                <code className="rounded bg-white/10 px-2 py-1">
+                <code className="rounded bg-card/70 dark:bg-white/10 px-2 py-1">
                   myark.in/student/{settings.slug || 'your-name'}
                 </code>
               </p>
             </div>
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-card/70 dark:bg-white/10" />
 
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">Profile preferences</h3>
-              <div className="flex items-start justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+              <h3 className="text-lg font-semibold text-foreground dark:text-white">Profile preferences</h3>
+              <div className="flex items-start justify-between gap-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4">
                 <div>
-                  <p className="font-medium text-white">Enable résumé download</p>
-                  <p className="mt-1 text-sm text-white/60">
+                  <p className="font-medium text-foreground dark:text-white">Enable résumé download</p>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-white/60">
                     Allow Myark to generate a PDF of your profile when you choose download.
                   </p>
                 </div>
@@ -2907,10 +2988,10 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
                   disabled={pendingAction?.startsWith('settings-')}
                 />
               </div>
-              <div className="flex items-start justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div className="flex items-start justify-between gap-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4">
                 <div>
-                  <p className="font-medium text-white">Show progress tracker</p>
-                  <p className="mt-1 text-sm text-white/60">
+                  <p className="font-medium text-foreground dark:text-white">Show progress tracker</p>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-white/60">
                     Display the completion percentage and guidance checklist on your dashboard.
                   </p>
                 </div>
@@ -2925,7 +3006,7 @@ function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
           <DialogFooter className="flex justify-end">
             <Button
               variant="ghost"
-              className="border border-white/10 text-white hover:bg-white/10"
+              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
               onClick={() => setSettingsOpen(false)}
             >
               Close
@@ -2954,3 +3035,8 @@ function CircleIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+
+
+
+

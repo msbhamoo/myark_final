@@ -290,10 +290,10 @@ export function HomeSegmentsManager() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-white">Home stats multiplier</h2>
+            <h2 className="text-lg font-semibold text-foreground dark:text-white">Home stats multiplier</h2>
             <p className="mt-1 text-sm text-slate-300">
               Control the inflation counter shown on the public home page stats tiles.
             </p>
@@ -344,10 +344,10 @@ export function HomeSegmentsManager() {
         )}
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-foreground dark:text-white">
               {isEditingSegment ? 'Edit home segment' : 'Create custom segment'}
             </h2>
             <p className="mt-1 text-sm text-slate-300">
@@ -497,9 +497,9 @@ export function HomeSegmentsManager() {
         </form>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-white">Existing segments</h2>
+          <h2 className="text-lg font-semibold text-foreground dark:text-white">Existing segments</h2>
           <Button
             variant="outline"
             size="sm"
@@ -517,10 +517,10 @@ export function HomeSegmentsManager() {
             : 'No saved segments yet. Defaults will be shown automatically.'}
         </p>
 
-        <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+        <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
           <Table>
             <TableHeader>
-              <TableRow className="bg-white/5 hover:bg-white/5">
+              <TableRow className="bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5">
                 <TableHead>Title</TableHead>
                 <TableHead>Segment Key</TableHead>
                 <TableHead className="text-center">Limit</TableHead>
@@ -538,10 +538,10 @@ export function HomeSegmentsManager() {
                 </TableRow>
               )}
               {sortedSegments.map((segment) => (
-                <TableRow key={`${segment.segmentKey}-${segment.id ?? 'default'}`} className="hover:bg-white/5">
+                <TableRow key={`${segment.segmentKey}-${segment.id ?? 'default'}`} className="hover:bg-card/80 dark:bg-white/5">
                   <TableCell className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{segment.title}</span>
+                      <span className="font-medium text-foreground dark:text-white">{segment.title}</span>
                       {segment.isDefault && (
                         <Badge variant="outline" className="border-orange-500/40 bg-orange-500/10 text-orange-200">
                           Default
@@ -611,3 +611,6 @@ export function HomeSegmentsManager() {
     </div>
   );
 }
+
+
+

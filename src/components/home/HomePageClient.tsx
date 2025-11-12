@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import type { Opportunity } from '@/types/opportunity';
 import { FALLBACK_HOME_SEGMENTS as HOME_SEGMENT_DEFINITIONS } from '@/constants/homeSegments';
 import { cn } from '@/lib/utils';
+import { MascotBurst, MascotOrb } from '@/components/MascotBurst';
 
 type HomeSegment = {
   id: string;
@@ -120,6 +121,36 @@ const formatStatValue = (value?: number) => {
 
   return `${formatter.format(value)}+`;
 };
+
+const HERO_GRADE_SEGMENTS = [
+  { label: 'Grades 4-6', href: '/opportunities?grades=4-6' },
+  { label: 'Grades 7-9', href: '/opportunities?grades=7-9' },
+  { label: 'Grades 10-12', href: '/opportunities?grades=10-12' },
+] as const;
+
+const HERO_SPOTLIGHTS = [
+  {
+    label: 'Scholarships',
+    caption: 'Win up to Rs 50k',
+    href: '/opportunities?category=scholarships',
+    tone: 'sunset',
+    icon: '🎓',
+  },
+  {
+    label: 'Olympiads',
+    caption: 'STEM + language challenges',
+    href: '/opportunities?category=olympiad',
+    tone: 'violet',
+    icon: '🧠',
+  },
+  {
+    label: 'Bootcamps',
+    caption: 'Build projects in 4 weeks',
+    href: '/opportunities?category=bootcamp',
+    tone: 'teal',
+    icon: '🚀',
+  },
+] as const;
 
 export default function HomePageClient() {
   const [homeSegments, setHomeSegments] = useState<HomeSegment[]>(FALLBACK_HOME_SEGMENTS);
@@ -327,171 +358,122 @@ export default function HomePageClient() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-[#071045] py-16 md:py-28 overflow-hidden">
-          {/* Modern Background Decorations */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/grid-pattern.svg')] opacity-[0.03]"></div>
-            <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-gradient-to-br from-orange-500/10 to-pink-500/10 rounded-full opacity-50 blur-3xl animate-blob"></div>
-            <div className="absolute -bottom-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full opacity-50 blur-3xl animate-blob animation-delay-2000"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-full opacity-30 blur-3xl animate-blob animation-delay-4000"></div>
+        <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-20 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.08] mix-blend-soft-light dark:opacity-[0.04]" />
+            <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-orange-300/30 blur-3xl" />
+            <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 translate-x-1/3 translate-y-1/3 rounded-full bg-sky-300/30 blur-3xl" />
           </div>
 
-          <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Left Content */}
-              <div className="max-w-2xl text-center lg:text-left">
-                <div className="inline-block mb-4 animate-fade-in-up">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-orange-500/10 to-pink-500/10 text-orange-400 border border-orange-500/20 shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                    Welcome to MyArk
-                  </span>
-                </div>
-                <div className="space-y-4">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white animate-fade-in-up animation-delay-150">
-                    Empowering 
-                    <span className="text-orange-400"> Students, Schools  </span>
-                    & their 
-                    <span className="relative inline-block ml-2">
-                      <span className="relative z-10 bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">Success</span>
-                      <span className="absolute -bottom-2 left-0 w-full h-3 bg-gradient-to-r from-orange-400/30 to-pink-400/30 -z-10 transform skew-x-12 animate-pulse"></span>
-                    </span>
-                  </h1>
-                  <p className="text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 mb-8 animate-fade-in-up animation-delay-300 leading-relaxed">
-Discover opportunities around the world to hone your skills, showcase your abilities, boost your academic credentials, and chase your dream job profession.                  </p>
-                  <div className="flex flex-wrap gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-450">
-                    <Button className="group px-8 py-6 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300">
-                      Start Learning Now
-                      <span className="inline-block ml-2 transition-transform group-hover:translate-x-1">→</span>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="px-8 py-6 rounded-xl bg-white/5 border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+          <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-2xl text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-orange-600 shadow-sm ring-1 ring-orange-200/70 backdrop-blur dark:bg-slate-800/80 dark:text-orange-200 dark:ring-orange-300/40">
+                <Sparkles className="h-4 w-4" />
+                Bright futures start here
+              </div>
+              <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
+                Discover Your Next Big Moment
+              </h1>
+              <p className="mt-4 text-lg leading-relaxed text-slate-700 md:text-xl dark:text-slate-100/80">
+                Curated opportunities for Grades 4-12 students and the parents who cheer them on.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
+                {HERO_GRADE_SEGMENTS.map((segment) => (
+                  <Link
+                    key={segment.href}
+                    href={segment.href}
+                    className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-[1px] hover:ring-orange-200/70 dark:bg-slate-800/80 dark:text-slate-100"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-orange-400" />
+                    {segment.label}
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
+                <Button
+                  asChild
+                  className="inline-flex items-center justify-center rounded-full bg-orange-500 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-orange-500/30 transition hover:bg-orange-600 hover:shadow-orange-500/40"
+                >
+                  <Link href="/opportunities">
+                    Explore Opportunities
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  asChild
+                  className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 bg-white/70 px-7 py-3 text-base font-semibold text-orange-600 transition hover:border-orange-300 hover:bg-white dark:border-orange-300/70 dark:bg-slate-900 dark:text-orange-200"
+                >
+                  <Link href="/opportunities?view=parents">
+                    Guide Your Child
+                    <Sparkles className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="w-full max-w-xl space-y-4 lg:max-w-[480px]">
+              <div className="flex justify-end pr-2">
+                <MascotBurst size="sm" className="hidden lg:inline-flex" />
+              </div>
+              <div className="relative overflow-hidden rounded-3xl border border-orange-200/60 bg-white/80 p-6 shadow-lg shadow-orange-200/40 dark:border-orange-300/20 dark:bg-slate-900/80">
+                <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700 dark:bg-orange-400/20 dark:text-orange-200">
+                  Weekly spotlight
+                </span>
+                <h3 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Jump in this week</h3>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                  Handpicked programs to help you explore, compete, and grow.
+                </p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {HERO_SPOTLIGHTS.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="group flex flex-col gap-4 rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
                     >
-                      View Courses
-                    </Button>
-                  </div>
+                      <MascotOrb tone={item.tone} icon={item.icon} />
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{item.label}</span>
+                      <span className="mt-2 text-xs text-slate-600 group-hover:text-orange-500 dark:text-slate-300">
+                        {item.caption}
+                      </span>
+                      <span className="mt-3 inline-flex items-center text-xs font-semibold text-orange-500">
+                        Explore
+                        <ChevronRight className="ml-1 h-3 w-3" />
+                      </span>
+                    </Link>
+                  ))}
                 </div>
               </div>
-
-              {/* Right Content - Cards Grid */}
-              <div className="flex flex-col items-center gap-8 max-w-3xl mx-auto w-full animate-fade-in-up animation-delay-600">
-                {/* Top Row - 3 Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
-                  {/* Scholarships Card */}
-                  <Link href="/opportunities?category=scholarships" className="group block">
-                    <div className="w-full sm:w-[200px] h-[240px] bg-gradient-to-br from-orange-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl p-6 flex flex-col overflow-hidden relative border border-white/10 hover:border-orange-500/30 transition-all duration-500">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute inset-0 bg-grid-white/[0.02]"></div>
-                      <h3 className="text-lg font-semibold text-white z-10 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                        Scholarships
-                      </h3>
-                      {/* <p className="text-sm text-gray-400 mt-2">Access top scholarships worldwide</p> */}
-                      <div className="flex-1 flex items-end justify-center">
-                        <img 
-                          src="/images/scholarship-girl.png"
-                          alt="Scholarships"
-                          className="h-[140px] w-auto object-contain drop-shadow-2xl transform translate-y-4 group-hover:scale-110 group-hover:translate-y-2 transition-all duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  </Link>
-
-                  {/* Olympiad Card */}
-                  <Link href="/opportunities?category=olympiad" className="group block perspective animation-delay-150">
-                    <div className="w-full sm:w-[200px] h-[240px] bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl p-6 flex flex-col overflow-hidden relative preserve-3d hover:shadow-2xl transition-all duration-500 hover:[transform:rotateY(10deg)]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute inset-0 bg-grid-white/[0.02]"></div>
-                      <h3 className="text-xl font-semibold text-white z-10 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-white/50 animate-pulse"></span>
-                        Olympiad
-                      </h3>
-                      <div className="flex-1 flex items-end justify-center transform preserve-3d group-hover:[transform:translateZ(20px)] transition-transform duration-500">
-                        <img 
-                          src="/images/olympiad-trophy.png"
-                          alt="Olympiad"
-                          className="h-[180px] w-auto object-contain drop-shadow-2xl transform translate-y-4 group-hover:scale-110 transition-all duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  </Link>
-
-                  {/* School Entrance Card */}
-                  <Link href="/opportunities?category=school-entrance" className="group block perspective animation-delay-300">
-                    <div className="w-full sm:w-[200px] h-[240px] bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl p-6 flex flex-col overflow-hidden relative preserve-3d hover:shadow-2xl transition-all duration-500 hover:[transform:rotateY(10deg)]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute inset-0 bg-grid-white/[0.02]"></div>
-                      <h3 className="text-xl font-semibold text-white z-10 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-white/50 animate-pulse"></span>
-                        School Entrance
-                      </h3>
-                      <div className="flex-1 flex items-end justify-center transform preserve-3d group-hover:[transform:translateZ(20px)] transition-transform duration-500">
-                        <img 
-                          src="/images/school-entrance.png"
-                          alt="School Entrance"
-                          className="h-[180px] w-auto object-contain drop-shadow-2xl transform translate-y-4 group-hover:scale-110 transition-all duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  </Link>
-                </div>
-
-                {/* Bottom Row - 2 Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full md:w-2/3">
-                  {/* Talent Search Card */}
-                  <Link href="/opportunities?category=talent-search" className="group block perspective animation-delay-450">
-                    <div className="w-full sm:w-[200px] h-[240px] bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-6 flex flex-col overflow-hidden relative preserve-3d hover:shadow-2xl transition-all duration-500 hover:[transform:rotateY(10deg)]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute inset-0 bg-grid-white/[0.02]"></div>
-                      <h3 className="text-xl font-semibold text-white z-10 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-white/50 animate-pulse"></span>
-                        Talent Search
-                      </h3>
-                      <div className="flex-1 flex items-end justify-center transform preserve-3d group-hover:[transform:translateZ(20px)] transition-transform duration-500">
-                        <img 
-                          src="/images/talent-search.png"
-                          alt="Talent Search"
-                          className="h-[180px] w-auto object-contain drop-shadow-2xl transform translate-y-4 group-hover:scale-110 transition-all duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  </Link>
-
-                  {/* Blog Card */}
-                  <Link href="/resources" className="group block perspective animation-delay-600">
-                    <div className="w-full sm:w-[200px] h-[240px] bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl p-6 flex flex-col overflow-hidden relative preserve-3d hover:shadow-2xl transition-all duration-500 hover:[transform:rotateY(10deg)]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute inset-0 bg-grid-white/[0.02]"></div>
-                      <h3 className="text-xl font-semibold text-white z-10 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-white/50 animate-pulse"></span>
-                        Blog
-                      </h3>
-                      <div className="flex-1 flex items-end justify-center transform preserve-3d group-hover:[transform:translateZ(20px)] transition-transform duration-500">
-                        <img 
-                          src="/images/blog-girl.png"
-                          alt="Blog"
-                          className="h-[180px] w-auto object-contain drop-shadow-2xl transform translate-y-4 group-hover:scale-110 transition-all duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  </Link>
-                </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Link
+                  href="/opportunities?mode=online"
+                  className="flex items-center gap-3 rounded-3xl border border-sky-200/70 bg-white/80 p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-sky-300/30 dark:bg-slate-900/80"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-200">
+                    <BookOpen className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Skill Labs</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300">Weekend workshops and clubs</p>
+                  </div>
+                </Link>
+                <Link
+                  href="/opportunities?category=scholarships"
+                  className="flex items-center gap-3 rounded-3xl border border-emerald-200/70 bg-white/80 p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-emerald-300/30 dark:bg-slate-900/80"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-200">
+                    <GraduationCap className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Scholarships</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300">Financial support for achievers</p>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
         </section>
-
-        <section className="bg-[#050b3a] border-y border-white/5 py-12">
+        <section className="border-y border-orange-100 bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 py-12 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
           <div className="container mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {STAT_CONFIG.map(({ key, label }) => {
@@ -499,29 +481,31 @@ Discover opportunities around the world to hone your skills, showcase your abili
                 return (
                   <div
                     key={key}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-8 text-center backdrop-blur transition-all duration-300 hover:border-orange-400/40 hover:bg-white/10"
+                    className="rounded-2xl border border-white/60 bg-white/90 px-6 py-8 text-center shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-200 dark:border-slate-800/80 dark:bg-slate-900/80"
                   >
-                    <p className={`text-3xl font-bold text-white md:text-4xl ${statsLoading ? 'animate-pulse' : ''}`}>
+                    <p className={`text-3xl font-bold text-orange-600 md:text-4xl dark:text-orange-200 ${statsLoading ? 'animate-pulse' : ''}`}>
                       {value}
                     </p>
-                    <p className="mt-2 text-sm uppercase tracking-wide text-white/60">{label}</p>
+                    <p className="mt-2 text-sm uppercase tracking-wide text-slate-600 dark:text-slate-300">{label}</p>
                   </div>
                 );
               })}
             </div>
             {statsError && (
-              <p className="mt-4 text-center text-xs text-white/40">{statsError}</p>
+              <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">{statsError}</p>
             )}
           </div>
         </section>
 
         {segmentsError && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-200 text-center mx-auto mt-4 max-w-4xl rounded-2xl px-4 py-3">
+          <div className="mx-auto mt-4 max-w-4xl rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-center text-red-600 shadow-sm dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
             {segmentsError}
           </div>
         )}
         {segmentsLoading && (
-          <div className="text-center text-sm text-white/60 mt-6">Loading the latest opportunities...</div>
+          <div className="mt-6 text-center text-sm text-slate-600 dark:text-white/60">
+            Loading the latest opportunities...
+          </div>
         )}
 
         {homeSegments
@@ -533,12 +517,12 @@ Discover opportunities around the world to hone your skills, showcase your abili
             const hasItems = items.length > 0;
 
             const highlightClasses = segment.highlight
-              ? 'bg-gradient-to-b from-[#071045] via-[#050b3a] to-[#071045]'
-              : 'bg-[#050b3a]';
+              ? 'bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 dark:from-[#0b1030] dark:via-[#101b4a] dark:to-[#0b1030]'
+              : 'bg-white dark:bg-[#0f1538]';
             const viewAllDisabled = !hasItems;
             const viewAllClasses = [
-              'inline-flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300',
-              'border-white/20 text-white hover:border-orange-400/50 hover:bg-orange-500/10',
+              'inline-flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-300',
+              'border-orange-200 text-orange-600 hover:border-orange-300 hover:bg-orange-100/60 dark:border-orange-400/40 dark:text-orange-200 dark:hover:bg-orange-500/10',
               viewAllDisabled ? 'pointer-events-none opacity-50' : '',
             ]
               .filter(Boolean)
@@ -546,19 +530,19 @@ Discover opportunities around the world to hone your skills, showcase your abili
             const segmentLink = segment.segmentKey ? `/opportunities?segment=${encodeURIComponent(segment.segmentKey)}` : '/opportunities';
 
             return (
-              <section key={segment.id} className={`relative py-16 md:py-20 ${highlightClasses}`}>
-                <div className="absolute inset-0 bg-grid-white/[0.02] opacity-40"></div>
+              <section key={segment.id} className={`relative overflow-hidden py-16 md:py-20 ${highlightClasses}`}>
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
                 <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
                   <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                       <div className="flex items-center gap-3">
-                        <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
-                          <Sparkles className="h-5 w-5 text-orange-300" />
+                        <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-white/20 dark:bg-white/10">
+                          <Sparkles className="h-5 w-5 text-orange-500" />
                         </div>
-                        <h2 className="text-3xl font-bold text-white md:text-4xl">{segment.title}</h2>
+                        <h2 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">{segment.title}</h2>
                       </div>
                       {segment.subtitle && (
-                        <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">{segment.subtitle}</p>
+                        <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-white/70">{segment.subtitle}</p>
                       )}
                     </div>
                     <Link href={segmentLink} aria-disabled={viewAllDisabled} className={viewAllClasses}>
@@ -590,7 +574,7 @@ Discover opportunities around the world to hone your skills, showcase your abili
                       </div>
                     ) : (
                       !segmentsLoading && (
-                        <div className="mx-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center text-white/60">
+                        <div className="mx-2 rounded-2xl border border-slate-200 bg-white/80 px-6 py-10 text-center text-slate-500 dark:border-white/15 dark:bg-white/5 dark:text-white/60">
                           No opportunities available yet for this segment. Check back soon.
                         </div>
                       )
@@ -601,42 +585,42 @@ Discover opportunities around the world to hone your skills, showcase your abili
             );
           })}
 
-        <section className="relative py-16 md:py-20 bg-[#050b3a]">
-          <div className="absolute inset-0 bg-grid-white/[0.02] opacity-40"></div>
+        <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-sky-50 via-white to-emerald-50 dark:from-[#0c183a] dark:via-[#0c1f4a] dark:to-[#0b1638]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_60%)]" />
           <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
             <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <div className="flex items-center gap-3">
-                  <div className="rounded-xl border border-white/15 bg-white/10 p-3 backdrop-blur">
-                    <MapPin className="h-5 w-5 text-orange-300" />
+                  <div className="rounded-xl border border-sky-100 bg-white/80 p-3 shadow-sm dark:border-white/20 dark:bg-white/10">
+                    <MapPin className="h-5 w-5 text-sky-500" />
                   </div>
-                  <h2 className="text-3xl font-bold text-white md:text-4xl">Discover programs near you</h2>
+                  <h2 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Discover programs near you</h2>
                 </div>
-                <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">
+                <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-white/70">
                   Filter live listings to find opportunities available in specific Indian states.
                 </p>
               </div>
               {currentStateGroup && (
-                <div className="text-sm text-white/70 md:text-right">
+                <div className="text-sm text-slate-600 md:text-right dark:text-white/70">
                   Showing{' '}
-                  <span className="font-semibold text-white">{currentStateGroup.count}</span>{' '}
+                  <span className="font-semibold text-slate-900 dark:text-white">{currentStateGroup.count}</span>{' '}
                   {currentStateGroup.count === 1 ? 'opportunity' : 'opportunities'} in{' '}
-                  <span className="font-semibold text-white">{currentStateGroup.state}</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">{currentStateGroup.state}</span>
                 </div>
               )}
             </div>
 
             {stateError ? (
-              <div className="rounded-2xl border border-red-500/40 bg-red-500/10 px-6 py-8 text-sm text-red-200">
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-sm text-red-600 shadow-sm dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-100">
                 {stateError}
               </div>
             ) : (
               <>
                 <div className="mb-8 flex flex-wrap gap-3">
                   {stateLoading && stateGroups.length === 0 ? (
-                    <div className="text-sm text-white/60">Loading state-wise opportunities...</div>
+                    <div className="text-sm text-slate-600 dark:text-white/60">Loading state-wise opportunities...</div>
                   ) : stateGroups.length === 0 ? (
-                    <div className="text-sm text-white/60">
+                    <div className="text-sm text-slate-600 dark:text-white/60">
                       State-based opportunities will appear here as soon as organisers publish them.
                     </div>
                   ) : (
@@ -651,12 +635,12 @@ Discover opportunities around the world to hone your skills, showcase your abili
                           className={cn(
                             'rounded-full border px-4 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-orange-400/60',
                             isActive
-                              ? 'border-white bg-white text-slate-900'
-                              : 'border-white/20 bg-white/5 text-white/70 hover:bg-white/10'
+                              ? 'border-orange-200 bg-white text-orange-600 shadow-sm dark:border-orange-300/60 dark:bg-orange-500/10 dark:text-orange-200'
+                              : 'border-slate-200 bg-white/70 text-slate-600 hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/70'
                           )}
                         >
                           <span>{group.state}</span>
-                          <span className="ml-2 text-xs text-white/60">{group.count}</span>
+                          <span className="ml-2 text-xs text-muted-foreground dark:text-white/60">{group.count}</span>
                         </button>
                       );
                     })
@@ -664,11 +648,11 @@ Discover opportunities around the world to hone your skills, showcase your abili
                 </div>
 
                 {stateLoading && stateGroups.length > 0 ? (
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center text-sm text-white/70">
+                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70">
                     Updating opportunities for {displayedState || 'selected state'}...
                   </div>
                 ) : displayedOpportunities.length === 0 ? (
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-10 text-center text-sm text-white/70">
+                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70">
                     No live opportunities right now for this state. Try another selection.
                   </div>
                 ) : (
@@ -697,56 +681,60 @@ Discover opportunities around the world to hone your skills, showcase your abili
           </div>
         </section>
 
-        <section className="py-24 bg-gradient-to-br from-orange-500 to-pink-500 text-white relative overflow-hidden">
+        <section className="relative overflow-hidden py-24 bg-gradient-to-br from-orange-100 via-pink-100 to-sky-100 text-slate-900 dark:from-[#1e163b] dark:via-[#261248] dark:to-[#1a173a] dark:text-white">
           {/* Background decorations */}
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-grid-white/[0.02] opacity-50"></div>
-            <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#071045]/80 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#071045]/80 to-transparent"></div>
-            <div className="absolute -left-20 -top-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-blob"></div>
-            <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.7),transparent_65%)] dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.15),transparent_65%)]" />
+            <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-pink-200/40 blur-3xl animate-blob dark:bg-pink-500/20" />
+            <div className="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-orange-200/40 blur-3xl animate-blob animation-delay-2000 dark:bg-orange-500/20" />
           </div>
 
           <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Start Your <span className="text-[#071045]">Journey</span> Today
+              <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+                Start Your <span className="text-orange-500 dark:text-orange-200">Journey</span> Today
               </h2>
-              <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+              <p className="mx-auto max-w-2xl text-xl leading-relaxed text-slate-700 dark:text-white/90">
                 Practice with past papers, explore resources, and track your progress to achieve your goals.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="group bg-white/10 backdrop-blur-lg rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 cursor-pointer border border-white/20 hover:border-white/40">
-                <div className="mb-6 p-3 bg-[#071045] rounded-xl w-fit group-hover:scale-110 transition-transform">
+              <div className="group cursor-pointer rounded-2xl border border-orange-200 bg-white/90 p-8 shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+                <div className="mb-6 w-fit rounded-xl bg-orange-100 p-3 text-orange-500 transition-transform group-hover:scale-110 dark:bg-orange-500/20 dark:text-orange-200">
                   <GraduationCap className="h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">Practice Papers</h3>
-                <p className="text-blue-100 mb-6 text-lg">Access solved and unsolved past papers with detailed progress tracking</p>
-                <Button variant="secondary" className="w-full py-6 text-lg rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
+                <h3 className="mb-3 text-2xl font-bold">Practice Papers</h3>
+                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
+                  Access solved and unsolved past papers with detailed progress tracking
+                </p>
+                <Button className="w-full rounded-xl bg-orange-500 py-6 text-lg font-semibold text-white transition hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-600">
                   Start Practice
                 </Button>
               </div>
 
-              <div className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 cursor-pointer border border-white/10">
-                <div className="mb-6 p-3 bg-white/10 rounded-xl w-fit group-hover:bg-white/20 transition-colors">
+              <div className="group cursor-pointer rounded-2xl border border-sky-200 bg-white/90 p-8 shadow-sm shadow-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+                <div className="mb-6 w-fit rounded-xl bg-sky-100 p-3 text-sky-500 transition group-hover:scale-110 dark:bg-sky-500/20 dark:text-sky-200">
                   <BookOpen className="h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">Resources</h3>
-                <p className="text-blue-100 mb-6 text-lg">Comprehensive collection of reference materials and guides</p>
-                <Button variant="secondary" className="w-full py-6 text-lg rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
+                <h3 className="mb-3 text-2xl font-bold">Resources</h3>
+                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
+                  Comprehensive collection of reference materials and guides
+                </p>
+                <Button className="w-full rounded-xl bg-sky-500 py-6 text-lg font-semibold text-white transition hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-600">
                   Explore Resources
                 </Button>
               </div>
 
-              <div className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 cursor-pointer border border-white/10">
-                <div className="mb-6 p-3 bg-white/10 rounded-xl w-fit group-hover:bg-white/20 transition-colors">
+              <div className="group cursor-pointer rounded-2xl border border-emerald-200 bg-white/90 p-8 shadow-sm shadow-emerald-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+                <div className="mb-6 w-fit rounded-xl bg-emerald-100 p-3 text-emerald-500 transition group-hover:scale-110 dark:bg-emerald-500/20 dark:text-emerald-200">
                   <Target className="h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">Dashboard</h3>
-                <p className="text-blue-100 mb-6 text-lg">Track your progress, achievements, and manage your bookmarks</p>
-                <Button variant="secondary" className="w-full py-6 text-lg rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
+                <h3 className="mb-3 text-2xl font-bold">Dashboard</h3>
+                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
+                  Track your progress, achievements, and manage your bookmarks
+                </p>
+                <Button className="w-full rounded-xl bg-emerald-500 py-6 text-lg font-semibold text-white transition hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600">
                   View Dashboard
                 </Button>
               </div>
@@ -759,6 +747,13 @@ Discover opportunities around the world to hone your skills, showcase your abili
     </div>
   );
 }
+
+
+
+
+
+
+
 
 
 

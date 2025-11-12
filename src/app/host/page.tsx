@@ -200,7 +200,7 @@ export default function HostOpportunityPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-foreground dark:text-white">
         <p className="text-white/70">Loading your account…</p>
       </div>
     );
@@ -208,9 +208,9 @@ export default function HostOpportunityPage() {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4 text-center text-white">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4 text-center text-foreground dark:text-white">
         <h1 className="text-3xl font-semibold">Host an opportunity on MyArk</h1>
-        <p className="mt-4 max-w-2xl text-white/70">
+        <p className="mt-4 max-w-2xl text-muted-foreground dark:text-white/70">
           Sign in or create an organization account to submit new opportunities for review. Once
           approved by our admin team, your program will appear on the public portal.
         </p>
@@ -226,9 +226,9 @@ export default function HostOpportunityPage() {
 
   if (user.accountType !== 'organization') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4 text-center text-white">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4 text-center text-foreground dark:text-white">
         <h1 className="text-3xl font-semibold">Organization account required</h1>
-        <p className="mt-4 max-w-2xl text-white/70">
+        <p className="mt-4 max-w-2xl text-muted-foreground dark:text-white/70">
           Hosting opportunities is currently limited to organization accounts. Switch to an
           organization profile or contact support for assistance.
         </p>
@@ -243,23 +243,23 @@ export default function HostOpportunityPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-16 text-white">
+    <div className="min-h-screen bg-slate-950 px-4 py-16 text-foreground dark:text-white">
       <div className="mx-auto max-w-5xl space-y-10">
         <header className="space-y-4">
-          <p className="inline-flex rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-wide text-white/70">
+          <p className="inline-flex rounded-full border border-border/60 dark:border-white/10 px-3 py-1 text-xs uppercase tracking-wide text-muted-foreground dark:text-white/70">
             Host Opportunity
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground dark:text-white md:text-5xl">
             Submit a new opportunity for review
           </h1>
-          <p className="max-w-3xl text-lg text-white/70">
+          <p className="max-w-3xl text-lg text-muted-foreground dark:text-white/70">
             Share program details so the MyArk admin team can review and publish your opportunity.
             Required fields are marked below.
           </p>
         </header>
 
         <form
-          className="space-y-8 rounded-3xl border border-white/10 bg-slate-900/70 p-8 shadow-xl shadow-slate-950/30 backdrop-blur"
+          className="space-y-8 rounded-3xl border border-border/60 dark:border-white/10 bg-slate-900/70 p-8 shadow-xl shadow-slate-950/30 backdrop-blur"
           onSubmit={handleSubmit}
         >
           <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -271,7 +271,7 @@ export default function HostOpportunityPage() {
                 value={formState.title}
                 onChange={handleChange('title')}
                 placeholder="e.g. National Innovation Challenge 2025"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -282,7 +282,7 @@ export default function HostOpportunityPage() {
                 value={formState.summary}
                 onChange={handleChange('summary')}
                 placeholder="In one sentence, describe the opportunity."
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -294,7 +294,7 @@ export default function HostOpportunityPage() {
                 value={formState.description}
                 onChange={handleChange('description')}
                 placeholder="Include objectives, structure, and important information."
-                className="min-h-[180px] bg-white/10 text-white placeholder:text-white/50"
+                className="min-h-[180px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -306,7 +306,7 @@ export default function HostOpportunityPage() {
                 value={formState.eligibility}
                 onChange={handleChange('eligibility')}
                 placeholder="List eligibility criteria, one per line."
-                className="min-h-[140px] bg-white/10 text-white placeholder:text-white/50"
+                className="min-h-[140px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -318,7 +318,7 @@ export default function HostOpportunityPage() {
                 required
                 value={formState.registrationDeadline}
                 onChange={handleChange('registrationDeadline')}
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -330,10 +330,10 @@ export default function HostOpportunityPage() {
                   setFormState((prev) => ({ ...prev, mode: value }))
                 }
               >
-                <SelectTrigger className="bg-white/10 text-white">
+                <SelectTrigger className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white">
                   <SelectValue placeholder="Select mode" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 text-white">
+                <SelectContent className="bg-slate-900 text-foreground dark:text-white">
                   <SelectItem value="online">Online</SelectItem>
                   <SelectItem value="offline">Offline</SelectItem>
                   <SelectItem value="hybrid">Hybrid</SelectItem>
@@ -347,10 +347,10 @@ export default function HostOpportunityPage() {
                 value={formState.state}
                 onValueChange={(value) => setFormState((prev) => ({ ...prev, state: value }))}
               >
-                <SelectTrigger className="bg-white/10 text-white">
+                <SelectTrigger className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white">
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
-                <SelectContent className="max-h-60 bg-slate-900 text-white">
+                <SelectContent className="max-h-60 bg-slate-900 text-foreground dark:text-white">
                   {INDIAN_STATES.map((state) => (
                     <SelectItem key={state} value={state}>
                       {state}
@@ -367,7 +367,7 @@ export default function HostOpportunityPage() {
                 type="date"
                 value={formState.startDate}
                 onChange={handleChange('startDate')}
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -378,7 +378,7 @@ export default function HostOpportunityPage() {
                 type="date"
                 value={formState.endDate}
                 onChange={handleChange('endDate')}
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -389,9 +389,9 @@ export default function HostOpportunityPage() {
                 value={formState.segments}
                 onChange={handleChange('segments')}
                 placeholder="e.g. STEM, scholarship, leadership"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
-              <p className="text-xs text-white/50">Separate with commas.</p>
+              <p className="text-xs text-muted-foreground dark:text-white/50">Separate with commas.</p>
             </div>
 
             <div className="space-y-2">
@@ -400,10 +400,10 @@ export default function HostOpportunityPage() {
                 value={formState.categoryId}
                 onValueChange={(value) => setFormState((prev) => ({ ...prev, categoryId: value }))}
               >
-                <SelectTrigger className="bg-white/10 text-white">
+                <SelectTrigger className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
-                <SelectContent className="max-h-60 bg-slate-900 text-white">
+                <SelectContent className="max-h-60 bg-slate-900 text-foreground dark:text-white">
                   {categories.map((category) => (
                     <SelectItem key={category.id} value={category.id}>
                       {category.name ?? category.id}
@@ -421,7 +421,7 @@ export default function HostOpportunityPage() {
                 value={formState.applicationUrl}
                 onChange={handleChange('applicationUrl')}
                 placeholder="https://"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -432,7 +432,7 @@ export default function HostOpportunityPage() {
                 value={formState.fee}
                 onChange={handleChange('fee')}
                 placeholder="e.g. 100"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -443,9 +443,9 @@ export default function HostOpportunityPage() {
                 value={formState.currency}
                 readOnly
                 aria-readonly="true"
-                className="bg-white/10 text-white/70"
+                className="bg-card/70 dark:bg-white/10 text-muted-foreground dark:text-white/70"
               />
-              <p className="text-xs text-white/50">All submissions are listed in Indian Rupees (INR).</p>
+              <p className="text-xs text-muted-foreground dark:text-white/50">All submissions are listed in Indian Rupees (INR).</p>
             </div>
 
             <div className="space-y-2 md:col-span-2">
@@ -455,7 +455,7 @@ export default function HostOpportunityPage() {
                 value={formState.benefits}
                 onChange={handleChange('benefits')}
                 placeholder="Describe key benefits or rewards."
-                className="min-h-[120px] bg-white/10 text-white placeholder:text-white/50"
+                className="min-h-[120px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -466,7 +466,7 @@ export default function HostOpportunityPage() {
                 value={formState.registrationProcess}
                 onChange={handleChange('registrationProcess')}
                 placeholder="Outline important steps."
-                className="min-h-[120px] bg-white/10 text-white placeholder:text-white/50"
+                className="min-h-[120px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -478,7 +478,7 @@ export default function HostOpportunityPage() {
                 value={formState.contactEmail}
                 onChange={handleChange('contactEmail')}
                 placeholder="info@organization.org"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -489,7 +489,7 @@ export default function HostOpportunityPage() {
                 value={formState.contactPhone}
                 onChange={handleChange('contactPhone')}
                 placeholder="+1 555 123 4567"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
 
@@ -501,7 +501,7 @@ export default function HostOpportunityPage() {
                 value={formState.contactWebsite}
                 onChange={handleChange('contactWebsite')}
                 placeholder="https://organization.org"
-                className="bg-white/10 text-white placeholder:text-white/50"
+                className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
               />
             </div>
           </section>
@@ -518,7 +518,7 @@ export default function HostOpportunityPage() {
           )}
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-muted-foreground dark:text-white/50">
               Submissions are reviewed within 48 hours. You will receive an email notification once
               approved or if additional information is required.
             </p>
@@ -535,3 +535,7 @@ export default function HostOpportunityPage() {
     </div>
   );
 }
+
+
+
+

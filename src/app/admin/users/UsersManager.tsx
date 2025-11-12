@@ -131,8 +131,8 @@ export function UsersManager() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-        <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit user' : 'Create user'}</h2>
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
+        <h2 className="text-lg font-semibold text-foreground dark:text-white">{editingId ? 'Edit user' : 'Create user'}</h2>
         <p className="mt-1 text-sm text-slate-300">
           These records live in Firestore. For Firebase Auth users, make sure roles match any custom claims.
         </p>
@@ -159,7 +159,7 @@ export function UsersManager() {
               id="user-role"
               value={formState.role}
               onChange={(event) => setFormState((prev) => ({ ...prev, role: event.target.value }))}
-              className="h-10 rounded-md border border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
             >
               {roleOptions.map((role) => (
                 <option key={role} value={role}>
@@ -208,9 +208,9 @@ export function UsersManager() {
         </form>
       </section>
 
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Users</h2>
+          <h2 className="text-lg font-semibold text-foreground dark:text-white">Users</h2>
           <Button variant="outline" size="sm" onClick={loadItems} disabled={isLoading}>
             Refresh
           </Button>
@@ -218,10 +218,10 @@ export function UsersManager() {
         <p className="mt-1 text-sm text-slate-300">
           {isLoading ? 'Loading users...' : `Showing ${items.length} record(s).`}
         </p>
-        <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+        <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
           <Table>
             <TableHeader>
-              <TableRow className="bg-white/5 hover:bg-white/5">
+              <TableRow className="bg-card/80 dark:bg-white/5 hover:bg-card/80 dark:bg-white/5">
                 <TableHead>Email</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
@@ -237,7 +237,7 @@ export function UsersManager() {
                 </TableRow>
               )}
               {items.map((item) => (
-                <TableRow key={item.id} className="hover:bg-white/5">
+                <TableRow key={item.id} className="hover:bg-card/80 dark:bg-white/5">
                   <TableCell className="font-medium text-slate-100">{item.email}</TableCell>
                   <TableCell className="text-slate-300">
                     {[item.firstName, item.lastName].filter(Boolean).join(' ') || '—'}
@@ -269,3 +269,6 @@ export function UsersManager() {
     </div>
   );
 }
+
+
+

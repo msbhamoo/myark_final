@@ -235,12 +235,11 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
   };
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const opportunity = await getOpportunityByIdOrSlug(params.id);
+export async function generateMetadata(ctx: any): Promise<Metadata> {
+  const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const opportunity = await getOpportunityByIdOrSlug(id);
 
   if (!opportunity) {
     return {
@@ -252,7 +251,7 @@ export async function generateMetadata({
         follow: true,
       },
       alternates: {
-        canonical: new URL(`/opportunity/${params.id}`, SITE_HOST).toString(),
+        canonical: new URL(`/opportunity/${id}`, SITE_HOST).toString(),
       },
     };
   }
@@ -262,7 +261,7 @@ export async function generateMetadata({
   const title = `${opportunity.title} | ${categoryLabel} in India | Myark`;
   const description = buildMetaDescription(opportunity);
   const keywords = collectKeywords(opportunity);
-  const canonicalUrl = resolveCanonicalUrl(opportunity, params.id);
+  const canonicalUrl = resolveCanonicalUrl(opportunity, id);
   const image = opportunity.image || FALLBACK_IMAGE;
 
   return {
@@ -308,14 +307,17 @@ export async function generateMetadata({
   };
 }
 
-export default async function OpportunityDetailPage({ params }: { params: { id: string } }) {
-  const opportunity = await getOpportunityByIdOrSlug(params.id);
+export default async function OpportunityDetailPage(props: any) {
+  const params = props?.params ?? {};
+  const idParam = params.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const opportunity = await getOpportunityByIdOrSlug(id);
 
   if (!opportunity) {
     return (
       <div className="min-h-screen flex flex-col">
         <main className="flex-1 bg-[#071045] flex items-center justify-center px-4">
-          <div className="max-w-xl bg-white/10 border-white/20 text-white p-10 text-center space-y-6">
+          <div className="max-w-xl bg-card/70 dark:bg-white/10 border-border/50 dark:border-white/20 text-foreground dark:text-white p-10 text-center space-y-6">
             <div className="text-3xl font-semibold">Opportunity unavailable</div>
             <p className="text-white/80">We couldn&apos;t find details for this opportunity.</p>
           </div>
@@ -324,7 +326,7 @@ export default async function OpportunityDetailPage({ params }: { params: { id: 
     );
   }
 
-  const canonicalUrl = resolveCanonicalUrl(opportunity, params.id);
+  const canonicalUrl = resolveCanonicalUrl(opportunity, id);
   const structuredData = buildStructuredData(opportunity, canonicalUrl);
 
   return (
@@ -336,3 +338,6 @@ export default async function OpportunityDetailPage({ params }: { params: { id: 
     </>
   );
 }
+
+
+

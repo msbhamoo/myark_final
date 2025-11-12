@@ -64,15 +64,18 @@ const ensureOpportunityExists = async (db: Firestore, opportunityId: string) => 
   return snapshot.exists ? snapshot : null;
 };
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: any) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ isSaved: false });
     }
+    const params = (context && context.params) as { id?: string | string[] } | undefined;
+    const idParam = params?.id;
+    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
 
     const db = getDb();
-    const doc = await getSavedDocRef(db, authContext.uid, params.id).get();
+    const doc = await getSavedDocRef(db, authContext.uid, id).get();
     const savedAt = toIsoString(doc.data()?.savedAt);
     return NextResponse.json({ isSaved: doc.exists, savedAt });
   } catch (error) {
@@ -81,30 +84,32 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, context: any) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const params = (context && context.params) as { id?: string | string[] } | undefined;
+    const idParam = params?.id;
+    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
 
     const db = getDb();
-    const opportunityDoc = await ensureOpportunityExists(db, params.id);
+    const opportunityDoc = await ensureOpportunityExists(db, id);
     if (!opportunityDoc) {
       return NextResponse.json({ error: 'Opportunity not found' }, { status: 404 });
     }
 
     const data = opportunityDoc.data() ?? {};
     const payload = {
-      opportunityId: params.id,
+      opportunityId: id,
       savedAt: new Date(),
       opportunityTitle: data.title ?? '',
       category: data.category ?? '',
       organizer: data.organizer ?? '',
       registrationDeadline: toIsoString(data.registrationDeadline),
     };
-
-    await getSavedDocRef(db, authContext.uid, params.id).set(payload, { merge: true });
+    await getSavedDocRef(db, authContext.uid, id).set(payload, { merge: true });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to save opportunity bookmark', error);
@@ -112,15 +117,18 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: any) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const params = (context && context.params) as { id?: string | string[] } | undefined;
+    const idParam = params?.id;
+    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
 
     const db = getDb();
-    await getSavedDocRef(db, authContext.uid, params.id).delete();
+    await getSavedDocRef(db, authContext.uid, id).delete();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to remove saved opportunity', error);
