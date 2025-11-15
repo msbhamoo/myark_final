@@ -42,17 +42,17 @@ export async function GET() {
       FALLBACK_HOME_SEGMENTS.map((segment) => [segment.segmentKey.toLowerCase(), segment]),
     );
 
-    const segmentCache = new Map<string, Promise<ReturnType<typeof getOpportunities>>>();
+    const segmentCache = new Map<string, Awaited<ReturnType<typeof getOpportunities>>>();
 
     const ensureOpportunities = (segmentKey: string, limit: number) => {
       const cacheKey = `${segmentKey || 'default'}::${limit}`;
       if (!segmentCache.has(cacheKey)) {
-        segmentCache.set(
-          cacheKey,
-          getOpportunities(segmentKey ? { segment: segmentKey, limit } : { limit }),
-        );
+        return getOpportunities(segmentKey ? { segment: segmentKey, limit } : { limit }).then((result) => {
+          segmentCache.set(cacheKey, result);
+          return result;
+        });
       }
-      return segmentCache.get(cacheKey)!;
+      return Promise.resolve(segmentCache.get(cacheKey)!);
     };
 
 const loadOpportunitiesForSegment = async (

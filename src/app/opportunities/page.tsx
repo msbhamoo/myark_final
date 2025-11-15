@@ -1,10 +1,10 @@
 import { format } from 'date-fns';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import OpportunityCard from '@/components/OpportunityCard';
 import type { Opportunity } from '@/types/opportunity';
 import { getOpportunities } from '@/lib/opportunityService';
 import OpportunitiesSearch from './OpportunitiesSearch';
+import { OpportunitiesList } from '@/components/OpportunitiesList';
 
 const formatDate = (value?: string) => {
   if (!value) {
@@ -85,7 +85,7 @@ export default async function OpportunitiesPage(props: any) {
                 <h1 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">
                   Discover competitions, scholarships, and programs tailored for you
                 </h1>
-                <p className="text-sm text-slate-600 md:text-base dark:text-white/70">
+                <p className="text-sm text-slate-600 md:text-base dark:text-slate-100">
                   Use search or choose a category from the homepage to find programs that match your goals. Results update with live data from the platform.
                 </p>
               </div>
@@ -96,29 +96,7 @@ export default async function OpportunitiesPage(props: any) {
 
         <section className="pb-20">
           <div className="container mx-auto max-w-[1200px] px-4 md:px-6">
-            {opportunities.length === 0 && (
-              <div className="rounded-2xl border border-slate-200 bg-white/90 px-6 py-16 text-center text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white/60">
-                No opportunities match your filters yet. Try adjusting the search term or clearing the category filter.
-              </div>
-            )}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {opportunities.map((opportunity) => (
-                <OpportunityCard
-                  key={opportunity.id}
-                  id={opportunity.id}
-                  title={opportunity.title}
-                  category={opportunity.category}
-                  gradeEligibility={opportunity.gradeEligibility || 'All Grades'}
-                  organizer={opportunity.organizer || 'Unknown Organizer'}
-                  startDate={formatDate(opportunity.startDate)}
-                  endDate={formatDate(opportunity.endDate)}
-                  registrationDeadline={opportunity.registrationDeadline ?? ''}
-                  mode={normalizeMode(opportunity.mode)}
-                  fee={formatFee(opportunity)}
-                  image={opportunity.image}
-                />
-              ))}
-            </div>
+            <OpportunitiesList opportunities={opportunities} />
           </div>
         </section>
       </main>

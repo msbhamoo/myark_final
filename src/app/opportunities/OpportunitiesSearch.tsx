@@ -59,7 +59,7 @@ export default function OpportunitiesSearch() {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-4 backdrop-blur"
+        className="w-full max-w-lg rounded-2xl border border-border/60 dark:border-slate-700 bg-card/80 dark:bg-slate-800/50 p-4 backdrop-blur"
       >
         <div className="space-y-3">
           <Input

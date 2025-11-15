@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminAuth, getDb } from '@/lib/firebaseAdmin';
-import { INDIAN_STATES_SET } from '@/constants/india';
+import { INDIAN_STATES, INDIAN_STATES_SET } from '@/constants/india';
 
 const COLLECTION = 'opportunities';
 const USERS_COLLECTION = 'users';
+
+type IndianState = typeof INDIAN_STATES[number];
+
 
 const getBearerToken = (request: NextRequest): string | null => {
   const header = request.headers.get('authorization') ?? request.headers.get('Authorization');
@@ -38,6 +41,7 @@ type SubmissionPayload = {
   contactPhone?: unknown;
   contactWebsite?: unknown;
   applicationUrl?: unknown;
+  registrationMode?: unknown;
 };
 
 const toDateValue = (value: unknown): Date | null => {
@@ -157,9 +161,9 @@ export async function POST(request: NextRequest) {
       status: 'pending',
       fee: typeof payload.fee === 'string' ? payload.fee.trim() : '',
       state:
-        typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim())
-          ? payload.state.trim()
-          : '',
+        typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim() as IndianState)
+          ? (payload.state.trim() as IndianState)
+          : undefined,
       currency: 'INR',
       registrationDeadline,
       startDate: toDateValue(payload.startDate),

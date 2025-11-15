@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -92,6 +93,10 @@ type OpportunityItem = {
     reviewedAt?: string | null;
     reviewedBy?: string | null;
   } | null;
+  registrationMode?: 'internal' | 'external';
+  applicationUrl?: string;
+  registrationCount?: number;
+  externalRegistrationClickCount?: number;
 };
 
 const formatDate = (value: string | null | undefined) => {
@@ -130,6 +135,8 @@ type OpportunityFormState = {
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string;
+  registrationMode: 'internal' | 'external';
+  applicationUrl: string;
 };
 
 type ResourceDraft = {
@@ -168,6 +175,8 @@ const defaultForm: OpportunityFormState = {
   contactEmail: '',
   contactPhone: '',
   contactWebsite: '',
+  registrationMode: 'internal',
+  applicationUrl: '',
 };
 
 const modeOptions = ['online', 'offline', 'hybrid'];
@@ -224,6 +233,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
 };
 
   export function OpportunitiesManager() {
+    const router = useRouter();
     const [items, setItems] = useState<OpportunityItem[]>([]);
     const [categories, setCategories] = useState<OpportunityCategory[]>([]);
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
@@ -514,6 +524,8 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
       contactEmail: item.contactInfo?.email ?? '',
       contactPhone: item.contactInfo?.phone ?? '',
       contactWebsite: item.contactInfo?.website ?? '',
+      registrationMode: item.registrationMode ?? 'internal',
+      applicationUrl: item.applicationUrl ?? '',
     });
   };
 
@@ -595,6 +607,8 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
         phone: formState.contactPhone,
         website: formState.contactWebsite,
       },
+      registrationMode: formState.registrationMode,
+      applicationUrl: formState.registrationMode === 'external' ? formState.applicationUrl : '',
     };
   };
 
@@ -970,6 +984,43 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               ))}
             </select>
           </div>
+
+          <div className='space-y-2'>
+            <label className='text-sm font-medium text-slate-200' htmlFor='op-registration-mode'>
+              Registration Mode
+            </label>
+            <select
+              id='op-registration-mode'
+              value={formState.registrationMode}
+              onChange={(event) =>
+                setFormState((prev) => ({
+                  ...prev,
+                  registrationMode: event.target.value as 'internal' | 'external',
+                }))
+              }
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+            >
+              <option value='internal'>Internal</option>
+              <option value='external'>External</option>
+            </select>
+          </div>
+
+          {formState.registrationMode === 'external' && (
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-slate-200' htmlFor='op-application-url'>
+                Application URL
+              </label>
+              <Input
+                id='op-application-url'
+                value={formState.applicationUrl}
+                onChange={(event) =>
+                  setFormState((prev) => ({ ...prev, applicationUrl: event.target.value }))
+                }
+                placeholder='https://example.com/apply'
+                className='bg-slate-900/70 text-slate-100'
+              />
+            </div>
+          )}
 
           <div className='space-y-2'>
             <label className='text-sm font-medium text-slate-200' htmlFor='op-fee'>
@@ -1461,6 +1512,15 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                         </TableCell>
                         <TableCell className="text-center">
                           <div className="space-y-2 flex flex-col items-center">
+                            {item.registrationMode === 'internal' ? (
+                              <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-400">
+                                {item.registrationCount ?? 0} Registrations
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="border-gray-500/30 bg-gray-500/10 text-gray-400">
+                                External
+                              </Badge>
+                            )}
                             <Badge 
                               variant="outline" 
                               className={`
@@ -1485,6 +1545,26 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex flex-wrap justify-end gap-2">
+                            {item.registrationMode === 'internal' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}
+                              className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+                            >
+                              View Registrations
+                            </Button>
+                            )}
+                            {item.registrationMode === 'external' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}
+                              className="border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
+                            >
+                              View Clicks
+                            </Button>
+                            )}
                             <Button
                               variant="outline"
                               size="sm"

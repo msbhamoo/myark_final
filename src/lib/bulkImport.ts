@@ -1,6 +1,6 @@
 import type { Firestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import { FALLBACK_HOME_SEGMENTS } from '@/constants/homeSegments';
-import { INDIAN_STATES_SET } from '@/constants/india';
+import { INDIAN_STATES_SET, INDIAN_STATES } from '@/constants/india';
 import type { BulkEntity } from '@/types/bulk';
 import { stringifyCsv, parseCsvWithHeaders } from './csv';
 
@@ -546,7 +546,7 @@ const saveSchoolRecord = async (db: Firestore, record: SchoolImportRecord): Prom
     city: record.city ?? '',
     state: (() => {
       const value = record.state?.trim() ?? '';
-      return INDIAN_STATES_SET.has(value) ? value : '';
+      return INDIAN_STATES_SET.has(value as typeof INDIAN_STATES[number]) ? (value as typeof INDIAN_STATES[number]) : '';
     })(),
     country: record.country ?? '',
     isVerified: record.isVerified,

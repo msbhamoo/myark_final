@@ -111,19 +111,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const getIdToken = useCallback(
     async (forceRefresh = false): Promise<string | null> => {
-      if (!firebaseUser) {
+      const authInstance = getFirebaseAuth();
+      const current = firebaseUser ?? authInstance.currentUser;
+      if (!current) {
         return null;
       }
-      return firebaseUser.getIdToken(forceRefresh);
+      return current.getIdToken(forceRefresh);
     },
     [firebaseUser],
   );
 
   const refreshProfile = useCallback(async () => {
-    if (!firebaseUser) {
+    const authInstance = getFirebaseAuth();
+    const current = firebaseUser ?? authInstance.currentUser;
+    if (!current) {
       return;
     }
-    await loadProfile(firebaseUser);
+    await loadProfile(current);
   }, [firebaseUser, loadProfile]);
 
   const signOut = useCallback(async () => {

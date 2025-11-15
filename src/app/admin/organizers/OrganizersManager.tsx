@@ -74,7 +74,7 @@ export function OrganizersManager() {
             isVerified: Boolean(item.isVerified),
           } satisfies Organizer;
         })
-        .filter((entry): entry is Organizer => Boolean(entry));
+        .filter((entry: Organizer | undefined): entry is Organizer => Boolean(entry));
       setItems(records);
     } catch (err) {
       console.error(err);

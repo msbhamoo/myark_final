@@ -63,7 +63,7 @@ export default function Header() {
     ));
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75 dark:border-slate-800 dark:bg-slate-950/80">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75 dark:border-slate-700 dark:bg-slate-900/50">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function Header() {
                   <nav className="flex flex-col gap-3 text-lg font-semibold text-slate-700">
                     {renderNavLinks('text-slate-700 hover:text-orange-500')}
                   </nav>
-                  <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-700/60">
+                  <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
                     <Button variant="outline" onClick={handleHostClick}>
                       Host an opportunity
                     </Button>

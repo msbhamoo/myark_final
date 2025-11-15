@@ -12,6 +12,7 @@ import type {
   StudentProfileSettings,
   StudentProfileStats,
 } from '@/types/studentProfile';
+import { getDb } from '@/lib/firebaseAdmin';
 
 export const STUDENT_PROFILE_COLLECTION = 'studentProfiles';
 
@@ -122,10 +123,13 @@ export const toStudentProfileSubject = (subject: unknown): StudentProfileAcademi
   if (!subject || typeof subject !== 'object') {
     return null;
   }
-  const id =
-    typeof (subject as { id?: unknown }).id === 'string' && (subject as { id?: string }).id
-      ? (subject as { id?: string }).id
-      : randomUUID();
+  const id: string = (() => {
+    const extractedId = (subject as { id?: unknown }).id;
+    if (typeof extractedId === 'string' && extractedId) {
+      return extractedId;
+    }
+    return randomUUID();
+  })();
   const name =
     typeof (subject as { name?: unknown }).name === 'string'
       ? ((subject as { name: string }).name || '').trim()
@@ -343,7 +347,7 @@ export const buildStudentProfileResponse = (
   return {
     uid,
     displayName:
-      typeof doc?.displayName === 'string' && doc.displayName ? doc.displayName : fallbackName,
+      (typeof doc?.displayName === 'string' && doc.displayName ? doc.displayName : fallbackName) as string,
     photoUrl: typeof doc?.photoUrl === 'string' && doc.photoUrl ? doc.photoUrl : null,
     tagline: typeof doc?.tagline === 'string' && doc.tagline ? doc.tagline : null,
     bio: typeof doc?.bio === 'string' && doc.bio ? doc.bio : null,
@@ -431,8 +435,8 @@ export const buildPublicStudentProfile = (
 
   return {
     displayName:
-      typeof doc?.displayName === 'string' && doc.displayName ? doc.displayName : fallbackName,
-    slug,
+      (typeof doc?.displayName === 'string' && doc.displayName ? doc.displayName : fallbackName) as string,
+    slug: slug as string,
     tagline: typeof doc?.tagline === 'string' && doc.tagline ? doc.tagline : null,
     bio: typeof doc?.bio === 'string' && doc.bio ? doc.bio : null,
     photoUrl: typeof doc?.photoUrl === 'string' && doc.photoUrl ? doc.photoUrl : null,
@@ -459,3 +463,20 @@ export const buildPublicStudentProfile = (
     updatedAt: toIsoString(doc?.updatedAt),
   };
 };
+
+export async function getStudentProfileFromUid(
+  uid: string,
+  fallbackName = 'Anonymous',
+): Promise<StudentProfile | null> {
+  try {
+    const db = getDb();
+    const doc = await db.collection(STUDENT_PROFILE_COLLECTION).doc(uid).get();
+    if (!doc.exists) {
+      return null;
+    }
+    return buildStudentProfileResponse(doc.data()!, uid, fallbackName);
+  } catch (error) {
+    console.error(`Failed to get student profile for UID: ${uid}`, error);
+    return null;
+  }
+}

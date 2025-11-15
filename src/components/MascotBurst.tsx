@@ -7,18 +7,18 @@ type MascotBurstProps = {
   className?: string;
 };
 
-const SIZE_CLASS = {
+const SIZE_CLASS: Record<NonNullable<MascotBurstProps['size']>, string> = {
   sm: 'h-10 w-10 text-lg',
   md: 'h-14 w-14 text-xl',
   lg: 'h-20 w-20 text-2xl',
-} satisfies Record<MascotBurstProps['size'], string>;
+} satisfies Record<NonNullable<MascotBurstProps['size']>, string>;
 
 export function MascotBurst({ size = 'md', className }: MascotBurstProps) {
   return (
     <div
       className={cn(
         'relative inline-flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 via-pink-500 to-sky-500 text-white shadow-lg shadow-orange-400/40 backdrop-blur',
-        SIZE_CLASS[size],
+        SIZE_CLASS[size!],
         className,
       )}
       aria-hidden="true"

@@ -20,6 +20,8 @@ type SubmittedOpportunity = {
     reviewedAt?: string | null;
     reviewedBy?: string | null;
   } | null;
+  registrationMode?: 'internal' | 'external';
+  registrationCount?: number;
 };
 
 const formatDate = (value: string | null): string => {
@@ -121,7 +123,7 @@ export default function OrganizationDashboard({
           </div>
           <div className="flex flex-wrap gap-3">
             <Button
-              onClick={() => router.push('/admin/opportunities')}
+              onClick={() => router.push('/host')}
               className="bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-pink-600"
             >
               Submit opportunity
@@ -197,6 +199,11 @@ export default function OrganizationDashboard({
                     </div>
                   </div>
                   <div className="mt-4 flex items-center gap-3 md:mt-0">
+                    {item.registrationMode === 'internal' && (
+                      <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-400">
+                        {item.registrationCount ?? 0} Registrations
+                      </Badge>
+                    )}
                     <Badge variant="outline" className="border-white/30 text-slate-900 dark:text-white">
                       {item.status}
                     </Badge>

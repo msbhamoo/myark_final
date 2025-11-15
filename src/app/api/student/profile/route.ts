@@ -343,7 +343,7 @@ export async function PUT(request: NextRequest) {
     const existingData = snapshot.data() ?? {};
 
     try {
-      await applyUpdate(decoded.uid, parsed.data, existingData);
+      await applyUpdate(decoded.uid, parsed.data as StudentProfileUpdatePayload, existingData);
     } catch (updateError) {
       if (updateError instanceof Error && updateError.message.includes('profile link')) {
         return NextResponse.json({ error: updateError.message }, { status: 409 });

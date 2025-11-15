@@ -62,6 +62,8 @@ export async function GET(request: NextRequest) {
         createdAt: toIsoString(data.createdAt),
         updatedAt: toIsoString(data.updatedAt),
         approval: data.approval ?? null,
+        registrationMode: data.registrationMode ?? 'internal',
+        registrationCount: data.registrationCount ?? 0,
       };
     }).sort((a, b) => {
       const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;

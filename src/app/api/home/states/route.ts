@@ -20,7 +20,7 @@ export async function GET() {
         return;
       }
       const trimmed = state.trim();
-      if (!INDIAN_STATES_SET.has(trimmed)) {
+      if (!INDIAN_STATES_SET.has(trimmed as any)) {
         return;
       }
       if (!grouped.has(trimmed)) {
@@ -38,8 +38,8 @@ export async function GET() {
         opportunities: list.slice(0, MAX_OPPORTUNITIES_PER_STATE),
       }))
       .sort((a, b) => {
-        const orderA = stateOrder.get(a.state) ?? Number.MAX_SAFE_INTEGER;
-        const orderB = stateOrder.get(b.state) ?? Number.MAX_SAFE_INTEGER;
+        const orderA = stateOrder.get(a.state as any) ?? Number.MAX_SAFE_INTEGER;
+        const orderB = stateOrder.get(b.state as any) ?? Number.MAX_SAFE_INTEGER;
         if (orderA !== orderB) {
           return orderA - orderB;
         }

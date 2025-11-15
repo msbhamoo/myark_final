@@ -1,4 +1,5 @@
 export type OpportunityMode = 'online' | 'offline' | 'hybrid';
+export type OpportunityRegistrationMode = 'external' | 'internal';
 
 export type OpportunityTimelineStatus = 'completed' | 'active' | 'upcoming';
 
@@ -6,6 +7,16 @@ export interface OpportunityTimelineEvent {
   date: string;
   event: string;
   status: OpportunityTimelineStatus;
+}
+
+export interface OpportunityRegistrationRecord {
+  studentUid: string;
+  studentName: string;
+  studentEmail: string | null;
+  className: string | null;
+  schoolName: string | null;
+  profileSlug: string | null;
+  registeredAt: string;
 }
 
 export interface OpportunityExamSection {
@@ -70,9 +81,19 @@ export interface Opportunity {
   resources?: OpportunityResource[];
   segments?: string[];
   searchKeywords?: string[];
+  applicationUrl?: string;
+  registrationMode?: OpportunityRegistrationMode;
+  registrationCount?: number;
 }
 
 export interface OpportunityListResponse {
   opportunities: Opportunity[];
   segments: Record<string, Opportunity[]>;
+}
+
+export interface OpportunityRegistrationList {
+  items: OpportunityRegistrationRecord[];
+  total: number;
+  registrationMode: OpportunityRegistrationMode;
+  registrationCount: number;
 }

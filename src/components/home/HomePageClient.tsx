@@ -12,6 +12,7 @@ import type { Opportunity } from '@/types/opportunity';
 import { FALLBACK_HOME_SEGMENTS as HOME_SEGMENT_DEFINITIONS } from '@/constants/homeSegments';
 import { cn } from '@/lib/utils';
 import { MascotBurst, MascotOrb } from '@/components/MascotBurst';
+import { LoadingSpinner, LoadingGrid } from '@/components/LoadingSpinner';
 
 type HomeSegment = {
   id: string;
@@ -43,9 +44,9 @@ const FALLBACK_HOME_SEGMENTS: HomeSegment[] = HOME_SEGMENT_DEFINITIONS.map((segm
 }));
 
 const FALLBACK_HOME_STATS: HomeStats = {
-  students: 500_000,
-  organizations: 2_500,
-  verifiedSchools: 1_200,
+  students: 50_000,
+  organizations: 2_50,
+  verifiedSchools: 1_20,
   activeOpportunities: 120,
 };
 
@@ -404,7 +405,7 @@ export default function HomePageClient() {
                   asChild
                   className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 bg-white/70 px-7 py-3 text-base font-semibold text-orange-600 transition hover:border-orange-300 hover:bg-white dark:border-orange-300/70 dark:bg-slate-900 dark:text-orange-200"
                 >
-                  <Link href="/opportunities?view=parents">
+                  <Link href="/parent-guide">
                     Guide Your Child
                     <Sparkles className="ml-2 h-4 w-4" />
                   </Link>
@@ -503,7 +504,7 @@ export default function HomePageClient() {
           </div>
         )}
         {segmentsLoading && (
-          <div className="mt-6 text-center text-sm text-slate-600 dark:text-white/60">
+          <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-100">
             Loading the latest opportunities...
           </div>
         )}
@@ -542,7 +543,7 @@ export default function HomePageClient() {
                         <h2 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">{segment.title}</h2>
                       </div>
                       {segment.subtitle && (
-                        <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-white/70">{segment.subtitle}</p>
+                        <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-slate-100">{segment.subtitle}</p>
                       )}
                     </div>
                     <Link href={segmentLink} aria-disabled={viewAllDisabled} className={viewAllClasses}>
@@ -552,32 +553,58 @@ export default function HomePageClient() {
                   </div>
 
                   <div className="relative -mx-2">
-                    {hasItems ? (
+                    {segmentsLoading ? (
                       <div className="flex gap-4 overflow-x-auto px-2 pb-4">
-                        {items.map((item) => (
-                          <OpportunityCard
-                            key={`${segment.id}-${item.id}`}
-                            id={item.id}
-                            title={item.title}
-                            category={item.category}
-                            gradeEligibility={item.gradeEligibility || 'All Grades'}
-                            organizer={item.organizer || 'Unknown Organizer'}
-                            startDate={formatDate(item.startDate)}
-                            endDate={formatDate(item.endDate)}
-                            registrationDeadline={item.registrationDeadline ?? ''}
-                            mode={normalizeMode(item.mode)}
-                            fee={formatFee(item)}
-                            image={item.image}
-                            className="w-[280px] flex-shrink-0"
-                          />
+                        {Array.from({ length: 3 }).map((_, idx) => (
+                          <div
+                            key={idx}
+                            className="w-[280px] flex-shrink-0 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800/50 animate-pulse space-y-3"
+                          >
+                            <div className="flex gap-2">
+                              <div className="h-6 w-16 rounded-full bg-slate-200 dark:bg-slate-700" />
+                              <div className="h-6 w-16 rounded-full bg-slate-200 dark:bg-slate-700" />
+                            </div>
+                            <div className="h-6 w-3/4 rounded bg-slate-200 dark:bg-slate-700" />
+                            <div className="h-4 w-1/2 rounded bg-slate-200 dark:bg-slate-700" />
+                            <div className="space-y-2 pt-2">
+                              <div className="h-4 w-full rounded bg-slate-200 dark:bg-slate-700" />
+                              <div className="h-4 w-2/3 rounded bg-slate-200 dark:bg-slate-700" />
+                            </div>
+                          </div>
                         ))}
                       </div>
+                    ) : hasItems ? (
+                      <div className="flex gap-4 overflow-x-auto px-2 pb-4">
+                        {items.map((item) => {
+                          // Determine if opportunity is closed
+                          const isClosed = 
+                            item.status?.toLowerCase() === 'closed' ||
+                            (item.registrationDeadline && new Date(item.registrationDeadline) < new Date());
+                          
+                          return (
+                            <OpportunityCard
+                              key={`${segment.id}-${item.id}`}
+                              id={item.id}
+                              title={item.title}
+                              category={item.category}
+                              gradeEligibility={item.gradeEligibility || 'All Grades'}
+                              organizer={item.organizer || 'Unknown Organizer'}
+                              startDate={formatDate(item.startDate)}
+                              endDate={formatDate(item.endDate)}
+                              registrationDeadline={item.registrationDeadline ?? ''}
+                              mode={normalizeMode(item.mode)}
+                              fee={formatFee(item)}
+                              image={item.image}
+                              status={isClosed ? 'closed' : 'active'}
+                              className="w-[280px] flex-shrink-0"
+                            />
+                          );
+                        })}
+                      </div>
                     ) : (
-                      !segmentsLoading && (
-                        <div className="mx-2 rounded-2xl border border-slate-200 bg-white/80 px-6 py-10 text-center text-slate-500 dark:border-white/15 dark:bg-white/5 dark:text-white/60">
-                          No opportunities available yet for this segment. Check back soon.
-                        </div>
-                      )
+                      <div className="mx-2 rounded-2xl border border-slate-200 bg-white/80 px-6 py-10 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100">
+                        No opportunities available yet for this segment. Check back soon.
+                      </div>
                     )}
                   </div>
                 </div>
@@ -596,12 +623,12 @@ export default function HomePageClient() {
                   </div>
                   <h2 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Discover programs near you</h2>
                 </div>
-                <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-white/70">
+                <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-slate-100">
                   Filter live listings to find opportunities available in specific Indian states.
                 </p>
               </div>
               {currentStateGroup && (
-                <div className="text-sm text-slate-600 md:text-right dark:text-white/70">
+                <div className="text-sm text-slate-600 md:text-right dark:text-slate-100">
                   Showing{' '}
                   <span className="font-semibold text-slate-900 dark:text-white">{currentStateGroup.count}</span>{' '}
                   {currentStateGroup.count === 1 ? 'opportunity' : 'opportunities'} in{' '}
@@ -618,9 +645,9 @@ export default function HomePageClient() {
               <>
                 <div className="mb-8 flex flex-wrap gap-3">
                   {stateLoading && stateGroups.length === 0 ? (
-                    <div className="text-sm text-slate-600 dark:text-white/60">Loading state-wise opportunities...</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-100">Loading state-wise opportunities...</div>
                   ) : stateGroups.length === 0 ? (
-                    <div className="text-sm text-slate-600 dark:text-white/60">
+                    <div className="text-sm text-slate-600 dark:text-slate-100">
                       State-based opportunities will appear here as soon as organisers publish them.
                     </div>
                   ) : (
@@ -636,11 +663,11 @@ export default function HomePageClient() {
                             'rounded-full border px-4 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-orange-400/60',
                             isActive
                               ? 'border-orange-200 bg-white text-orange-600 shadow-sm dark:border-orange-300/60 dark:bg-orange-500/10 dark:text-orange-200'
-                              : 'border-slate-200 bg-white/70 text-slate-600 hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white/70'
+                              : 'border-slate-200 bg-white/70 text-slate-600 hover:bg-white dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100'
                           )}
                         >
                           <span>{group.state}</span>
-                          <span className="ml-2 text-xs text-muted-foreground dark:text-white/60">{group.count}</span>
+                          <span className="ml-2 text-xs text-muted-foreground dark:text-slate-100">{group.count}</span>
                         </button>
                       );
                     })
@@ -648,32 +675,40 @@ export default function HomePageClient() {
                 </div>
 
                 {stateLoading && stateGroups.length > 0 ? (
-                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70">
+                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100">
                     Updating opportunities for {displayedState || 'selected state'}...
                   </div>
                 ) : displayedOpportunities.length === 0 ? (
-                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/70">
+                  <div className="rounded-2xl border border-slate-200 bg-white/85 px-6 py-10 text-center text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100">
                     No live opportunities right now for this state. Try another selection.
                   </div>
                 ) : (
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {displayedOpportunities.map((opportunity) => (
-                      <OpportunityCard
-                        key={`${displayedState}-${opportunity.id}`}
-                        id={opportunity.id}
-                        title={opportunity.title}
-                        category={opportunity.category}
-                        gradeEligibility={opportunity.gradeEligibility || 'All Grades'}
-                        organizer={opportunity.organizer || 'Unknown Organizer'}
-                        startDate={formatDate(opportunity.startDate)}
-                        endDate={formatDate(opportunity.endDate)}
-                        registrationDeadline={opportunity.registrationDeadline ?? ''}
-                        mode={normalizeMode(opportunity.mode)}
-                        fee={formatFee(opportunity)}
-                        image={opportunity.image}
-                        className="h-full"
-                      />
-                    ))}
+                    {displayedOpportunities.map((opportunity) => {
+                      // Determine if opportunity is closed
+                      const isClosed = 
+                        opportunity.status?.toLowerCase() === 'closed' ||
+                        (opportunity.registrationDeadline && new Date(opportunity.registrationDeadline) < new Date());
+                      
+                      return (
+                        <OpportunityCard
+                          key={`${displayedState}-${opportunity.id}`}
+                          id={opportunity.id}
+                          title={opportunity.title}
+                          category={opportunity.category}
+                          gradeEligibility={opportunity.gradeEligibility || 'All Grades'}
+                          organizer={opportunity.organizer || 'Unknown Organizer'}
+                          startDate={formatDate(opportunity.startDate)}
+                          endDate={formatDate(opportunity.endDate)}
+                          registrationDeadline={opportunity.registrationDeadline ?? ''}
+                          mode={normalizeMode(opportunity.mode)}
+                          fee={formatFee(opportunity)}
+                          image={opportunity.image}
+                          status={isClosed ? 'closed' : 'active'}
+                          className="h-full"
+                        />
+                      );
+                    })}
                   </div>
                 )}
               </>
@@ -700,7 +735,7 @@ export default function HomePageClient() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="group cursor-pointer rounded-2xl border border-orange-200 bg-white/90 p-8 shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+              <div className="group cursor-pointer rounded-2xl border border-orange-200 bg-white/90 p-8 shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
                 <div className="mb-6 w-fit rounded-xl bg-orange-100 p-3 text-orange-500 transition-transform group-hover:scale-110 dark:bg-orange-500/20 dark:text-orange-200">
                   <GraduationCap className="h-8 w-8" />
                 </div>
@@ -713,7 +748,7 @@ export default function HomePageClient() {
                 </Button>
               </div>
 
-              <div className="group cursor-pointer rounded-2xl border border-sky-200 bg-white/90 p-8 shadow-sm shadow-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+              <div className="group cursor-pointer rounded-2xl border border-sky-200 bg-white/90 p-8 shadow-sm shadow-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
                 <div className="mb-6 w-fit rounded-xl bg-sky-100 p-3 text-sky-500 transition group-hover:scale-110 dark:bg-sky-500/20 dark:text-sky-200">
                   <BookOpen className="h-8 w-8" />
                 </div>
@@ -726,7 +761,7 @@ export default function HomePageClient() {
                 </Button>
               </div>
 
-              <div className="group cursor-pointer rounded-2xl border border-emerald-200 bg-white/90 p-8 shadow-sm shadow-emerald-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/15 dark:bg-white/5">
+              <div className="group cursor-pointer rounded-2xl border border-emerald-200 bg-white/90 p-8 shadow-sm shadow-emerald-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
                 <div className="mb-6 w-fit rounded-xl bg-emerald-100 p-3 text-emerald-500 transition group-hover:scale-110 dark:bg-emerald-500/20 dark:text-emerald-200">
                   <Target className="h-8 w-8" />
                 </div>

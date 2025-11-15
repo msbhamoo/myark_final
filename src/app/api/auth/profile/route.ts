@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
         },
         {
           uid: decoded.uid,
-          email: docData.email,
+          email: (docData.email as string | null | undefined) ?? decoded.email ?? null,
           displayName,
         },
       ),

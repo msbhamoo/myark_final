@@ -423,7 +423,7 @@ export default function PracticePage() {
                 {quizzes.map((quiz) => (
                   <Card key={quiz.id} className="p-6 hover:shadow-lg transition-shadow">
                     <div className="mb-4">
-                      <Badge className={getDifficultyColor(quiz.difficulty)} className="mb-3">
+                      <Badge className={`${getDifficultyColor(quiz.difficulty)} mb-3`}>
                         {quiz.difficulty}
                       </Badge>
                       <h3 className="font-bold text-lg mb-2">{quiz.title}</h3>

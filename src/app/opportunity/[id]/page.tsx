@@ -155,7 +155,13 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
   const hasNumericPrice = Number.isFinite(priceValue) && priceValue >= 0;
   const priceCurrency = 'INR';
 
-  const structuredTimeline = (opportunity.timeline ?? [])
+  const structuredTimeline: Array<{
+    '@type': string;
+    '@id': string;
+    name: string | undefined;
+    startDate: string;
+    eventStatus: string;
+  }> = (opportunity.timeline ?? [])
     .filter((item) => item?.event && item?.date)
     .map((item, index) => {
       const timelineDate = toIsoDate(item.date);
@@ -171,7 +177,7 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
           }
         : null;
     })
-    .filter((entry): entry is Record<string, unknown> => Boolean(entry));
+    .filter((entry): entry is Exclude<typeof structuredTimeline[number], null> => Boolean(entry));
 
   const audienceDescription = opportunity.gradeEligibility
     ? `Students in ${opportunity.gradeEligibility}`

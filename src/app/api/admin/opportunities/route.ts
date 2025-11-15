@@ -18,7 +18,6 @@ const toIsoString = (value: unknown): string | null => {
   if (value instanceof Date) return value.toISOString();
   if (value instanceof Timestamp) return value.toDate().toISOString();
   if (typeof value === 'object' && value && 'toDate' in value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (value as any).toDate().toISOString();
   }
   return null;
@@ -35,7 +34,6 @@ const toDateValue = (value: unknown): Date | null => {
     }
   }
   if (typeof value === 'object' && value && 'toDate' in value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parsed = (value as any).toDate?.();
     return parsed instanceof Date && !Number.isNaN(parsed.getTime()) ? parsed : null;
   }
@@ -304,7 +302,7 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     mode: data.mode ?? 'online',
     state: (() => {
       const rawState = typeof data.state === 'string' ? data.state.trim() : '';
-      return INDIAN_STATES_SET.has(rawState) ? rawState : '';
+      return INDIAN_STATES_SET.has(rawState as any) ? (rawState as any) : '';
     })(),
     status: data.status ?? 'draft',
     fee: data.fee ?? '',
@@ -327,6 +325,10 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     approval: data.approval ?? null,
     createdAt: toIsoString(data.createdAt),
     updatedAt: toIsoString(data.updatedAt),
+    registrationMode: data.registrationMode ?? 'internal',
+    applicationUrl: data.applicationUrl ?? '',
+    registrationCount: data.registrationCount ?? 0,
+    externalRegistrationClickCount: data.externalRegistrationClickCount ?? 0,
   };
 };
 
@@ -375,8 +377,8 @@ export async function POST(request: Request) {
       gradeEligibility: typeof payload.gradeEligibility === 'string' ? payload.gradeEligibility.trim() : '',
       mode: typeof payload.mode === 'string' ? payload.mode : 'online',
       state:
-        typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim())
-          ? payload.state.trim()
+        typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim() as any)
+          ? (payload.state.trim() as any)
           : '',
       status: typeof payload.status === 'string' ? payload.status : 'draft',
       fee: typeof payload.fee === 'string' ? payload.fee.trim() : '',
@@ -394,6 +396,9 @@ export async function POST(request: Request) {
       examPattern: parseExamPatternForStore(payload.examPattern),
       contactInfo: parseContactInfoForStore(payload.contactInfo),
       resources: parseResourcesForStore(payload.resources),
+      registrationMode: payload.registrationMode === 'external' ? 'external' : 'internal',
+      applicationUrl: payload.registrationMode === 'external' && typeof payload.applicationUrl === 'string' ? payload.applicationUrl.trim() : '',
+      registrationCount: 0,
       createdAt: now,
       updatedAt: now,
     };

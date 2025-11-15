@@ -842,8 +842,8 @@ export default function StudentPortfolioDashboard({
   };
 
   const completionChecklist = useMemo(() => {
-    if (!profile) return [];
-    const completed = new Set(profile.completion.completedSteps);
+    if (!profile) return []; // Ensure profile is not null
+    const completed = new Set<keyof typeof completionLabels>(profile.completion.completedSteps);
     return Object.entries(completionLabels).map(([key, label]) => ({
       key,
       label,

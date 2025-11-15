@@ -39,7 +39,6 @@ const toIsoString = (value: unknown): string | undefined => {
 
   // Firestore Timestamp represented as plain object
   if (typeof value === 'object' && value !== null && 'toDate' in value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (value as any).toDate().toISOString();
   }
 
@@ -170,7 +169,7 @@ const mapResources = (value: unknown): OpportunityResource[] => {
         url,
         type: mapResourceType(record.type),
         description,
-      };
+      } as OpportunityResource;
     })
     .filter((item): item is OpportunityResource => Boolean(item));
 };
@@ -200,7 +199,9 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     title: String(data.title ?? ''),
     slug: data.slug ? String(data.slug) : undefined,
     categoryId: data.categoryId ? String(data.categoryId) : undefined,
+    categoryName: data.categoryName ? String(data.categoryName) : undefined,
     organizerId: data.organizerId ? String(data.organizerId) : undefined,
+    organizerName: data.organizerName ? String(data.organizerName) : undefined,
     organizerLogo: data.organizerLogo ? String(data.organizerLogo) : undefined,
     category: String(data.category ?? ''),
     organizer: String(data.organizer ?? ''),
@@ -208,7 +209,7 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     mode: (data.mode ?? 'online') as Opportunity['mode'],
     state: (() => {
       const rawState = typeof data.state === 'string' ? data.state.trim() : '';
-      return INDIAN_STATES_SET.has(rawState) ? rawState : undefined;
+      return INDIAN_STATES_SET.has(rawState as any) ? (rawState as any) : undefined;
     })(),
     status: typeof data.status === 'string' ? data.status : undefined,
     startDate: toIsoString(data.startDate),
@@ -227,6 +228,14 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     resources: mapResources(data.resources),
     segments: normalizeArray(data.segments),
     searchKeywords: normalizeArray(data.searchKeywords),
+    applicationUrl: typeof data.applicationUrl === 'string' && data.applicationUrl.trim()
+      ? data.applicationUrl.trim()
+      : undefined,
+    registrationMode: data.registrationMode === 'internal' ? 'internal' : 'external',
+    registrationCount:
+      typeof data.registrationCount === 'number' && Number.isFinite(data.registrationCount)
+        ? data.registrationCount
+        : 0,
   };
 };
 

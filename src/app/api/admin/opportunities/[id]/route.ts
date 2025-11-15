@@ -17,7 +17,6 @@ const toIsoString = (value: unknown): string | null => {
   if (value instanceof Date) return value.toISOString();
   if (value instanceof Timestamp) return value.toDate().toISOString();
   if (typeof value === 'object' && value && 'toDate' in value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (value as any).toDate().toISOString();
   }
   return null;
@@ -34,7 +33,6 @@ const toDateValue = (value: unknown): Date | null => {
     }
   }
   if (typeof value === 'object' && value && 'toDate' in value) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parsed = (value as any).toDate?.();
     return parsed instanceof Date && !Number.isNaN(parsed.getTime()) ? parsed : null;
   }
@@ -329,6 +327,13 @@ export async function PUT(request: Request, context: any) {
     if (has('status')) updates.status = typeof payload.status === 'string' ? payload.status : 'draft';
     if (has('fee')) updates.fee = typeof payload.fee === 'string' ? payload.fee.trim() : '';
 
+    if (has('registrationMode')) {
+      updates.registrationMode = payload.registrationMode === 'external' ? 'external' : 'internal';
+    }
+    if (has('applicationUrl')) {
+      updates.applicationUrl = typeof payload.applicationUrl === 'string' ? payload.applicationUrl.trim() : '';
+    }
+
     if (has('registrationDeadline')) updates.registrationDeadline = toDateValue(payload.registrationDeadline);
     if (has('startDate')) updates.startDate = toDateValue(payload.startDate);
     if (has('endDate')) updates.endDate = toDateValue(payload.endDate);
@@ -382,6 +387,10 @@ export async function PUT(request: Request, context: any) {
         examPattern: sanitizeExamPatternForResponse(data.examPattern),
         contactInfo: sanitizeContactInfoForResponse(data.contactInfo),
         resources: sanitizeResourcesForResponse(data.resources),
+        registrationMode: data.registrationMode ?? 'internal',
+        applicationUrl: data.applicationUrl ?? '',
+        registrationCount: data.registrationCount ?? 0,
+        externalRegistrationClickCount: data.externalRegistrationClickCount ?? 0,
       },
     });
   } catch (error) {
