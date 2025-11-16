@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowUpRight, Calendar, Clock, Users, Zap, Lock } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { OpportunityStatusBadgeMinimal } from '@/components/OpportunityStatusBadge';
 import { cn } from '@/lib/utils';
 
 
@@ -257,25 +258,22 @@ export default function OpportunityCard({
         {/* Header with category badge */}
         <div className="flex flex-col gap-2">
           <div className="flex items-start justify-between gap-2">
-            <span
-              className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold whitespace-nowrap',
-                categoryStyles.badgeClass,
-              )}
-            >
-              <span>{categoryStyles.icon}</span>
-              <span className="hidden sm:inline">{normalizedCategory}</span>
-            </span>
+            <div className="flex flex-col gap-2 flex-1">
+              <span
+                className={cn(
+                  'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold whitespace-nowrap w-fit',
+                  categoryStyles.badgeClass,
+                )}
+              >
+                <span>{categoryStyles.icon}</span>
+                <span className="hidden sm:inline">{normalizedCategory}</span>
+              </span>
+              <OpportunityStatusBadgeMinimal registrationDeadline={registrationDeadline} />
+            </div>
             {isUrgent && (
               <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-bold text-red-700 dark:bg-red-500/20 dark:text-red-200 flex-shrink-0">
                 <Zap className="h-3 w-3" />
                 <span className="hidden sm:inline">Urgent</span>
-              </span>
-            )}
-            {isClosed && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-1 text-xs font-bold text-red-700 dark:bg-red-500/20 dark:text-red-200 flex-shrink-0 ring-1 ring-red-200 dark:ring-red-500/30">
-                <Lock className="h-3 w-3" />
-                <span className="hidden sm:inline">Closed</span>
               </span>
             )}
           </div>

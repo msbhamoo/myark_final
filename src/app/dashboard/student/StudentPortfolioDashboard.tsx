@@ -1018,11 +1018,11 @@ export default function StudentPortfolioDashboard({
                 </Avatar>
               </div>
             </div>
-            <div className="px-6 pb-6 pt-20">
+            <div className="px-4 pb-6 pt-20 sm:px-6">
               <div className="space-y-5">
                 <div className="space-y-4">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h1 className="text-2xl font-semibold text-slate-900">{profile.displayName}</h1>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">{profile.displayName}</h1>
                     <Badge
                       variant="secondary"
                       className="flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
@@ -1139,36 +1139,38 @@ export default function StudentPortfolioDashboard({
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.12),transparent_60%)]" />
             <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl" />
             <div className="pointer-events-none absolute -right-16 -bottom-24 h-48 w-48 rounded-full bg-sky-200/30 blur-3xl" />
-            <div className="relative z-10 space-y-8">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="space-y-3">
+            <div className="relative z-10 space-y-6 sm:space-y-8">
+              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="space-y-2 sm:space-y-3">
                   <Badge className="w-fit bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
                     Portfolio snapshot
                   </Badge>
-                  <h2 className="text-3xl font-semibold leading-tight text-slate-900">Welcome back, {firstName}</h2>
+                  <h2 className="text-2xl sm:text-3xl font-semibold leading-tight text-slate-900">Welcome back, {firstName}</h2>
                   <p className="max-w-2xl text-sm text-slate-600">
                     Keep refining your journey, highlight wins you are proud of, and share a polished portfolio with mentors and colleges.
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
                   <Button
-                    className="bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700"
+                    className="bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700 w-full sm:w-auto"
                     onClick={() => openAcademicDialog()}
                   >
                     <BookOpen className="mr-2 h-4 w-4" />
-                    Log academic year
+                    <span className="hidden sm:inline">Log academic year</span>
+                    <span className="sm:hidden">Log academic</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto"
                     onClick={() => openAchievementDialog()}
                   >
                     <Plus className="mr-2 h-4 w-4" />
-                    Add achievement
+                    <span className="hidden sm:inline">Add achievement</span>
+                    <span className="sm:hidden">Achievement</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-slate-700 hover:bg-slate-50"
+                    className="border-slate-200 text-slate-700 hover:bg-slate-50 w-full sm:w-auto"
                     onClick={() => handleDownload()}
                   >
                     <UploadCloud className="mr-2 h-4 w-4" />
@@ -1176,17 +1178,17 @@ export default function StudentPortfolioDashboard({
                   </Button>
                 </div>
               </div>
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {heroCards.map((card) => {
                   const Icon = card.icon;
                   return (
                     <div
                       key={card.key}
-                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/60"
+                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 text-slate-900 shadow-sm shadow-slate-200/60"
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                      <div className="flex items-start justify-between gap-2 sm:gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 flex-shrink-0">
                             <Icon className="h-5 w-5" />
                           </span>
                           <div>
@@ -1218,16 +1220,16 @@ export default function StudentPortfolioDashboard({
           </section>
 
           <section id="progress" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-start md:justify-between">
               <div>
-                <h2 className="text-2xl font-semibold text-slate-900">Profile progress</h2>
-                <p className="mt-1 text-sm text-slate-600">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Profile progress</h2>
+                <p className="mt-1 text-xs sm:text-sm text-slate-600">
                   Complete the steps to unlock a standout public portfolio.
                 </p>
               </div>
-              <div className="flex items-center gap-3 text-slate-500">
-                <span className="text-sm uppercase tracking-wide">Completion</span>
-                <span className="text-3xl font-semibold text-slate-900">
+              <div className="flex items-center gap-2 sm:gap-3 text-slate-500">
+                <span className="text-xs sm:text-sm uppercase tracking-wide">Completion</span>
+                <span className="text-2xl sm:text-3xl font-semibold text-slate-900">
                   {Math.round(profile.completion.percent)}%
                 </span>
               </div>
@@ -1261,19 +1263,20 @@ export default function StudentPortfolioDashboard({
           </section>
 
           <section id="academics" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="text-2xl font-semibold text-slate-900">Academic story</h2>
-                <p className="text-sm text-slate-600">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Academic story</h2>
+                <p className="text-xs sm:text-sm text-slate-600">
                   Capture your journey year by year with grades, highlights, and teacher feedback.
                 </p>
               </div>
               <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
                 onClick={() => openAcademicDialog()}
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Add academic year
+                <span className="hidden sm:inline">Add academic year</span>
+                <span className="sm:hidden">Academic year</span>
               </Button>
             </div>
 
@@ -1384,19 +1387,20 @@ export default function StudentPortfolioDashboard({
           </section>
 
           <section id="achievements" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h2 className="text-2xl font-semibold text-slate-900">Achievements &amp; awards</h2>
-                <p className="text-sm text-slate-600">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Achievements &amp; awards</h2>
+                <p className="text-xs sm:text-sm text-slate-600">
                   Celebrate milestones with descriptions, levels, and certificate links.
                 </p>
               </div>
               <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
                 onClick={() => openAchievementDialog()}
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Add achievement
+                <span className="hidden sm:inline">Add achievement</span>
+                <span className="sm:hidden">Achievement</span>
               </Button>
             </div>
 
@@ -1509,19 +1513,20 @@ export default function StudentPortfolioDashboard({
           </section>
 
       <section id="extracurricular" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Competitions &amp; challenges</h2>
-            <p className="text-sm text-slate-600">
+            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Competitions &amp; challenges</h2>
+            <p className="text-xs sm:text-sm text-slate-600">
               Document Olympiads, hackathons, tournaments, and other competitive experiences.
             </p>
           </div>
           <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
             onClick={() => openCompetitionDialog()}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Add competition
+            <span className="hidden sm:inline">Add competition</span>
+            <span className="sm:hidden">Competition</span>
           </Button>
         </div>
 
@@ -1587,19 +1592,20 @@ export default function StudentPortfolioDashboard({
       </section>
 
       <section id="competitions" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Extracurricular life</h2>
-            <p className="text-sm text-slate-600">
+            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Extracurricular life</h2>
+            <p className="text-xs sm:text-sm text-slate-600">
               Capture clubs, volunteering, and passion projects that shape your learning identity.
             </p>
           </div>
           <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
             onClick={() => openExtracurricularDialog()}
           >
             <Plus className="mr-2 h-4 w-4" />
-            Add activity
+            <span className="hidden sm:inline">Add activity</span>
+            <span className="sm:hidden">Activity</span>
           </Button>
         </div>
 
@@ -1665,17 +1671,17 @@ export default function StudentPortfolioDashboard({
       </section>
 
       <section id="resources" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Saved opportunities</h2>
-            <p className="text-sm text-slate-600">
+            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Saved opportunities</h2>
+            <p className="text-xs sm:text-sm text-slate-600">
               Access programmes you bookmarked and keep an eye on upcoming deadlines.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
             <Button
               variant="outline"
-              className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+              className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto"
               onClick={() => loadSavedOpportunities()}
               disabled={isLoadingSaved}
             >
@@ -1684,11 +1690,11 @@ export default function StudentPortfolioDashboard({
               ) : (
                 <RefreshCw className="mr-2 h-4 w-4" />
               )}
-              Refresh
+              <span className="hidden sm:inline">Refresh</span>
             </Button>
             <Button
               variant="outline"
-              className="border-slate-200 text-slate-700 hover:bg-slate-50"
+              className="border-slate-200 text-slate-700 hover:bg-slate-50 w-full sm:w-auto"
               onClick={() => router.push('/opportunities')}
             >
               Browse more

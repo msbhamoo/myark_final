@@ -32,3 +32,21 @@ export interface City {
     name: string;
     stateId: string;
 }
+
+export interface CategoryIconConfig {
+  emoji?: string;
+  icon?: string;
+  type: 'emoji' | 'icon' | 'image';
+  url?: string;
+}
+
+export interface OpportunityCategoryWithMeta extends OpportunityCategory {
+  icon?: CategoryIconConfig;
+  color?: string;
+  gradient?: {
+    from: string;
+    to: string;
+  };
+  displayOrder?: number;
+  isActive?: boolean;
+}

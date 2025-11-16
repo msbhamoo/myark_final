@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BottomNavigation from '@/components/BottomNavigation';
+import AllCategoriesSection from '@/components/AllCategoriesSection';
 import OpportunityCard from '@/components/OpportunityCard';
 import { Button } from '@/components/ui/button';
 import { Sparkles, BookOpen, GraduationCap, Target, ChevronRight, MapPin } from 'lucide-react';
@@ -354,10 +356,10 @@ export default function HomePageClient() {
   const displayedOpportunities = currentStateGroup?.opportunities ?? [];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
       <Header />
       
-      <main className="flex-1">
+      <main className="flex-1 pb-20 md:pb-0">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-20 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
           <div className="absolute inset-0">
@@ -417,27 +419,31 @@ export default function HomePageClient() {
               <div className="flex justify-end pr-2">
                 <MascotBurst size="sm" className="hidden lg:inline-flex" />
               </div>
-              <div className="relative overflow-hidden rounded-3xl border border-orange-200/60 bg-white/80 p-6 shadow-lg shadow-orange-200/40 dark:border-orange-300/20 dark:bg-slate-900/80">
+              <div className="relative overflow-hidden rounded-3xl border border-orange-200/60 bg-white/80 p-4 sm:p-6 shadow-lg shadow-orange-200/40 dark:border-orange-300/20 dark:bg-slate-900/80">
                 <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700 dark:bg-orange-400/20 dark:text-orange-200">
                   Weekly spotlight
                 </span>
-                <h3 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Jump in this week</h3>
+                <h3 className="mt-4 text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">Jump in this week</h3>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                   Handpicked programs to help you explore, compete, and grow.
                 </p>
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="mt-5 grid gap-2 sm:gap-3 grid-cols-1 sm:grid-cols-3">
                   {HERO_SPOTLIGHTS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="group flex flex-col gap-4 rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
+                      className="group flex flex-col gap-3 rounded-2xl border border-slate-200/70 bg-white/90 p-3 sm:p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
                     >
-                      <MascotOrb tone={item.tone} icon={item.icon} />
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white">{item.label}</span>
-                      <span className="mt-2 text-xs text-slate-600 group-hover:text-orange-500 dark:text-slate-300">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white line-clamp-2">{item.label}</span>
+                        </div>
+                        <span className="text-xl sm:text-2xl flex-shrink-0">{item.icon}</span>
+                      </div>
+                      <span className="text-xs text-slate-600 group-hover:text-orange-500 dark:text-slate-300 line-clamp-2">
                         {item.caption}
                       </span>
-                      <span className="mt-3 inline-flex items-center text-xs font-semibold text-orange-500">
+                      <span className="mt-auto inline-flex items-center text-xs font-semibold text-orange-500 pt-1">
                         Explore
                         <ChevronRight className="ml-1 h-3 w-3" />
                       </span>
@@ -445,36 +451,36 @@ export default function HomePageClient() {
                   ))}
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-2 sm:gap-4 grid-cols-1 sm:grid-cols-2">
                 <Link
                   href="/opportunities?mode=online"
-                  className="flex items-center gap-3 rounded-3xl border border-sky-200/70 bg-white/80 p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-sky-300/30 dark:bg-slate-900/80"
+                  className="flex items-center gap-3 rounded-2xl sm:rounded-3xl border border-sky-200/70 bg-white/80 p-3 sm:p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-sky-300/30 dark:bg-slate-900/80"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-200">
-                    <BookOpen className="h-5 w-5" />
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-sky-100 text-sky-600 flex-shrink-0 dark:bg-sky-500/20 dark:text-sky-200">
+                    <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Skill Labs</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-300">Weekend workshops and clubs</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">Skill Labs</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">Workshops & clubs</p>
                   </div>
                 </Link>
                 <Link
                   href="/opportunities?category=scholarships"
-                  className="flex items-center gap-3 rounded-3xl border border-emerald-200/70 bg-white/80 p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-emerald-300/30 dark:bg-slate-900/80"
+                  className="flex items-center gap-3 rounded-2xl sm:rounded-3xl border border-emerald-200/70 bg-white/80 p-3 sm:p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-emerald-300/30 dark:bg-slate-900/80"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-200">
-                    <GraduationCap className="h-5 w-5" />
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-100 text-emerald-600 flex-shrink-0 dark:bg-emerald-500/20 dark:text-emerald-200">
+                    <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Scholarships</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-300">Financial support for achievers</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">Scholarships</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">Financial support</p>
                   </div>
                 </Link>
               </div>
             </div>
           </div>
         </section>
-        <section className="border-y border-orange-100 bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 py-12 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+        <section className="hidden md:block border-y border-orange-100 bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 py-12 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
           <div className="container mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {STAT_CONFIG.map(({ key, label }) => {
@@ -716,69 +722,17 @@ export default function HomePageClient() {
           </div>
         </section>
 
-        <section className="relative overflow-hidden py-24 bg-gradient-to-br from-orange-100 via-pink-100 to-sky-100 text-slate-900 dark:from-[#1e163b] dark:via-[#261248] dark:to-[#1a173a] dark:text-white">
-          {/* Background decorations */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.7),transparent_65%)] dark:bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.15),transparent_65%)]" />
-            <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-pink-200/40 blur-3xl animate-blob dark:bg-pink-500/20" />
-            <div className="absolute -right-24 -bottom-24 h-96 w-96 rounded-full bg-orange-200/40 blur-3xl animate-blob animation-delay-2000 dark:bg-orange-500/20" />
-          </div>
-
-          <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] relative z-10">
-            <div className="text-center mb-16">
-              <h2 className="mb-6 text-4xl font-bold md:text-5xl">
-                Start Your <span className="text-orange-500 dark:text-orange-200">Journey</span> Today
-              </h2>
-              <p className="mx-auto max-w-2xl text-xl leading-relaxed text-slate-700 dark:text-white/90">
-                Practice with past papers, explore resources, and track your progress to achieve your goals.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="group cursor-pointer rounded-2xl border border-orange-200 bg-white/90 p-8 shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
-                <div className="mb-6 w-fit rounded-xl bg-orange-100 p-3 text-orange-500 transition-transform group-hover:scale-110 dark:bg-orange-500/20 dark:text-orange-200">
-                  <GraduationCap className="h-8 w-8" />
-                </div>
-                <h3 className="mb-3 text-2xl font-bold">Practice Papers</h3>
-                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
-                  Access solved and unsolved past papers with detailed progress tracking
-                </p>
-                <Button className="w-full rounded-xl bg-orange-500 py-6 text-lg font-semibold text-white transition hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-600">
-                  Start Practice
-                </Button>
-              </div>
-
-              <div className="group cursor-pointer rounded-2xl border border-sky-200 bg-white/90 p-8 shadow-sm shadow-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
-                <div className="mb-6 w-fit rounded-xl bg-sky-100 p-3 text-sky-500 transition group-hover:scale-110 dark:bg-sky-500/20 dark:text-sky-200">
-                  <BookOpen className="h-8 w-8" />
-                </div>
-                <h3 className="mb-3 text-2xl font-bold">Resources</h3>
-                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
-                  Comprehensive collection of reference materials and guides
-                </p>
-                <Button className="w-full rounded-xl bg-sky-500 py-6 text-lg font-semibold text-white transition hover:bg-sky-600 dark:bg-sky-500 dark:hover:bg-sky-600">
-                  Explore Resources
-                </Button>
-              </div>
-
-              <div className="group cursor-pointer rounded-2xl border border-emerald-200 bg-white/90 p-8 shadow-sm shadow-emerald-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/50">
-                <div className="mb-6 w-fit rounded-xl bg-emerald-100 p-3 text-emerald-500 transition group-hover:scale-110 dark:bg-emerald-500/20 dark:text-emerald-200">
-                  <Target className="h-8 w-8" />
-                </div>
-                <h3 className="mb-3 text-2xl font-bold">Dashboard</h3>
-                <p className="mb-6 text-lg text-slate-600 dark:text-white/80">
-                  Track your progress, achievements, and manage your bookmarks
-                </p>
-                <Button className="w-full rounded-xl bg-emerald-500 py-6 text-lg font-semibold text-white transition hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600">
-                  View Dashboard
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+       
       </main>
 
+      {/* Mobile-only Stats Section - Before Footer */}
+     
+
+      {/* All Categories Section - Mobile Only */}
+      <AllCategoriesSection />
+
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }

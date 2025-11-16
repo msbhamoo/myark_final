@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BottomNavigation from '@/components/BottomNavigation';
 import OpportunityCard from '@/components/OpportunityCard';
+import SchoolListSection from '@/components/home/SchoolListSection';
 import { Button } from '@/components/ui/button';
 import { 
   Search, 
@@ -264,7 +266,7 @@ export default function ParentGuidePage() {
               >
                 <div className="flex items-center gap-2">
                   <Target className="h-4 w-4" />
-                  <span>Available Opportunities</span>
+                  <span>Find Best School</span>
                 </div>
               </button>
             </div>
@@ -364,133 +366,60 @@ export default function ParentGuidePage() {
             </div>
           </section>
         ) : (
-          // Opportunities Section
-          <section className="py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              {/* Search and Filters */}
-              <div className="mb-12 space-y-6">
-                {/* Search Bar */}
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="text"
-                    placeholder="Search opportunities by name, organizer, or category..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-slate-900 placeholder:text-slate-400 transition focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
-                  />
-                </div>
-
-                {/* Grade Filter */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-3">
-                    <Filter className="mr-2 inline h-4 w-4" />
-                    Filter by Grade Level
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {grades.map((grade) => (
-                      <button
-                        key={grade.value}
-                        onClick={() => toggleGrade(grade.value)}
-                        className={cn(
-                          'rounded-full px-4 py-2 text-sm font-semibold transition',
-                          selectedGrades.includes(grade.value)
-                            ? 'bg-blue-600 text-white dark:bg-blue-500'
-                            : 'border border-slate-300 text-slate-700 hover:border-slate-400 dark:border-slate-600 dark:text-slate-300'
-                        )}
-                      >
-                        {grade.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Category Filter */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-3">
-                    Filter by Category
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {categories.map((cat) => (
-                      <button
-                        key={cat.value}
-                        onClick={() => toggleCategory(cat.value)}
-                        className={cn(
-                          'rounded-full px-4 py-2 text-sm font-semibold transition',
-                          selectedCategories.includes(cat.value)
-                            ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                            : 'border border-slate-300 text-slate-700 hover:border-slate-400 dark:border-slate-600 dark:text-slate-300'
-                        )}
-                      >
-                        {cat.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Clear Filters */}
-                {(selectedGrades.length > 0 || selectedCategories.length > 0 || searchQuery) && (
-                  <button
-                    onClick={() => {
-                      setSearchQuery('');
-                      setSelectedGrades([]);
-                      setSelectedCategories([]);
-                    }}
-                    className="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
-                  >
-                    Clear all filters
-                  </button>
-                )}
+          // Find Best Schools Section
+          <section className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/40 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-8 sm:mb-12 text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                  Find the Best School for Your Child
+                </h2>
+                <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+                  Explore verified schools across India. Compare boards, fees, facilities, and more to make the best choice for your family.
+                </p>
               </div>
 
-              {/* Results */}
-              {loading ? (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-                  <p className="mt-4 text-slate-600 dark:text-slate-400">Loading opportunities...</p>
-                </div>
-              ) : filteredOpportunities.length > 0 ? (
-                <div>
-                  <p className="mb-6 text-sm font-semibold text-slate-600 dark:text-slate-400">
-                    Found {filteredOpportunities.length} opportunity{filteredOpportunities.length !== 1 ? 'ies' : ''}
-                  </p>
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredOpportunities.map((opp) => {
-                      // Determine if opportunity is closed
-                      const isClosed = 
-                        opp.status?.toLowerCase() === 'closed' ||
-                        (opp.registrationDeadline && new Date(opp.registrationDeadline) < new Date());
-                      
-                      return (
-                        <OpportunityCard
-                          key={opp.id}
-                          id={opp.id}
-                          title={opp.title}
-                          category={opp.category}
-                          gradeEligibility={opp.gradeEligibility || 'All Grades'}
-                          organizer={opp.organizer || 'Unknown Organizer'}
-                          registrationDeadline={opp.registrationDeadline ?? ''}
-                          mode={opp.mode as 'online' | 'offline' | 'hybrid'}
-                          fee={opp.fee}
-                          status={isClosed ? 'closed' : 'active'}
-                        />
-                      );
-                    })}
+              {/* Schools List */}
+              <SchoolListSection />
+
+              {/* Additional Info Box */}
+              <div className="mt-8 sm:mt-12 rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-50 to-sky-50 p-6 sm:p-8 dark:border-blue-400/20 dark:from-blue-950/20 dark:to-sky-950/20">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-4">
+                  💡 How to Choose the Right School
+                </h3>
+                <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Check School Performance</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Look at board affiliation, exam results, and student achievements to assess academic standards.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Compare Facilities</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Review available facilities like labs, sports, art studios, and technology centers that support student growth.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Review Fees & Affordability</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Compare fee structures to find schools that fit your budget while offering quality education.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Visit & Connect</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Visit campuses and speak with administrators and teachers to get a feel for the school culture.
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white/80 px-6 py-10 text-center dark:border-slate-700 dark:bg-slate-800/50">
-                  <p className="text-slate-600 dark:text-slate-300">
-                    No opportunities found matching your filters. Try adjusting your search criteria.
-                  </p>
-                </div>
-              )}
+              </div>
             </div>
           </section>
         )}
       </main>
 
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }

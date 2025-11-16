@@ -164,20 +164,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-16 text-foreground dark:text-white">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-12 md:flex-row">
-        <div className="flex-1 space-y-6">
-          <p className="inline-flex rounded-full border border-border/60 dark:border-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-muted-foreground dark:text-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-8 sm:py-12 md:py-16 text-foreground dark:text-white">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 md:gap-12 lg:flex-row lg:items-center">
+        {/* Left Section - Info */}
+        <div className="flex flex-col gap-4 sm:gap-6 lg:flex-1">
+          <p className="inline-flex rounded-full border border-border/60 dark:border-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-muted-foreground dark:text-slate-100 w-fit">
             MyArk Opportunities Portal
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground dark:text-white md:text-5xl">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground dark:text-white leading-tight">
             Access opportunities or host new programs with one secure account.
           </h1>
-          <p className="text-lg text-muted-foreground dark:text-slate-100">
+          <p className="text-base sm:text-lg text-muted-foreground dark:text-slate-100">
             Sign in to manage your dashboard, or create a business account to publish opportunities
             for review by the MyArk admin team.
           </p>
-          <div className="rounded-2xl border border-border/60 dark:border-slate-700 bg-card/80 dark:bg-slate-800/50 p-6 backdrop-blur">
+          <div className="rounded-2xl border border-border/60 dark:border-slate-700 bg-card/80 dark:bg-slate-800/50 p-4 sm:p-6 backdrop-blur mt-2">
             <h2 className="text-lg font-medium text-foreground dark:text-white">Need help?</h2>
             <p className="mt-2 text-sm text-muted-foreground dark:text-slate-100">
               Business accounts can review submission guidelines inside the dashboard after
@@ -187,21 +188,22 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex-1 rounded-2xl border border-border/60 dark:border-slate-700 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/30 backdrop-blur md:p-8">
+        {/* Right Section - Auth Form */}
+        <div className="w-full rounded-2xl border border-border/60 dark:border-slate-700 bg-slate-900/80 p-4 sm:p-6 md:p-8 shadow-xl shadow-slate-950/30 backdrop-blur lg:flex-1">
           <Tabs
             value={mode}
             onValueChange={(value) => setMode(value as AuthMode)}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 bg-card/80 dark:bg-slate-800/50">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Create Account</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-card/80 dark:bg-slate-800/50 mb-4 sm:mb-6">
+              <TabsTrigger value="login" className="text-xs sm:text-sm">Login</TabsTrigger>
+              <TabsTrigger value="register" className="text-xs sm:text-sm">Create Account</TabsTrigger>
             </TabsList>
 
-            <div className="mt-6 space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               {mode === 'register' && (
-                <div className="space-y-2">
-                  <Label htmlFor="accountType" className="text-sm text-muted-foreground dark:text-slate-100">
+                <div className="space-y-2 sm:space-y-3">
+                  <Label htmlFor="accountType" className="text-xs sm:text-sm text-muted-foreground dark:text-slate-100">
                     Account type
                   </Label>
                   <div className="grid grid-cols-1 gap-2">
@@ -210,16 +212,16 @@ export default function LoginPage() {
                         key={value}
                         type="button"
                         onClick={() => setAccountType(value)}
-                        className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+                        className={`rounded-lg sm:rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors text-xs sm:text-sm ${
                           accountType === value
                             ? 'border-orange-400/60 bg-orange-500/10 text-foreground dark:text-white'
                             : 'border-white/10 bg-card/80 dark:bg-slate-800/50 text-muted-foreground dark:text-slate-100 hover:border-border/40 dark:hover:border-white/30 hover:text-white'
                         }`}
                       >
-                        <span className="block text-sm font-medium">
+                        <span className="block font-medium">
                           {ACCOUNT_TYPE_LABELS[value]}
                         </span>
-                        <span className="mt-1 block text-xs text-muted-foreground dark:text-white/60">
+                        <span className="mt-1 block text-[10px] sm:text-xs text-muted-foreground dark:text-white/60">
                           {value === 'organization'
                             ? 'Share detailed programs to reach the MyArk community.'
                             : 'Save opportunities and get personalized updates.'}
@@ -231,9 +233,9 @@ export default function LoginPage() {
               )}
 
               <TabsContent value="login" className="mt-0">
-                <form className="space-y-5" onSubmit={handleLogin}>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
+                <form className="space-y-3 sm:space-y-4" onSubmit={handleLogin}>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="login-email" className="text-xs sm:text-sm">Email</Label>
                     <Input
                       id="login-email"
                       name="email"
@@ -241,11 +243,11 @@ export default function LoginPage() {
                       autoComplete="email"
                       required
                       placeholder="you@company.com"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="login-password" className="text-xs sm:text-sm">Password</Label>
                     <Input
                       id="login-password"
                       name="password"
@@ -253,18 +255,18 @@ export default function LoginPage() {
                       autoComplete="current-password"
                       required
                       placeholder="••••••••"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
                   </div>
                   {error && mode === 'login' && (
-                    <p className="text-sm text-red-400" role="alert">
+                    <p className="text-xs sm:text-sm text-red-400" role="alert">
                       {error}
                     </p>
                   )}
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
                   >
                     {isSubmitting ? 'Signing in…' : 'Sign in'}
                   </Button>
@@ -272,46 +274,46 @@ export default function LoginPage() {
               </TabsContent>
 
               <TabsContent value="register" className="mt-0">
-                <form className="space-y-5" onSubmit={handleRegister}>
-                  <div className="space-y-2">
-                    <Label htmlFor="register-full-name">Full name</Label>
+                <form className="space-y-3 sm:space-y-4" onSubmit={handleRegister}>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-full-name" className="text-xs sm:text-sm">Full name</Label>
                     <Input
                       id="register-full-name"
                       name="fullName"
                       required
                       placeholder="Alex Johnson"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
                   </div>
 
                   {accountType === 'organization' && (
                     <>
-                      <div className="space-y-2">
-                        <Label htmlFor="register-organization-name">Organization name</Label>
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label htmlFor="register-organization-name" className="text-xs sm:text-sm">Organization name</Label>
                         <Input
                           id="register-organization-name"
                           name="organizationName"
                           required
                           placeholder="Bright Future Foundation"
-                          className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                          className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="register-organization-details">
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <Label htmlFor="register-organization-details" className="text-xs sm:text-sm">
                           Organization overview
                         </Label>
                         <Textarea
                           id="register-organization-details"
                           name="organizationDetails"
                           placeholder="Tell us briefly what your organization does."
-                          className="min-h-[120px] bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                          className="min-h-[100px] sm:min-h-[120px] text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 resize-none"
                         />
                       </div>
                     </>
                   )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="register-email">Email</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-email" className="text-xs sm:text-sm">Email</Label>
                     <Input
                       id="register-email"
                       name="email"
@@ -319,41 +321,41 @@ export default function LoginPage() {
                       autoComplete="email"
                       required
                       placeholder="you@company.com"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="register-password">Password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-password" className="text-xs sm:text-sm">Password</Label>
                     <Input
                       id="register-password"
                       name="password"
                       type="password"
                       required
                       placeholder="Create a secure password"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
-                    <p className="text-xs text-muted-foreground dark:text-white/50">Must be at least 8 characters.</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground dark:text-white/50">Must be at least 8 characters.</p>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="register-confirm-password">Confirm password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-confirm-password" className="text-xs sm:text-sm">Confirm password</Label>
                     <Input
                       id="register-confirm-password"
                       name="confirmPassword"
                       type="password"
                       required
                       placeholder="Confirm your password"
-                      className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50"
+                      className="text-sm sm:text-base bg-card/70 dark:bg-white/10 text-foreground dark:text-white placeholder:text-white/50 h-9 sm:h-10"
                     />
                   </div>
                   {error && mode === 'register' && (
-                    <p className="text-sm text-red-400" role="alert">
+                    <p className="text-xs sm:text-sm text-red-400" role="alert">
                       {error}
                     </p>
                   )}
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
                   >
                     {isSubmitting ? 'Creating account…' : 'Create account'}
                   </Button>

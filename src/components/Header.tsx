@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useAuth } from '@/context/AuthContext';
+import { useAuthModal } from '@/hooks/use-auth-modal';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { cn } from '@/lib/utils';
 
@@ -19,18 +20,23 @@ const NAV_LINKS = [
 export default function Header() {
   const router = useRouter();
   const { user, loading, signOut } = useAuth();
+  const { openAuthModal } = useAuthModal();
   const [searchValue, setSearchValue] = useState('');
 
   const handleHostClick = () => {
     if (!user) {
-      router.push('/login?redirect=/host&accountType=organization');
+      openAuthModal({
+        mode: 'register',
+        accountType: 'organization',
+        redirectUrl: '/host',
+      });
       return;
     }
     router.push('/host');
   };
 
   const handleLoginClick = () => {
-    router.push('/login');
+    openAuthModal({ mode: 'login' });
   };
 
   const handleLogout = async () => {
@@ -194,7 +200,7 @@ export default function Header() {
             />
             <button type="submit" aria-hidden="true" className="hidden" />
           </form>
-        <div className="flex items-center justify-between">
+        <div className="hidden sm:flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
             <span className="font-medium text-slate-700 dark:text-slate-100">Quick links:</span>
             <div className="flex items-center gap-2">

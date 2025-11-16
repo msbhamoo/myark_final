@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import BottomNavigation from '@/components/BottomNavigation';
 import type { Opportunity } from '@/types/opportunity';
 import { getOpportunities } from '@/lib/opportunityService';
 import OpportunitiesSearch from './OpportunitiesSearch';
@@ -75,7 +76,7 @@ export default async function OpportunitiesPage(props: any) {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:bg-[#050b3a]">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pb-20 md:pb-0">
         <section className="relative overflow-hidden py-14 md:py-20">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.8),transparent_60%)] dark:bg-[url('/images/grid-pattern.svg')] dark:opacity-[0.03]" />
           <div className="container relative mx-auto max-w-[1200px] px-4 md:px-6">
@@ -101,6 +102,7 @@ export default async function OpportunitiesPage(props: any) {
         </section>
       </main>
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import type { Opportunity, OpportunityResource, OpportunityTimelineEvent, OpportunityTimelineStatus } from '@/types/opportunity';
 import { useAuth } from '@/context/AuthContext';
+import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
@@ -532,6 +533,7 @@ const deriveTimelineCta = (timeline?: OpportunityTimelineEvent[]): TimelineCallT
 export default function OpportunityDetail({ opportunity }: { opportunity: Opportunity }) {
   const router = useRouter();
   const { user, loading: authLoading, getIdToken } = useAuth();
+  const { openAuthModal } = useAuthModal();
   const params = useParams();
   const rawId = params?.['id'];
   const opportunityId = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
@@ -708,7 +710,10 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
     if (!user) {
       setActionMessage('Please log in to save opportunities.');
-      router.push(`/login?redirect=${encodeURIComponent(detailPath)}`);
+      openAuthModal({
+        mode: 'login',
+        redirectUrl: detailPath,
+      });
       return;
     }
 
@@ -751,7 +756,10 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
     if (!user) {
       setActionMessage('Please log in to register for this opportunity.');
-      router.push(`/login?redirect=${encodeURIComponent(detailPath)}`);
+      openAuthModal({
+        mode: 'login',
+        redirectUrl: detailPath,
+      });
       return;
     }
 
@@ -804,7 +812,10 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
     if (!user) {
       setActionMessage('Please log in to follow timeline updates for this opportunity.');
-      router.push(`/login?redirect=${encodeURIComponent(detailPath)}`);
+      openAuthModal({
+        mode: 'login',
+        redirectUrl: detailPath,
+      });
       return;
     }
     if (normalizedRegisterUrl) {
