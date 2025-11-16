@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/admin/opportunities', label: 'Opportunities' },
   { href: '/admin/hosts', label: 'Hosts' },
   { href: '/admin/home', label: 'Home Layout' },
+  { href: '/admin/blogs', label: 'Blogs' },
   { href: '/admin/bulk', label: 'Bulk Uploads' },
   { href: '/admin/schools', label: 'Schools' },
   { href: '/admin/users', label: 'Users' },

@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="space-y-6">
             <Link
               href="/"
-              className="inline-flex items-center gap-3 rounded-2xl border border-orange-300/30 bg-white/10 px-3 py-2 text-white shadow-sm shadow-orange-400/20 transition hover:-translate-y-[1px] hover:shadow-md"
+              className="inline-flex items-center gap-3 rounded-2xl border border-orange-300/20 bg-white/10 px-3 py-2 text-white shadow-sm shadow-orange-400/20 transition hover:-translate-y-[1px] hover:shadow-md"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-pink-500 text-lg font-semibold text-white shadow-inner shadow-orange-500/40">
                 M

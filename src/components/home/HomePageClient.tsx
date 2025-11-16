@@ -136,22 +136,46 @@ const HERO_SPOTLIGHTS = [
     label: 'Scholarships',
     caption: 'Win up to Rs 50k',
     href: '/opportunities?category=scholarships',
-    tone: 'sunset',
+    tone: 'blue',
     icon: '🎓',
+    bgGradient: 'from-blue-400 to-blue-600',
+    emoji: '💰',
   },
   {
-    label: 'Olympiads',
+    label: 'Olympiad',
     caption: 'STEM + language challenges',
     href: '/opportunities?category=olympiad',
-    tone: 'violet',
+    tone: 'purple',
     icon: '🧠',
+    bgGradient: 'from-purple-400 to-purple-600',
+    emoji: '🏅',
   },
   {
-    label: 'Bootcamps',
-    caption: 'Build projects in 4 weeks',
-    href: '/opportunities?category=bootcamp',
+    label: 'School Entrance',
+    caption: 'Top school admissions',
+    href: '/opportunities?category=school-entrance',
     tone: 'teal',
-    icon: '🚀',
+    icon: '🎒',
+    bgGradient: 'from-teal-400 to-cyan-500',
+    emoji: '🏫',
+  },
+  {
+    label: 'Talent Search Exams',
+    caption: 'Discover your potential',
+    href: '/opportunities?category=talent-search',
+    tone: 'indigo',
+    icon: '⭐',
+    bgGradient: 'from-indigo-400 to-indigo-600',
+    emoji: '✨',
+  },
+  {
+    label: 'Blog',
+    caption: 'Tips & success stories',
+    href: '/opportunities?category=resources',
+    tone: 'orange',
+    icon: '📝',
+    bgGradient: 'from-orange-400 to-orange-600',
+    emoji: '�',
   },
 ] as const;
 
@@ -166,6 +190,7 @@ export default function HomePageClient() {
   const [stateLoading, setStateLoading] = useState(true);
   const [stateError, setStateError] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string>('');
+  const [blogs, setBlogs] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchHomeSegments = async () => {
@@ -339,6 +364,30 @@ export default function HomePageClient() {
     fetchStats();
   }, []);
 
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const res = await fetch('/api/blogs', { cache: 'no-store' });
+        if (!res.ok) {
+          console.error('Failed to fetch blogs:', res.statusText);
+          setBlogs([]);
+          return;
+        }
+        const data = await res.json();
+        if (data.error) {
+          console.error('Blog API error:', data.error);
+          setBlogs([]);
+          return;
+        }
+        setBlogs(Array.isArray(data.posts) ? data.posts : []);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        setBlogs([]);
+      }
+    };
+    run();
+  }, []);
+
   const currentStateGroup = useMemo(() => {
     if (stateGroups.length === 0) {
       return null;
@@ -427,26 +476,19 @@ export default function HomePageClient() {
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                   Handpicked programs to help you explore, compete, and grow.
                 </p>
-                <div className="mt-5 grid gap-2 sm:gap-3 grid-cols-1 sm:grid-cols-3">
+                <div className="mt-5 grid gap-3 sm:gap-3 grid-cols-2 sm:grid-cols-3">
                   {HERO_SPOTLIGHTS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="group flex flex-col gap-3 rounded-2xl border border-slate-200/70 bg-white/90 p-3 sm:p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80"
+                      className={`group relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-gradient-to-br ${item.bgGradient} p-4 sm:p-5 text-center shadow-lg transition hover:-translate-y-1 hover:shadow-xl overflow-hidden`}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1">
-                          <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white line-clamp-2">{item.label}</span>
-                        </div>
-                        <span className="text-xl sm:text-2xl flex-shrink-0">{item.icon}</span>
+                      <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition" />
+                      <div className="relative z-10 flex flex-col items-center gap-1.5">
+                        <span className="text-3xl sm:text-4xl">{item.emoji}</span>
+                        <span className="text-xs sm:text-sm font-bold text-white line-clamp-2">{item.label}</span>
+                        <span className="text-xs text-white/90 line-clamp-1">{item.caption}</span>
                       </div>
-                      <span className="text-xs text-slate-600 group-hover:text-orange-500 dark:text-slate-300 line-clamp-2">
-                        {item.caption}
-                      </span>
-                      <span className="mt-auto inline-flex items-center text-xs font-semibold text-orange-500 pt-1">
-                        Explore
-                        <ChevronRight className="ml-1 h-3 w-3" />
-                      </span>
                     </Link>
                   ))}
                 </div>
@@ -723,13 +765,129 @@ export default function HomePageClient() {
         </section>
 
        
+      {/* Blog section */}
+      {blogs.length > 0 && (
+        <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-orange-50/50 dark:from-slate-950 dark:via-slate-900/95 dark:to-slate-900">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
+          <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
+            <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-orange-400/20 dark:bg-white/10">
+                    <Sparkles className="h-5 w-5 text-orange-500" />
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Latest from our Blog</h2>
+                </div>
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl">Insights, tips, and success stories to help you make the most of your opportunities</p>
+              </div>
+              <Link href="/blog" className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-white dark:border-orange-400/40 dark:bg-slate-800/80 dark:text-orange-200 dark:hover:bg-slate-800">
+                View all posts
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Featured Blog Post */}
+              {blogs[0] && (
+                <Link href={`/blog/${blogs[0].slug}`} className="lg:col-span-2 group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-md transition hover:shadow-xl dark:border-slate-700/60 dark:bg-slate-900/80">
+                  <div className="flex flex-col h-full">
+                    {/* Featured Image */}
+                    {blogs[0].coverImage && (
+                      <div className="relative overflow-hidden h-72 sm:h-80 md:h-96 bg-slate-200 dark:bg-slate-800">
+                        <img 
+                          src={blogs[0].coverImage} 
+                          alt={blogs[0].title}
+                          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        {blogs[0].tags && blogs[0].tags.length > 0 && (
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                              {blogs[0].tags[0]}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Content */}
+                    <div className="flex flex-col flex-1 p-6 sm:p-8">
+                      <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-100 dark:border-slate-700/50">
+                        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                          {blogs[0].author && (
+                            <>
+                              <span className="font-medium text-slate-900 dark:text-slate-200">{blogs[0].author}</span>
+                              <span>•</span>
+                            </>
+                          )}
+                          <span>{blogs[0].publishedAt ? new Date(blogs[0].publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently published'}</span>
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white line-clamp-3 mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                        {blogs[0].title}
+                      </h3>
+                      
+                      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 line-clamp-3 mb-4 flex-1">
+                        {blogs[0].excerpt}
+                      </p>
+                      
+                      <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold text-sm group-hover:gap-3 transition-all">
+                        Read article
+                        <ChevronRight className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {/* Blog Grid */}
+              <div className="lg:col-span-1 flex flex-col gap-5">
+                {blogs.slice(1, 4).map((post: any) => (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="group relative overflow-hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-lg dark:border-slate-700/60 dark:bg-slate-900/80"
+                  >
+                    <div className="flex gap-4">
+                      {/* Thumbnail */}
+                      {post.coverImage && (
+                        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-800">
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            className="h-full w-full object-cover transition group-hover:scale-110"
+                          />
+                        </div>
+                      )}
+                      
+                      {/* Content */}
+                      <div className="flex flex-1 flex-col justify-between min-w-0">
+                        <div>
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                            {post.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                            {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : 'Published'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       </main>
 
       {/* Mobile-only Stats Section - Before Footer */}
      
 
       {/* All Categories Section - Mobile Only */}
-      <AllCategoriesSection />
+      {/* <AllCategoriesSection /> */}
 
       <Footer />
       <BottomNavigation />

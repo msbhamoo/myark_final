@@ -1,0 +1,21 @@
+# Allow all search engine crawlers to index the site
+User-agent: *
+Allow: /
+
+# Disallow admin panel
+Disallow: /admin/
+
+# Disallow API endpoints from being crawled
+Disallow: /api/
+
+# Disallow dashboard from being crawled
+Disallow: /dashboard/
+
+# Specify sitemap location
+Sitemap: https://myark.in/sitemap.xml
+
+# Crawl delay (optional - helps reduce server load)
+Crawl-delay: 1
+
+# Request rate (requests per 10 seconds)
+Request-rate: 10/10s

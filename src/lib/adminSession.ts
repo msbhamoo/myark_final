@@ -87,3 +87,13 @@ export const clearAdminSessionCookie = (response: NextResponse) => {
   });
   return response;
 };
+
+export const requireAdminSession = (request?: Request | NextRequest): boolean => {
+  if (!request) {
+    throw new Error('Unauthorized');
+  }
+  if (!hasAdminSessionFromRequest(request)) {
+    throw new Error('Unauthorized');
+  }
+  return true;
+};

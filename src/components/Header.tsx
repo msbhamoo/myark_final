@@ -120,7 +120,7 @@ export default function Header() {
             </Sheet>
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-2xl border border-orange-200/70 bg-white/90 px-3 py-2 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md dark:border-orange-300/30 dark:bg-slate-900/80"
+              className="flex items-center gap-2 rounded-2xl border border-orange-100/50 bg-white/90 px-3 py-2 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md dark:border-orange-300/20 dark:bg-slate-900/80"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-pink-500 text-lg font-bold text-white shadow-md shadow-orange-400/30">
                 M
