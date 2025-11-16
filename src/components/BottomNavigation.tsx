@@ -34,7 +34,7 @@ export default function BottomNavigation() {
     if (accountType === 'organization') {
       router.push('/dashboard'); // Organization dashboard
     } else {
-      router.push('/dashboard/student'); // Student dashboard
+      router.push('/dashboard'); // Student dashboard
     }
   };
 

@@ -207,7 +207,7 @@ const DASHBOARD_SECTIONS = [
 ] as const;
 
 const PANEL_BASE_CLASSES =
-  'rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/60';
+  'rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-4 sm:p-6 shadow-lg shadow-slate-200/60';
 
 const normalizeInterests = (value: string): string[] =>
   value
@@ -1002,23 +1002,23 @@ export default function StudentPortfolioDashboard({
 
   return (
     <>
-      <div className="space-y-8">
+      <div className="space-y-4 sm:space-y-6 lg:space-y-8">
         {renderFeedbackBanner()}
-        <div className="grid gap-6 xl:grid-cols-[320px,1fr]">
-        <aside className="space-y-6">
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
-            <div className="relative h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1fr,280px] xl:grid-cols-[320px,1fr]">
+        <aside className="order-2 space-y-4 sm:space-y-6 lg:order-1">
+          <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+            <div className="relative h-24 sm:h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.35),transparent_55%)]" />
-              <div className="absolute bottom-0 left-6 translate-y-1/2">
-                <Avatar className="h-24 w-24 rounded-3xl border-4 border-white shadow-xl shadow-purple-300/40">
+              <div className="absolute bottom-0 left-4 sm:left-6 translate-y-1/2">
+                <Avatar className="h-16 sm:h-24 w-16 sm:w-24 rounded-2xl sm:rounded-3xl border-4 border-white shadow-xl shadow-purple-300/40">
                   <AvatarImage src={profile.photoUrl ?? undefined} alt={profile.displayName} />
-                  <AvatarFallback className="rounded-3xl bg-indigo-100 text-lg font-semibold text-indigo-600">
+                  <AvatarFallback className="rounded-2xl sm:rounded-3xl bg-indigo-100 text-sm sm:text-lg font-semibold text-indigo-600">
                     {buildAvatarFallback(profile.displayName)}
                   </AvatarFallback>
                 </Avatar>
               </div>
             </div>
-            <div className="px-4 pb-6 pt-20 sm:px-6">
+            <div className="px-3 sm:px-4 pb-4 sm:pb-6 pt-12 sm:pt-20 md:px-6">
               <div className="space-y-5">
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -1111,13 +1111,13 @@ export default function StudentPortfolioDashboard({
             </div>
           </div>
         </aside>
-        <div className="space-y-6">
-          <div className="flex items-center gap-2 overflow-x-auto rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm backdrop-blur md:hidden">
+        <div className="order-1 space-y-4 sm:space-y-6 lg:order-2">
+          <div className="flex items-center gap-2 overflow-x-auto rounded-full border border-slate-200 bg-white/90 px-2 py-2 sm:px-3 shadow-sm backdrop-blur md:hidden">
             {DASHBOARD_SECTIONS.map((section) => (
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                className="whitespace-nowrap rounded-full px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100"
               >
                 {section.label}
               </a>

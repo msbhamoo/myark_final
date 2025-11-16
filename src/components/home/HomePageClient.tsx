@@ -528,7 +528,7 @@ export default function HomePageClient() {
               : 'bg-white dark:bg-[#0f1538]';
             const viewAllDisabled = !hasItems;
             const viewAllClasses = [
-              'inline-flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-300',
+              'inline-flex items-center gap-2 rounded-full border px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all duration-300',
               'border-orange-200 text-orange-600 hover:border-orange-300 hover:bg-orange-100/60 dark:border-orange-400/40 dark:text-orange-200 dark:hover:bg-orange-500/10',
               viewAllDisabled ? 'pointer-events-none opacity-50' : '',
             ]
@@ -546,10 +546,10 @@ export default function HomePageClient() {
                         <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-white/20 dark:bg-white/10">
                           <Sparkles className="h-5 w-5 text-orange-500" />
                         </div>
-                        <h2 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">{segment.title}</h2>
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl dark:text-white">{segment.title}</h2>
                       </div>
                       {segment.subtitle && (
-                        <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base dark:text-slate-100">{segment.subtitle}</p>
+                        <p className="mt-2 max-w-2xl text-xs sm:text-sm text-slate-600 md:text-base dark:text-slate-100">{segment.subtitle}</p>
                       )}
                     </div>
                     <Link href={segmentLink} aria-disabled={viewAllDisabled} className={viewAllClasses}>

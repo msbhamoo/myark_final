@@ -40,7 +40,7 @@ export default function SchoolListSection() {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('/api/admin/schools');
+        const response = await fetch('/api/schools');
         if (!response.ok) {
           throw new Error('Failed to fetch schools');
         }

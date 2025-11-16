@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight, Calendar, Clock, Users, Zap, Lock } from 'lucide-react';
+import { ArrowUpRight, Calendar, Clock, Users, Zap, Lock, MapPin, Trophy, Sparkles } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { OpportunityStatusBadgeMinimal } from '@/components/OpportunityStatusBadge';
 import { cn } from '@/lib/utils';
@@ -172,11 +172,15 @@ export default function OpportunityCard({
   fee,
   className,
   status = 'active',
+  image,
 }: OpportunityCardProps) {
   const normalizedCategory = category?.trim() || 'Opportunity';
   const normalizedMode = MODE_STYLES[mode] ? mode : 'online';
   const categoryStyles = getCategoryStyles(normalizedCategory);
   const isClosed = status === 'closed';
+  
+  // Default cover image fallback
+  const coverImage = image || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
 
   const trimmedFee = fee?.trim() ?? '';
   const numericFee = trimmedFee ? Number(trimmedFee) : Number.NaN;
@@ -208,24 +212,24 @@ export default function OpportunityCard({
 
   const computeDaysLeft = () => {
     if (!registrationDeadline) {
-      return 'Closes soon';
+      return { label: 'Closes soon', days: null };
     }
     const parsed = new Date(registrationDeadline);
     if (Number.isNaN(parsed.getTime())) {
-      return registrationDeadline;
+      return { label: registrationDeadline, days: null };
     }
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const diff = Math.ceil((parsed.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    if (diff > 1) return `${diff} days left`;
-    if (diff === 1) return '1 day left';
-    if (diff === 0) return 'Closes today';
-    return 'Closed';
+    if (diff > 1) return { label: `${diff} days`, days: diff };
+    if (diff === 1) return { label: '1 day', days: 1 };
+    if (diff === 0) return { label: 'Today', days: 0 };
+    return { label: 'Closed', days: -1 };
   };
 
   const formatDisplayDeadline = () => {
     if (!registrationDeadline) {
-      return 'Deadline TBA';
+      return 'TBA';
     }
     const parsed = new Date(registrationDeadline);
     if (Number.isNaN(parsed.getTime())) {
@@ -234,116 +238,138 @@ export default function OpportunityCard({
     return parsed.toLocaleDateString(undefined, {
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
     });
   };
 
   const gradeLabel = gradeEligibility?.trim() || 'All grades';
-  const daysLeft = computeDaysLeft();
-  const isUrgent = daysLeft.includes('today') || daysLeft.includes('1 day');
+  const { label: daysLabel, days: daysCount } = computeDaysLeft();
+  const isUrgent = daysCount !== null && daysCount <= 1;
 
   return (
-    <Card
-      className={cn(
-        'group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-xl dark:bg-slate-900',
-        categoryStyles.borderClass,
-        'border-slate-200/70 dark:border-slate-800/60',
-        className,
-      )}
-    >
-      {/* Category accent bar */}
-      <div className={cn('absolute inset-x-0 top-0 h-1 bg-gradient-to-r', categoryStyles.accentClass)} />
-      
-      <Link href={`/opportunity/${id}`} className="flex h-full flex-col gap-3 p-4 sm:p-5">
-        {/* Header with category badge */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex flex-col gap-2 flex-1">
-              <span
-                className={cn(
-                  'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold whitespace-nowrap w-fit',
-                  categoryStyles.badgeClass,
-                )}
-              >
-                <span>{categoryStyles.icon}</span>
-                <span className="hidden sm:inline">{normalizedCategory}</span>
-              </span>
-              <OpportunityStatusBadgeMinimal registrationDeadline={registrationDeadline} />
-            </div>
+    <Link href={`/opportunity/${id}`}>
+      <Card
+        className={cn(
+          'group relative h-full overflow-hidden rounded-2xl border-b border-x transition-all duration-300 flex flex-col',
+          'bg-white dark:bg-slate-900/90',
+          'hover:shadow-xl hover:-translate-y-1 hover:border-orange-200 dark:hover:border-orange-400/50',
+          'border-slate-200/70 dark:border-slate-800/60',
+          'cursor-pointer',
+          className,
+        )}
+      >
+        {/* Cover Image */}
+      <div className="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800">
+          <img
+            src={coverImage}
+            alt={title}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              img.src = 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+  {/* Top accent gradient bar */}
+        <div className={cn(
+          'absolute top-32 sm:top-40 inset-x-0 h-1.5 opacity-80 group-hover:opacity-100 transition-opacity',
+          `bg-gradient-to-r ${categoryStyles.accentClass}`
+        )} />
+
+        <div className="flex flex-1 flex-col p-3 sm:p-4 border-t border-slate-200/70 dark:border-slate-800/60 group-hover:border-orange-200 dark:group-hover:border-orange-400/50 transition-colors">
+          {/* Header Row: Category Badge & Urgent */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <span className={cn(
+              'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap flex-shrink-0',
+              categoryStyles.badgeClass,
+            )}>
+              <span className="text-sm">{categoryStyles.icon}</span>
+              <span className="hidden sm:inline text-xs">{normalizedCategory}</span>
+            </span>
+            
             {isUrgent && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-bold text-red-700 dark:bg-red-500/20 dark:text-red-200 flex-shrink-0">
+              <span className="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700 dark:bg-red-500/20 dark:text-red-200 flex-shrink-0 animate-pulse">
                 <Zap className="h-3 w-3" />
-                <span className="hidden sm:inline">Urgent</span>
               </span>
             )}
           </div>
 
-          {/* Title */}
-          <h3 className="text-sm sm:text-base font-bold leading-snug text-slate-900 transition group-hover:text-orange-500 dark:text-white line-clamp-2">
+          {/* Title - Prominent */}
+          <h3 className="text-sm sm:text-base font-bold leading-tight text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-orange-600 transition-colors">
             {title}
           </h3>
 
           {/* Organizer */}
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-            <span className="truncate">{organizer || 'Unknown organizer'}</span>
+          <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 mb-3 min-h-5">
+            <Users className="h-3 w-3 flex-shrink-0 opacity-70" />
+            <span className="truncate line-clamp-1 text-xs">{organizer || 'Organizer'}</span>
           </div>
-        </div>
 
-        {/* Badges: Grade, Mode, Fee */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="inline-flex items-center rounded-full bg-sky-100 px-2.5 py-1 text-xs font-semibold text-sky-700 dark:bg-sky-500/20 dark:text-sky-200">
-            {gradeLabel}
-          </span>
-          <span
-            className={cn(
-              'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold',
+          {/* Info Pills - Horizontal Row */}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {/* Grade */}
+            <span className="inline-flex items-center rounded-lg bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-500/15 dark:text-blue-300">
+              {gradeLabel}
+            </span>
+            
+            {/* Mode */}
+            <span className={cn(
+              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-semibold',
               MODE_STYLES[normalizedMode].className,
-            )}
-          >
-            {MODE_STYLES[normalizedMode].label}
-          </span>
-          <span
-            className={cn(
-              'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold',
+            )}>
+              {MODE_STYLES[normalizedMode].label}
+            </span>
+            
+            {/* Fee */}
+            <span className={cn(
+              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-semibold',
               feeBadgeClass,
-            )}
-          >
-            {feeLabel}
-          </span>
-        </div>
-
-        {/* Deadline info */}
-        <div className="mt-auto flex flex-col gap-2">
-          <div className="flex flex-col gap-1.5 rounded-xl border border-slate-200/50 bg-slate-50/60 p-3 text-xs sm:text-sm dark:border-slate-700 dark:bg-slate-800/40">
-            <div className="flex items-center gap-2">
-              <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 text-slate-400" />
-              <span className={cn('font-semibold', isUrgent ? 'text-red-600 dark:text-red-300' : 'text-slate-700 dark:text-slate-300')}>
-                {daysLeft}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 text-slate-400" />
-              <span className="text-slate-600 dark:text-slate-400">{formatDisplayDeadline()}</span>
-            </div>
+            )}>
+              {feeLabel}
+            </span>
           </div>
 
-          {/* CTA Button */}
-          <div className={cn(
-            'flex items-center justify-between rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-semibold transition-all',
-            'bg-gradient-to-r to-transparent transition-all duration-300',
-            categoryStyles.accentClass,
-            categoryStyles.bgGradient.startsWith('from-') 
-              ? `bg-gradient-to-r ${categoryStyles.bgGradient} to-white/0` 
-              : categoryStyles.bgGradient,
-            'border border-slate-200/50 dark:border-slate-700/50',
-            'group-hover:shadow-md'
-          )}>
-            <span>Explore</span>
-            <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          {/* Deadline Section - Bottom */}
+          <div className="mt-auto pt-1 space-y-2">
+            {/* Days Left - Prominent Box */}
+            <div className={cn(
+              'flex items-center justify-between rounded-lg p-2.5 text-xs font-semibold',
+              isUrgent 
+                ? 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300'
+                : 'bg-slate-50 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300',
+            )}>
+              <div className="flex items-center gap-1.5">
+                <Clock className={cn(
+                  'h-3.5 w-3.5',
+                  isUrgent ? 'text-red-600 dark:text-red-400' : 'text-slate-400'
+                )} />
+                <span>{daysLabel}</span>
+              </div>
+              <span className="text-xs opacity-80">{formatDisplayDeadline()}</span>
+            </div>
+
+            {/* CTA Button */}
+           <button
+  className={cn(
+    'w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-xs sm:text-sm font-semibold',
+    'transition-all duration-200 active:scale-95',
+    categoryStyles.accentClass,
+    // use transparent instead of a white end so the gradient doesn't push a white tint
+    categoryStyles.bgGradient.startsWith('from-')
+      ? `bg-gradient-to-r ${categoryStyles.bgGradient} to-transparent`
+      : categoryStyles.bgGradient,
+    'border border-slate-200/50 dark:border-slate-700/50',
+    'hover:shadow-md group-hover:shadow-md',
+    // dark: keep white, light: use a dark slate color for good contrast
+    'text-slate-900 dark:text-white',
+  )}
+>
+  <span>Explore</span>
+  <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+</button>
           </div>
         </div>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   );
 }
