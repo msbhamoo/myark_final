@@ -10,6 +10,7 @@ import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
+import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
 import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -996,7 +997,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1 bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900">
+      <main className="flex-1 bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pb-32 md:pb-0">
         {/* Hero Banner */}
         <div className="relative h-96 overflow-hidden bg-gradient-to-br from-orange-200 via-pink-200/70 to-sky-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800">
           {/* Background decorations */}
@@ -1795,6 +1796,17 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           )}
         </DialogContent>
       </Dialog>
+
+      <MobileFloatingCTA
+        opportunity={opportunity}
+        deadline={formattedDeadline}
+        fee={displayFee}
+        registrationClosed={registrationClosed}
+        onRegisterClick={handleRegisterClick}
+        onBookmarkClick={handleToggleBookmark}
+        isBookmarked={isBookmarked}
+        bookmarkLoading={bookmarkLoading}
+      />
 
       <Footer />
   </div>
