@@ -10,6 +10,7 @@ import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
+import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -286,7 +287,7 @@ const computeSimilarityScore = (target: Opportunity, candidate: Opportunity) => 
   return score;
 };
 
-const rankCandidates = (target: Opportunity, candidates: Opportunity[], limit = 6) => {
+const rankCandidates = (target: Opportunity, candidates: Opportunity[], limit = 3) => {
   const identity = getOpportunityIdentity(target);
   const enriched = candidates
     .filter((candidate) => getOpportunityIdentity(candidate) !== identity)
@@ -927,7 +928,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       setRelatedError(null);
       try {
         const candidates = await collectCandidateOpportunities(opportunity);
-        const ranked = rankCandidates(opportunity, candidates, 6);
+        const ranked = rankCandidates(opportunity, candidates, 3);
         if (!cancelled) {
           setRelatedOpportunities(ranked);
         }
@@ -1512,9 +1513,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       />
                       {bookmarkLoading ? 'Saving...' : isBookmarked ? 'Saved' : 'Save'}
                     </Button>
-                    <Button variant="outline" className="text-foreground border-border/50 dark:border-white/20 hover:bg-white/90 dark:bg-slate-800/50 shadow-sm">
-                      <Share2 className="h-4 w-4" />
-                    </Button>
+                    <UpvoteButton opportunityId={opportunityId} />
+                    <ShareButton opportunityId={opportunityId} opportunityTitle={title} />
                     <Button variant="outline" className="text-foreground border-border/50 dark:border-white/20 hover:bg-white/90 dark:bg-slate-800/50 shadow-sm">
                       <Download className="h-4 w-4" />
                     </Button>
@@ -1647,6 +1647,18 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               })}
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
+        <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
+          <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Community Discussion</h2>
+          <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
+            Join the conversation with other students interested in this opportunity.
+          </p>
+          <div className="mt-8">
+            <CommentSection opportunityId={opportunityId} />
+          </div>
         </div>
       </section>
       </main>

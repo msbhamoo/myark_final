@@ -349,7 +349,7 @@ export default function OpportunityCard({
             </div>
 
             {/* CTA Button */}
-           <button
+           {/* <button
   className={cn(
     'w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-xs sm:text-sm font-semibold',
     'transition-all duration-200 active:scale-95',
@@ -366,7 +366,7 @@ export default function OpportunityCard({
 >
   <span>Explore</span>
   <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-</button>
+</button> */}
           </div>
         </div>
       </Card>

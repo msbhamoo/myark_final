@@ -29,6 +29,14 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { fetchStudentProfile, updateStudentProfile } from '@/lib/studentProfileClient';
+import { StudentProfileGamificationSection } from '@/components/gamification/StudentProfileGamificationSection';
+import {
+  ModernAcademicCard,
+  ModernAchievementCard,
+  ModernCompetitionCard,
+  ModernExtracurricularCard,
+  SubjectPerformanceCard,
+} from '@/components/profile/ModernSectionComponents';
 import type { AppUserProfile } from '@/context/AuthContext';
 import type {
   StudentProfile,
@@ -44,6 +52,7 @@ import type { Opportunity } from '@/types/opportunity';
 import type { LucideIcon } from 'lucide-react';
 import {
   BookOpen,
+  Calendar,
   CheckCircle,
   ExternalLink,
   Flag,
@@ -1004,15 +1013,23 @@ export default function StudentPortfolioDashboard({
     <>
       <div className="space-y-4 sm:space-y-6 lg:space-y-8">
         {renderFeedbackBanner()}
+        
+        {/* Gamification Section - Full Width */}
+        <StudentProfileGamificationSection
+          user={user}
+          profile={profile}
+          className="w-full"
+        />
+
         <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1fr,280px] xl:grid-cols-[320px,1fr]">
-        <aside className="order-2 space-y-4 sm:space-y-6 lg:order-1">
-          <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+        <aside className="order-2 space-y-4 sm:space-y-6 lg:order-1 w-full lg:w-auto">
+          <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-xl shadow-slate-200/60 dark:shadow-none">
             <div className="relative h-24 sm:h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.35),transparent_55%)]" />
               <div className="absolute bottom-0 left-4 sm:left-6 translate-y-1/2">
-                <Avatar className="h-16 sm:h-24 w-16 sm:w-24 rounded-2xl sm:rounded-3xl border-4 border-white shadow-xl shadow-purple-300/40">
+                <Avatar className="h-16 sm:h-24 w-16 sm:w-24 rounded-2xl sm:rounded-3xl border-4 border-white shadow-xl shadow-purple-300/40 dark:shadow-purple-950/40">
                   <AvatarImage src={profile.photoUrl ?? undefined} alt={profile.displayName} />
-                  <AvatarFallback className="rounded-2xl sm:rounded-3xl bg-indigo-100 text-sm sm:text-lg font-semibold text-indigo-600">
+                  <AvatarFallback className="rounded-2xl sm:rounded-3xl bg-indigo-100 dark:bg-indigo-900/40 text-sm sm:text-lg font-semibold text-indigo-600 dark:text-indigo-300">
                     {buildAvatarFallback(profile.displayName)}
                   </AvatarFallback>
                 </Avatar>
@@ -1022,27 +1039,26 @@ export default function StudentPortfolioDashboard({
               <div className="space-y-5">
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">{profile.displayName}</h1>
+                    <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-900 dark:text-white break-words">{profile.displayName}</h1>
                     <Badge
-                      variant="secondary"
-                      className="flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
+                      className="flex items-center gap-2 rounded-full bg-indigo-50 dark:bg-indigo-900/40 px-3 py-1 text-xs font-medium text-indigo-700 dark:text-indigo-300 flex-shrink-0"
                     >
-                      <Star className="h-3.5 w-3.5 text-indigo-500" />
+                      <Star className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
                       Student
                     </Badge>
                   </div>
-                  {profile.tagline && <p className="text-sm text-slate-600">{profile.tagline}</p>}
-                  <div className="space-y-2 text-sm text-slate-500">
+                  {profile.tagline && <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{profile.tagline}</p>}
+                  <div className="space-y-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     {profile.location && (
-                      <div className="flex items-center gap-2">
-                        <Globe2 className="h-4 w-4 text-slate-400" />
-                        {profile.location}
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Globe2 className="h-4 w-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                        <span className="truncate">{profile.location}</span>
                       </div>
                     )}
                     {profile.schoolInfo.schoolName && (
-                      <div className="flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 text-slate-400" />
-                        <span className="font-medium text-slate-600">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <BookOpen className="h-4 w-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                        <span className="font-medium text-slate-600 dark:text-slate-300 truncate">
                           {profile.schoolInfo.schoolName}
                         </span>
                       </div>
@@ -1050,59 +1066,68 @@ export default function StudentPortfolioDashboard({
                   </div>
                 </div>
                 {profile.bio && (
-                  <p className="rounded-2xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-600">
+                  <p className="rounded-2xl bg-slate-50 dark:bg-white/5 p-4 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                     {profile.bio}
                   </p>
                 )}
                 {profile.interests.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                    {profile.interests.map((interest) => (
+                    {profile.interests.slice(0, 3).map((interest) => (
                       <Badge
                         key={interest}
                         variant="outline"
-                        className="border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-600"
+                        className="border-indigo-100 dark:border-indigo-900/40 bg-indigo-50 dark:bg-indigo-900/20 px-2 sm:px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-300"
                       >
                         #{interest}
                       </Badge>
                     ))}
+                    {profile.interests.length > 3 && (
+                      <Badge className="border-slate-200 dark:border-white/10 px-2 sm:px-3 py-1 text-xs text-slate-600 dark:text-slate-300">
+                        +{profile.interests.length - 3} more
+                      </Badge>
+                    )}
                   </div>
                 )}
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-2 grid-cols-2 sm:grid-cols-2">
                   <Button
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={openBasicsDialog}
                   >
-                    <PenLine className="mr-2 h-4 w-4" />
-                    Edit profile
+                    <PenLine className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Edit</span>
+                    <span className="sm:hidden">Edit</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
+                    className="border-slate-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => setIsSettingsOpen(true)}
                   >
-                    <Shield className="mr-2 h-4 w-4" />
-                    Visibility &amp; settings
+                    <Shield className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Settings</span>
+                    <span className="sm:hidden">⚙️</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-slate-700 hover:bg-slate-50"
+                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={handleCopyShareLink}
                   >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Share profile
+                    <ExternalLink className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Share</span>
+                    <span className="sm:hidden">Share</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-slate-700 hover:bg-slate-50"
+                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 text-xs sm:text-sm h-9 sm:h-10"
                     onClick={handleDownload}
                   >
-                    <UploadCloud className="mr-2 h-4 w-4" />
-                    Download PDF
+                    <UploadCloud className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">PDF</span>
+                    <span className="sm:hidden">PDF</span>
                   </Button>
                 </div>
                 <Button
                   variant="ghost"
-                  className="w-full border border-transparent text-slate-500 hover:bg-slate-100"
+                  className="w-full border border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 text-xs sm:text-sm h-9"
                   onClick={() => signOut()}
                 >
                   Sign out
@@ -1136,45 +1161,46 @@ export default function StudentPortfolioDashboard({
           </nav>
 
           <section id="overview" className={cn(PANEL_BASE_CLASSES, 'relative overflow-hidden lg:p-8')}>
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.12),transparent_60%)]" />
-            <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl" />
-            <div className="pointer-events-none absolute -right-16 -bottom-24 h-48 w-48 rounded-full bg-sky-200/30 blur-3xl" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.12),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.08),transparent_60%)]" />
+            <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-orange-200/40 dark:bg-orange-900/20 blur-3xl" />
+            <div className="pointer-events-none absolute -right-16 -bottom-24 h-48 w-48 rounded-full bg-sky-200/30 dark:bg-sky-900/20 blur-3xl" />
             <div className="relative z-10 space-y-6 sm:space-y-8">
               <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="space-y-2 sm:space-y-3">
-                  <Badge className="w-fit bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600">
+                  <Badge className="w-fit bg-orange-100 dark:bg-orange-900/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600 dark:text-orange-300">
                     Portfolio snapshot
                   </Badge>
-                  <h2 className="text-2xl sm:text-3xl font-semibold leading-tight text-slate-900">Welcome back, {firstName}</h2>
-                  <p className="max-w-2xl text-sm text-slate-600">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold leading-tight text-slate-900 dark:text-white">Welcome back, {firstName}</h2>
+                  <p className="max-w-2xl text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                     Keep refining your journey, highlight wins you are proud of, and share a polished portfolio with mentors and colleges.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
                   <Button
-                    className="bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700 w-full sm:w-auto"
+                    className="bg-indigo-600 dark:bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => openAcademicDialog()}
                   >
-                    <BookOpen className="mr-2 h-4 w-4" />
+                    <BookOpen className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Log academic year</span>
-                    <span className="sm:hidden">Log academic</span>
+                    <span className="sm:hidden">Academic</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto"
+                    className="border-slate-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => openAchievementDialog()}
                   >
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Add achievement</span>
                     <span className="sm:hidden">Achievement</span>
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-slate-200 text-slate-700 hover:bg-slate-50 w-full sm:w-auto"
+                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
                     onClick={() => handleDownload()}
                   >
-                    <UploadCloud className="mr-2 h-4 w-4" />
-                    Download PDF
+                    <UploadCloud className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Download PDF</span>
+                    <span className="sm:hidden">PDF</span>
                   </Button>
                 </div>
               </div>
@@ -1184,32 +1210,32 @@ export default function StudentPortfolioDashboard({
                   return (
                     <div
                       key={card.key}
-                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 text-slate-900 shadow-sm shadow-slate-200/60"
+                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 sm:p-5 text-slate-900 dark:text-white shadow-sm shadow-slate-200/60 dark:shadow-none"
                     >
-                      <div className="flex items-start justify-between gap-2 sm:gap-3">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 flex-shrink-0">
+                      <div className="flex items-start justify-between gap-2 sm:gap-3 min-w-0">
+                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex-shrink-0">
                             <Icon className="h-5 w-5" />
                           </span>
-                          <div>
-                            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                               {card.label}
                             </p>
-                            <p className="mt-1 text-2xl font-semibold text-slate-900">
+                            <p className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-slate-900 dark:text-white truncate">
                               {card.value}
                             </p>
                           </div>
                         </div>
                       </div>
-                      <p className="mt-4 text-sm text-slate-500">{card.description}</p>
+                      <p className="mt-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">{card.description}</p>
                       {card.action && (
                         <Button
                           variant="ghost"
-                          className="mt-4 w-fit px-0 text-sm font-medium text-indigo-600 hover:bg-transparent hover:text-indigo-700"
+                          className="mt-4 w-fit px-0 text-xs sm:text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-transparent hover:text-indigo-700 dark:hover:text-indigo-300"
                           onClick={card.action.onClick}
                         >
                           {card.action.label}
-                          <ExternalLink className="ml-2 h-4 w-4" />
+                          <ExternalLink className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </Button>
                       )}
                     </div>
@@ -1222,14 +1248,14 @@ export default function StudentPortfolioDashboard({
           <section id="progress" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
             <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-start md:justify-between">
               <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Profile progress</h2>
-                <p className="mt-1 text-xs sm:text-sm text-slate-600">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white">Profile progress</h2>
+                <p className="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                   Complete the steps to unlock a standout public portfolio.
                 </p>
               </div>
-              <div className="flex items-center gap-2 sm:gap-3 text-slate-500">
+              <div className="flex items-center gap-2 sm:gap-3 text-slate-500 dark:text-slate-400">
                 <span className="text-xs sm:text-sm uppercase tracking-wide">Completion</span>
-                <span className="text-2xl sm:text-3xl font-semibold text-slate-900">
+                <span className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-white">
                   {Math.round(profile.completion.percent)}%
                 </span>
               </div>
@@ -1237,7 +1263,7 @@ export default function StudentPortfolioDashboard({
             {profile.settings.showProgressBar && (
               <Progress
                 value={profile.completion.percent}
-                className="my-6 h-3 overflow-hidden rounded-full bg-slate-100"
+                className="my-6 h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-white/10"
               />
             )}
             <div className="grid gap-3 md:grid-cols-2">
@@ -1247,14 +1273,14 @@ export default function StudentPortfolioDashboard({
                   className={cn(
                     'flex items-center gap-3 rounded-2xl border p-4 text-sm transition-colors',
                     item.done
-                      ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                      : 'border-slate-200 bg-slate-50 text-slate-600',
+                      ? 'border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
+                      : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-400',
                   )}
                 >
                   {item.done ? (
-                    <CheckCircle className="h-5 w-5 text-emerald-500" />
+                    <CheckCircle className="h-5 w-5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   ) : (
-                    <CircleIcon className="h-5 w-5 text-slate-300" />
+                    <CircleIcon className="h-5 w-5 text-slate-300 dark:text-slate-600 flex-shrink-0" />
                   )}
                   <span>{item.label}</span>
                 </div>
@@ -1262,507 +1288,327 @@ export default function StudentPortfolioDashboard({
             </div>
           </section>
 
-          <section id="academics" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Academic story</h2>
-                <p className="text-xs sm:text-sm text-slate-600">
-                  Capture your journey year by year with grades, highlights, and teacher feedback.
-                </p>
-              </div>
-              <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
-                onClick={() => openAcademicDialog()}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Add academic year</span>
-                <span className="sm:hidden">Academic year</span>
-              </Button>
-            </div>
-
-            <div className="mt-6 space-y-6">
-              {profile.academicHistory.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-                  Add your first academic record to showcase your grades, favourite subjects, and teacher comments.
+          <section id="academics" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_60%)]" />
+            <div className="pointer-events-none absolute -right-32 top-0 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl" />
+            <div className="relative z-10">
+              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
+                <div className="space-y-2">
+                  <Badge className="w-fit bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600 dark:bg-blue-900/40 dark:text-blue-300">
+                    📚 Academic Journey
+                  </Badge>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Academic Story</h2>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Track your grades, subjects, and academic progress year by year with teacher insights.
+                  </p>
                 </div>
-              ) : (
-                profile.academicHistory.map((year) => (
-                  <div
-                    key={year.id}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-slate-900 shadow-sm shadow-slate-200/60"
-                  >
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold text-slate-900">
-                          {formatAcademicTitle(year)}
-                        </h3>
-                        {year.summary && <p className="mt-2 text-sm text-slate-600">{year.summary}</p>}
-                        {year.teacherComments && (
-                          <p className="mt-2 text-sm text-slate-500">
-                            Teacher comment{' '}
-                            <span className="font-medium text-slate-700">{year.teacherComments}</span>
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Button
-                          variant="outline"
-                          className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                          onClick={() => openAcademicDialog(year)}
-                        >
-                          <PenLine className="mr-2 h-4 w-4" />
-                          Edit
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                          onClick={() => handleRemoveAcademicYear(year.id)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </div>
-                    {year.subjects.length > 0 && (
-                      <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
-                        <table className="w-full text-sm text-slate-600">
-                          <thead className="bg-slate-100 text-left text-xs uppercase tracking-wide text-slate-500">
-                            <tr>
-                              <th className="px-4 py-2 font-medium">Subject</th>
-                              <th className="px-4 py-2 font-medium">Marks</th>
-                              <th className="px-4 py-2 font-medium">Grade</th>
-                              <th className="px-4 py-2 font-medium">Remarks</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {year.subjects.map((subject) => (
-                              <tr key={subject.id} className="border-t border-slate-100 odd:bg-slate-50">
-                                <td className="px-4 py-2 text-slate-700">{subject.name}</td>
-                                <td className="px-4 py-2 text-slate-600">
-                                  {subject.marks ?? '-'}
-                                  {subject.maxMarks ? ` / ${subject.maxMarks}` : ''}
-                                </td>
-                                <td className="px-4 py-2 text-slate-600">{subject.grade ?? '-'}</td>
-                                <td className="px-4 py-2 text-slate-500">{subject.teacherComment ?? '-'}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
+                <Button
+                  className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md shadow-blue-500/30 hover:from-blue-600 hover:to-indigo-600 w-full lg:w-auto"
+                  onClick={() => openAcademicDialog()}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Add academic year</span>
+                  <span className="sm:hidden">Academic year</span>
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {profile.academicHistory.length === 0 ? (
+                  <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-blue-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-blue-950/30">
+                    <GraduationCap className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Start your academic journey</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add your first year to showcase grades and achievements.</p>
                   </div>
-                ))
+                ) : (
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    {profile.academicHistory.map((year) => (
+                      <ModernAcademicCard
+                        key={year.id}
+                        year={year}
+                        schoolName={profile.schoolInfo.schoolName || ''}
+                        onEdit={() => openAcademicDialog(year)}
+                        onRemove={() => handleRemoveAcademicYear(year.id)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {subjectSummary.length > 0 && (
+                <div className="mt-8 rounded-2xl border border-blue-200/40 bg-gradient-to-br from-blue-50/80 via-white/60 to-indigo-50/40 p-6 backdrop-blur-xl dark:from-blue-950/20 dark:via-white/3 dark:to-indigo-950/20 dark:border-blue-900/30">
+                  <div className="space-y-2 mb-6">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <BookOpen className="h-5 w-5 text-blue-500" />
+                      Subject Performance Highlights
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Your strongest subjects based on average scores across the years.
+                    </p>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {subjectSummary.map((subject) => (
+                      <SubjectPerformanceCard
+                        key={subject.name}
+                        name={subject.name}
+                        percent={subject.percent}
+                      />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
+          </section>
 
-            {subjectSummary.length > 0 && (
-              <div className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6">
-                <h3 className="text-xl font-semibold text-slate-900">Subject performance highlights</h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  A quick glimpse at your strongest subjects based on average scores across the years.
-                </p>
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  {subjectSummary.map((subject) => (
-                    <div
-                      key={subject.name}
-                      className="rounded-xl border border-slate-200 bg-white p-4 text-slate-700 shadow-sm"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-slate-700">{subject.name}</span>
-                        <Badge
-                          variant="outline"
-                          className="border-indigo-100 bg-indigo-50 text-indigo-600"
-                        >
-                          {subject.percent ?? 'N/A'}%
-                        </Badge>
-                      </div>
-                      <Progress
-                        value={subject.percent ?? 0}
-                        className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"
-                      />
-                    </div>
+          <section id="achievements" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,119,6,0.12),transparent_60%)]" />
+            <div className="pointer-events-none absolute -left-32 -bottom-16 h-64 w-64 rounded-full bg-amber-200/30 blur-3xl" />
+            <div className="relative z-10">
+              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
+                <div className="space-y-2">
+                  <Badge className="w-fit bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
+                    🏆 Your Accolades
+                  </Badge>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Achievements &amp; Awards</h2>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Celebrate your milestones with descriptions, levels, certificates, and tags.
+                  </p>
+                </div>
+                <Button
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/30 hover:from-amber-600 hover:to-orange-600 w-full lg:w-auto"
+                  onClick={() => openAchievementDialog()}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Add achievement</span>
+                  <span className="sm:hidden">Achievement</span>
+                </Button>
+              </div>
+
+              {profile.achievements.length === 0 ? (
+                <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-amber-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-amber-950/30">
+                  <Trophy className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                  <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Your achievements shine here</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add awards, certifications, and recognition to showcase your excellence.</p>
+                </div>
+              ) : (
+                <div className="grid gap-4 lg:grid-cols-2">
+                  {profile.achievements.map((achievement) => (
+                    <ModernAchievementCard
+                      key={achievement.id}
+                      achievement={achievement}
+                      onEdit={() => openAchievementDialog(achievement)}
+                      onRemove={() => handleRemoveAchievement(achievement.id)}
+                    />
                   ))}
                 </div>
-              </div>
-            )}
-          </section>
-
-          <section id="achievements" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Achievements &amp; awards</h2>
-                <p className="text-xs sm:text-sm text-slate-600">
-                  Celebrate milestones with descriptions, levels, and certificate links.
-                </p>
-              </div>
-              <Button
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
-                onClick={() => openAchievementDialog()}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Add achievement</span>
-                <span className="sm:hidden">Achievement</span>
-              </Button>
-            </div>
-
-            {profile.achievements.length === 0 ? (
-              <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-                Add awards or certifications that highlight your progress.
-              </div>
-            ) : (
-              <div className="mt-6 space-y-3">
-                <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,1fr,auto]">
-                  <span>Achievement</span>
-                  <span>Highlights</span>
-                  <span>Proof &amp; tags</span>
-                  <span className="text-right">Actions</span>
-                </div>
-                {profile.achievements.map((achievement) => (
-                  <div
-                    key={achievement.id}
-                    className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,1fr,auto]"
-                  >
-                    <div className="space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Badge className="flex items-center gap-1.5 bg-amber-100 text-amber-700">
-                          <Trophy className="h-3.5 w-3.5 text-amber-500" />
-                          {achievement.title}
-                        </Badge>
-                        {achievement.level && (
-                          <Badge
-                            variant="outline"
-                            className="border-slate-200 bg-slate-50 text-xs font-medium text-slate-600"
-                          >
-                            {ACHIEVEMENT_LEVEL_LABELS[achievement.level] ?? achievement.level}
-                          </Badge>
-                        )}
-                        {achievement.year && (
-                          <Badge
-                            variant="outline"
-                            className="border-slate-200 bg-slate-50 text-xs font-medium text-slate-600"
-                          >
-                            {achievement.year}
-                          </Badge>
-                        )}
-                        {achievement.approved && (
-                          <Badge className="flex items-center gap-1 border border-emerald-200 bg-emerald-50 text-xs font-medium text-emerald-600">
-                            <CheckCircle className="h-3 w-3" />
-                            Approved
-                          </Badge>
-                        )}
-                      </div>
-                      {achievement.description && (
-                        <p className="text-sm text-slate-600">{achievement.description}</p>
-                      )}
-                    </div>
-                    <div className="space-y-2 text-sm text-slate-600">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs uppercase tracking-wide text-slate-500">Level</span>
-                        <span>{ACHIEVEMENT_LEVEL_LABELS[achievement.level ?? ''] ?? achievement.level ?? '-'}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs uppercase tracking-wide text-slate-500">Year</span>
-                        <span>{achievement.year ?? '-'}</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      {achievement.certificateUrl && (
-                        <a
-                          href={achievement.certificateUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                          View certificate
-                        </a>
-                      )}
-                      {achievement.tags && achievement.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {achievement.tags.map((tag) => (
-                            <Badge
-                              key={tag}
-                              variant="outline"
-                              className="border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-600"
-                            >
-                              #{tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
-                      <Button
-                        variant="outline"
-                        className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                        onClick={() => openAchievementDialog(achievement)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                        onClick={() => handleRemoveAchievement(achievement.id)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-
-      <section id="extracurricular" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Competitions &amp; challenges</h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Document Olympiads, hackathons, tournaments, and other competitive experiences.
-            </p>
-          </div>
-          <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
-            onClick={() => openCompetitionDialog()}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Add competition</span>
-            <span className="sm:hidden">Competition</span>
-          </Button>
-        </div>
-
-        {profile.competitions.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-            Add competitions you&apos;ve participated in to showcase your grit and curiosity.
-          </div>
-        ) : (
-          <div className="mt-6 space-y-3">
-            <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,auto]">
-              <span>Competition</span>
-              <span>Highlights</span>
-              <span className="text-right">Actions</span>
-            </div>
-            {profile.competitions.map((competition) => (
-              <div
-                key={competition.id}
-                className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,auto]"
-              >
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900">{competition.name}</h3>
-                  {competition.description && (
-                    <p className="text-sm text-slate-600">{competition.description}</p>
-                  )}
-                  <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    {competition.category && <span>{competition.category}</span>}
-                    {competition.status && (
-                      <span>{EVENT_STATUS_LABELS[competition.status] ?? competition.status}</span>
-                    )}
-                    {competition.result && <span>{competition.result}</span>}
-                  </div>
-                </div>
-                <div className="space-y-2 text-sm text-slate-600">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wide text-slate-500">Date</span>
-                    <span>{competition.date ?? '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wide text-slate-500">Location</span>
-                    <span>{competition.location ?? '-'}</span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                    onClick={() => openCompetitionDialog(competition)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                    onClick={() => handleRemoveCompetition(competition.id)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section id="competitions" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Extracurricular life</h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Capture clubs, volunteering, and passion projects that shape your learning identity.
-            </p>
-          </div>
-          <Button
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
-            onClick={() => openExtracurricularDialog()}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Add activity</span>
-            <span className="sm:hidden">Activity</span>
-          </Button>
-        </div>
-
-        {profile.extracurriculars.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-            Share leadership roles, clubs, volunteering, or creative endeavours you&apos;re proud of.
-          </div>
-        ) : (
-          <div className="mt-6 space-y-3">
-            <div className="hidden rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid md:grid-cols-[1.6fr,1fr,auto]">
-              <span>Activity</span>
-              <span>Involvement</span>
-              <span className="text-right">Actions</span>
-            </div>
-            {profile.extracurriculars.map((activity) => (
-              <div
-                key={activity.id}
-                className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:grid-cols-[1.6fr,1fr,auto]"
-              >
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-slate-900">{activity.name}</h3>
-                  {activity.description && (
-                    <p className="text-sm text-slate-600">{activity.description}</p>
-                  )}
-                </div>
-                <div className="space-y-2 text-sm text-slate-600">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wide text-slate-500">Role</span>
-                    <span>{activity.role ?? '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wide text-slate-500">Status</span>
-                    <span>{activity.status ? EVENT_STATUS_LABELS[activity.status] ?? activity.status : '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-wide text-slate-500">Timeline</span>
-                    <span>
-                      {activity.startDate ?? '-'}
-                      {activity.endDate ? ` - ${activity.endDate}` : ''}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 md:justify-end">
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 text-indigo-600 hover:bg-indigo-50"
-                    onClick={() => openExtracurricularDialog(activity)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="border border-transparent text-slate-500 hover:bg-rose-50 hover:text-rose-600"
-                    onClick={() => handleRemoveExtracurricular(activity.id)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section id="resources" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-        <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Saved opportunities</h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Access programmes you bookmarked and keep an eye on upcoming deadlines.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
-            <Button
-              variant="outline"
-              className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto"
-              onClick={() => loadSavedOpportunities()}
-              disabled={isLoadingSaved}
-            >
-              {isLoadingSaved ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="mr-2 h-4 w-4" />
               )}
-              <span className="hidden sm:inline">Refresh</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="border-slate-200 text-slate-700 hover:bg-slate-50 w-full sm:w-auto"
-              onClick={() => router.push('/opportunities')}
-            >
-              Browse more
-            </Button>
-          </div>
-        </div>
-        {savedError && (
-          <div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-600">
-            {savedError}
-          </div>
-        )}
-        <div className="mt-6 space-y-4">
-          {isLoadingSaved ? (
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-              Loading your saved opportunities...
             </div>
-          ) : savedOpportunities.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
-              You haven&apos;t saved any opportunities yet. Explore the catalogue and bookmark programmes that inspire you.
+          </section>
+
+      <section id="competitions" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.12),transparent_60%)]" />
+        <div className="pointer-events-none absolute -left-32 top-0 h-64 w-64 rounded-full bg-purple-200/30 blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div className="space-y-2">
+              <Badge className="w-fit bg-purple-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-purple-600 dark:bg-purple-900/40 dark:text-purple-300">
+                ⚡ Competitive Spirit
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Competitions &amp; Challenges</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Showcase Olympiads, hackathons, tournaments, and competitive experiences.
+              </p>
+            </div>
+            <Button
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md shadow-purple-500/30 hover:from-purple-600 hover:to-pink-600 w-full lg:w-auto"
+              onClick={() => openCompetitionDialog()}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Add competition</span>
+              <span className="sm:hidden">Competition</span>
+            </Button>
+          </div>
+
+          {profile.competitions.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-purple-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-purple-950/30">
+              <Flag className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Show your competitive edge</p>
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add competitions to showcase your grit, talent, and determination.</p>
             </div>
           ) : (
-            savedOpportunities.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-slate-900 shadow-sm shadow-slate-200/50 md:flex-row md:items-center md:justify-between"
+            <div className="grid gap-4 lg:grid-cols-2">
+              {profile.competitions.map((competition) => (
+                <ModernCompetitionCard
+                  key={competition.id}
+                  competition={competition}
+                  onEdit={() => openCompetitionDialog(competition)}
+                  onRemove={() => handleRemoveCompetition(competition.id)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section id="extracurricular" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.12),transparent_60%)]" />
+        <div className="pointer-events-none absolute -right-32 -bottom-16 h-64 w-64 rounded-full bg-green-200/30 blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div className="space-y-2">
+              <Badge className="w-fit bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-300">
+                🌟 Life Beyond Classroom
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Extracurricular Life</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Share clubs, leadership roles, volunteering, and passion projects you're proud of.
+              </p>
+            </div>
+            <Button
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30 hover:from-emerald-600 hover:to-teal-600 w-full lg:w-auto"
+              onClick={() => openExtracurricularDialog()}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Add activity</span>
+              <span className="sm:hidden">Activity</span>
+            </Button>
+          </div>
+
+          {profile.extracurriculars.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-emerald-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-emerald-950/30">
+              <Users2 className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Show what drives you</p>
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Share your activities, roles, and passions that define who you are.</p>
+            </div>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {profile.extracurriculars.map((activity) => (
+                <ModernExtracurricularCard
+                  key={activity.id}
+                  activity={activity}
+                  onEdit={() => openExtracurricularDialog(activity)}
+                  onRemove={() => handleRemoveExtracurricular(activity.id)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section id="resources" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(79,70,229,0.12),transparent_60%)]" />
+        <div className="pointer-events-none absolute -right-32 top-0 h-64 w-64 rounded-full bg-indigo-200/30 blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div className="space-y-2">
+              <Badge className="w-fit bg-indigo-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
+                🎯 Your Bookmarks
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Saved Opportunities</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Access programmes you bookmarked and track upcoming deadlines.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
+              <Button
+                variant="outline"
+                className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto dark:border-white/10 dark:text-indigo-400 dark:hover:bg-indigo-950/30"
+                onClick={() => loadSavedOpportunities()}
+                disabled={isLoadingSaved}
               >
-                <div className="space-y-2">
-                  <h3 className="text-lg font-medium text-slate-900">{item.title}</h3>
-                  <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <span>{item.category || 'General'}</span>
-                    {item.organizer && <span>{item.organizer}</span>}
-                    {item.mode && <span>{item.mode.toUpperCase()}</span>}
+                {isLoadingSaved ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">Refresh</span>
+              </Button>
+              <Button
+                asChild
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
+              >
+                <Link href="/opportunities">Browse more</Link>
+              </Button>
+            </div>
+          </div>
+
+          {savedError && (
+            <div className="mb-6 rounded-xl border border-rose-200/40 bg-rose-50/60 dark:bg-rose-950/20 dark:border-rose-900/30 p-4 text-sm text-rose-600 dark:text-rose-400 backdrop-blur-xs">
+              ⚠️ {savedError}
+            </div>
+          )}
+
+          {isLoadingSaved ? (
+            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-indigo-950/30">
+              <Loader2 className="h-8 w-8 text-indigo-400 dark:text-indigo-500 mx-auto mb-3 animate-spin" />
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Loading your saved opportunities...</p>
+            </div>
+          ) : savedOpportunities.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-indigo-950/30">
+              <BookOpen className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Start bookmarking opportunities</p>
+              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Explore programmes and save the ones that excite you.</p>
+            </div>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {savedOpportunities.map((item) => (
+                <div
+                  key={item.id}
+                  className="group rounded-2xl border border-indigo-200/40 bg-gradient-to-br from-indigo-50/80 via-white/60 to-purple-50/40 p-6 backdrop-blur-xl shadow-lg shadow-indigo-200/20 hover:shadow-xl hover:shadow-indigo-300/30 transition-all duration-300 dark:from-indigo-950/20 dark:via-white/3 dark:to-purple-950/20 dark:border-indigo-900/30 dark:shadow-indigo-950/40 flex flex-col"
+                >
+                  <div className="space-y-4 flex-1">
+                    <div className="flex flex-wrap items-start gap-2">
+                      <Badge className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-900 dark:from-indigo-900/40 dark:to-purple-900/40 dark:text-indigo-300 font-semibold">
+                        {item.category || 'Opportunity'}
+                      </Badge>
+                      {item.mode && (
+                        <Badge variant="outline" className="border-slate-200 text-slate-600 text-xs dark:border-white/10 dark:text-slate-300">
+                          {item.mode === 'online' ? '🌐 Online' : '📍 Offline'}
+                        </Badge>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white line-clamp-2">{item.title}</h3>
+                      {item.organizer && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{item.organizer}</p>
+                      )}
+                    </div>
+
+                    {(item.registrationDeadline || item.savedAt) && (
+                      <div className="space-y-2 pt-2 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-200/50 dark:border-white/10">
+                        {item.registrationDeadline && (
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-indigo-500" />
+                            <span className="font-medium">
+                              {new Date(item.registrationDeadline).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </span>
+                          </div>
+                        )}
+                        {item.savedAt && (
+                          <p className="text-xs text-slate-500 dark:text-slate-500">Saved {formatSavedDate(item.savedAt)}</p>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex flex-wrap gap-4 text-sm text-slate-600">
-                    <span>
-                      Deadline{' '}
-                      <strong className="text-slate-900">
-                        {item.registrationDeadline
-                          ? new Date(item.registrationDeadline).toLocaleDateString(undefined, {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })
-                          : 'N/A'}
-                      </strong>
-                    </span>
-                    <span>
-                      Saved on{' '}
-                      <strong className="text-slate-900">{formatSavedDate(item.savedAt)}</strong>
-                    </span>
+
+                  <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-slate-200/50 dark:border-white/10">
+                    <Badge className="w-fit bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 text-xs font-medium">
+                      {item.gradeEligibility || 'All grades'}
+                    </Badge>
+                    <Button
+                      asChild
+                      className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full"
+                    >
+                      <Link href={`/opportunity/${item.id}`}>View Full Details</Link>
+                    </Button>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 md:flex-col md:items-end">
-                  <Badge
-                    variant="outline"
-                    className="border-indigo-100 bg-indigo-50 px-3 py-1 text-indigo-600"
-                  >
-                    {item.gradeEligibility || 'All grades'}
-                  </Badge>
-                  <Button
-                    asChild
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-foreground dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600"
-                  >
-                    <Link href={`/opportunity/${item.id}`}>View details</Link>
-                  </Button>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
       </section>

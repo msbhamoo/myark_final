@@ -1,15 +1,20 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { MascotBurst } from '@/components/MascotBurst';
+import { SchoolLeaderboardModal } from '@/components/gamification/SchoolLeaderboardModal';
 
 const STUDENT_LINKS = [
   { label: 'Explore Opportunities', href: '/opportunities' },
   { label: 'Scholarships & Grants', href: '/opportunities?category=scholarships' },
   { label: 'Olympiads & Exams', href: '/opportunities?category=olympiad' },
   { label: 'Skill Labs & Clubs', href: '/opportunities?mode=online' },
+  { label: 'School Leaderboard', href: '#', onClick: true },
 ] as const;
 
 const PARENT_LINKS = [
@@ -34,8 +39,11 @@ const SOCIAL_BUTTONS = [
 ] as const;
 
 export default function Footer() {
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
+
   return (
-    <footer className="bg-slate-900 text-slate-100">
+    <>
+      <footer className="bg-slate-900 text-slate-100">
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:px-8 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div className="space-y-6">
@@ -101,16 +109,29 @@ export default function Footer() {
               For Students
             </h3>
             <ul className="space-y-3 text-sm text-slate-300">
-              {STUDENT_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="transition hover:text-white hover:underline hover:underline-offset-4"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {STUDENT_LINKS.map((link) => {
+                const isLeaderboardLink = link.label === 'School Leaderboard';
+                return (
+                  <li key={link.href}>
+                    {isLeaderboardLink ? (
+                      <button
+                        onClick={() => setShowLeaderboardModal(true)}
+                        className="transition hover:text-white hover:underline hover:underline-offset-4 text-left flex items-center gap-1"
+                      >
+                        <Trophy className="h-3 w-3" />
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="transition hover:text-white hover:underline hover:underline-offset-4"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -178,5 +199,12 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+
+    {/* School Leaderboard Modal */}
+    <SchoolLeaderboardModal
+      open={showLeaderboardModal}
+      onOpenChange={setShowLeaderboardModal}
+    />
+    </>
   );
 }
