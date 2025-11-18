@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -287,7 +287,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           : null;
     const foundationYear =
       typeof rawYear === 'number' && Number.isFinite(rawYear) ? rawYear : null;
-    const allowedTypes: Organizer['type'][] = ['government', 'private', 'other'];
+    const allowedTypes: Organizer['type'][] = ['government', 'private', 'ngo', 'international', 'other'];
     const rawType = typeof entry.type === 'string' ? entry.type : 'other';
     const type = (allowedTypes.includes(rawType as Organizer['type']) ? rawType : 'other') as Organizer['type'];
 
@@ -301,12 +301,20 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
     return {
       id,
       name: normalizedName,
+      shortName: typeof entry.shortName === 'string' ? entry.shortName.trim() : '',
       address: typeof entry.address === 'string' ? entry.address : '',
       website: typeof entry.website === 'string' ? entry.website : '',
       foundationYear,
       type,
       visibility: entry.visibility === 'private' ? 'private' : 'public',
       isVerified: Boolean(entry.isVerified),
+      logoUrl: typeof entry.logoUrl === 'string' ? entry.logoUrl : '',
+      contactUrl: typeof entry.contactUrl === 'string' ? entry.contactUrl : '',
+      contactEmail: typeof entry.contactEmail === 'string' ? entry.contactEmail : '',
+      contactPhone: typeof entry.contactPhone === 'string' ? entry.contactPhone : '',
+      contactWebsite: typeof entry.contactWebsite === 'string' ? entry.contactWebsite : '',
+      description: typeof entry.description === 'string' ? entry.description : '',
+      opportunityTypeIds: Array.isArray(entry.opportunityTypeIds) ? entry.opportunityTypeIds : [],
     };
   };
 
@@ -490,6 +498,39 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
   const handleReset = () => {
     setEditingId(null);
     setFormState(defaultForm);
+  };
+
+  const handleOrganizerChange = async (organizerId: string) => {
+    setFormState((prev) => ({ ...prev, organizerId }));
+    
+    if (!organizerId) {
+      // Clear organizer-related fields
+      setFormState((prev) => ({
+        ...prev,
+        organizerLogo: '',
+        contactEmail: '',
+        contactPhone: '',
+        contactWebsite: '',
+      }));
+      return;
+    }
+
+    // Fetch organizer details and populate fields
+    try {
+      const response = await fetch(`/api/admin/organizers/${organizerId}`);
+      if (response.ok) {
+        const organizer = await response.json();
+        setFormState((prev) => ({
+          ...prev,
+          organizerLogo: organizer.logoUrl || prev.organizerLogo || '',
+          contactEmail: organizer.contactEmail || prev.contactEmail || '',
+          contactPhone: organizer.contactPhone || prev.contactPhone || '',
+          contactWebsite: organizer.contactWebsite || prev.contactWebsite || '',
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to fetch organizer details:', err);
+    }
   };
 
   const handleEdit = (item: OpportunityItem) => {
@@ -797,7 +838,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           className={`rounded-full px-4 py-2 text-sm font-medium transition ${
             activeTab === 'opportunities'
               ? 'bg-orange-500 text-foreground dark:text-white shadow-lg shadow-orange-500/30'
-              : 'text-slate-200 hover:bg-card/70 dark:bg-white/10'
+              : 'text-muted-foreground hover:bg-card/70 dark:hover:bg-white/10'
           }`}
         >
           Opportunities
@@ -811,7 +852,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           className={`rounded-full px-4 py-2 text-sm font-medium transition ${
             activeTab === 'resources'
               ? 'bg-orange-500 text-foreground dark:text-white shadow-lg shadow-orange-500/30'
-              : 'text-slate-200 hover:bg-card/70 dark:bg-white/10'
+              : 'text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10'
           }`}
         >
           Resources
@@ -824,13 +865,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
         <h2 className="text-lg font-semibold text-foreground dark:text-white">
           {editingId ? 'Edit opportunity' : 'Create opportunity'}
         </h2>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           Provide core details and supporting metadata. Arrays accept newline separated values.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className='md:col-span-2 space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-title'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-title'>
               Title *
             </label>
             <Input
@@ -839,12 +880,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               onChange={(event) => setFormState((prev) => ({ ...prev, title: event.target.value }))}
               required
               placeholder='National Science Olympiad'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-category'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-category'>
               Category *
             </label>
             <select
@@ -852,7 +893,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.categoryId}
               onChange={(event) => setFormState((prev) => ({ ...prev, categoryId: event.target.value }))}
               required
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               <option value=''>Select a category</option>
               {formState.categoryId &&
@@ -871,15 +912,15 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-organizer'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer'>
               Organizer *
             </label>
             <select
               id='op-organizer'
               value={formState.organizerId}
-              onChange={(event) => setFormState((prev) => ({ ...prev, organizerId: event.target.value }))}
+              onChange={(event) => handleOrganizerChange(event.target.value)}
               required
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               <option value=''>Select an organizer</option>
               {formState.organizerId &&
@@ -900,7 +941,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-organizer-logo'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer-logo'>
               Organizer logo URL
             </label>
             <Input
@@ -908,12 +949,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.organizerLogo}
               onChange={(event) => setFormState((prev) => ({ ...prev, organizerLogo: event.target.value }))}
               placeholder='https://...'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-grade'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-grade'>
               Grade eligibility
             </label>
             <Input
@@ -921,19 +962,19 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.gradeEligibility}
               onChange={(event) => setFormState((prev) => ({ ...prev, gradeEligibility: event.target.value }))}
               placeholder='6-12'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-mode'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-mode'>
               Mode
             </label>
             <select
               id='op-mode'
               value={formState.mode}
               onChange={(event) => setFormState((prev) => ({ ...prev, mode: event.target.value }))}
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               {modeOptions.map((mode) => (
                 <option key={mode} value={mode}>
@@ -944,7 +985,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-state'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-state'>
               State
             </label>
             <select
@@ -956,7 +997,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                   setFormState((prev) => ({ ...prev, state: value }));
                 }
               }}
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               <option value=''>Select state</option>
               {INDIAN_STATES.map((state) => (
@@ -968,14 +1009,14 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-status'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-status'>
               Status
             </label>
             <select
               id='op-status'
               value={formState.status}
               onChange={(event) => setFormState((prev) => ({ ...prev, status: event.target.value }))}
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -986,7 +1027,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-registration-mode'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-mode'>
               Registration Mode
             </label>
             <select
@@ -998,7 +1039,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                   registrationMode: event.target.value as 'internal' | 'external',
                 }))
               }
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               <option value='internal'>Internal</option>
               <option value='external'>External</option>
@@ -1007,7 +1048,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
 
           {formState.registrationMode === 'external' && (
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-200' htmlFor='op-application-url'>
+              <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-application-url'>
                 Application URL
               </label>
               <Input
@@ -1017,13 +1058,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                   setFormState((prev) => ({ ...prev, applicationUrl: event.target.value }))
                 }
                 placeholder='https://example.com/apply'
-                className='bg-slate-900/70 text-slate-100'
+                className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
               />
             </div>
           )}
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-fee'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-fee'>
               Fee
             </label>
             <Input
@@ -1031,12 +1072,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.fee}
               onChange={(event) => setFormState((prev) => ({ ...prev, fee: event.target.value }))}
               placeholder='50'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-currency'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-currency'>
               Currency
             </label>
             <Input
@@ -1044,13 +1085,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.currency}
               readOnly
               aria-readonly='true'
-              className='bg-slate-900/40 text-slate-300'
+              className='bg-card/60 dark:bg-white/5 text-muted-foreground'
             />
-            <p className='text-xs text-slate-400'>All opportunities are shown in Indian Rupees (INR).</p>
+            <p className='text-xs text-muted-foreground'>All opportunities are shown in Indian Rupees (INR).</p>
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-registration'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration'>
               Registration deadline
             </label>
             <Input
@@ -1058,12 +1099,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.registrationDeadline}
               onChange={(event) => setFormState((prev) => ({ ...prev, registrationDeadline: event.target.value }))}
               placeholder='2024-02-28'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-start'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-start'>
               Start date
             </label>
             <Input
@@ -1071,12 +1112,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.startDate}
               onChange={(event) => setFormState((prev) => ({ ...prev, startDate: event.target.value }))}
               placeholder='2024-03-15'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-end'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-end'>
               End date
             </label>
             <Input
@@ -1084,12 +1125,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.endDate}
               onChange={(event) => setFormState((prev) => ({ ...prev, endDate: event.target.value }))}
               placeholder='2024-03-16'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-image'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-image'>
               Cover image URL
             </label>
             <Input
@@ -1097,13 +1138,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.image}
               onChange={(event) => setFormState((prev) => ({ ...prev, image: event.target.value }))}
               placeholder='https://...'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='md:col-span-2 space-y-3'>
             <div className='flex items-center justify-between gap-2'>
-              <label className='text-sm font-medium text-slate-200'>
+              <label className='text-sm font-medium text-foreground dark:text-white'>
                 Segments
               </label>
               <a
@@ -1113,13 +1154,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                 Manage segments
               </a>
             </div>
-            <p className='text-xs text-slate-400'>
+            <p className='text-xs text-muted-foreground'>
               Opportunities only appear on the home page sections you select below. Hidden segments from the home layout are shown with a warning.
             </p>
 
-            <div className='min-h-[42px] rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/60 p-2'>
+            <div className='min-h-[42px] rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-2'>
               {selectedSegmentOptions.length === 0 ? (
-                <p className='text-sm text-slate-400'>
+                <p className='text-sm text-muted-foreground'>
                   No segments selected yet.
                 </p>
               ) : (
@@ -1151,16 +1192,16 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               )}
             </div>
 
-            <div className='rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/60'>
+            <div className='rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5'>
               <div className='flex items-center justify-between border-b border-border/60 dark:border-white/10 px-3 py-2'>
-                <p className='text-xs font-medium text-slate-200 uppercase tracking-wide'>Available segments</p>
-                {segmentsLoading && <span className='text-[11px] text-slate-400'>Loading...</span>}
+                <p className='text-xs font-medium text-foreground dark:text-white uppercase tracking-wide'>Available segments</p>
+                {segmentsLoading && <span className='text-[11px] text-muted-foreground'>Loading...</span>}
               </div>
               <div className='max-h-64 overflow-y-auto px-3 py-2 space-y-2'>
                 {segmentsLoading ? (
-                  <p className='text-sm text-slate-400'>Fetching segments...</p>
+                  <p className='text-sm text-muted-foreground'>Fetching segments...</p>
                 ) : availableSegments.length === 0 ? (
-                  <p className='text-sm text-slate-400'>
+                  <p className='text-sm text-muted-foreground'>
                     No segments configured yet. Use the Home Page Segments section to add some.
                   </p>
                 ) : (
@@ -1169,18 +1210,18 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     return (
                       <label
                         key={segment.segmentKey}
-                        className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-slate-200 hover:bg-card/80 dark:bg-white/5'
+                        className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-foreground dark:text-white hover:bg-card/80 dark:bg-white/5'
                       >
                         <div className='flex items-center gap-2'>
                           <input
                             type='checkbox'
                             checked={checked}
                             onChange={() => toggleSegmentSelection(segment.segmentKey)}
-                            className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70 text-orange-500 focus:ring-orange-500'
+                            className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500'
                           />
                           <div>
-                            <p className='font-medium text-slate-100'>{segment.title}</p>
-                            <p className='text-xs text-slate-400'>{segment.segmentKey}</p>
+                            <p className='font-medium text-foreground dark:text-white'>{segment.title}</p>
+                            <p className='text-xs text-muted-foreground'>{segment.segmentKey}</p>
                           </div>
                         </div>
                         {!segment.isVisible && (
@@ -1197,7 +1238,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           </div>
 
           <div className='md:col-span-2 space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-description'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-description'>
               Description
             </label>
             <Textarea
@@ -1205,35 +1246,35 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.description}
               onChange={(event) => setFormState((prev) => ({ ...prev, description: event.target.value }))}
               placeholder='Narrative describing the opportunity...'
-              className='min-h-[120px] bg-slate-900/70 text-slate-100'
+              className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
           <div className='md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-3'>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-200' htmlFor='op-eligibility'>
+              <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-eligibility'>
                 Eligibility (one per line)
               </label>
               <Textarea
                 id='op-eligibility'
                 value={formState.eligibilityText}
                 onChange={(event) => setFormState((prev) => ({ ...prev, eligibilityText: event.target.value }))}
-                className='min-h-[120px] bg-slate-900/70 text-slate-100'
+                className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
               />
             </div>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-200' htmlFor='op-benefits'>
+              <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-benefits'>
                 Benefits (one per line)
               </label>
               <Textarea
                 id='op-benefits'
                 value={formState.benefitsText}
                 onChange={(event) => setFormState((prev) => ({ ...prev, benefitsText: event.target.value }))}
-                className='min-h-[120px] bg-slate-900/70 text-slate-100'
+                className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
               />
             </div>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-200' htmlFor='op-registration-process'>
+              <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-process'>
                 Registration steps (one per line)
               </label>
               <Textarea
@@ -1242,13 +1283,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                 onChange={(event) =>
                   setFormState((prev) => ({ ...prev, registrationProcessText: event.target.value }))
                 }
-                className='min-h-[120px] bg-slate-900/70 text-slate-100'
+                className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
               />
             </div>
           </div>
 
           <div className='md:col-span-2 space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='op-timeline'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-timeline'>
               Timeline (one per line as <code>date|event|status</code>)
             </label>
             <Textarea
@@ -1256,15 +1297,15 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               value={formState.timelineText}
               onChange={(event) => setFormState((prev) => ({ ...prev, timelineText: event.target.value }))}
               placeholder='2024-02-01|Registration Opens|completed'
-              className='min-h-[120px] bg-slate-900/70 text-slate-100'
+              className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
 
-          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
-            <h3 className='text-sm font-semibold text-slate-100'>Exam pattern</h3>
+          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
+            <h3 className='text-sm font-semibold text-foreground dark:text-white'>Exam pattern</h3>
             <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-4'>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-exam-questions'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-exam-questions'>
                   Total questions
                 </label>
                 <Input
@@ -1274,11 +1315,11 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, examTotalQuestions: event.target.value }))
                   }
                   placeholder='100'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-exam-duration'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-exam-duration'>
                   Duration (minutes)
                 </label>
                 <Input
@@ -1288,14 +1329,14 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, examDurationMinutes: event.target.value }))
                   }
                   placeholder='120'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-exam-negative'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-exam-negative'>
                   Negative marking?
                 </label>
-                <div className='flex items-center gap-2 text-sm text-slate-200'>
+                <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
                   <input
                     id='op-exam-negative'
                     type='checkbox'
@@ -1303,13 +1344,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     onChange={(event) =>
                       setFormState((prev) => ({ ...prev, examNegativeMarking: event.target.checked }))
                     }
-                    className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70'
+                    className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
                   />
                   <span>Enabled</span>
                 </div>
               </div>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-exam-penalty'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-exam-penalty'>
                   Penalty per question
                 </label>
                 <Input
@@ -1319,12 +1360,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, examNegativeMarksPerQuestion: event.target.value }))
                   }
                   placeholder='0.25'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
             </div>
             <div className='mt-4 space-y-2'>
-              <label className='text-xs text-slate-300' htmlFor='op-exam-sections'>
+              <label className='text-xs text-muted-foreground' htmlFor='op-exam-sections'>
                 Sections (one per line as <code>name|questions|marks</code>)
               </label>
               <Textarea
@@ -1334,16 +1375,16 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                   setFormState((prev) => ({ ...prev, examSectionsText: event.target.value }))
                 }
                 placeholder='Physics|25|25'
-                className='min-h-[100px] bg-slate-900/70 text-slate-100'
+                className='min-h-[100px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
               />
             </div>
           </div>
 
-          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
-            <h3 className='text-sm font-semibold text-slate-100'>Contact information</h3>
+          <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
+            <h3 className='text-sm font-semibold text-foreground dark:text-white'>Contact information</h3>
             <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-3'>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-contact-email'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-contact-email'>
                   Email
                 </label>
                 <Input
@@ -1353,11 +1394,11 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, contactEmail: event.target.value }))
                   }
                   placeholder='info@example.org'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-contact-phone'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-contact-phone'>
                   Phone
                 </label>
                 <Input
@@ -1367,11 +1408,11 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, contactPhone: event.target.value }))
                   }
                   placeholder='+1-800-123-4567'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
               <div className='space-y-2'>
-                <label className='text-xs text-slate-300' htmlFor='op-contact-website'>
+                <label className='text-xs text-muted-foreground' htmlFor='op-contact-website'>
                   Website
                 </label>
                 <Input
@@ -1381,7 +1422,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     setFormState((prev) => ({ ...prev, contactWebsite: event.target.value }))
                   }
                   placeholder='https://example.org'
-                  className='bg-slate-900/70 text-slate-100'
+                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                 />
               </div>
             </div>
@@ -1413,7 +1454,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
             Refresh
           </Button>
         </div>
-        <p className='mt-1 text-sm text-slate-300'>
+        <p className='mt-1 text-sm text-muted-foreground'>
           {isLoading ? 'Loading... opportunities...' : `Showing ${items.length} record(s).`}
         </p>
 
@@ -1425,20 +1466,20 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10">
-                      <TableHead className="w-[25%] text-slate-200 font-semibold">Title & Info</TableHead>
-                      <TableHead className="w-[15%] text-slate-200 font-semibold">Category & Mode</TableHead>
-                      <TableHead className="w-[20%] text-slate-200 font-semibold">Organizer</TableHead>
-                      <TableHead className="w-[15%] text-slate-200 font-semibold text-center">Status & Source</TableHead>
-                      <TableHead className="w-[25%] text-slate-200 font-semibold text-right">Actions</TableHead>
+                      <TableHead className="w-[25%] text-foreground dark:text-white font-semibold">Title & Info</TableHead>
+                      <TableHead className="w-[15%] text-foreground dark:text-white font-semibold">Category & Mode</TableHead>
+                      <TableHead className="w-[20%] text-foreground dark:text-white font-semibold">Organizer</TableHead>
+                      <TableHead className="w-[15%] text-foreground dark:text-white font-semibold text-center">Status & Source</TableHead>
+                      <TableHead className="w-[25%] text-foreground dark:text-white font-semibold text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {items.length === 0 && !isLoading && (
                       <TableRow>
                         <TableCell colSpan={5} className="h-32 text-center">
-                          <div className="flex flex-col items-center justify-center space-y-2 text-slate-400">
+                          <div className="flex flex-col items-center justify-center space-y-2 text-muted-foreground">
                             <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
-                              <svg className="h-6 w-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="h-6 w-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                               </svg>
                             </div>
@@ -1455,10 +1496,10 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                               {item.title}
                             </div>
                             <div className="flex flex-col space-y-1">
-                              <span className="text-xs text-slate-400">
+                              <span className="text-xs text-muted-foreground">
                                 Added {formatDate(item.startDate)}
                               </span>
-                              <span className="text-xs text-slate-400">
+                              <span className="text-xs text-muted-foreground">
                                 Deadline: {formatDate(item.registrationDeadline)}
                               </span>
                             </div>
@@ -1473,7 +1514,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                               {item.category?.name || item.categoryName || 'N/A'}
                             </Badge>
                             <div className="flex items-center">
-                              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10">
+                              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
                                 {item.mode}
                               </span>
                             </div>
@@ -1489,20 +1530,20 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                               />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="text-sm font-medium text-slate-200 truncate">
+                              <div className="text-sm font-medium text-foreground dark:text-white truncate">
                                 {item.organizer?.name || item.organizerName || 'N/A'}
                               </div>
                               <div className="flex flex-wrap gap-1 mt-1">
                                 {item.segments.slice(0, 2).map((segment, index) => (
                                   <span 
                                     key={index}
-                                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10"
+                                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
                                   >
                                     {segment}
                                   </span>
                                 ))}
                                 {item.segments.length > 2 && (
-                                  <span className="text-xs text-slate-400">
+                                  <span className="text-xs text-muted-foreground">
                                     +{item.segments.length - 2} more
                                   </span>
                                 )}
@@ -1622,7 +1663,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
                         <h3 className="font-medium text-foreground dark:text-white truncate">{item.title}</h3>
-                        <p className="mt-1 text-xs text-slate-400">Added {formatDate(item.startDate)}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">Added {formatDate(item.startDate)}</p>
                       </div>
                       <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
                         <img 
@@ -1636,7 +1677,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                     {/* Details */}
                     <div className="grid gap-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Category:</span>
+                        <span className="text-muted-foreground">Category:</span>
                         <Badge 
                           variant="outline" 
                           className="border-orange-500/20 bg-orange-500/10 text-orange-400"
@@ -1645,19 +1686,19 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Organizer:</span>
-                        <span className="text-slate-200">
+                        <span className="text-muted-foreground">Organizer:</span>
+                        <span className="text-foreground dark:text-white">
                           {item.organizer?.name || item.organizerName || 'N/A'}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Mode:</span>
-                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10">
+                        <span className="text-muted-foreground">Mode:</span>
+                        <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
                           {item.mode}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Status:</span>
+                        <span className="text-muted-foreground">Status:</span>
                         <Badge 
                           variant="outline" 
                           className={`
@@ -1671,8 +1712,8 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Deadline:</span>
-                        <span className="text-slate-200">{formatDate(item.registrationDeadline)}</span>
+                        <span className="text-muted-foreground">Deadline:</span>
+                        <span className="text-foreground dark:text-white">{formatDate(item.registrationDeadline)}</span>
                       </div>
                     </div>
 
@@ -1681,7 +1722,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                       {item.segments.map((segment, index) => (
                         <span 
                           key={index}
-                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-slate-300 border border-border/60 dark:border-white/10"
+                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
                         >
                           {segment}
                         </span>
@@ -1724,7 +1765,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
 
               {items.length === 0 && !isLoading && (
                 <div className="col-span-full rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
-                  <div className="flex flex-col items-center justify-center space-y-3 text-slate-400">
+                  <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground">
                     <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
                       <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -1745,7 +1786,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
           <div className='flex flex-wrap items-center justify-between gap-4'>
             <div>
               <h2 className='text-lg font-semibold text-foreground dark:text-white'>Opportunity resources</h2>
-              <p className='mt-1 text-sm text-slate-300'>
+              <p className='mt-1 text-sm text-muted-foreground'>
                 Add helpful links, PDFs, or videos for the selected opportunity.
               </p>
             </div>
@@ -1754,7 +1795,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
               size='sm'
               onClick={loadItems}
               disabled={isLoading || isResourceSubmitting}
-              className='border-white/20 text-slate-200 hover:bg-card/70 dark:bg-white/10'
+              className='border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10'
             >
               Refresh
             </Button>
@@ -1762,14 +1803,14 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
 
           <div className='mt-6 space-y-6'>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-200' htmlFor='resource-opportunity'>
+              <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='resource-opportunity'>
                 Opportunity
               </label>
               <select
                 id='resource-opportunity'
                 value={selectedOpportunityId}
                 onChange={(event) => setSelectedOpportunityId(event.target.value)}
-                className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
+                className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 py-2 text-sm text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50'
               >
                 <option value=''>Select an opportunity</option>
                 {items.map((item) => (
@@ -1781,24 +1822,24 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
             </div>
 
             {!selectedOpportunity ? (
-              <div className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-6 text-center text-sm text-slate-300'>
+              <div className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-6 text-center text-sm text-muted-foreground'>
                 Choose an opportunity to manage its resources.
               </div>
             ) : (
               <div className='grid gap-6 lg:grid-cols-2'>
                 <div className='space-y-4'>
-                  <div className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4'>
+                  <div className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
                     <div className='flex flex-col gap-2'>
-                      <p className='text-xs uppercase tracking-wide text-slate-400'>Selected opportunity</p>
+                      <p className='text-xs uppercase tracking-wide text-muted-foreground'>Selected opportunity</p>
                       <h3 className='text-lg font-semibold text-foreground dark:text-white'>{selectedOpportunity.title}</h3>
-                      <div className='flex flex-wrap items-center gap-2 text-xs text-slate-300'>
+                      <div className='flex flex-wrap items-center gap-2 text-xs text-muted-foreground'>
                         <Badge variant='outline' className='border-orange-500/30 bg-orange-500/10 text-orange-300'>
                           {selectedOpportunity.category?.name || selectedOpportunity.categoryName || 'Uncategorized'}
                         </Badge>
-                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-slate-300'>
+                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-muted-foreground'>
                           {selectedOpportunity.mode}
                         </span>
-                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-slate-300'>
+                        <span className='rounded-full border border-border/60 dark:border-white/10 px-2 py-0.5 text-muted-foreground'>
                           {selectedOpportunity.status}
                         </span>
                       </div>
@@ -1808,25 +1849,25 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                   <div>
                     <div className='flex items-center justify-between'>
                       <h3 className='text-sm font-semibold text-foreground dark:text-white'>Existing resources</h3>
-                      <span className='text-xs text-slate-400'>
+                      <span className='text-xs text-muted-foreground'>
                         {selectedOpportunity.resources.length} item(s)
                       </span>
                     </div>
                     <div className='mt-3 space-y-3'>
                       {selectedOpportunity.resources.length === 0 ? (
-                        <div className='rounded-xl border border-dashed border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 text-center text-sm text-slate-400'>
+                        <div className='rounded-xl border border-dashed border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 text-center text-sm text-muted-foreground'>
                           No resources added yet.
                         </div>
                       ) : (
                         selectedOpportunity.resources.map((resource) => (
                           <div
                             key={resource.id}
-                            className='rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/60 p-4 transition hover:border-orange-500/30'
+                            className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4 transition hover:border-orange-500/30'
                           >
                             <div className='flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between'>
                               <div className='space-y-2'>
                                 <div className='flex items-center gap-2'>
-                                  <Badge variant='outline' className='border-white/20 bg-card/70 dark:bg-white/10 text-slate-200'>
+                                  <Badge variant='outline' className='border-white/20 bg-card/70 dark:bg-white/10 text-foreground dark:text-white'>
                                     {resource.type.toUpperCase()}
                                   </Badge>
                                   <a
@@ -1839,7 +1880,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                                   </a>
                                 </div>
                                 {resource.description && (
-                                  <p className='text-sm text-slate-400'>{resource.description}</p>
+                                  <p className='text-sm text-muted-foreground'>{resource.description}</p>
                                 )}
                                 <p className='break-all text-xs text-slate-500'>{resource.url}</p>
                               </div>
@@ -1847,7 +1888,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                                 <Button
                                   variant='outline'
                                   size='sm'
-                                  className='border-white/20 text-slate-200 hover:bg-card/70 dark:bg-white/10'
+                                  className='border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10'
                                   asChild
                                 >
                                   <a href={resource.url} target='_blank' rel='noreferrer'>
@@ -1876,13 +1917,13 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                 <div className='space-y-4'>
                   <div>
                     <h3 className='text-sm font-semibold text-foreground dark:text-white'>Add new resource</h3>
-                    <p className='mt-1 text-sm text-slate-400'>
+                    <p className='mt-1 text-sm text-muted-foreground'>
                       Provide a descriptive title and link. URLs will automatically include https:// if missing.
                     </p>
                   </div>
                   <form className='space-y-4' onSubmit={handleResourceSubmit}>
                     <div className='space-y-2'>
-                      <label className='text-sm font-medium text-slate-200' htmlFor='resource-title'>
+                      <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='resource-title'>
                         Title
                       </label>
                       <Input
@@ -1892,11 +1933,11 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                           setResourceDraft((prev) => ({ ...prev, title: event.target.value }))
                         }
                         placeholder='Official sample paper'
-                        className='bg-slate-900/70 text-slate-100'
+                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                       />
                     </div>
                     <div className='space-y-2'>
-                      <label className='text-sm font-medium text-slate-200' htmlFor='resource-url'>
+                      <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='resource-url'>
                         URL
                       </label>
                       <Input
@@ -1906,12 +1947,12 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                           setResourceDraft((prev) => ({ ...prev, url: event.target.value }))
                         }
                         placeholder='https://example.com/resource.pdf'
-                        className='bg-slate-900/70 text-slate-100'
+                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                       />
                     </div>
                     <div className='grid gap-4 sm:grid-cols-2'>
                       <div className='space-y-2'>
-                        <label className='text-sm font-medium text-slate-200' htmlFor='resource-type'>
+                        <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='resource-type'>
                           Type
                         </label>
                         <select
@@ -1923,7 +1964,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                               type: event.target.value as ResourceDraft['type'],
                             }))
                           }
-                          className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/50'
+                          className='w-full rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 py-2 text-sm text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50'
                         >
                           <option value='link'>Reference link</option>
                           <option value='pdf'>PDF / document</option>
@@ -1931,7 +1972,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                         </select>
                       </div>
                       <div className='space-y-2'>
-                        <label className='text-sm font-medium text-slate-200' htmlFor='resource-description'>
+                        <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='resource-description'>
                           Notes (optional)
                         </label>
                         <Textarea
@@ -1941,7 +1982,7 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
                             setResourceDraft((prev) => ({ ...prev, description: event.target.value }))
                           }
                           placeholder='Share why this resource is helpful...'
-                          className='min-h-[80px] bg-slate-900/70 text-slate-100'
+                          className='min-h-[80px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                         />
                       </div>
                     </div>
@@ -1980,6 +2021,9 @@ const isValidState = (value: string): value is OpportunityFormState['state'] => 
     </div>
   );
 }
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useRef, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -311,12 +311,12 @@ export function BulkUploadManager() {
 
           return (
             <TabsContent key={entity} value={entity} className="space-y-6">
-              <Card className="border-white/10 bg-slate-900/60 p-6">
+              <Card className="border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
                 <div className="space-y-3">
                   <div>
                     <h2 className="text-lg font-semibold text-foreground dark:text-white">{config.label}</h2>
-                    <p className="text-sm text-slate-300">{config.description}</p>
-                    <p className="text-xs text-slate-400 mt-1">{config.helper}</p>
+                    <p className="text-sm text-muted-foreground">{config.description}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{config.helper}</p>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
@@ -331,7 +331,7 @@ export function BulkUploadManager() {
                       Download template
                     </Button>
 
-                    <label className="inline-flex items-center gap-2 text-sm text-slate-200">
+                    <label className="inline-flex items-center gap-2 text-sm text-foreground dark:text-white">
                       <input
                         ref={(node) => {
                           inputRefs.current[entity] = node;
@@ -351,7 +351,7 @@ export function BulkUploadManager() {
                         <Upload className="mr-2 h-4 w-4" />
                         Upload CSV
                       </Button>
-                      {state.fileName && <span className="text-xs text-slate-400">{state.fileName}</span>}
+                      {state.fileName && <span className="text-xs text-muted-foreground">{state.fileName}</span>}
                     </label>
 
                     {preview && (
@@ -385,15 +385,15 @@ export function BulkUploadManager() {
               </Card>
 
               {preview ? (
-                <Card className="border-white/10 bg-slate-900/60 p-6 space-y-4">
+                <Card className="border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 space-y-4 backdrop-blur">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <p className="text-sm text-slate-300">
-                        Parsed <strong>{totals?.total ?? 0}</strong> rows —{' '}
+                      <p className="text-sm text-muted-foreground">
+                        Parsed <strong>{totals?.total ?? 0}</strong> rows â€”{' '}
                         <span className="text-emerald-300">{totals?.valid ?? 0} valid</span>,{' '}
                         <span className="text-red-300">{totals?.invalid ?? 0} invalid</span>.
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         Review the parsed rows below. Invalid rows will not be imported until corrected in the CSV and re-uploaded.
                       </p>
                     </div>
@@ -403,7 +403,7 @@ export function BulkUploadManager() {
                       onClick={() => handleCommit(entity)}
                       disabled={state.committing || state.loading || validRowCount === 0}
                     >
-                      {state.committing ? 'Importing…' : `Import ${validRowCount} valid row${validRowCount === 1 ? '' : 's'}`}
+                      {state.committing ? 'Importingâ€¦' : `Import ${validRowCount} valid row${validRowCount === 1 ? '' : 's'}`}
                     </Button>
                   </div>
 
@@ -411,20 +411,20 @@ export function BulkUploadManager() {
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-card/80 dark:bg-white/5">
-                          <TableHead className="w-16 text-slate-200">Row</TableHead>
-                          <TableHead className="w-28 text-slate-200">Status</TableHead>
+                          <TableHead className="w-16 text-foreground dark:text-white">Row</TableHead>
+                          <TableHead className="w-28 text-foreground dark:text-white">Status</TableHead>
                           {preview.headers.map((header) => (
-                            <TableHead key={header} className="text-slate-200">
+                            <TableHead key={header} className="text-foreground dark:text-white">
                               {header}
                             </TableHead>
                           ))}
-                          <TableHead className="text-slate-200">Errors</TableHead>
+                          <TableHead className="text-foreground dark:text-white">Errors</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {preview.rows.map((row) => (
                           <TableRow key={row.index} className="border-white/5">
-                            <TableCell className="text-sm text-slate-300">{row.index}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">{row.index}</TableCell>
                             <TableCell>
                               {row.errors.length === 0 ? (
                                 <Badge className="bg-emerald-500/20 text-emerald-200 border-emerald-500/30">Valid</Badge>
@@ -435,7 +435,7 @@ export function BulkUploadManager() {
                               )}
                             </TableCell>
                             {preview.headers.map((header) => (
-                              <TableCell key={header} className="text-sm text-slate-200">
+                              <TableCell key={header} className="text-sm text-foreground dark:text-white">
                                 {renderValue(row.data[header]) || renderValue(row.raw[header])}
                               </TableCell>
                             ))}
@@ -449,7 +449,7 @@ export function BulkUploadManager() {
                   </div>
                 </Card>
               ) : (
-                <Card className="border-dashed border-border/60 dark:border-white/10 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+                <Card className="border-dashed border-border/60 dark:border-white/10 bg-card/40 dark:bg-white/5 p-10 text-center text-sm text-muted-foreground backdrop-blur">
                   <p>
                     Upload a CSV template to preview records before importing them into the database.
                   </p>
@@ -462,6 +462,7 @@ export function BulkUploadManager() {
     </div>
   );
 }
+
 
 
 

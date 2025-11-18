@@ -55,12 +55,20 @@ export async function GET(_request: Request, context: any) {
     return NextResponse.json({
       id: doc.id,
       name: data.name ?? '',
+      shortName: data.shortName ?? '',
       address: data.address ?? '',
       website: data.website ?? '',
       foundationYear: parseFoundationYear(data.foundationYear),
       type: data.type ?? 'other',
       visibility: data.visibility ?? 'public',
       isVerified: Boolean(data.isVerified),
+      logoUrl: data.logoUrl ?? '',
+      contactUrl: data.contactUrl ?? '',
+      contactEmail: data.contactEmail ?? '',
+      contactPhone: data.contactPhone ?? '',
+      contactWebsite: data.contactWebsite ?? '',
+      description: data.description ?? '',
+      opportunityTypeIds: Array.isArray(data.opportunityTypeIds) ? data.opportunityTypeIds : [],
       createdAt: data.createdAt ?? null,
       updatedAt: data.updatedAt ?? null,
     });
@@ -87,12 +95,20 @@ export async function PUT(request: Request, context: any) {
 
     const updateData = {
       name,
+      shortName: typeof body.shortName === 'string' ? body.shortName.trim() : '',
       address: typeof body.address === 'string' ? body.address.trim() : '',
       website: typeof body.website === 'string' ? body.website.trim() : '',
       foundationYear: parseFoundationYear(body.foundationYear),
       type: typeof body.type === 'string' ? body.type : 'other',
       visibility: normalizeVisibility(body.visibility),
       isVerified: normalizeBoolean(body.isVerified),
+      logoUrl: typeof body.logoUrl === 'string' ? body.logoUrl.trim() : '',
+      contactUrl: typeof body.contactUrl === 'string' ? body.contactUrl.trim() : '',
+      contactEmail: typeof body.contactEmail === 'string' ? body.contactEmail.trim() : '',
+      contactPhone: typeof body.contactPhone === 'string' ? body.contactPhone.trim() : '',
+      contactWebsite: typeof body.contactWebsite === 'string' ? body.contactWebsite.trim() : '',
+      description: typeof body.description === 'string' ? body.description.trim() : '',
+      opportunityTypeIds: Array.isArray(body.opportunityTypeIds) ? body.opportunityTypeIds : [],
       updatedAt: new Date(),
     };
 

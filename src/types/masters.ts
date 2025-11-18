@@ -2,12 +2,20 @@
 export interface Organizer {
   id: string;
   name: string;
+  shortName?: string;
   address: string;
   website: string;
   foundationYear: number | null;
-  type: 'government' | 'private' | 'other';
+  type: 'government' | 'private' | 'ngo' | 'international' | 'other';
   visibility?: 'public' | 'private';
   isVerified?: boolean;
+  logoUrl?: string;
+  contactUrl?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactWebsite?: string;
+  description?: string;
+  opportunityTypeIds?: string[];
 }
 
 export interface OpportunityCategory {

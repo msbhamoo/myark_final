@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -113,7 +113,7 @@ export function HostsManager() {
     <div className='space-y-6'>
       <div className='flex flex-col gap-2'>
         <h2 className='text-2xl font-semibold text-foreground dark:text-white'>Host Accounts</h2>
-        <p className='text-sm text-muted-foreground dark:text-white/60'>
+        <p className='text-sm text-muted-foreground'>
           Review all organization accounts created through the public portal. Toggle verification and
           visibility to control what appears on the site.
         </p>
@@ -121,7 +121,7 @@ export function HostsManager() {
           <Button variant='outline' size='sm' onClick={loadHosts} disabled={isLoading}>
             Refresh
           </Button>
-          {isLoading && <span className='text-xs text-muted-foreground dark:text-white/60'>Loading hosts...</span>}
+          {isLoading && <span className='text-xs text-muted-foreground'>Loading hosts...</span>}
         </div>
         {error && (
           <p className='text-sm text-red-400' role='alert'>
@@ -137,18 +137,18 @@ export function HostsManager() {
               key={host.id}
               className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-4 shadow-sm shadow-slate-950/20'
             >
-              <div className='flex flex-col gap-3'>
+                <div className='flex flex-col gap-3'>
                 <div>
                   <h3 className='text-base font-semibold text-foreground dark:text-white'>
                     {host.organizationName || host.displayName || host.email}
                   </h3>
-                  <p className='text-xs text-muted-foreground dark:text-white/60'>{host.email}</p>
+                  <p className='text-xs text-muted-foreground'>{host.email}</p>
                 </div>
-                <div className='flex flex-wrap gap-2 text-xs text-muted-foreground dark:text-white/60'>
+                <div className='flex flex-wrap gap-2 text-xs text-muted-foreground'>
                   <Badge className='bg-orange-500/20 text-orange-200 border border-orange-500/40'>
                     Host
                   </Badge>
-                  <Badge variant='outline' className='border-white/20 text-slate-200'>
+                  <Badge variant='outline' className='border-white/20 text-foreground dark:text-white'>
                     {host.organizer.visibility === 'public' ? 'Public' : 'Private'}
                   </Badge>
                   <Badge
@@ -161,12 +161,12 @@ export function HostsManager() {
                     {host.organizer.isVerified ? 'Verified' : 'Pending review'}
                   </Badge>
                 </div>
-                <div className='space-y-1 text-xs text-muted-foreground dark:text-white/60'>
+                <div className='space-y-1 text-xs text-muted-foreground'>
                   <div>
-                    <span className='font-medium text-muted-foreground dark:text-white/70'>Joined:</span> {formatDate(host.createdAt)}
+                    <span className='font-medium text-muted-foreground dark:text-foreground dark:text-white'>Joined:</span> {formatDate(host.createdAt)}
                   </div>
                   <div>
-                    <span className='font-medium text-muted-foreground dark:text-white/70'>Submissions:</span>{' '}
+                    <span className='font-medium text-muted-foreground dark:text-foreground dark:text-white'>Submissions:</span>{' '}
                     {host.stats.total} (approved {host.stats.approved}, pending {host.stats.pending})
                   </div>
                   {host.organizationDetails && (
@@ -203,13 +203,13 @@ export function HostsManager() {
             </div>
           ))}
           {hosts.length === 0 && !isLoading && (
-            <div className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 text-center text-sm text-muted-foreground dark:text-white/60'>
+            <div className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 text-center text-sm text-muted-foreground'>
               No host accounts recorded yet.
             </div>
           )}
         </div>
 
-        <div className='hidden rounded-xl border border-border/60 dark:border-white/10 bg-slate-900/40 md:block'>
+        <div className='hidden rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 md:block'>
           <div className='w-full overflow-x-auto'>
             <Table className='min-w-[1100px]'>
               <TableHeader>
@@ -241,14 +241,14 @@ export function HostsManager() {
                         <p className='text-xs text-muted-foreground dark:text-white/60'>{host.organizer.overview || host.organizationDetails || 'N/A'}</p>
                       </div>
                     </TableCell>
-                    <TableCell className='text-sm text-muted-foreground dark:text-white/70'>
+                    <TableCell className='text-sm text-muted-foreground'>
                       <div className='space-y-1'>
                         <p>{host.email}</p>
-                        <p className='text-xs text-muted-foreground dark:text-white/50'>Contact: {host.organizer.contactEmail || 'N/A'}</p>
+                        <p className='text-xs text-muted-foreground'>Contact: {host.organizer.contactEmail || 'N/A'}</p>
                       </div>
                     </TableCell>
                     <TableCell className='text-center'>
-                      <Badge variant='outline' className='border-white/20 text-slate-200'>
+                      <Badge variant='outline' className='border-white/20 text-foreground dark:text-white'>
                         {host.organizer.visibility === 'public' ? 'Public' : 'Private'}
                       </Badge>
                     </TableCell>
@@ -263,14 +263,14 @@ export function HostsManager() {
                         {host.organizer.isVerified ? 'Verified' : 'Pending'}
                       </Badge>
                     </TableCell>
-                    <TableCell className='text-center text-xs text-muted-foreground dark:text-white/70'>
+                    <TableCell className='text-center text-xs text-muted-foreground'>
                       <div className='flex flex-col gap-1 items-center'>
                         {renderStatsBadge('Total', host.stats.total, 'bg-card/70 dark:bg-white/10')}
                         {renderStatsBadge('Approved', host.stats.approved, 'bg-emerald-500/15 text-emerald-200')}
                         {renderStatsBadge('Pending', host.stats.pending, 'bg-yellow-500/15 text-yellow-200')}
                       </div>
                     </TableCell>
-                    <TableCell className='text-center text-xs text-muted-foreground dark:text-white/60'>
+                    <TableCell className='text-center text-xs text-muted-foreground'>
                       {formatDate(host.createdAt)}
                     </TableCell>
                     <TableCell className='flex justify-end gap-2'>
@@ -309,6 +309,7 @@ export function HostsManager() {
     </div>
   );
 }
+
 
 
 

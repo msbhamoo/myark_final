@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -125,7 +125,7 @@ export function CategoriesManager() {
         <h2 className="text-lg font-semibold text-foreground dark:text-white">{editingId ? 'Edit category' : 'Create category'}</h2>
         <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="cat-name">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="cat-name">
               Name *
             </label>
             <Input
@@ -134,11 +134,11 @@ export function CategoriesManager() {
               onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
               required
               placeholder="e.g., Olympiad"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="cat-desc">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="cat-desc">
               Description
             </label>
             <Textarea
@@ -146,7 +146,7 @@ export function CategoriesManager() {
               value={formState.description}
               onChange={(event) => setFormState((prev) => ({ ...prev, description: event.target.value }))}
               placeholder="A short description of the category."
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export function CategoriesManager() {
             Refresh
           </Button>
         </div>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           {isLoading ? 'Loading categories...' : `Showing ${items.length} record(s).`}
         </p>
         <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
@@ -189,15 +189,15 @@ export function CategoriesManager() {
             <TableBody>
               {items.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-slate-400">
+                  <TableCell colSpan={3} className="text-center text-muted-foreground">
                     No categories found.
                   </TableCell>
                 </TableRow>
               )}
               {items.map((item) => (
                 <TableRow key={item.id} className="hover:bg-card/80 dark:bg-white/5">
-                  <TableCell className="font-medium text-slate-100">{item.name}</TableCell>
-                  <TableCell className="text-slate-300">{item.description || '—'}</TableCell>
+                  <TableCell className="font-medium text-foreground dark:text-white">{item.name}</TableCell>
+                  <TableCell className="text-muted-foreground">{item.description || 'â€”'}</TableCell>
                   <TableCell className="flex justify-end gap-2">
                     <Button
                       variant="outline"
@@ -220,6 +220,7 @@ export function CategoriesManager() {
     </div>
   );
 }
+
 
 
 

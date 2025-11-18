@@ -7,9 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function AdminSettingsPage() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      <Tabs defaultValue="categories">
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-semibold text-foreground dark:text-white">Settings</h1>
+        <p className="mt-2 text-sm text-muted-foreground dark:text-slate-300">Manage platform configuration and master data</p>
+      </div>
+      <Tabs defaultValue="categories" className="w-full">
         <TabsList>
           <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="organizers">Organizers</TabsTrigger>

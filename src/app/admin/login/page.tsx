@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+﻿export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 import { cookies } from 'next/headers';
@@ -18,9 +18,9 @@ export default async function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl bg-slate-900/70 p-8 shadow-xl shadow-slate-950/30 backdrop-blur">
+      <div className="w-full max-w-md rounded-2xl bg-card/80 dark:bg-white/5 p-8 shadow-xl shadow-black/30 backdrop-blur">
         <h1 className="text-2xl font-semibold text-slate-100">Admin Sign In</h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-muted-foreground dark:text-muted-foreground dark:text-slate-400">
           Enter the admin password to access the control panel.
         </p>
 
@@ -31,3 +31,5 @@ export default async function AdminLoginPage() {
     </div>
   );
 }
+
+

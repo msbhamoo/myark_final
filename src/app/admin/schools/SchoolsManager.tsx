@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -186,7 +186,7 @@ export function SchoolsManager() {
         <h2 className='text-lg font-semibold text-foreground dark:text-white'>{editingId ? 'Edit school' : 'Create school'}</h2>
         <form onSubmit={handleSubmit} className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
           <div className='md:col-span-2 space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-name'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-name'>
               Name *
             </label>
             <Input
@@ -195,43 +195,43 @@ export function SchoolsManager() {
               onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
               required
               placeholder='Example School'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='md:col-span-2 space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-address'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-address'>
               Address
             </label>
             <Textarea
               id='school-address'
               value={formState.address}
               onChange={(event) => setFormState((prev) => ({ ...prev, address: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-country'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-country'>
               Country
             </label>
             <select
               id='school-country'
               value={formState.countryId}
               onChange={(e) => setFormState(prev => ({...prev, countryId: e.target.value, stateId: '', cityId: ''}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
             >
               <option value=''>Select Country</option>
               {countries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-state'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-state'>
               State
             </label>
             <select
               id='school-state'
               value={formState.stateId}
               onChange={(e) => setFormState(prev => ({...prev, stateId: e.target.value, cityId: ''}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.countryId}
             >
               <option value=''>Select State</option>
@@ -239,14 +239,14 @@ export function SchoolsManager() {
             </select>
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-city'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-city'>
               City
             </label>
             <select
               id='school-city'
               value={formState.cityId}
               onChange={(e) => setFormState(prev => ({...prev, cityId: e.target.value}))}
-              className='bg-slate-900/70 text-slate-100 h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.stateId}
             >
               <option value=''>Select City</option>
@@ -254,29 +254,29 @@ export function SchoolsManager() {
             </select>
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-pincode'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-pincode'>
               Pincode
             </label>
             <Input
               id='school-pincode'
               value={formState.pincode}
               onChange={(event) => setFormState((prev) => ({ ...prev, pincode: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-website'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-website'>
               Website
             </label>
             <Input
               id='school-website'
               value={formState.website}
               onChange={(event) => setFormState((prev) => ({ ...prev, website: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-email'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-email'>
               Email
             </label>
             <Input
@@ -284,22 +284,22 @@ export function SchoolsManager() {
               type='email'
               value={formState.email}
               onChange={(event) => setFormState((prev) => ({ ...prev, email: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-phone'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-phone'>
               Phone
             </label>
             <Input
               id='school-phone'
               value={formState.phone}
               onChange={(event) => setFormState((prev) => ({ ...prev, phone: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-foundation-year'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-foundation-year'>
               Foundation Year
             </label>
             <Input
@@ -307,20 +307,20 @@ export function SchoolsManager() {
               type='number'
               value={formState.foundationYear}
               onChange={(event) => setFormState((prev) => ({ ...prev, foundationYear: event.target.value }))}
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='school-verified'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-verified'>
               Verification
             </label>
-            <div className='flex items-center gap-2 text-sm text-slate-200'>
+            <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
               <input
                 id='school-verified'
                 type='checkbox'
                 checked={formState.isVerified}
                 onChange={(event) => setFormState((prev) => ({ ...prev, isVerified: event.target.checked }))}
-                className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-slate-900/70'
+                className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
               />
               <span>Verified</span>
             </div>
@@ -350,7 +350,7 @@ export function SchoolsManager() {
             Refresh
           </Button>
         </div>
-        <p className='mt-1 text-sm text-slate-300'>
+        <p className='mt-1 text-sm text-muted-foreground'>
           {isLoading ? 'Loading schools...' : `Showing ${items.length} record(s).`}
         </p>
         <div className='mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10'>
@@ -368,24 +368,24 @@ export function SchoolsManager() {
             <TableBody>
               {items.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={6} className='text-center text-slate-400'>
+                  <TableCell colSpan={6} className='text-center text-muted-foreground'>
                     No schools found.
                   </TableCell>
                 </TableRow>
               )}
               {items.map((item) => (
                 <TableRow key={item.id} className='hover:bg-card/80 dark:bg-white/5'>
-                  <TableCell className='font-medium text-slate-100'>{item.name}</TableCell>
-                  <TableCell className='text-slate-300'>{cities.find(c => c.id === item.cityId)?.name || '—'}</TableCell>
-                  <TableCell className='text-slate-300'>{states.find(s => s.id === item.stateId)?.name || '—'}</TableCell>
-                  <TableCell className='text-slate-300'>{countries.find(c => c.id === item.countryId)?.name || '—'}</TableCell>
+                  <TableCell className='font-medium text-foreground dark:text-white'>{item.name}</TableCell>
+                  <TableCell className='text-muted-foreground'>{cities.find(c => c.id === item.cityId)?.name || 'â€”'}</TableCell>
+                  <TableCell className='text-muted-foreground'>{states.find(s => s.id === item.stateId)?.name || 'â€”'}</TableCell>
+                  <TableCell className='text-muted-foreground'>{countries.find(c => c.id === item.countryId)?.name || 'â€”'}</TableCell>
                   <TableCell>
                     {item.isVerified ? (
                       <Badge variant='outline' className='border-green-500/40 text-green-300'>
                         Verified
                       </Badge>
                     ) : (
-                      <Badge variant='outline' className='border-white/20 text-slate-200'>
+                      <Badge variant='outline' className='border-white/20 text-foreground dark:text-white'>
                         Pending
                       </Badge>
                     )}
@@ -412,6 +412,7 @@ export function SchoolsManager() {
     </div>
   );
 }
+
 
 
 

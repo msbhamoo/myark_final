@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -13,20 +13,29 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { Organizer } from '@/types/masters';
+import { Organizer, OpportunityCategory } from '@/types/masters';
 
 const defaultForm = {
   name: '',
+  shortName: '',
   address: '',
   website: '',
   foundationYear: '',
-  type: 'other' as 'government' | 'private' | 'other',
+  type: 'other' as 'government' | 'private' | 'ngo' | 'international' | 'other',
   visibility: 'public' as 'public' | 'private',
   isVerified: true,
+  logoUrl: '',
+  contactUrl: '',
+  contactEmail: '',
+  contactPhone: '',
+  contactWebsite: '',
+  description: '',
+  opportunityTypeIds: [] as string[],
 };
 
 export function OrganizersManager() {
   const [items, setItems] = useState<Organizer[]>([]);
+  const [categories, setCategories] = useState<OpportunityCategory[]>([]);
   const [formState, setFormState] = useState(defaultForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,13 +75,21 @@ export function OrganizersManager() {
         return {
           id,
           name: normalizedName,
-            address: typeof item.address === 'string' ? item.address : '',
-            website: typeof item.website === 'string' ? item.website : '',
-            foundationYear,
-            type: (typeof item.type === 'string' ? item.type : 'other') as Organizer['type'],
-            visibility: (item.visibility === 'private' ? 'private' : 'public') as 'public' | 'private',
-            isVerified: Boolean(item.isVerified),
-          } satisfies Organizer;
+          shortName: typeof item.shortName === 'string' ? item.shortName : '',
+          address: typeof item.address === 'string' ? item.address : '',
+          website: typeof item.website === 'string' ? item.website : '',
+          foundationYear,
+          type: (typeof item.type === 'string' ? item.type : 'other') as Organizer['type'],
+          visibility: (item.visibility === 'private' ? 'private' : 'public') as 'public' | 'private',
+          isVerified: Boolean(item.isVerified),
+          logoUrl: typeof item.logoUrl === 'string' ? item.logoUrl : '',
+          contactUrl: typeof item.contactUrl === 'string' ? item.contactUrl : '',
+          contactEmail: typeof item.contactEmail === 'string' ? item.contactEmail : '',
+          contactPhone: typeof item.contactPhone === 'string' ? item.contactPhone : '',
+          contactWebsite: typeof item.contactWebsite === 'string' ? item.contactWebsite : '',
+          description: typeof item.description === 'string' ? item.description : '',
+          opportunityTypeIds: Array.isArray(item.opportunityTypeIds) ? item.opportunityTypeIds : [],
+        } satisfies Organizer;
         })
         .filter((entry: Organizer | undefined): entry is Organizer => Boolean(entry));
       setItems(records);
@@ -86,7 +103,20 @@ export function OrganizersManager() {
 
   useEffect(() => {
     loadItems();
+    loadCategories();
   }, []);
+
+  const loadCategories = async () => {
+    try {
+      const response = await fetch('/api/admin/opportunity-categories');
+      if (response.ok) {
+        const payload = await response.json();
+        setCategories(payload.items ?? []);
+      }
+    } catch (err) {
+      console.error('Failed to load opportunity categories:', err);
+    }
+  };
 
   const handleReset = () => {
     setEditingId(null);
@@ -131,12 +161,20 @@ export function OrganizersManager() {
     setEditingId(item.id);
     setFormState({
       name: item.name,
+      shortName: item.shortName ?? '',
       address: item.address,
       website: item.website,
       foundationYear: item.foundationYear?.toString() ?? '',
       type: item.type,
       visibility: item.visibility ?? 'public',
       isVerified: item.isVerified ?? false,
+      logoUrl: item.logoUrl ?? '',
+      contactUrl: item.contactUrl ?? '',
+      contactEmail: item.contactEmail ?? '',
+      contactPhone: item.contactPhone ?? '',
+      contactWebsite: item.contactWebsite ?? '',
+      description: item.description ?? '',
+      opportunityTypeIds: item.opportunityTypeIds ?? [],
     });
   };
 
@@ -168,7 +206,7 @@ export function OrganizersManager() {
         <h2 className="text-lg font-semibold text-foreground dark:text-white">{editingId ? 'Edit organizer' : 'Create organizer'}</h2>
         <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-name">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-name">
               Name *
             </label>
             <Input
@@ -177,11 +215,11 @@ export function OrganizersManager() {
               onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
               required
               placeholder="e.g., Science Foundation"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-website">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-website">
               Website
             </label>
             <Input
@@ -189,11 +227,11 @@ export function OrganizersManager() {
               value={formState.website}
               onChange={(event) => setFormState((prev) => ({ ...prev, website: event.target.value }))}
               placeholder="https://example.com"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-address">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-address">
               Address
             </label>
             <Textarea
@@ -201,11 +239,11 @@ export function OrganizersManager() {
               value={formState.address}
               onChange={(event) => setFormState((prev) => ({ ...prev, address: event.target.value }))}
               placeholder="123 Main St, Anytown, USA"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-foundation-year">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-foundation-year">
               Foundation Year
             </label>
             <Input
@@ -214,26 +252,145 @@ export function OrganizersManager() {
               value={formState.foundationYear}
               onChange={(event) => setFormState((prev) => ({ ...prev, foundationYear: event.target.value }))}
               placeholder="e.g., 1990"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-type">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-type">
               Type
             </label>
             <select
               id="org-type"
               value={formState.type}
               onChange={(event) => setFormState((prev) => ({ ...prev, type: event.target.value as any }))}
-              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
             >
               <option value="other">Other</option>
               <option value="government">Government</option>
               <option value="private">Private</option>
+              <option value="ngo">NGO</option>
+              <option value="international">International</option>
             </select>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-visibility">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-shortname">
+              Short Name / Abbreviation
+            </label>
+            <Input
+              id="org-shortname"
+              value={formState.shortName}
+              onChange={(event) => setFormState((prev) => ({ ...prev, shortName: event.target.value }))}
+              placeholder="e.g., SF"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-logo">
+              Logo URL
+            </label>
+            <Input
+              id="org-logo"
+              value={formState.logoUrl}
+              onChange={(event) => setFormState((prev) => ({ ...prev, logoUrl: event.target.value }))}
+              placeholder="https://example.com/logo.png"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact">
+              Contact / Support URL
+            </label>
+            <Input
+              id="org-contact"
+              value={formState.contactUrl}
+              onChange={(event) => setFormState((prev) => ({ ...prev, contactUrl: event.target.value }))}
+              placeholder="https://example.com/contact"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-description">
+              Description
+            </label>
+            <Textarea
+              id="org-description"
+              value={formState.description}
+              onChange={(event) => setFormState((prev) => ({ ...prev, description: event.target.value }))}
+              placeholder="Detailed description of the organization..."
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact-email">
+              Contact Email
+            </label>
+            <Input
+              id="org-contact-email"
+              type="email"
+              value={formState.contactEmail}
+              onChange={(event) => setFormState((prev) => ({ ...prev, contactEmail: event.target.value }))}
+              placeholder="info@example.com"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact-phone">
+              Contact Phone
+            </label>
+            <Input
+              id="org-contact-phone"
+              value={formState.contactPhone}
+              onChange={(event) => setFormState((prev) => ({ ...prev, contactPhone: event.target.value }))}
+              placeholder="+91-XXXXXXXXXX"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact-website">
+              Contact Website
+            </label>
+            <Input
+              id="org-contact-website"
+              value={formState.contactWebsite}
+              onChange={(event) => setFormState((prev) => ({ ...prev, contactWebsite: event.target.value }))}
+              placeholder="https://example.com/support"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+            />
+          </div>
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white">
+              Opportunity Types They Conduct (Multi-select)
+            </label>
+            <div className="rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-3 space-y-2 max-h-48 overflow-y-auto">
+              {categories.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No categories available</p>
+              ) : (
+                categories.map((category) => (
+                  <label key={category.id} className="flex items-center gap-2 cursor-pointer hover:opacity-80">
+                    <input
+                      type="checkbox"
+                      checked={formState.opportunityTypeIds.includes(category.id)}
+                      onChange={(event) => {
+                        setFormState((prev) => {
+                          const ids = new Set(prev.opportunityTypeIds);
+                          if (event.target.checked) {
+                            ids.add(category.id);
+                          } else {
+                            ids.delete(category.id);
+                          }
+                          return { ...prev, opportunityTypeIds: Array.from(ids) };
+                        });
+                      }}
+                      className="h-4 w-4 rounded border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60"
+                    />
+                    <span className="text-sm text-foreground dark:text-white">{category.name}</span>
+                  </label>
+                ))
+              )}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-visibility">
               Visibility
             </label>
             <select
@@ -242,7 +399,7 @@ export function OrganizersManager() {
               onChange={(event) =>
                 setFormState((prev) => ({ ...prev, visibility: event.target.value as 'public' | 'private' }))
               }
-              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -252,13 +409,13 @@ export function OrganizersManager() {
             <input
               id="org-verified"
               type="checkbox"
-              className="h-4 w-4 rounded border-border/50 dark:border-white/20 bg-slate-900/70 text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60"
+              className="h-4 w-4 rounded border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/60"
               checked={formState.isVerified}
               onChange={(event) =>
                 setFormState((prev) => ({ ...prev, isVerified: event.target.checked }))
               }
             />
-            <label className="text-sm font-medium text-slate-200" htmlFor="org-verified">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-verified">
               Verified organizer
             </label>
           </div>
@@ -287,7 +444,7 @@ export function OrganizersManager() {
             Refresh
           </Button>
         </div>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           {isLoading ? 'Loading organizers...' : `Showing ${items.length} record(s).`}
         </p>
         <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
@@ -305,20 +462,20 @@ export function OrganizersManager() {
             <TableBody>
               {items.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-slate-400">
+                  <TableCell colSpan={4} className="text-center text-muted-foreground">
                     No organizers found.
                   </TableCell>
                 </TableRow>
               )}
               {items.map((item) => (
                 <TableRow key={item.id} className="hover:bg-card/80 dark:bg-white/5">
-                  <TableCell className="font-medium text-slate-100">{item.name}</TableCell>
-                  <TableCell className="text-slate-300">{item.website || '—'}</TableCell>
-                  <TableCell className="text-slate-300 capitalize">{item.type}</TableCell>
-                  <TableCell className="text-slate-300 capitalize">
+                  <TableCell className="font-medium text-foreground dark:text-white">{item.name}</TableCell>
+                  <TableCell className="text-muted-foreground">{item.website || 'â€”'}</TableCell>
+                  <TableCell className="text-muted-foreground capitalize">{item.type}</TableCell>
+                  <TableCell className="text-muted-foreground capitalize">
                     {item.visibility ?? 'public'}
                   </TableCell>
-                  <TableCell className="text-slate-300">
+                  <TableCell className="text-muted-foreground">
                     {item.isVerified ? 'Yes' : 'No'}
                   </TableCell>
                   <TableCell className="flex justify-end gap-2">
@@ -343,6 +500,7 @@ export function OrganizersManager() {
     </div>
   );
 }
+
 
 
 

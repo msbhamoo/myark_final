@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -294,7 +294,7 @@ export function HomeSegmentsManager() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-foreground dark:text-white">Home stats multiplier</h2>
-            <p className="mt-1 text-sm text-slate-300">
+            <p className="mt-1 text-sm text-muted-foreground">
               Control the inflation counter shown on the public home page stats tiles.
             </p>
           </div>
@@ -310,7 +310,7 @@ export function HomeSegmentsManager() {
 
         <form onSubmit={handleStatsSubmit} className="mt-6 grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="home-stats-multiplier">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="home-stats-multiplier">
               Multiplier
             </label>
             <Input
@@ -322,9 +322,9 @@ export function HomeSegmentsManager() {
               value={statsInput}
               onChange={(event) => setStatsInput(event.target.value)}
               disabled={statsLoading || statsSaving}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-muted-foreground">
               Applied across students, organizations, verified schools, and opportunities counters.
             </p>
           </div>
@@ -350,7 +350,7 @@ export function HomeSegmentsManager() {
             <h2 className="text-lg font-semibold text-foreground dark:text-white">
               {isEditingSegment ? 'Edit home segment' : 'Create custom segment'}
             </h2>
-            <p className="mt-1 text-sm text-slate-300">
+            <p className="mt-1 text-sm text-muted-foreground">
               Permanent segments (Featured, Trending, Scholarships) are always available. Use this form to customise
               them or add additional sections.
             </p>
@@ -367,7 +367,7 @@ export function HomeSegmentsManager() {
 
         <form onSubmit={handleSegmentSubmit} className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="segment-key">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="segment-key">
               Segment key *
             </label>
             <Input
@@ -379,11 +379,11 @@ export function HomeSegmentsManager() {
               placeholder="featured"
               disabled={segmentSubmitting || formState.isDefault}
               required
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="segment-title">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="segment-title">
               Title *
             </label>
             <Input
@@ -395,11 +395,11 @@ export function HomeSegmentsManager() {
               placeholder="Featured Opportunities"
               required
               disabled={segmentSubmitting}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2 lg:col-span-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="segment-subtitle">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="segment-subtitle">
               Subtitle
             </label>
             <Textarea
@@ -410,11 +410,11 @@ export function HomeSegmentsManager() {
               }
               placeholder="Curated picks from leading organizations"
               disabled={segmentSubmitting}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="segment-limit">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="segment-limit">
               Card limit
             </label>
             <Input
@@ -427,11 +427,11 @@ export function HomeSegmentsManager() {
                 setFormState((prev) => ({ ...prev, limit: event.target.value }))
               }
               disabled={segmentSubmitting}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="segment-order">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="segment-order">
               Display order
             </label>
             <Input
@@ -442,7 +442,7 @@ export function HomeSegmentsManager() {
                 setFormState((prev) => ({ ...prev, order: event.target.value }))
               }
               disabled={segmentSubmitting}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="flex items-center gap-3">
@@ -454,7 +454,7 @@ export function HomeSegmentsManager() {
               }
               disabled={segmentSubmitting}
             />
-            <label htmlFor="segment-highlight" className="text-sm text-slate-300">
+            <label htmlFor="segment-highlight" className="text-sm text-muted-foreground">
               Highlight segment on home page
             </label>
           </div>
@@ -467,7 +467,7 @@ export function HomeSegmentsManager() {
               }
               disabled={segmentSubmitting}
             />
-            <label htmlFor="segment-visible" className="text-sm text-slate-300">
+            <label htmlFor="segment-visible" className="text-sm text-muted-foreground">
               Visible on home page
             </label>
           </div>
@@ -509,7 +509,7 @@ export function HomeSegmentsManager() {
             Refresh
           </Button>
         </div>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           {segmentsLoading
             ? 'Loading segments...'
             : hasSegments
@@ -532,7 +532,7 @@ export function HomeSegmentsManager() {
             <TableBody>
               {!segmentsLoading && sortedSegments.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-slate-300 py-6">
+                  <TableCell colSpan={6} className="text-center text-muted-foreground py-6">
                     Permanent segments will appear once saved. Use the form above to create or customise entries.
                   </TableCell>
                 </TableRow>
@@ -548,18 +548,18 @@ export function HomeSegmentsManager() {
                         </Badge>
                       )}
                       {!segment.persisted && (
-                        <Badge variant="outline" className="border-slate-500/40 bg-slate-500/10 text-slate-200">
+                        <Badge variant="outline" className="border-slate-500/40 bg-slate-500/10 text-foreground dark:text-white">
                           Using fallback
                         </Badge>
                       )}
                     </div>
                     {segment.subtitle && (
-                      <p className="text-xs text-slate-400">{segment.subtitle}</p>
+                      <p className="text-xs text-muted-foreground">{segment.subtitle}</p>
                     )}
                   </TableCell>
-                  <TableCell className="text-slate-200">{segment.segmentKey}</TableCell>
-                  <TableCell className="text-center text-slate-200">{segment.limit}</TableCell>
-                  <TableCell className="text-center text-slate-200">{segment.order}</TableCell>
+                  <TableCell className="text-foreground dark:text-white">{segment.segmentKey}</TableCell>
+                  <TableCell className="text-center text-foreground dark:text-white">{segment.limit}</TableCell>
+                  <TableCell className="text-center text-foreground dark:text-white">{segment.order}</TableCell>
                   <TableCell className="space-y-1">
                     <div className="flex flex-wrap gap-2">
                       <Badge
@@ -611,6 +611,9 @@ export function HomeSegmentsManager() {
     </div>
   );
 }
+
+
+
 
 
 

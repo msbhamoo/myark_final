@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -133,12 +133,12 @@ export function UsersManager() {
     <div className="space-y-8">
       <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <h2 className="text-lg font-semibold text-foreground dark:text-white">{editingId ? 'Edit user' : 'Create user'}</h2>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           These records live in Firestore. For Firebase Auth users, make sure roles match any custom claims.
         </p>
         <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="user-email">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="user-email">
               Email *
             </label>
             <Input
@@ -148,18 +148,18 @@ export function UsersManager() {
               onChange={(event) => setFormState((prev) => ({ ...prev, email: event.target.value }))}
               required
               placeholder="student@example.com"
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="user-role">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="user-role">
               Role
             </label>
             <select
               id="user-role"
               value={formState.role}
               onChange={(event) => setFormState((prev) => ({ ...prev, role: event.target.value }))}
-              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100"
+              className="h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
             >
               {roleOptions.map((role) => (
                 <option key={role} value={role}>
@@ -169,25 +169,25 @@ export function UsersManager() {
             </select>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="user-first">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="user-first">
               First name
             </label>
             <Input
               id="user-first"
               value={formState.firstName}
               onChange={(event) => setFormState((prev) => ({ ...prev, firstName: event.target.value }))}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200" htmlFor="user-last">
+            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="user-last">
               Last name
             </label>
             <Input
               id="user-last"
               value={formState.lastName}
               onChange={(event) => setFormState((prev) => ({ ...prev, lastName: event.target.value }))}
-              className="bg-slate-900/70 text-slate-100"
+              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
           <div className="md:col-span-2 flex items-center gap-3">
@@ -215,7 +215,7 @@ export function UsersManager() {
             Refresh
           </Button>
         </div>
-        <p className="mt-1 text-sm text-slate-300">
+        <p className="mt-1 text-sm text-muted-foreground">
           {isLoading ? 'Loading users...' : `Showing ${items.length} record(s).`}
         </p>
         <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
@@ -231,19 +231,19 @@ export function UsersManager() {
             <TableBody>
               {items.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-slate-400">
+                  <TableCell colSpan={4} className="text-center text-muted-foreground">
                     No user documents found.
                   </TableCell>
                 </TableRow>
               )}
               {items.map((item) => (
                 <TableRow key={item.id} className="hover:bg-card/80 dark:bg-white/5">
-                  <TableCell className="font-medium text-slate-100">{item.email}</TableCell>
-                  <TableCell className="text-slate-300">
-                    {[item.firstName, item.lastName].filter(Boolean).join(' ') || '—'}
+                  <TableCell className="font-medium text-foreground dark:text-white">{item.email}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {[item.firstName, item.lastName].filter(Boolean).join(' ') || 'â€”'}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="border-white/20 text-slate-200">
+                    <Badge variant="outline" className="border-white/20 text-foreground dark:text-white">
                       {item.role}
                     </Badge>
                   </TableCell>
@@ -269,6 +269,7 @@ export function UsersManager() {
     </div>
   );
 }
+
 
 
 

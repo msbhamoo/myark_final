@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -128,7 +128,7 @@ export function StatesManager() {
         <h2 className='text-lg font-semibold text-foreground dark:text-white'>{editingId ? 'Edit state' : 'Create state'}</h2>
         <form onSubmit={handleSubmit} className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='state-name'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='state-name'>
               Name *
             </label>
             <Input
@@ -137,11 +137,11 @@ export function StatesManager() {
               onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
               required
               placeholder='e.g., California'
-              className='bg-slate-900/70 text-slate-100'
+              className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
             />
           </div>
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-200' htmlFor='state-country'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='state-country'>
               Country *
             </label>
             <select
@@ -149,7 +149,7 @@ export function StatesManager() {
               value={formState.countryId}
               onChange={(event) => setFormState((prev) => ({ ...prev, countryId: event.target.value }))}
               required
-              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-slate-900/70 px-3 text-sm text-slate-100'
+              className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
             >
               <option value=''>Select a country</option>
               {countries.map((country) => (
@@ -184,7 +184,7 @@ export function StatesManager() {
             Refresh
           </Button>
         </div>
-        <p className='mt-1 text-sm text-slate-300'>
+        <p className='mt-1 text-sm text-muted-foreground'>
           {isLoading ? 'Loading states...' : `Showing ${items.length} record(s).`}
         </p>
         <div className='mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10'>
@@ -199,15 +199,15 @@ export function StatesManager() {
             <TableBody>
               {items.length === 0 && !isLoading && (
                 <TableRow>
-                  <TableCell colSpan={3} className='text-center text-slate-400'>
+                  <TableCell colSpan={3} className='text-center text-muted-foreground'>
                     No states found.
                   </TableCell>
                 </TableRow>
               )}
               {items.map((item) => (
                 <TableRow key={item.id} className='hover:bg-card/80 dark:bg-white/5'>
-                  <TableCell className='font-medium text-slate-100'>{item.name}</TableCell>
-                  <TableCell className='text-slate-300'>{countries.find(c => c.id === item.countryId)?.name || 'N/A'}</TableCell>
+                  <TableCell className='font-medium text-foreground dark:text-white'>{item.name}</TableCell>
+                  <TableCell className='text-muted-foreground'>{countries.find(c => c.id === item.countryId)?.name || 'N/A'}</TableCell>
                   <TableCell className='flex justify-end gap-2'>
                     <Button
                       variant='outline'
@@ -230,6 +230,7 @@ export function StatesManager() {
     </div>
   );
 }
+
 
 
 
