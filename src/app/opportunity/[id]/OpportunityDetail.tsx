@@ -11,11 +11,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
 import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
+import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
 import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -1054,376 +1054,357 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2">
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="w-full justify-start overflow-x-auto flex-wrap rounded-xl border border-slate-200 bg-white/90 p-1 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/50">
-                  <TabsTrigger 
-                    value="overview" 
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100  dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Overview
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="eligibility"
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Eligibility
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="timeline"
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Timeline
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="registration"
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Registration
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="pattern"
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Exam Pattern
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="resources"
-                    className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition data-[state=active]:bg-orange-500 data-[state=active]:text-white dark:text-slate-100 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white"
-                  >
-                    Resources
-                  </TabsTrigger>
-                </TabsList>
+              <StickyTabBar
+                defaultValue="overview"
+                tabs={[
+                  {
+                    value: 'overview',
+                    label: 'Overview',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <div className="space-y-6">
+                          <div>
+                            <h2 className="text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                              About This Opportunity
+                            </h2>
+                            <p className="text-slate-600 dark:text-slate-100 whitespace-pre-line leading-relaxed">
+                              {opportunity.description || 'Detailed description will be available soon.'}
+                            </p>
+                          </div>
 
-                <TabsContent value="overview" className="mt-6">
-                  <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <div className="space-y-6">
-                      <div>
-                        <h2 className="text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                          About This Opportunity
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-100 whitespace-pre-line leading-relaxed">
-                          {opportunity.description || 'Detailed description will be available soon.'}
-                        </p>
-                      </div>
+                          <Separator className="bg-white/80 dark:bg-slate-800/70" />
 
-                      <Separator className="bg-white/80 dark:bg-slate-800/70" />
-
-                      <div>
-                        <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                          Key Benefits
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {(opportunity.benefits ?? []).map((benefit, index) => (
-                            <div 
-                              key={index} 
-                              className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-orange-500/20 transition-colors"
-                            >
-                              <div className="mt-1">
-                                <div className="h-6 w-6 rounded-full bg-orange-500/10 flex items-center justify-center">
-                                  <CheckCircle2 className="h-4 w-4 text-orange-400" />
+                          <div>
+                            <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              Key Benefits
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {(opportunity.benefits ?? []).map((benefit, index) => (
+                                <div 
+                                  key={index} 
+                                  className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-orange-500/20 transition-colors"
+                                >
+                                  <div className="mt-1">
+                                    <div className="h-6 w-6 rounded-full bg-orange-500/10 flex items-center justify-center">
+                                      <CheckCircle2 className="h-4 w-4 text-orange-400" />
+                                    </div>
+                                  </div>
+                                  <span className="text-slate-600 dark:text-slate-100">{benefit}</span>
                                 </div>
-                              </div>
-                              <span className="text-slate-600 dark:text-slate-100">{benefit}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="eligibility" className="mt-6">
-                  <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                      Eligibility Criteria
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {(opportunity.eligibility ?? []).map((criterion, index) => (
-                        <div 
-                          key={index} 
-                          className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
-                        >
-                          <div className="mt-1">
-                            <div className="h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                              <AlertCircle className="h-5 w-5 text-orange-400" />
-                            </div>
-                          </div>
-                          <span className="text-slate-600 dark:text-slate-100 leading-relaxed">{criterion}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="timeline" className="mt-6">
-                  <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                      Important Timeline
-                    </h2>
-                    <div className="space-y-6">
-                      {timelineEntries.map((item, index) => (
-                        <div key={index} className="relative flex gap-6 group">
-                          <div className="flex flex-col items-center">
-                            <div className={`h-12 w-12 rounded-xl flex items-center justify-center border transition-all duration-300
-                              ${item.status === 'active' 
-                                ? 'bg-gradient-to-br from-orange-500/20 to-pink-500/20 border-orange-500/30 group-hover:border-orange-500/50' 
-                                : item.status === 'completed'
-                                ? 'bg-white/90 dark:bg-slate-800/50 shadow-sm border-border/50 dark:border-white/20'
-                                : 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/30 group-hover:border-blue-500/50'
-                              }`}
-                            >
-                              {item.status === 'active' ? (
-                                <Clock className="h-6 w-6 text-orange-400" />
-                              ) : (
-                                <Calendar className="h-6 w-6 text-pink-400" />
-                              )}
-                            </div>
-                            {index < timelineEntries.length - 1 && (
-                              <div className="w-0.5 h-16 bg-gradient-to-b from-white/10 to-transparent"></div>
-                            )}
-                          </div>
-                          <div className="flex-1 pb-8">
-                            <div className="p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 group-hover:border-orange-500/20 transition-all duration-300">
-                              <p className="font-semibold text-foreground dark:text-white mb-1">{item.event}</p>
-                              <p className="text-sm text-slate-500 dark:text-slate-300">{formatDate(item.date)}</p>
+                              ))}
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="registration" className="mt-6">
-                  <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <div>
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'eligibility',
+                    label: 'Eligibility',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                          How to Register
+                          Eligibility Criteria
                         </h2>
-                        <div className="space-y-4">
-                          {(opportunity.registrationProcess ?? []).map((step, index) => (
-                            <div key={index} className="group flex items-start gap-4 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
-                              <div className="flex-shrink-0">
-                                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 text-orange-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-                                  {index + 1}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {(opportunity.eligibility ?? []).map((criterion, index) => (
+                            <div 
+                              key={index} 
+                              className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                            >
+                              <div className="mt-1">
+                                <div className="h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                  <AlertCircle className="h-5 w-5 text-orange-400" />
                                 </div>
                               </div>
-                              <div className="flex-1">
-                                <p className="text-slate-600 dark:text-slate-100">{step}</p>
+                              <span className="text-slate-600 dark:text-slate-100 leading-relaxed">{criterion}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'timeline',
+                    label: 'Timeline',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                          Important Timeline
+                        </h2>
+                        <div className="space-y-6">
+                          {timelineEntries.map((item, index) => (
+                            <div key={index} className="relative flex gap-6 group">
+                              <div className="flex flex-col items-center">
+                                <div className={`h-12 w-12 rounded-xl flex items-center justify-center border transition-all duration-300
+                                  ${item.status === 'active' 
+                                    ? 'bg-gradient-to-br from-orange-500/20 to-pink-500/20 border-orange-500/30 group-hover:border-orange-500/50' 
+                                    : item.status === 'completed'
+                                    ? 'bg-white/90 dark:bg-slate-800/50 shadow-sm border-border/50 dark:border-white/20'
+                                    : 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/30 group-hover:border-blue-500/50'
+                                  }`}
+                                >
+                                  {item.status === 'active' ? (
+                                    <Clock className="h-6 w-6 text-orange-400" />
+                                  ) : (
+                                    <Calendar className="h-6 w-6 text-pink-400" />
+                                  )}
+                                </div>
+                                {index < timelineEntries.length - 1 && (
+                                  <div className="w-0.5 h-16 bg-gradient-to-b from-white/10 to-transparent"></div>
+                                )}
+                              </div>
+                              <div className="flex-1 pb-8">
+                                <div className="p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 group-hover:border-orange-500/20 transition-all duration-300">
+                                  <p className="font-semibold text-foreground dark:text-white mb-1">{item.event}</p>
+                                  <p className="text-sm text-slate-500 dark:text-slate-300">{formatDate(item.date)}</p>
+                                </div>
                               </div>
                             </div>
                           ))}
                         </div>
-                      </div>
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'registration',
+                    label: 'Registration',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                          <div>
+                            <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                              How to Register
+                            </h2>
+                            <div className="space-y-4">
+                              {(opportunity.registrationProcess ?? []).map((step, index) => (
+                                <div key={index} className="group flex items-start gap-4 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
+                                  <div className="flex-shrink-0">
+                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 text-orange-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                                      {index + 1}
+                                    </div>
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-slate-600 dark:text-slate-100">{step}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
 
-                      <div>
-                        <h3 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                          <div>
+                            <h3 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              Contact Information
+                            </h3>
+                            <div className="space-y-4">
+                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-pink-500/20 transition-all duration-300">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <Mail className="h-5 w-5 text-pink-400" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm text-slate-500 dark:text-slate-300">Email</p>
+                                    <p className="text-slate-700 dark:text-white">{contactInfo.email ?? 'Not provided'}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-purple-500/20 transition-all duration-300">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <Phone className="h-5 w-5 text-purple-400" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm text-slate-500 dark:text-slate-300">Phone</p>
+                                    <p className="text-slate-700 dark:text-white">{contactInfo.phone ?? 'Not provided'}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-blue-500/20 transition-all duration-300">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <Globe className="h-5 w-5 text-blue-400" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm text-slate-500 dark:text-slate-300">Website</p>
+                                    <p className="text-slate-700 dark:text-white">{contactInfo.website ?? 'Not provided'}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'pattern',
+                    label: 'Exam Pattern',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                          Examination Pattern
+                        </h2>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
+                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                              <BookOpen className="h-6 w-6 text-orange-400" />
+                            </div>
+                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
+                          </div>
+                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
+                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                              <Timer className="h-6 w-6 text-pink-400" />
+                            </div>
+                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
+                          </div>
+                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
+                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                              <AlertCircle className="h-6 w-6 text-red-400" />
+                            </div>
+                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
+                          </div>
+                        </div>
+
+                        <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                          Contact Information
+                          Section-wise Distribution
                         </h3>
                         <div className="space-y-4">
-                          <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-pink-500/20 transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-2">
-                              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <Mail className="h-5 w-5 text-pink-400" />
+                          {examSections.map((section, index) => (
+                            <div 
+                              key={index} 
+                              className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                            >
+                              <div className="flex items-center gap-3 mb-3 sm:mb-0">
+                                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                  <BookOpen className="h-5 w-5 text-orange-400" />
+                                </div>
+                                <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
                               </div>
-                              <div>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Email</p>
-                                <p className="text-slate-700 dark:text-white">{contactInfo.email ?? 'Not provided'}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-purple-500/20 transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-2">
-                              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <Phone className="h-5 w-5 text-purple-400" />
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Phone</p>
-                                <p className="text-slate-700 dark:text-white">{contactInfo.phone ?? 'Not provided'}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-blue-500/20 transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-2">
-                              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <Globe className="h-5 w-5 text-blue-400" />
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Website</p>
-                                <p className="text-slate-700 dark:text-white">{contactInfo.website ?? 'Not provided'}</p>
+                              <div className="flex gap-6 text-sm">
+                                <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                  <span className="text-slate-500 dark:text-slate-300">Questions: </span>
+                                  <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
+                                </div>
+                                <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                  <span className="text-slate-500 dark:text-slate-300">Marks: </span>
+                                  <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
-                      </div>
-                    </div>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="pattern" className="mt-6">
-                  <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                      Examination Pattern
-                    </h2>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                      <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                          <BookOpen className="h-6 w-6 text-orange-400" />
-                        </div>
-                        <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
-                      </div>
-                      <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                          <Timer className="h-6 w-6 text-pink-400" />
-                        </div>
-                        <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
-                      </div>
-                      <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                          <AlertCircle className="h-6 w-6 text-red-400" />
-                        </div>
-                        <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                      Section-wise Distribution
-                    </h3>
-                    <div className="space-y-4">
-                      {examSections.map((section, index) => (
-                        <div 
-                          key={index} 
-                          className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
-                        >
-                          <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <BookOpen className="h-5 w-5 text-orange-400" />
-                            </div>
-                            <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'resources',
+                    label: 'Resources',
+                    content: (
+                      <Card className="p-6 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                          <div>
+                            <h2 className="text-2xl font-bold text-foreground dark:text-white">Resources</h2>
+                            <p className="text-sm text-slate-500 dark:text-slate-300">
+                              Curated links, documents, and videos to help you prepare.
+                            </p>
                           </div>
-                          <div className="flex gap-6 text-sm">
-                            <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                              <span className="text-slate-500 dark:text-slate-300">Questions: </span>
-                              <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
-                            </div>
-                            <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                              <span className="text-slate-500 dark:text-slate-300">Marks: </span>
-                              <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
-                            </div>
-                          </div>
+                          {resourceItems.length > 0 && (
+                            <Badge
+                              variant="outline"
+                              className="border-orange-200 bg-orange-50 text-orange-600 dark:border-orange-400/40 dark:bg-orange-500/10 dark:text-orange-200"
+                            >
+                              {resourceItems.length} resource{resourceItems.length === 1 ? '' : 's'}
+                            </Badge>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  </Card>
-                </TabsContent>
 
-                <TabsContent value="resources" className="mt-6">
-                  <Card className="p-6 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                      <div>
-                        <h2 className="text-2xl font-bold text-foreground dark:text-white">Resources</h2>
-                        <p className="text-sm text-slate-500 dark:text-slate-300">
-                          Curated links, documents, and videos to help you prepare.
-                        </p>
-                      </div>
-                      {resourceItems.length > 0 && (
-                        <Badge
-                          variant="outline"
-                          className="border-orange-200 bg-orange-50 text-orange-600 dark:border-orange-400/40 dark:bg-orange-500/10 dark:text-orange-200"
-                        >
-                          {resourceItems.length} resource{resourceItems.length === 1 ? '' : 's'}
-                        </Badge>
-                      )}
-                    </div>
+                        <Separator className="my-6 bg-white/80 dark:bg-slate-800/70" />
 
-                    <Separator className="my-6 bg-white/80 dark:bg-slate-800/70" />
-
-                    {resourceItems.length === 0 ? (
-                      <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-6 text-center text-slate-600 dark:text-slate-100">
-                        <p className="text-sm">
-                          Organizers haven&apos;t shared supporting resources yet. Check back soon!
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="grid gap-4">
-                        {resourceItems.map((resource) => (
-                          <div
-                            key={resource.id}
-                            className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/50 shadow-sm p-4 transition hover:border-orange-400/40 hover:bg-white dark:hover:bg-background/10 md:flex-row md:items-center md:justify-between"
-                          >
-                            <div className="flex flex-1 items-start gap-4">
-                              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/15 text-orange-500">
-                                <resource.Icon className="h-6 w-6" />
-                              </div>
-                              <div className="space-y-1">
-                                <Badge
-                                  variant="outline"
-                                  className="border-orange-200 bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-600 dark:border-white/20 dark:bg-slate-800/70 dark:text-white"
-                                >
-                                  {resource.typeLabel}
-                                </Badge>
-                                <p className="text-lg font-semibold text-foreground dark:text-white">{resource.title}</p>
-                                {resource.description && (
-                                  <p className="text-sm text-slate-500 dark:text-slate-300">{resource.description}</p>
-                                )}
-                                <p className="text-xs text-slate-500 dark:text-slate-400 break-all">
-                                  {resource.url}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 self-stretch md:self-auto">
-                              <Button
-                                variant="outline"
-                                className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                                onClick={() => handleResourcePreview(resource)}
+                        {resourceItems.length === 0 ? (
+                          <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-6 text-center text-slate-600 dark:text-slate-100">
+                            <p className="text-sm">
+                              Organizers haven&apos;t shared supporting resources yet. Check back soon!
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="grid gap-4">
+                            {resourceItems.map((resource) => (
+                              <div
+                                key={resource.id}
+                                className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/50 shadow-sm p-4 transition hover:border-orange-400/40 hover:bg-white dark:hover:bg-background/10 md:flex-row md:items-center md:justify-between"
                               >
-                                Preview
-                              </Button>
-                              <Button
-                                asChild
-                                variant="outline"
-                                className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                              >
-                                <a href={resource.url} target="_blank" rel="noreferrer">
-                                  <Globe className="mr-2 h-4 w-4" />
-                                  Open tab
-                                </a>
-                              </Button>
-                              {resource.type === 'pdf' && (
-                                <Button
-                                  asChild
-                                  variant="outline"
-                                  className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                                >
-                                  <a href={resource.url} download rel="noreferrer">
-                                    <Download className="mr-2 h-4 w-4" />
-                                    Download
-                                  </a>
-                                </Button>
-                              )}
-                            </div>
+                                <div className="flex flex-1 items-start gap-4">
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/15 text-orange-500">
+                                    <resource.Icon className="h-6 w-6" />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <Badge
+                                      variant="outline"
+                                      className="border-orange-200 bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-600 dark:border-white/20 dark:bg-slate-800/70 dark:text-white"
+                                    >
+                                      {resource.typeLabel}
+                                    </Badge>
+                                    <p className="text-lg font-semibold text-foreground dark:text-white">{resource.title}</p>
+                                    {resource.description && (
+                                      <p className="text-sm text-slate-500 dark:text-slate-300">{resource.description}</p>
+                                    )}
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 break-all">
+                                      {resource.url}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2 self-stretch md:self-auto">
+                                  <Button
+                                    variant="outline"
+                                    className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+                                    onClick={() => handleResourcePreview(resource)}
+                                  >
+                                    Preview
+                                  </Button>
+                                  <Button
+                                    asChild
+                                    variant="outline"
+                                    className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+                                  >
+                                    <a href={resource.url} target="_blank" rel="noreferrer">
+                                      <Globe className="mr-2 h-4 w-4" />
+                                      Open tab
+                                    </a>
+                                  </Button>
+                                  {resource.type === 'pdf' && (
+                                    <Button
+                                      asChild
+                                      variant="outline"
+                                      className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+                                    >
+                                      <a href={resource.url} download rel="noreferrer">
+                                        <Download className="mr-2 h-4 w-4" />
+                                        Download
+                                      </a>
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </Card>
-                </TabsContent>
-
-
-              </Tabs>
+                        )}
+                      </Card>
+                    ),
+                  },
+                ]}
+              />
             </div>
 
             {/* Sidebar */}
