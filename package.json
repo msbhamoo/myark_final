@@ -70,6 +70,8 @@
         "firebase": "^12.4.0",
         "firebase-admin": "^13.5.0",
         "framer-motion": "^12.23.22",
+        "imagekit": "^6.0.0",
+        "imagekitio-react": "^4.3.0",
         "input-otp": "^1.4.2",
         "lucide-react": "^0.545.0",
         "mini-svg-data-uri": "^1.4.4",

@@ -24,6 +24,8 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
+  const sectionRefs = React.useRef<Map<string, HTMLElement>>(new Map());
+  const isManualScroll = React.useRef(false);
 
   // Initialize mounted state and detect mobile breakpoint
   React.useEffect(() => {
@@ -41,6 +43,59 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  // Set up IntersectionObserver for scroll-spy
+  React.useEffect(() => {
+    if (!mounted) return;
+
+    // Create a map of section elements
+    tabs.forEach((tab) => {
+      const element = document.getElementById(`section-${tab.value}`);
+      if (element) {
+        sectionRefs.current.set(tab.value, element);
+      }
+    });
+
+    // Set up IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px', // Trigger when section is in the middle 10% of viewport
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      // Don't update active tab if user is manually scrolling from tab click
+      if (isManualScroll.current) return;
+
+      // Find the most visible section
+      let maxRatio = 0;
+      let mostVisibleSection = '';
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+          maxRatio = entry.intersectionRatio;
+          const sectionId = entry.target.id.replace('section-', '');
+          mostVisibleSection = sectionId;
+        }
+      });
+
+      // Update active tab if we found a visible section
+      if (mostVisibleSection && maxRatio > 0) {
+        setActiveTab(mostVisibleSection);
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe all sections
+    sectionRefs.current.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [mounted, tabs]);
 
   // Check scroll position for navigation arrows
   const updateScrollArrows = React.useCallback(() => {
@@ -89,18 +144,26 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
   const handleTabChange = (value: string) => {
     setActiveTab(value);
 
-    // Scroll back to top of content if we've scrolled past it
-    // This prevents the user from being "lost" when switching from a long tab to a short one
-    const tabBar = document.getElementById('sticky-tab-bar');
-    if (tabBar) {
-      const rect = tabBar.getBoundingClientRect();
-      const headerOffset = window.innerWidth < 1024 ? 130 : 80; // Approximate header heights
+    // Find the corresponding section and scroll to it
+    const section = document.getElementById(`section-${value}`);
+    if (section) {
+      // Set flag to prevent observer from interfering
+      isManualScroll.current = true;
 
-      // If the tab bar is above the sticky position (meaning we scrolled down), scroll back up
-      if (rect.top <= headerOffset + 10) {
-        const scrollTop = window.scrollY + rect.top - headerOffset;
-        window.scrollTo({ top: scrollTop, behavior: 'smooth' });
-      }
+      // Calculate scroll position (sticky tab bar height + header offset)
+      const headerOffset = window.innerWidth < 1024 ? 150 : 100;
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = window.pageYOffset + elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+
+      // Reset flag after scroll completes
+      setTimeout(() => {
+        isManualScroll.current = false;
+      }, 1000);
     }
   };
 
@@ -179,12 +242,18 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
         </div>
       </div>
 
-      {/* Tab content */}
-      <div className="mt-6 min-h-[50vh]">
+      {/* Tab content - Continuous scroll layout */}
+      <div className="mt-6 space-y-8">
         {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-            {tab.content}
-          </TabsContent>
+          <div key={tab.value} id={`section-${tab.value}`} className="scroll-mt-[180px] lg:scroll-mt-[130px]">
+            <TabsContent value={tab.value} className="mt-0 focus-visible:outline-none focus-visible:ring-0 data-[state=inactive]:hidden">
+              {tab.content}
+            </TabsContent>
+            {/* Show content for all tabs to enable continuous scrolling */}
+            <div className={activeTab === tab.value ? 'hidden' : ''}>
+              {tab.content}
+            </div>
+          </div>
         ))}
       </div>
     </Tabs>

@@ -69,6 +69,10 @@ export async function GET(_request: Request, context: any) {
       contactWebsite: data.contactWebsite ?? '',
       description: data.description ?? '',
       opportunityTypeIds: Array.isArray(data.opportunityTypeIds) ? data.opportunityTypeIds : [],
+      country: data.country ?? '',
+      state: data.state ?? '',
+      city: data.city ?? '',
+      schoolLogoUrl: data.schoolLogoUrl ?? '',
       createdAt: data.createdAt ?? null,
       updatedAt: data.updatedAt ?? null,
     });

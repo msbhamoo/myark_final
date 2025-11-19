@@ -65,31 +65,31 @@ export function OrganizersManager() {
             item.id === undefined || item.id === null ? '' : String(item.id).trim();
           const id =
             idCandidate && idCandidate !== 'undefined' && idCandidate !== 'null' ? idCandidate : '';
-        const name = typeof item.name === 'string' ? item.name.trim() : '';
-        const normalizedName = name || 'Unnamed organizer';
+          const name = typeof item.name === 'string' ? item.name.trim() : '';
+          const normalizedName = name || 'Unnamed organizer';
 
-        if (!id) {
-          return null;
-        }
+          if (!id) {
+            return null;
+          }
 
-        return {
-          id,
-          name: normalizedName,
-          shortName: typeof item.shortName === 'string' ? item.shortName : '',
-          address: typeof item.address === 'string' ? item.address : '',
-          website: typeof item.website === 'string' ? item.website : '',
-          foundationYear,
-          type: (typeof item.type === 'string' ? item.type : 'other') as Organizer['type'],
-          visibility: (item.visibility === 'private' ? 'private' : 'public') as 'public' | 'private',
-          isVerified: Boolean(item.isVerified),
-          logoUrl: typeof item.logoUrl === 'string' ? item.logoUrl : '',
-          contactUrl: typeof item.contactUrl === 'string' ? item.contactUrl : '',
-          contactEmail: typeof item.contactEmail === 'string' ? item.contactEmail : '',
-          contactPhone: typeof item.contactPhone === 'string' ? item.contactPhone : '',
-          contactWebsite: typeof item.contactWebsite === 'string' ? item.contactWebsite : '',
-          description: typeof item.description === 'string' ? item.description : '',
-          opportunityTypeIds: Array.isArray(item.opportunityTypeIds) ? item.opportunityTypeIds : [],
-        } satisfies Organizer;
+          return {
+            id,
+            name: normalizedName,
+            shortName: typeof item.shortName === 'string' ? item.shortName : '',
+            address: typeof item.address === 'string' ? item.address : '',
+            website: typeof item.website === 'string' ? item.website : '',
+            foundationYear,
+            type: (typeof item.type === 'string' ? item.type : 'other') as Organizer['type'],
+            visibility: (item.visibility === 'private' ? 'private' : 'public') as 'public' | 'private',
+            isVerified: Boolean(item.isVerified),
+            logoUrl: typeof item.logoUrl === 'string' ? item.logoUrl : '',
+            contactUrl: typeof item.contactUrl === 'string' ? item.contactUrl : '',
+            contactEmail: typeof item.contactEmail === 'string' ? item.contactEmail : '',
+            contactPhone: typeof item.contactPhone === 'string' ? item.contactPhone : '',
+            contactWebsite: typeof item.contactWebsite === 'string' ? item.contactWebsite : '',
+            description: typeof item.description === 'string' ? item.description : '',
+            opportunityTypeIds: Array.isArray(item.opportunityTypeIds) ? item.opportunityTypeIds : [],
+          } satisfies Organizer;
         })
         .filter((entry: Organizer | undefined): entry is Organizer => Boolean(entry));
       setItems(records);
@@ -242,6 +242,7 @@ export function OrganizersManager() {
               className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-foundation-year">
               Foundation Year
@@ -288,14 +289,42 @@ export function OrganizersManager() {
             <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-logo">
               Logo URL
             </label>
-            <Input
-              id="org-logo"
-              value={formState.logoUrl}
-              onChange={(event) => setFormState((prev) => ({ ...prev, logoUrl: event.target.value }))}
-              placeholder="https://example.com/logo.png"
-              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
-            />
+            <div className="flex flex-col gap-2">
+              <Input
+                id="org-logo"
+                value={formState.logoUrl}
+                onChange={(event) => setFormState((prev) => ({ ...prev, logoUrl: event.target.value }))}
+                placeholder="https://example.com/logo.png"
+                className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+              />
+              <Input
+                type="file"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  const formData = new FormData();
+                  formData.append('file', file);
+
+                  try {
+                    const res = await fetch('/api/admin/upload', {
+                      method: 'POST',
+                      body: formData,
+                    });
+                    if (!res.ok) throw new Error('Upload failed');
+                    const data = await res.json();
+                    setFormState(prev => ({ ...prev, logoUrl: data.url }));
+                  } catch (err) {
+                    console.error(err);
+                    setError('Failed to upload image');
+                  }
+                }}
+                className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+              />
+            </div>
           </div>
+
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact">
               Contact / Support URL
@@ -456,6 +485,7 @@ export function OrganizersManager() {
                 <TableHead>Type</TableHead>
                 <TableHead>Visibility</TableHead>
                 <TableHead>Verified</TableHead>
+                <TableHead>Location</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -477,6 +507,9 @@ export function OrganizersManager() {
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {item.isVerified ? 'Yes' : 'No'}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {[item.city, item.state, item.country].filter(Boolean).join(', ') || 'â€”'}
                   </TableCell>
                   <TableCell className="flex justify-end gap-2">
                     <Button

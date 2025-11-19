@@ -4,6 +4,7 @@ import { Clock, BookmarkIcon, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import type { Opportunity } from '@/types/opportunity';
+import { useEffect, useState } from 'react';
 
 interface MobileFloatingCTAProps {
   opportunity: Opportunity;
@@ -27,14 +28,49 @@ export function MobileFloatingCTA({
   bookmarkLoading = false,
 }: MobileFloatingCTAProps) {
   const isMobile = useIsMobile();
+  const [showFloating, setShowFloating] = useState(false);
 
-  // Only render on mobile devices
-  if (!isMobile) {
+  useEffect(() => {
+    if (!isMobile) {
+      setShowFloating(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      // Check if sticky tab bar element exists
+      const tabBar = document.getElementById('sticky-tab-bar');
+      if (!tabBar) {
+        setShowFloating(false);
+        return;
+      }
+
+      // Get the position of the tab bar
+      const tabBarRect = tabBar.getBoundingClientRect();
+      const headerOffset = 140; // Approximate sticky header height on mobile
+
+      // Show floating CTA when tab bar is sticky (at or past sticky position)
+      const isTabBarSticky = tabBarRect.top <= headerOffset + 10;
+      setShowFloating(isTabBarSticky);
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMobile]);
+
+  // Only render on mobile devices AND when scrolled past tabs
+  if (!isMobile || !showFloating) {
     return null;
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-white via-white to-white/95 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950/95 border-t border-slate-200 dark:border-slate-700 backdrop-blur-sm shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-white via-white to-white/95 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950/95 border-t border-slate-200 dark:border-slate-700 backdrop-blur-sm shadow-lg animate-in slide-in-from-bottom duration-300">
       {/* Content Container */}
       <div className="mx-auto max-w-[1920px] px-4 py-3 flex items-center gap-2">
         {/* Price and Deadline Info */}
@@ -75,16 +111,6 @@ export function MobileFloatingCTA({
               className={`h-4 w-4 ${isBookmarked ? 'fill-current text-orange-400' : ''}`}
             />
           </Button>
-
-          {/* Share Button */}
-          {/* <Button
-            variant="outline"
-            size="icon"
-            className="h-10 w-10 border-slate-200 dark:border-white/20 text-slate-600 dark:text-white hover:bg-white/90 dark:hover:bg-white/10"
-            title="Share opportunity"
-          >
-            <Share2 className="h-4 w-4" />
-          </Button> */}
         </div>
       </div>
     </div>

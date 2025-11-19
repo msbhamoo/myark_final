@@ -1,11 +1,20 @@
 import { NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
+import { getDb } from '@/lib/firebaseAdmin';
 import { State } from '@/types/masters';
 
-let states: State[] = [];
-
 export async function GET() {
-  return NextResponse.json({ items: states });
+  try {
+    const db = getDb();
+    const snapshot = await db.collection('states').orderBy('name').get();
+    const items = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as State[];
+    return NextResponse.json({ items });
+  } catch (error) {
+    console.error('Failed to fetch states:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -17,16 +26,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Name and Country are required' }, { status: 400 });
     }
 
-    const newState: State = {
-      id: uuidv4(),
+    const db = getDb();
+    const newState = {
       name,
       countryId,
+      createdAt: new Date(),
     };
 
-    states.push(newState);
+    const docRef = await db.collection('states').add(newState);
 
-    return NextResponse.json(newState, { status: 201 });
+    return NextResponse.json({ id: docRef.id, ...newState }, { status: 201 });
   } catch (error) {
+    console.error('Failed to create state:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

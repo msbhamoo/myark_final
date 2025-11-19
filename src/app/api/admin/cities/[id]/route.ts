@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-import { City } from '@/types/masters';
+import { getDb } from '@/lib/firebaseAdmin';
 
 // Accept Next.js style route params which can be string or string[]
 type Params = { id?: string | string[] };
-
-// This is a temporary in-memory store.
-// In a real application, you would use a database.
-let cities: City[] = [];
 
 export async function GET(
   request: Request,
@@ -16,13 +12,19 @@ export async function GET(
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
 
-  const city = cities.find((c) => c.id === id);
+  try {
+    const db = getDb();
+    const doc = await db.collection('cities').doc(id).get();
 
-  if (!city) {
-    return NextResponse.json({ error: 'City not found' }, { status: 404 });
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'City not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ id: doc.id, ...doc.data() });
+  } catch (error) {
+    console.error('Failed to fetch city:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  return NextResponse.json(city);
 }
 
 export async function PUT(
@@ -40,16 +42,19 @@ export async function PUT(
       return NextResponse.json({ error: 'Name and State are required' }, { status: 400 });
     }
 
-    const cityIndex = cities.findIndex((c) => c.id === id);
+    const db = getDb();
+    const docRef = db.collection('cities').doc(id);
+    const doc = await docRef.get();
 
-    if (cityIndex === -1) {
+    if (!doc.exists) {
       return NextResponse.json({ error: 'City not found' }, { status: 404 });
     }
 
-    cities[cityIndex] = { ...cities[cityIndex], name, stateId };
+    await docRef.update({ name, stateId, updatedAt: new Date() });
 
-    return NextResponse.json(cities[cityIndex]);
+    return NextResponse.json({ id, name, stateId });
   } catch (error) {
+    console.error('Failed to update city:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -62,13 +67,20 @@ export async function DELETE(
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
 
-  const cityIndex = cities.findIndex((c) => c.id === id);
+  try {
+    const db = getDb();
+    const docRef = db.collection('cities').doc(id);
+    const doc = await docRef.get();
 
-  if (cityIndex === -1) {
-    return NextResponse.json({ error: 'City not found' }, { status: 404 });
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'City not found' }, { status: 404 });
+    }
+
+    await docRef.delete();
+
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    console.error('Failed to delete city:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  cities.splice(cityIndex, 1);
-
-  return new Response(null, { status: 204 });
 }

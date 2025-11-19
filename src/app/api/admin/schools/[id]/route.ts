@@ -27,9 +27,16 @@ export async function PUT(request: Request, context: any) {
     const updates: Record<string, unknown> = { updatedAt: new Date() };
 
     if (payload.name !== undefined) updates.name = String(payload.name ?? '');
-    if (payload.city !== undefined) updates.city = String(payload.city ?? '');
-    if (payload.state !== undefined) updates.state = String(payload.state ?? '');
-    if (payload.country !== undefined) updates.country = String(payload.country ?? '');
+    if (payload.cityId !== undefined) updates.cityId = String(payload.cityId ?? '');
+    if (payload.stateId !== undefined) updates.stateId = String(payload.stateId ?? '');
+    if (payload.countryId !== undefined) updates.countryId = String(payload.countryId ?? '');
+    if (payload.schoolLogoUrl !== undefined) updates.schoolLogoUrl = String(payload.schoolLogoUrl ?? '');
+    if (payload.address !== undefined) updates.address = String(payload.address ?? '');
+    if (payload.website !== undefined) updates.website = String(payload.website ?? '');
+    if (payload.pincode !== undefined) updates.pincode = String(payload.pincode ?? '');
+    if (payload.email !== undefined) updates.email = String(payload.email ?? '');
+    if (payload.phone !== undefined) updates.phone = String(payload.phone ?? '');
+    if (payload.foundationYear !== undefined) updates.foundationYear = typeof payload.foundationYear === 'number' ? payload.foundationYear : null;
     if (payload.isVerified !== undefined) updates.isVerified = Boolean(payload.isVerified);
     if (payload.is_verified !== undefined) updates.isVerified = Boolean(payload.is_verified);
 

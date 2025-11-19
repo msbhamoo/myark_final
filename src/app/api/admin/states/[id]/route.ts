@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
-import { State } from '@/types/masters';
-
-// This is a temporary in-memory store.
-// In a real application, you would use a database.
-let states: State[] = [];
+import { getDb } from '@/lib/firebaseAdmin';
 
 export async function GET(
   request: Request,
@@ -12,13 +8,20 @@ export async function GET(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
-  const state = states.find((s) => s.id === id);
 
-  if (!state) {
-    return NextResponse.json({ error: 'State not found' }, { status: 404 });
+  try {
+    const db = getDb();
+    const doc = await db.collection('states').doc(id).get();
+
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'State not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ id: doc.id, ...doc.data() });
+  } catch (error) {
+    console.error('Failed to fetch state:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  return NextResponse.json(state);
 }
 
 export async function PUT(
@@ -28,6 +31,7 @@ export async function PUT(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+
   try {
     const body = await request.json();
     const { name, countryId } = body;
@@ -36,16 +40,19 @@ export async function PUT(
       return NextResponse.json({ error: 'Name and Country are required' }, { status: 400 });
     }
 
-    const stateIndex = states.findIndex((s) => s.id === id);
+    const db = getDb();
+    const docRef = db.collection('states').doc(id);
+    const doc = await docRef.get();
 
-    if (stateIndex === -1) {
+    if (!doc.exists) {
       return NextResponse.json({ error: 'State not found' }, { status: 404 });
     }
 
-    states[stateIndex] = { ...states[stateIndex], name, countryId };
+    await docRef.update({ name, countryId, updatedAt: new Date() });
 
-    return NextResponse.json(states[stateIndex]);
+    return NextResponse.json({ id, name, countryId });
   } catch (error) {
+    console.error('Failed to update state:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -57,13 +64,21 @@ export async function DELETE(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
-  const stateIndex = states.findIndex((s) => s.id === id);
 
-  if (stateIndex === -1) {
-    return NextResponse.json({ error: 'State not found' }, { status: 404 });
+  try {
+    const db = getDb();
+    const docRef = db.collection('states').doc(id);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'State not found' }, { status: 404 });
+    }
+
+    await docRef.delete();
+
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    console.error('Failed to delete state:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  states.splice(stateIndex, 1);
-
-  return new Response(null, { status: 204 });
 }

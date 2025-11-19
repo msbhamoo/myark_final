@@ -16,6 +16,10 @@ export interface Organizer {
   contactWebsite?: string;
   description?: string;
   opportunityTypeIds?: string[];
+  country?: string;
+  state?: string;
+  city?: string;
+  schoolLogoUrl?: string;
 }
 
 export interface OpportunityCategory {
@@ -25,20 +29,20 @@ export interface OpportunityCategory {
 }
 
 export interface Country {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }
 
 export interface State {
-    id: string;
-    name: string;
-    countryId: string;
+  id: string;
+  name: string;
+  countryId: string;
 }
 
 export interface City {
-    id: string;
-    name: string;
-    stateId: string;
+  id: string;
+  name: string;
+  stateId: string;
 }
 
 export interface CategoryIconConfig {

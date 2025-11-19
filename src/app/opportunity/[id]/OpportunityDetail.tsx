@@ -769,7 +769,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       setActionMessage('Opening the registration page in a new tab.');
       try {
         const token = await getIdToken();
-        const url = token 
+        const url = token
           ? `/api/opportunities/${opportunityId}/register/external?token=${encodeURIComponent(token)}`
           : `/api/opportunities/${opportunityId}/register/external`;
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -850,8 +850,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       : 'Not specified';
   const negativeMarkingLabel = examPattern.negativeMarking
     ? (typeof examPattern.negativeMarksPerQuestion === 'number'
-        ? `Yes (-${examPattern.negativeMarksPerQuestion} per question)`
-        : 'Yes')
+      ? `Yes (-${examPattern.negativeMarksPerQuestion} per question)`
+      : 'Yes')
     : 'No';
   const heroImage =
     opportunity.image ||
@@ -877,8 +877,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           normalizedType === 'pdf'
             ? 'PDF / Document'
             : normalizedType === 'video'
-            ? 'Video'
-            : 'External Link';
+              ? 'Video'
+              : 'External Link';
 
         return {
           ...resource,
@@ -998,56 +998,141 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       <Header />
 
       <main className="flex-1 bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pb-32 md:pb-0">
-        {/* Hero Banner */}
-        <div className="relative h-96 overflow-hidden bg-gradient-to-br from-orange-200 via-pink-200/70 to-sky-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800">
-          {/* Background decorations */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/grid-pattern.svg')] opacity-[0.03]"></div>
-            <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-gradient-to-br from-orange-500/10 to-pink-500/10 rounded-full opacity-50 blur-3xl animate-blob"></div>
-            <div className="absolute -bottom-24 -right-24 w-[500px] h-[500px] bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full opacity-50 blur-3xl animate-blob animation-delay-2000"></div>
+        {/* Cover Image Section */}
+        <div className="relative w-full bg-slate-100 dark:bg-slate-800">
+          <div className="container mx-auto px-0 md:px-6 lg:px-8 xl:px-16 max-w-[1920px]">
+            <div className="relative w-full aspect-[21/9] md:aspect-[21/7] lg:rounded-2xl overflow-hidden">
+              <img
+                src={heroImage}
+                alt={title}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
           </div>
-          
-          <div className="absolute inset-0">
-            <img 
-              src={heroImage} 
-              alt={title}
-              className="h-full w-full object-cover opacity-25"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/75 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent"></div>
-          </div>
+        </div>
 
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px]">
-              <div className="max-w-4xl">
-                <Badge className="mb-4 animate-fade-in border border-orange-200 bg-orange-100 text-orange-600 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200">
+        {/* Primary Information Card */}
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] -mt-8 md:-mt-12 relative z-10">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+            <div className="flex flex-col gap-4">
+              {/* Category Badge */}
+              <div>
+                <Badge className="border border-orange-200 bg-orange-100 text-orange-600 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200 text-xs font-semibold">
                   {categoryLabel}
                 </Badge>
-                <h1 className="mb-4 text-4xl font-bold text-foreground animate-fade-in animation-delay-150 md:text-5xl lg:text-6xl dark:text-white">
-                  {title}
-                </h1>
-                <div className="flex flex-wrap gap-3 text-slate-600 animate-fade-in animation-delay-300 dark:text-slate-100">
-                  <div className="flex items-center gap-2 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 shadow-sm dark:border-white/15 dark:bg-slate-800/50">
-                    <Users className="h-5 w-5 text-orange-500 dark:text-orange-300" />
-                    <span>{organizerLabel}</span>
+              </div>
+
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-white leading-tight">
+                {title}
+              </h1>
+
+              {/* Organizer and Meta Info */}
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex-shrink-0">
+                    <img
+                      src={opportunity.organizerLogo || 'https://via.placeholder.com/96x96.png?text=Org'}
+                      alt={organizerLabel}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-                  <div className="flex items-center gap-2 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 shadow-sm dark:border-white/15 dark:bg-slate-800/50">
-                    <Calendar className="h-5 w-5 text-pink-500 dark:text-pink-300" />
-                    <span>{dateDisplay}</span>
+                  <div>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Organized by</p>
+                    <p className="font-semibold text-foreground dark:text-white">{organizerLabel}</p>
                   </div>
-                  {opportunity.state && (
-                    <div className="flex items-center gap-2 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 shadow-sm dark:border-white/15 dark:bg-slate-800/50">
-                      <MapPin className="h-5 w-5 text-purple-500 dark:text-purple-300" />
-                      <span>{opportunity.state}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 shadow-sm dark:border-white/15 dark:bg-slate-800/50">
-                    <Globe className="h-5 w-5 text-sky-500 dark:text-sky-300" />
-                    <span>{modeLabel}</span>
+                </div>
+              </div>
+
+              {/* Tags and Info Pills */}
+              <div className="flex flex-wrap gap-2">
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                  <Calendar className="h-4 w-4 text-pink-500 dark:text-pink-300" />
+                  <span className="text-slate-700 dark:text-slate-200">{dateDisplay}</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                  <Globe className="h-4 w-4 text-sky-500 dark:text-sky-300" />
+                  <span className="text-slate-700 dark:text-slate-200">{modeLabel}</span>
+                </div>
+                {opportunity.state && (
+                  <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                    <MapPin className="h-4 w-4 text-purple-500 dark:text-purple-300" />
+                    <span className="text-slate-700 dark:text-slate-200">{opportunity.state}</span>
                   </div>
+                )}
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                  <Clock className="h-4 w-4 text-orange-500 dark:text-orange-300" />
+                  <span className="text-slate-700 dark:text-slate-200">Updated: {formatDate((opportunity as any).updatedAt || (opportunity as any).createdAt)}</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Mobile Quick Actions - Show only on mobile */}
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] mt-6 lg:hidden">
+          <Card className="p-4 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 border-orange-200 dark:border-slate-700">
+            {/* Price */}
+            <div className="mb-4 text-center">
+              <p className="text-sm text-slate-600 dark:text-slate-300 mb-1">Registration Fee</p>
+              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
+            </div>
+
+            {/* Countdown Timer */}
+            {!registrationClosed && (
+              <div className="mb-4">
+                <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 text-center flex items-center justify-center gap-2">
+                  <Clock className="h-4 w-4 text-orange-400" />
+                  Time Remaining
+                </p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-orange-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-2xl font-bold text-orange-500">{countdown.days}</div>
+                    <div className="text-xs text-slate-600 dark:text-slate-300">Days</div>
+                  </div>
+                  <div className="rounded-xl border border-pink-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-2xl font-bold text-pink-500">{countdown.hours}</div>
+                    <div className="text-xs text-slate-600 dark:text-slate-300">Hours</div>
+                  </div>
+                  <div className="rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-2xl font-bold text-purple-500">{countdown.minutes}</div>
+                    <div className="text-xs text-slate-600 dark:text-slate-300">Mins</div>
+                  </div>
+                </div>
+                <p className="mt-2 text-center text-xs text-slate-500 dark:text-slate-400">Deadline: {formattedDeadline}</p>
+              </div>
+            )}
+
+            {registrationClosed && (
+              <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-center text-red-600 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+                Registrations are closed
+              </div>
+            )}
+
+            {/* Register Button */}
+            <Button
+              onClick={handleRegisterClick}
+              disabled={registrationClosed}
+              className="w-full h-12 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-base font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
+            >
+              {registrationClosed ? 'Registration Closed' : 'Register Now'}
+            </Button>
+
+            {/* Secondary Actions */}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleToggleBookmark}
+                disabled={bookmarkLoading}
+                className="flex-1 border-slate-200 dark:border-slate-700"
+              >
+                <Bookmark className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-orange-400' : ''}`} />
+                {isBookmarked ? 'Saved' : 'Save'}
+              </Button>
+              <ShareButton opportunityId={opportunityId} opportunityTitle={title} />
+            </div>
+          </Card>
         </div>
 
         <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] py-12">
@@ -1082,8 +1167,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {(opportunity.benefits ?? []).map((benefit, index) => (
-                                <div 
-                                  key={index} 
+                                <div
+                                  key={index}
                                   className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-orange-500/20 transition-colors"
                                 >
                                   <div className="mt-1">
@@ -1111,8 +1196,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {(opportunity.eligibility ?? []).map((criterion, index) => (
-                            <div 
-                              key={index} 
+                            <div
+                              key={index}
                               className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
                             >
                               <div className="mt-1">
@@ -1138,30 +1223,65 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                         </h2>
                         <div className="space-y-6">
                           {timelineEntries.map((item, index) => (
-                            <div key={index} className="relative flex gap-6 group">
+                            <div key={index} className="relative flex gap-4 group">
+                              {/* Stepper Line */}
                               <div className="flex flex-col items-center">
-                                <div className={`h-12 w-12 rounded-xl flex items-center justify-center border transition-all duration-300
-                                  ${item.status === 'active' 
-                                    ? 'bg-gradient-to-br from-orange-500/20 to-pink-500/20 border-orange-500/30 group-hover:border-orange-500/50' 
+                                {/* Circle Indicator */}
+                                <div className={`h-14 w-14 rounded-full flex items-center justify-center border-2 transition-all duration-300 relative z-10
+                                  ${item.status === 'active'
+                                    ? 'bg-gradient-to-br from-orange-50 to-pink-50 border-orange-500 dark:from-orange-500/20 dark:to-pink-500/20 dark:border-orange-400 shadow-lg shadow-orange-500/20'
                                     : item.status === 'completed'
-                                    ? 'bg-white/90 dark:bg-slate-800/50 shadow-sm border-border/50 dark:border-white/20'
-                                    : 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/30 group-hover:border-blue-500/50'
+                                      ? 'bg-emerald-50 border-emerald-500 dark:bg-emerald-500/20 dark:border-emerald-400'
+                                      : 'bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-600'
                                   }`}
                                 >
                                   {item.status === 'active' ? (
-                                    <Clock className="h-6 w-6 text-orange-400" />
+                                    <Clock className="h-7 w-7 text-orange-500 dark:text-orange-300" />
+                                  ) : item.status === 'completed' ? (
+                                    <CheckCircle2 className="h-7 w-7 text-emerald-500 dark:text-emerald-300" />
                                   ) : (
-                                    <Calendar className="h-6 w-6 text-pink-400" />
+                                    <Calendar className="h-7 w-7 text-slate-400 dark:text-slate-500" />
                                   )}
                                 </div>
+                                {/* Vertical Connecting Line */}
                                 {index < timelineEntries.length - 1 && (
-                                  <div className="w-0.5 h-16 bg-gradient-to-b from-white/10 to-transparent"></div>
+                                  <div className={`w-0.5 h-full min-h-[60px] transition-all duration-300
+                                    ${item.status === 'completed'
+                                      ? 'bg-emerald-300 dark:bg-emerald-600'
+                                      : 'bg-slate-200 dark:bg-slate-700'
+                                    }`}
+                                  ></div>
                                 )}
                               </div>
-                              <div className="flex-1 pb-8">
-                                <div className="p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 group-hover:border-orange-500/20 transition-all duration-300">
-                                  <p className="font-semibold text-foreground dark:text-white mb-1">{item.event}</p>
-                                  <p className="text-sm text-slate-500 dark:text-slate-300">{formatDate(item.date)}</p>
+
+                              {/* Event Card */}
+                              <div className="flex-1 pb-4">
+                                <div className={`p-5 rounded-xl border-2 transition-all duration-300 group-hover:shadow-md
+                                  ${item.status === 'active'
+                                    ? 'bg-gradient-to-br from-orange-50 to-pink-50 border-orange-200 dark:from-orange-500/10 dark:to-pink-500/10 dark:border-orange-500/30'
+                                    : item.status === 'completed'
+                                      ? 'bg-emerald-50 border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/30'
+                                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700'
+                                  }`}
+                                >
+                                  {/* Event Title */}
+                                  <div className="flex items-start justify-between gap-3 mb-2">
+                                    <p className="font-bold text-lg text-foreground dark:text-white leading-snug">
+                                      {item.event}
+                                    </p>
+                                    {item.status === 'active' && (
+                                      <Badge className="bg-orange-500 text-white text-xs shrink-0">Live</Badge>
+                                    )}
+                                    {item.status === 'completed' && (
+                                      <Badge className="bg-emerald-500 text-white text-xs shrink-0">Done</Badge>
+                                    )}
+                                  </div>
+
+                                  {/* Event Date */}
+                                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                                    <Calendar className="h-4 w-4" />
+                                    <span>{formatDate(item.date)}</span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1251,7 +1371,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                           Examination Pattern
                         </h2>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                           <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
                             <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -1282,8 +1402,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                         </h3>
                         <div className="space-y-4">
                           {examSections.map((section, index) => (
-                            <div 
-                              key={index} 
+                            <div
+                              key={index}
                               className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
                             >
                               <div className="flex items-center gap-3 mb-3 sm:mb-0">
@@ -1407,8 +1527,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               />
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
+            {/* Sidebar - Sticky on Desktop, Hidden on Mobile */}
+            <div className="hidden lg:block lg:sticky lg:top-[140px] lg:self-start space-y-6">
               {/* Main Action Card */}
               <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-pink-500/10 border-slate-200 dark:border-slate-700 backdrop-blur-sm">
                 {/* Price and Registration */}
@@ -1552,7 +1672,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 </h3>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-16 w-16 rounded-2xl overflow-hidden border border-border/50 dark:border-white/20">
-                    <img 
+                    <img
                       src={opportunity.organizerLogo || 'https://via.placeholder.com/96x96.png?text=Org'}
                       alt={opportunity.organizer || 'Organizer'}
                       className="h-full w-full object-cover"
@@ -1575,74 +1695,74 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 </Button>
               </Card>
             </div>
-        </div>
-      </div>
-      <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
-        <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
-          <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Related opportunities picked for you</h2>
-          <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
-            Tailored suggestions that weigh category, grade fit, segments, and timeline recency from this listing.
-          </p>
-          {relatedLoading ? (
-            <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {[0, 1, 2].map((index) => (
-                <div
-                  key={index}
-                  className="h-48 animate-pulse rounded-2xl border border-slate-200 bg-white/80 shadow-sm dark:border-slate-700 dark:bg-slate-800/50"
-                />
-              ))}
-            </div>
-          ) : relatedError ? (
-            <p className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-400/40 dark:bg-red-400/10 dark:text-red-200">
-              {relatedError}
-            </p>
-          ) : relatedOpportunities.length === 0 ? (
-            <div className="mt-6 rounded-xl border border-slate-200 bg-white/80 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
-              We are still gathering the closest matches. Explore the full listings to discover more programs right away.
-              <div className="mt-4">
-                <Button asChild variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10">
-                  <Link href="/opportunities">Browse all opportunities</Link>
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {relatedOpportunities.map((item) => {
-                const opportunityIdOrSlug = item.slug || item.id;
-                const category = item.categoryName || item.category || 'Opportunity';
-                const organizerName = item.organizerName || item.organizer || 'Organizer';
-                const deadline = item.registrationDeadline || item.endDate || '';
-                return (
-                  <OpportunityCard
-                    key={opportunityIdOrSlug}
-                    id={opportunityIdOrSlug}
-                    title={item.title}
-                    category={category}
-                    gradeEligibility={item.gradeEligibility || 'All Grades'}
-                    organizer={organizerName}
-                    registrationDeadline={deadline}
-                    mode={normalizeMode(item.mode)}
-                    fee={item.fee}
-                    className="border-slate-200 bg-white/95 dark:border-slate-700 dark:bg-slate-800/50"
-                  />
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
-        <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
-          <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Community Discussion</h2>
-          <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
-            Join the conversation with other students interested in this opportunity.
-          </p>
-          <div className="mt-8">
-            <CommentSection opportunityId={opportunityId} />
           </div>
         </div>
-      </section>
+        <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
+          <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
+            <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Related opportunities picked for you</h2>
+            <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
+              Tailored suggestions that weigh category, grade fit, segments, and timeline recency from this listing.
+            </p>
+            {relatedLoading ? (
+              <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {[0, 1, 2].map((index) => (
+                  <div
+                    key={index}
+                    className="h-48 animate-pulse rounded-2xl border border-slate-200 bg-white/80 shadow-sm dark:border-slate-700 dark:bg-slate-800/50"
+                  />
+                ))}
+              </div>
+            ) : relatedError ? (
+              <p className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-400/40 dark:bg-red-400/10 dark:text-red-200">
+                {relatedError}
+              </p>
+            ) : relatedOpportunities.length === 0 ? (
+              <div className="mt-6 rounded-xl border border-slate-200 bg-white/80 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
+                We are still gathering the closest matches. Explore the full listings to discover more programs right away.
+                <div className="mt-4">
+                  <Button asChild variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10">
+                    <Link href="/opportunities">Browse all opportunities</Link>
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {relatedOpportunities.map((item) => {
+                  const opportunityIdOrSlug = item.slug || item.id;
+                  const category = item.categoryName || item.category || 'Opportunity';
+                  const organizerName = item.organizerName || item.organizer || 'Organizer';
+                  const deadline = item.registrationDeadline || item.endDate || '';
+                  return (
+                    <OpportunityCard
+                      key={opportunityIdOrSlug}
+                      id={opportunityIdOrSlug}
+                      title={item.title}
+                      category={category}
+                      gradeEligibility={item.gradeEligibility || 'All Grades'}
+                      organizer={organizerName}
+                      registrationDeadline={deadline}
+                      mode={normalizeMode(item.mode)}
+                      fee={item.fee}
+                      className="border-slate-200 bg-white/95 dark:border-slate-700 dark:bg-slate-800/50"
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
+          <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
+            <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Community Discussion</h2>
+            <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
+              Join the conversation with other students interested in this opportunity.
+            </p>
+            <div className="mt-8">
+              <CommentSection opportunityId={opportunityId} />
+            </div>
+          </div>
+        </section>
       </main>
 
       <Dialog open={organizerModalOpen} onOpenChange={(open) => setOrganizerModalOpen(open)}>
@@ -1790,8 +1910,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       />
 
       <Footer />
-  </div>
-);
+    </div>
+  );
 }
 
 

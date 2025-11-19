@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Country } from '@/types/masters';
-
-// This is a temporary in-memory store.
-// In a real application, you would use a database.
-let countries: Country[] = [];
+import { getDb } from '@/lib/firebaseAdmin';
 
 export async function GET(
   request: Request,
@@ -12,13 +8,20 @@ export async function GET(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
-  const country = countries.find((c) => c.id === id);
 
-  if (!country) {
-    return NextResponse.json({ error: 'Country not found' }, { status: 404 });
+  try {
+    const db = getDb();
+    const doc = await db.collection('countries').doc(id).get();
+
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'Country not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ id: doc.id, ...doc.data() });
+  } catch (error) {
+    console.error('Failed to fetch country:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  return NextResponse.json(country);
 }
 
 export async function PUT(
@@ -28,6 +31,7 @@ export async function PUT(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+
   try {
     const body = await request.json();
     const { name } = body;
@@ -36,16 +40,19 @@ export async function PUT(
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    const countryIndex = countries.findIndex((c) => c.id === id);
+    const db = getDb();
+    const docRef = db.collection('countries').doc(id);
+    const doc = await docRef.get();
 
-    if (countryIndex === -1) {
+    if (!doc.exists) {
       return NextResponse.json({ error: 'Country not found' }, { status: 404 });
     }
 
-    countries[countryIndex] = { ...countries[countryIndex], name };
+    await docRef.update({ name, updatedAt: new Date() });
 
-    return NextResponse.json(countries[countryIndex]);
+    return NextResponse.json({ id, name });
   } catch (error) {
+    console.error('Failed to update country:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -57,13 +64,21 @@ export async function DELETE(
   const params = (context && context.params) as { id?: string | string[] } | undefined;
   const idParam = params?.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
-  const countryIndex = countries.findIndex((c) => c.id === id);
 
-  if (countryIndex === -1) {
-    return NextResponse.json({ error: 'Country not found' }, { status: 404 });
+  try {
+    const db = getDb();
+    const docRef = db.collection('countries').doc(id);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return NextResponse.json({ error: 'Country not found' }, { status: 404 });
+    }
+
+    await docRef.delete();
+
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    console.error('Failed to delete country:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  countries.splice(countryIndex, 1);
-
-  return new Response(null, { status: 204 });
 }

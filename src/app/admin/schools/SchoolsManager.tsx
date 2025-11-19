@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Country, State, City } from '@/types/masters';
 
+
 interface School {
   id: string;
   name: string;
@@ -31,6 +32,7 @@ interface School {
   city?: City;
   state?: State;
   country?: Country;
+  schoolLogoUrl?: string;
 }
 
 const defaultForm = {
@@ -45,6 +47,7 @@ const defaultForm = {
   phone: '',
   foundationYear: '',
   isVerified: false,
+  schoolLogoUrl: '',
 };
 
 export function SchoolsManager() {
@@ -152,6 +155,7 @@ export function SchoolsManager() {
       phone: item.phone,
       foundationYear: item.foundationYear?.toString() ?? '',
       isVerified: item.isVerified,
+      schoolLogoUrl: item.schoolLogoUrl ?? '',
     });
   };
 
@@ -199,6 +203,44 @@ export function SchoolsManager() {
             />
           </div>
           <div className='md:col-span-2 space-y-2'>
+            <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-logo'>
+              School Logo URL
+            </label>
+            <div className="flex flex-col gap-2">
+              <Input
+                id='school-logo'
+                value={formState.schoolLogoUrl}
+                onChange={(event) => setFormState((prev) => ({ ...prev, schoolLogoUrl: event.target.value }))}
+                placeholder='https://example.com/logo.png'
+                className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+              />
+              <Input
+                type="file"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  const formData = new FormData();
+                  formData.append('file', file);
+
+                  try {
+                    const res = await fetch('/api/admin/upload', {
+                      method: 'POST',
+                      body: formData,
+                    });
+                    if (!res.ok) throw new Error('Upload failed');
+                    const data = await res.json();
+                    setFormState(prev => ({ ...prev, schoolLogoUrl: data.url }));
+                  } catch (err) {
+                    console.error(err);
+                    setError('Failed to upload image');
+                  }
+                }}
+                className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90'
+              />
+            </div>
+          </div>
+          <div className='md:col-span-2 space-y-2'>
             <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='school-address'>
               Address
             </label>
@@ -216,7 +258,7 @@ export function SchoolsManager() {
             <select
               id='school-country'
               value={formState.countryId}
-              onChange={(e) => setFormState(prev => ({...prev, countryId: e.target.value, stateId: '', cityId: ''}))}
+              onChange={(e) => setFormState(prev => ({ ...prev, countryId: e.target.value, stateId: '', cityId: '' }))}
               className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
             >
               <option value=''>Select Country</option>
@@ -230,7 +272,7 @@ export function SchoolsManager() {
             <select
               id='school-state'
               value={formState.stateId}
-              onChange={(e) => setFormState(prev => ({...prev, stateId: e.target.value, cityId: ''}))}
+              onChange={(e) => setFormState(prev => ({ ...prev, stateId: e.target.value, cityId: '' }))}
               className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.countryId}
             >
@@ -245,7 +287,7 @@ export function SchoolsManager() {
             <select
               id='school-city'
               value={formState.cityId}
-              onChange={(e) => setFormState(prev => ({...prev, cityId: e.target.value}))}
+              onChange={(e) => setFormState(prev => ({ ...prev, cityId: e.target.value }))}
               className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white h-10 rounded-md border border-border/60 dark:border-white/10 px-3 text-sm'
               disabled={!formState.stateId}
             >
