@@ -47,9 +47,9 @@ const MODE_STYLES: Record<
 // Enhanced category colors with professional differentiation
 const CATEGORY_STYLES: Record<
   string,
-  { 
-    badgeClass: string; 
-    accentClass: string; 
+  {
+    badgeClass: string;
+    accentClass: string;
     borderClass: string;
     bgGradient: string;
     icon: string;
@@ -178,7 +178,7 @@ export default function OpportunityCard({
   const normalizedMode = MODE_STYLES[mode] ? mode : 'online';
   const categoryStyles = getCategoryStyles(normalizedCategory);
   const isClosed = status === 'closed';
-  
+
   // Default cover image fallback
   const coverImage = image || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
 
@@ -249,7 +249,7 @@ export default function OpportunityCard({
     <Link href={`/opportunity/${id}`}>
       <Card
         className={cn(
-          'group relative h-full overflow-hidden rounded-2xl border-b border-x transition-all duration-300 flex flex-col',
+          'group relative h-full overflow-hidden rounded-2xl border-b border-x transition-all duration-300 flex flex-col py-0 gap-0',
           'bg-white dark:bg-slate-900/90',
           'hover:shadow-xl hover:-translate-y-1 hover:border-orange-200 dark:hover:border-orange-400/50',
           'border-slate-200/70 dark:border-slate-800/60',
@@ -258,7 +258,7 @@ export default function OpportunityCard({
         )}
       >
         {/* Cover Image */}
-      <div className="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800">
+        <div className="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800">
           <img
             src={coverImage}
             alt={title}
@@ -268,34 +268,39 @@ export default function OpportunityCard({
               img.src = 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </div>
-  {/* Top accent gradient bar */}
-        <div className={cn(
-          'absolute top-32 sm:top-40 inset-x-0 h-1.5 opacity-80 group-hover:opacity-100 transition-opacity',
-          `bg-gradient-to-r ${categoryStyles.accentClass}`
-        )} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
 
-        <div className="flex flex-1 flex-col p-3 sm:p-4 border-t border-slate-200/70 dark:border-slate-800/60 group-hover:border-orange-200 dark:group-hover:border-orange-400/50 transition-colors">
-          {/* Header Row: Category Badge & Urgent */}
-          <div className="flex items-start justify-between gap-2 mb-2">
+          {/* Category Badge - Top Left Over Image */}
+          <div className="absolute top-3 left-3 z-10">
             <span className={cn(
-              'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap flex-shrink-0',
-              categoryStyles.badgeClass,
+              'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap shadow-sm backdrop-blur-md',
+              'bg-white/90 text-slate-900 dark:bg-slate-900/90 dark:text-white',
+              // categoryStyles.badgeClass // Using neutral style for better contrast on image, or use category color?
+              // User asked for "tags like olympiad... top on top left". 
+              // Let's use the category style but ensure it's readable.
+              categoryStyles.badgeClass
             )}>
               <span className="text-sm">{categoryStyles.icon}</span>
-              <span className="hidden sm:inline text-xs">{normalizedCategory}</span>
+              <span className="text-xs">{normalizedCategory}</span>
             </span>
-            
-            {isUrgent && (
-              <span className="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700 dark:bg-red-500/20 dark:text-red-200 flex-shrink-0 animate-pulse">
-                <Zap className="h-3 w-3" />
-              </span>
-            )}
           </div>
 
+          {/* Urgent Badge - Top Right Over Image */}
+          {isUrgent && (
+            <div className="absolute top-3 right-3 z-10">
+              <span className="inline-flex items-center gap-1 rounded-lg bg-red-500 text-white px-2 py-0.5 text-xs font-bold shadow-sm animate-pulse">
+                <Zap className="h-3 w-3 fill-current" />
+                <span>Urgent</span>
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Content - Removed border-t and accent bar */}
+        <div className="flex flex-1 flex-col p-3 sm:p-4 transition-colors">
+
           {/* Title - Prominent */}
-          <h3 className="text-sm sm:text-base font-bold leading-tight text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-orange-600 transition-colors">
+          <h3 className="text-sm sm:text-base font-bold leading-tight text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-orange-600 transition-colors mt-1">
             {title}
           </h3>
 
@@ -308,21 +313,21 @@ export default function OpportunityCard({
           {/* Info Pills - Horizontal Row */}
           <div className="flex flex-wrap gap-1.5 mb-2">
             {/* Grade */}
-            <span className="inline-flex items-center rounded-lg bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-500/15 dark:text-blue-300">
+            <span className="inline-flex items-center rounded-lg bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
               {gradeLabel}
             </span>
-            
+
             {/* Mode */}
             <span className={cn(
-              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-semibold',
+              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-medium',
               MODE_STYLES[normalizedMode].className,
             )}>
               {MODE_STYLES[normalizedMode].label}
             </span>
-            
+
             {/* Fee */}
             <span className={cn(
-              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-semibold',
+              'inline-flex items-center rounded-lg px-2 py-1 text-xs font-medium',
               feeBadgeClass,
             )}>
               {feeLabel}
@@ -334,7 +339,7 @@ export default function OpportunityCard({
             {/* Days Left - Prominent Box */}
             <div className={cn(
               'flex items-center justify-between rounded-lg p-2.5 text-xs font-semibold',
-              isUrgent 
+              isUrgent
                 ? 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300'
                 : 'bg-slate-50 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300',
             )}>
@@ -347,26 +352,6 @@ export default function OpportunityCard({
               </div>
               <span className="text-xs opacity-80">{formatDisplayDeadline()}</span>
             </div>
-
-            {/* CTA Button */}
-           {/* <button
-  className={cn(
-    'w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-xs sm:text-sm font-semibold',
-    'transition-all duration-200 active:scale-95',
-    categoryStyles.accentClass,
-    // use transparent instead of a white end so the gradient doesn't push a white tint
-    categoryStyles.bgGradient.startsWith('from-')
-      ? `bg-gradient-to-r ${categoryStyles.bgGradient} to-transparent`
-      : categoryStyles.bgGradient,
-    'border border-slate-200/50 dark:border-slate-700/50',
-    'hover:shadow-md group-hover:shadow-md',
-    // dark: keep white, light: use a dark slate color for good contrast
-    'text-slate-900 dark:text-white',
-  )}
->
-  <span>Explore</span>
-  <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-</button> */}
           </div>
         </div>
       </Card>

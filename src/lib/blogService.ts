@@ -20,6 +20,29 @@ export async function listPublishedBlogs(limit?: number): Promise<BlogPost[]> {
   return blogs.filter((blog) => blog.status === 'published').slice(0, limit)
 }
 
+export async function listBlogsByTag(tag: string, limit?: number): Promise<BlogPost[]> {
+  const db = getDb()
+  // Fetch published blogs and filter by tag in memory (or use array-contains query if index exists)
+  // Using array-contains requires an index usually, but for small datasets memory filter is fine.
+  // However, let's try array-contains first as it's more efficient.
+  try {
+    let q = db.collection(COLLECTION)
+      .where('tags', 'array-contains', tag)
+      .orderBy('publishedAt', 'desc')
+      .limit(limit || 50)
+
+    const snap = await q.get()
+    const blogs = snap.docs
+      .map((d) => ({ id: d.id, ...(d.data() as any) })) as BlogPost[]
+    return blogs.filter((blog) => blog.status === 'published')
+  } catch (error) {
+    console.warn('Index might be missing for array-contains query, falling back to memory filter', error)
+    // Fallback: fetch all published and filter
+    const all = await listPublishedBlogs(100)
+    return all.filter(b => b.tags?.includes(tag)).slice(0, limit)
+  }
+}
+
 export async function listAllBlogs(): Promise<BlogPost[]> {
   const db = getDb()
   const snap = await db.collection(COLLECTION).orderBy('updatedAt', 'desc').get()

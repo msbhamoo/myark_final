@@ -407,7 +407,7 @@ export default function HomePageClient() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
       <Header />
-      
+
       <main className="flex-1 pb-20 md:pb-0">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-20 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
@@ -582,21 +582,22 @@ export default function HomePageClient() {
               <section key={segment.id} className={`relative overflow-hidden py-16 md:py-20 ${highlightClasses}`}>
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
                 <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
-                  <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-white/20 dark:bg-white/10">
-                          <Sparkles className="h-5 w-5 text-orange-500" />
+                  <div className="mb-6 flex items-center justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="rounded-xl border border-orange-100 bg-white/80 p-2 sm:p-3 shadow-sm dark:border-white/20 dark:bg-white/10 shrink-0">
+                          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl dark:text-white">{segment.title}</h2>
+                        <h2 className="text-lg sm:text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl dark:text-white truncate">{segment.title}</h2>
                       </div>
                       {segment.subtitle && (
-                        <p className="mt-2 max-w-2xl text-xs sm:text-sm text-slate-600 md:text-base dark:text-slate-100">{segment.subtitle}</p>
+                        <p className="mt-1 sm:mt-2 max-w-2xl text-xs sm:text-sm text-slate-600 md:text-base dark:text-slate-100 line-clamp-1 sm:line-clamp-2">{segment.subtitle}</p>
                       )}
                     </div>
-                    <Link href={segmentLink} aria-disabled={viewAllDisabled} className={viewAllClasses}>
-                      View {hasItems ? 'all' : 'segment'}
-                      <ChevronRight className="h-4 w-4" />
+                    <Link href={segmentLink} aria-disabled={viewAllDisabled} className={`${viewAllClasses} shrink-0 ml-2`}>
+                      <span className="hidden sm:inline">View {hasItems ? 'all' : 'segment'}</span>
+                      <span className="sm:hidden">View all</span>
+                      <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Link>
                   </div>
 
@@ -625,10 +626,10 @@ export default function HomePageClient() {
                       <div className="flex gap-4 overflow-x-auto px-2 pb-4">
                         {items.map((item) => {
                           // Determine if opportunity is closed
-                          const isClosed = 
+                          const isClosed =
                             item.status?.toLowerCase() === 'closed' ||
                             (item.registrationDeadline && new Date(item.registrationDeadline) < new Date());
-                          
+
                           return (
                             <OpportunityCard
                               key={`${segment.id}-${item.id}`}
@@ -734,10 +735,10 @@ export default function HomePageClient() {
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {displayedOpportunities.map((opportunity) => {
                       // Determine if opportunity is closed
-                      const isClosed = 
+                      const isClosed =
                         opportunity.status?.toLowerCase() === 'closed' ||
                         (opportunity.registrationDeadline && new Date(opportunity.registrationDeadline) < new Date());
-                      
+
                       return (
                         <OpportunityCard
                           key={`${displayedState}-${opportunity.id}`}
@@ -764,127 +765,127 @@ export default function HomePageClient() {
           </div>
         </section>
 
-       
-      {/* Blog section */}
-      {blogs.length > 0 && (
-        <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-orange-50/50 dark:from-slate-950 dark:via-slate-900/95 dark:to-slate-900">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
-          <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
-            <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-orange-400/20 dark:bg-white/10">
-                    <Sparkles className="h-5 w-5 text-orange-500" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Latest from our Blog</h2>
-                </div>
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl">Insights, tips, and success stories to help you make the most of your opportunities</p>
-              </div>
-              <Link href="/blog" className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-white dark:border-orange-400/40 dark:bg-slate-800/80 dark:text-orange-200 dark:hover:bg-slate-800">
-                View all posts
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Featured Blog Post */}
-              {blogs[0] && (
-                <Link href={`/blog/${blogs[0].slug}`} className="lg:col-span-2 group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-md transition hover:shadow-xl dark:border-slate-700/60 dark:bg-slate-900/80">
-                  <div className="flex flex-col h-full">
-                    {/* Featured Image */}
-                    {blogs[0].coverImage && (
-                      <div className="relative overflow-hidden h-72 sm:h-80 md:h-96 bg-slate-200 dark:bg-slate-800">
-                        <img 
-                          src={blogs[0].coverImage} 
-                          alt={blogs[0].title}
-                          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        {blogs[0].tags && blogs[0].tags.length > 0 && (
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                              {blogs[0].tags[0]}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    
-                    {/* Content */}
-                    <div className="flex flex-col flex-1 p-6 sm:p-8">
-                      <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-100 dark:border-slate-700/50">
-                        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                          {blogs[0].author && (
-                            <>
-                              <span className="font-medium text-slate-900 dark:text-slate-200">{blogs[0].author}</span>
-                              <span>•</span>
-                            </>
-                          )}
-                          <span>{blogs[0].publishedAt ? new Date(blogs[0].publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently published'}</span>
-                        </div>
-                      </div>
-                      
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white line-clamp-3 mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
-                        {blogs[0].title}
-                      </h3>
-                      
-                      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 line-clamp-3 mb-4 flex-1">
-                        {blogs[0].excerpt}
-                      </p>
-                      
-                      <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold text-sm group-hover:gap-3 transition-all">
-                        Read article
-                        <ChevronRight className="h-4 w-4" />
-                      </div>
+        {/* Blog section */}
+        {blogs.length > 0 && (
+          <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-orange-50/50 dark:from-slate-950 dark:via-slate-900/95 dark:to-slate-900">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
+            <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
+              <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-orange-400/20 dark:bg-white/10">
+                      <Sparkles className="h-5 w-5 text-orange-500" />
                     </div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Latest from our Blog</h2>
                   </div>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl">Insights, tips, and success stories to help you make the most of your opportunities</p>
+                </div>
+                <Link href="/blog" className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-white dark:border-orange-400/40 dark:bg-slate-800/80 dark:text-orange-200 dark:hover:bg-slate-800">
+                  View all posts
+                  <ChevronRight className="h-4 w-4" />
                 </Link>
-              )}
+              </div>
 
-              {/* Blog Grid */}
-              <div className="lg:col-span-1 flex flex-col gap-5">
-                {blogs.slice(1, 4).map((post: any) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="group relative overflow-hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-lg dark:border-slate-700/60 dark:bg-slate-900/80"
-                  >
-                    <div className="flex gap-4">
-                      {/* Thumbnail */}
-                      {post.coverImage && (
-                        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-800">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Featured Blog Post */}
+                {blogs[0] && (
+                  <Link href={`/blog/${blogs[0].slug}`} className="lg:col-span-2 group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-md transition hover:shadow-xl dark:border-slate-700/60 dark:bg-slate-900/80">
+                    <div className="flex flex-col h-full">
+                      {/* Featured Image */}
+                      {blogs[0].coverImage && (
+                        <div className="relative overflow-hidden h-72 sm:h-80 md:h-96 bg-slate-200 dark:bg-slate-800">
                           <img
-                            src={post.coverImage}
-                            alt={post.title}
-                            className="h-full w-full object-cover transition group-hover:scale-110"
+                            src={blogs[0].coverImage}
+                            alt={blogs[0].title}
+                            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                           />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                          {blogs[0].tags && blogs[0].tags.length > 0 && (
+                            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                                {blogs[0].tags[0]}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       )}
-                      
+
                       {/* Content */}
-                      <div className="flex flex-1 flex-col justify-between min-w-0">
-                        <div>
-                          <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
-                            {post.title}
-                          </h4>
-                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                            {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : 'Published'}
-                          </p>
+                      <div className="flex flex-col flex-1 p-6 sm:p-8">
+                        <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-100 dark:border-slate-700/50">
+                          <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                            {blogs[0].author && (
+                              <>
+                                <span className="font-medium text-slate-900 dark:text-slate-200">{blogs[0].author}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            <span>{blogs[0].publishedAt ? new Date(blogs[0].publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently published'}</span>
+                          </div>
+                        </div>
+
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white line-clamp-3 mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                          {blogs[0].title}
+                        </h3>
+
+                        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 line-clamp-3 mb-4 flex-1">
+                          {blogs[0].excerpt}
+                        </p>
+
+                        <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold text-sm group-hover:gap-3 transition-all">
+                          Read article
+                          <ChevronRight className="h-4 w-4" />
                         </div>
                       </div>
                     </div>
                   </Link>
-                ))}
+                )}
+
+                {/* Blog Grid */}
+                <div className="lg:col-span-1 flex flex-col gap-5">
+                  {blogs.slice(1, 4).map((post: any) => (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}`}
+                      className="group relative overflow-hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-lg dark:border-slate-700/60 dark:bg-slate-900/80"
+                    >
+                      <div className="flex gap-4">
+                        {/* Thumbnail */}
+                        {post.coverImage && (
+                          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-800">
+                            <img
+                              src={post.coverImage}
+                              alt={post.title}
+                              className="h-full w-full object-cover transition group-hover:scale-110"
+                            />
+                          </div>
+                        )}
+
+                        {/* Content */}
+                        <div className="flex flex-1 flex-col justify-between min-w-0">
+                          <div>
+                            <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                              {post.title}
+                            </h4>
+                            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) : 'Published'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
       </main>
 
       {/* Mobile-only Stats Section - Before Footer */}
-     
+
 
       {/* All Categories Section - Mobile Only */}
       {/* <AllCategoriesSection /> */}
