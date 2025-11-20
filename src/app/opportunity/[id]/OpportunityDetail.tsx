@@ -44,7 +44,7 @@ import {
   Globe,
 } from 'lucide-react';
 
-const formatDate = (value?: string, fallback = 'TBA') => {
+const formatDate = (value?: string | null, fallback = 'TBA') => {
   if (!value) {
     return fallback;
   }
@@ -553,6 +553,40 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   const [relatedOpportunities, setRelatedOpportunities] = useState<Opportunity[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
   const [relatedError, setRelatedError] = useState<string | null>(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [registeredAt, setRegisteredAt] = useState<string | null>(null);
+  const [registrationCheckLoading, setRegistrationCheckLoading] = useState(false);
+  const [showExternalConfirmation, setShowExternalConfirmation] = useState(false);
+
+  useEffect(() => {
+    const checkRegistrationStatus = async () => {
+      if (!user || !opportunityId) return;
+
+      try {
+        setRegistrationCheckLoading(true);
+        const token = await getIdToken();
+        if (!token) return;
+
+        const response = await fetch(`/api/opportunities/${opportunityId}/register`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsRegistered(data.isRegistered);
+          setRegisteredAt(data.registeredAt);
+        }
+      } catch (error) {
+        console.error('Error checking registration status:', error);
+      } finally {
+        setRegistrationCheckLoading(false);
+      }
+    };
+
+    checkRegistrationStatus();
+  }, [user, opportunityId, getIdToken]);
 
   const closeResourcePreview = () => setActiveResource(null);
 
@@ -753,10 +787,22 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   };
 
   const handleRegisterClick = async () => {
+    console.log('Register clicked - registrationClosed:', registrationClosed);
+    console.log('Register clicked - user:', user);
+    console.log('Register clicked - authLoading:', authLoading);
+
     if (registrationClosed) {
       return;
     }
+
+    // Wait for auth to load if it's still loading
+    if (authLoading) {
+      console.log('Auth still loading, waiting...');
+      return;
+    }
+
     if (!user) {
+      console.log('No user found, opening auth modal');
       setActionMessage('Please log in to register for this opportunity.');
       openAuthModal({
         mode: 'login',
@@ -764,6 +810,9 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       });
       return;
     }
+
+    console.log('User found, proceeding with registration');
+    console.log('Registration mode:', opportunity.registrationMode);
 
     if (opportunity.registrationMode === 'external') {
       setActionMessage('Opening the registration page in a new tab.');
@@ -773,12 +822,46 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           ? `/api/opportunities/${opportunityId}/register/external?token=${encodeURIComponent(token)}`
           : `/api/opportunities/${opportunityId}/register/external`;
         window.open(url, '_blank', 'noopener,noreferrer');
+        setTimeout(() => setShowExternalConfirmation(true), 1000);
       } catch (error) {
         console.error('Error getting token:', error);
         window.open(`/api/opportunities/${opportunityId}/register/external`, '_blank', 'noopener,noreferrer');
+        setTimeout(() => setShowExternalConfirmation(true), 1000);
       }
     } else {
       await handleInternalRegistration();
+    }
+  };
+
+  const handleExternalConfirmation = async (confirmed: boolean) => {
+    setShowExternalConfirmation(false);
+    if (!confirmed) return;
+
+    try {
+      setActionMessage('Confirming your registration...');
+      const token = await getIdToken();
+      if (!token) throw new Error('Authentication token not available.');
+
+      const response = await fetch(`/api/opportunities/${opportunityId}/register`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'external_confirmed' }),
+      });
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error || 'Failed to confirm registration.');
+      }
+
+      setActionMessage('Registration confirmed!');
+      setIsRegistered(true);
+      setRegisteredAt(new Date().toISOString());
+    } catch (err) {
+      console.error('External registration confirmation error:', err);
+      setActionMessage((err as Error).message);
     }
   };
 
@@ -802,6 +885,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       }
 
       setActionMessage('You have been successfully registered for this opportunity!');
+      setIsRegistered(true);
+      setRegisteredAt(new Date().toISOString());
     } catch (err) {
       console.error('Internal registration error:', err);
       setActionMessage((err as Error).message);
@@ -1071,8 +1156,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
         </div>
 
         {/* Mobile Quick Actions - Show only on mobile */}
-        <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] mt-6 lg:hidden">
-          <Card className="p-4 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 border-orange-200 dark:border-slate-700">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] mt-6 lg:hidden relative z-10">
+          <Card className="p-4 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 border-orange-200 dark:border-slate-700 relative">
             {/* Price */}
             <div className="mb-4 text-center">
               <p className="text-sm text-slate-600 dark:text-slate-300 mb-1">Registration Fee</p>
@@ -1110,14 +1195,29 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               </div>
             )}
 
-            {/* Register Button */}
-            <Button
-              onClick={handleRegisterClick}
-              disabled={registrationClosed}
-              className="w-full h-12 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-base font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
-            >
-              {registrationClosed ? 'Registration Closed' : 'Register Now'}
-            </Button>
+            {/* Register Button or Registered Status */}
+            {isRegistered ? (
+              <div className="mb-3 text-center">
+                <div className="w-full h-12 flex items-center justify-center gap-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 rounded-lg font-semibold border border-emerald-200 dark:border-emerald-500/30">
+                  <CheckCircle2 className="h-5 w-5" />
+                  Registered
+                </div>
+                {registeredAt && (
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                    Registered on {formatDate(registeredAt)}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <Button
+                type="button"
+                onClick={handleRegisterClick}
+                disabled={registrationClosed}
+                className="w-full h-12 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-base font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed mb-3 relative z-10"
+              >
+                {registrationClosed ? 'Registration Closed' : 'Register Now'}
+              </Button>
+            )}
 
             {/* Secondary Actions */}
             <div className="flex gap-2">
@@ -1575,14 +1675,28 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
                 {/* Main Actions */}
                 <div className="space-y-3">
-                  <Button
-                    size="lg"
-                    className="h-14 w-full bg-gradient-to-r from-orange-500 to-pink-500 text-lg font-semibold text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:opacity-60"
-                    onClick={handleRegisterClick}
-                    disabled={registrationClosed}
-                  >
-                    {registrationClosed ? 'Registrations Closed' : 'Register Now'}
-                  </Button>
+                  {isRegistered ? (
+                    <div className="space-y-2">
+                      <div className="h-14 w-full flex items-center justify-center gap-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 rounded-lg font-semibold border border-emerald-200 dark:border-emerald-500/30">
+                        <CheckCircle2 className="h-6 w-6" />
+                        <span className="text-lg">Registered</span>
+                      </div>
+                      {registeredAt && (
+                        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+                          Registered on {formatDate(registeredAt)}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <Button
+                      size="lg"
+                      className="h-14 w-full bg-gradient-to-r from-orange-500 to-pink-500 text-lg font-semibold text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      onClick={handleRegisterClick}
+                      disabled={registrationClosed}
+                    >
+                      {registrationClosed ? 'Registrations Closed' : 'Register Now'}
+                    </Button>
+                  )}
                   {timelineCTA && (
                     <div className="space-y-1">
                       <Button
@@ -1898,6 +2012,32 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showExternalConfirmation} onOpenChange={setShowExternalConfirmation}>
+        <DialogContent className="max-w-md border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+          <DialogHeader>
+            <DialogTitle>Did you complete the registration?</DialogTitle>
+            <DialogDescription>
+              We noticed you visited the external registration page. Please confirm if you successfully registered so we can update your status.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => handleExternalConfirmation(false)}
+              className="border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              No, not yet
+            </Button>
+            <Button
+              onClick={() => handleExternalConfirmation(true)}
+              className="bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
+            >
+              Yes, I registered
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <MobileFloatingCTA
         opportunity={opportunity}
         deadline={formattedDeadline}
@@ -1907,18 +2047,14 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
         onBookmarkClick={handleToggleBookmark}
         isBookmarked={isBookmarked}
         bookmarkLoading={bookmarkLoading}
+        isRegistered={isRegistered}
+        registeredAt={registeredAt}
       />
 
       <Footer />
     </div>
   );
 }
-
-
-
-
-
-
 
 
 

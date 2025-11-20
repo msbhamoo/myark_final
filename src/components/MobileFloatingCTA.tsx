@@ -15,6 +15,8 @@ interface MobileFloatingCTAProps {
   onBookmarkClick: () => void;
   isBookmarked: boolean;
   bookmarkLoading?: boolean;
+  isRegistered?: boolean;
+  registeredAt?: string | null;
 }
 
 export function MobileFloatingCTA({
@@ -26,6 +28,8 @@ export function MobileFloatingCTA({
   onBookmarkClick,
   isBookmarked,
   bookmarkLoading = false,
+  isRegistered = false,
+  registeredAt,
 }: MobileFloatingCTAProps) {
   const isMobile = useIsMobile();
   const [showFloating, setShowFloating] = useState(false);
@@ -89,14 +93,20 @@ export function MobileFloatingCTA({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Register Button */}
-          <Button
-            onClick={onRegisterClick}
-            disabled={registrationClosed}
-            className="h-10 px-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
-          >
-            {registrationClosed ? 'Closed' : 'Register'}
-          </Button>
+          {/* Register Button or Registered Status */}
+          {isRegistered ? (
+            <div className="h-10 px-4 flex items-center gap-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 rounded-md font-semibold border border-emerald-200 dark:border-emerald-500/30">
+              <span className="text-sm">Registered</span>
+            </div>
+          ) : (
+            <Button
+              onClick={onRegisterClick}
+              disabled={registrationClosed}
+              className="h-10 px-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+            >
+              {registrationClosed ? 'Closed' : 'Register'}
+            </Button>
+          )}
 
           {/* Bookmark Button */}
           <Button

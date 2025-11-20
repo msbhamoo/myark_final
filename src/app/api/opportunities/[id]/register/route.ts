@@ -35,6 +35,8 @@ export async function POST(
 
   try {
     const db = getDb();
+    const body = await req.json().catch(() => ({}));
+    const isExternalConfirmation = body.status === 'external_confirmed';
 
     // Fetch student profile from Firestore
     const studentProfileRef = db.collection(STUDENT_PROFILE_COLLECTION).doc(user.uid);
@@ -58,8 +60,15 @@ export async function POST(
       }
 
       const opportunityData = opportunityDoc.data();
-      if (opportunityData?.registrationMode !== 'internal') {
-        throw new Error('This opportunity does not accept internal registrations');
+
+      if (isExternalConfirmation) {
+        if (opportunityData?.registrationMode !== 'external') {
+          throw new Error('This opportunity is not configured for external registration');
+        }
+      } else {
+        if (opportunityData?.registrationMode !== 'internal') {
+          throw new Error('This opportunity does not accept internal registrations');
+        }
       }
 
       const registrationRecord = {
@@ -71,13 +80,14 @@ export async function POST(
         profileSlug: studentProfile?.slug || null,
         registeredAt: new Date().toISOString(),
         opportunityId: opportunityId,
-        opportunityTitle: opportunityData.title,
+        opportunityTitle: opportunityData?.title,
+        registrationType: isExternalConfirmation ? 'external' : 'internal',
       };
 
       transaction.set(registrationRef, registrationRecord);
 
       transaction.update(opportunityRef, {
-        registrationCount: (opportunityData.registrationCount || 0) + 1,
+        registrationCount: (opportunityData?.registrationCount || 0) + 1,
       });
     });
 
@@ -85,5 +95,57 @@ export async function POST(
   } catch (error) {
     console.error('Error processing registration:', error);
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+  }
+}
+
+export async function GET(
+  req: Request,
+  ctx: any,
+) {
+  const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
+  const idParam = params?.id;
+  const opportunityId = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+
+  if (!opportunityId) {
+    return NextResponse.json({ error: 'Opportunity ID is required' }, { status: 400 });
+  }
+
+  let user;
+  try {
+    const token = req.headers.get('authorization')?.split('Bearer ')[1];
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const auth = getAdminAuth();
+    user = await auth.verifyIdToken(token);
+  } catch (error) {
+    console.error('Error verifying auth token:', error);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const db = getDb();
+    const registrationRef = db.collection('opportunity_registrations').doc(`${opportunityId}_${user.uid}`);
+    const registrationDoc = await registrationRef.get();
+
+    if (registrationDoc.exists) {
+      const data = registrationDoc.data();
+      return NextResponse.json({
+        isRegistered: true,
+        registeredAt: data?.registeredAt || null
+      });
+    } else {
+      return NextResponse.json({
+        isRegistered: false,
+        registeredAt: null
+      });
+    }
+  } catch (error) {
+    console.error('Error checking registration status:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
