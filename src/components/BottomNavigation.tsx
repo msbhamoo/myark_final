@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
   { href: '/categories', label: 'Categories', icon: BookOpen },
-{ href: '/parent-guide', label: 'Career', icon: Briefcase },
+  { href: '/parent-guide', label: 'Career', icon: Briefcase },
   { href: null, label: 'Profile', icon: User, requiresAuth: true }, // Profile needs special handling
 ];
 
@@ -31,7 +31,7 @@ export default function BottomNavigation() {
 
     // User is logged in - redirect to appropriate dashboard
     const accountType = user.accountType || 'user'; // Default to user if type not set
-    
+
     if (accountType === 'organization') {
       router.push('/dashboard'); // Organization dashboard
     } else {

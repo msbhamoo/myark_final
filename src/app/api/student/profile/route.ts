@@ -78,6 +78,7 @@ const updateSchema = z
     tagline: z.string().trim().min(1).max(180).nullable().optional(),
     bio: z.string().trim().min(1).max(2000).nullable().optional(),
     photoUrl: z.string().trim().max(2048).nullable().optional(),
+    bannerUrl: z.string().trim().max(2048).nullable().optional(),
     location: z.string().trim().min(1).max(160).nullable().optional(),
     interests: z.array(z.string().trim().min(1).max(40)).max(MAX_INTERESTS).optional(),
     visibility: z.enum(['private', 'teachers', 'public']).optional(),
@@ -171,6 +172,9 @@ const applyUpdate = async (
   }
   if (payload.photoUrl !== undefined) {
     updates.photoUrl = payload.photoUrl ? payload.photoUrl.trim() : null;
+  }
+  if (payload.bannerUrl !== undefined) {
+    updates.bannerUrl = payload.bannerUrl ? payload.bannerUrl.trim() : null;
   }
   if (payload.location !== undefined) {
     updates.location = payload.location ? payload.location.trim() : null;

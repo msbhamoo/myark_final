@@ -93,6 +93,7 @@ export interface StudentProfile {
   uid: string;
   displayName: string;
   photoUrl?: string | null;
+  bannerUrl?: string | null;
   tagline?: string | null;
   bio?: string | null;
   location?: string | null;
@@ -131,6 +132,7 @@ export interface PublicStudentProfile {
   tagline?: string | null;
   bio?: string | null;
   photoUrl?: string | null;
+  bannerUrl?: string | null;
   stats: StudentProfileStats;
   schoolInfo: StudentProfile['schoolInfo'];
   academicHighlights: StudentProfileAcademicYear[];

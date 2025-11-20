@@ -254,9 +254,9 @@ export const computeCompletion = (
       key: 'profile',
       completed: Boolean(
         doc?.photoUrl ||
-          doc?.tagline ||
-          doc?.bio ||
-          (Array.isArray(doc?.interests) && (doc?.interests?.length ?? 0) > 0),
+        doc?.tagline ||
+        doc?.bio ||
+        (Array.isArray(doc?.interests) && (doc?.interests?.length ?? 0) > 0),
       ),
     },
     {
@@ -311,9 +311,9 @@ export const buildStudentProfileResponse = (
 
   const interests = Array.isArray(doc?.interests)
     ? [...new Set(doc.interests.filter((item: unknown): item is string => typeof item === 'string'))].slice(
-        0,
-        MAX_INTERESTS,
-      )
+      0,
+      MAX_INTERESTS,
+    )
     : [];
 
   const academicHistory = ensureArray(doc?.academicHistory)
@@ -349,6 +349,7 @@ export const buildStudentProfileResponse = (
     displayName:
       (typeof doc?.displayName === 'string' && doc.displayName ? doc.displayName : fallbackName) as string,
     photoUrl: typeof doc?.photoUrl === 'string' && doc.photoUrl ? doc.photoUrl : null,
+    bannerUrl: typeof doc?.bannerUrl === 'string' && doc.bannerUrl ? doc.bannerUrl : null,
     tagline: typeof doc?.tagline === 'string' && doc.tagline ? doc.tagline : null,
     bio: typeof doc?.bio === 'string' && doc.bio ? doc.bio : null,
     location: typeof doc?.location === 'string' && doc.location ? doc.location : null,
@@ -440,6 +441,7 @@ export const buildPublicStudentProfile = (
     tagline: typeof doc?.tagline === 'string' && doc.tagline ? doc.tagline : null,
     bio: typeof doc?.bio === 'string' && doc.bio ? doc.bio : null,
     photoUrl: typeof doc?.photoUrl === 'string' && doc.photoUrl ? doc.photoUrl : null,
+    bannerUrl: typeof doc?.bannerUrl === 'string' && doc.bannerUrl ? doc.bannerUrl : null,
     stats,
     schoolInfo: {
       schoolName:

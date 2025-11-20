@@ -200,26 +200,26 @@ export default function Header() {
             />
             <button type="submit" aria-hidden="true" className="hidden" />
           </form>
-        <div className="hidden sm:flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
-            <span className="font-medium text-slate-700 dark:text-slate-100">Quick links:</span>
-            <div className="flex items-center gap-2">
-              <Link href="/opportunities" className="underline-offset-4 hover:underline">
-                All
-              </Link>
-              <span aria-hidden="true">•</span>
-              <Link href="/opportunities?mode=online" className="underline-offset-4 hover:underline">
-                Online
-              </Link>
-              <span aria-hidden="true">•</span>
-              <Link href="/opportunities?mode=offline" className="underline-offset-4 hover:underline">
-                Offline
-              </Link>
-              <span aria-hidden="true">•</span>
-              <Link href="/opportunities?grades=7-9" className="underline-offset-4 hover:underline">
-                Browse grades
-              </Link>
-            </div>
+          <div className="hidden sm:flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
+              <span className="font-medium text-slate-700 dark:text-slate-100">Quick links:</span>
+              <div className="flex items-center gap-2">
+                <Link href="/opportunities" className="underline-offset-4 hover:underline">
+                  All
+                </Link>
+                <span aria-hidden="true">•</span>
+                <Link href="/opportunities?mode=online" className="underline-offset-4 hover:underline">
+                  Online
+                </Link>
+                <span aria-hidden="true">•</span>
+                <Link href="/opportunities?mode=offline" className="underline-offset-4 hover:underline">
+                  Offline
+                </Link>
+                <span aria-hidden="true">•</span>
+                <Link href="/opportunities?grades=7-9" className="underline-offset-4 hover:underline">
+                  Browse grades
+                </Link>
+              </div>
             </div>
             <ThemeToggle size="sm" />
           </div>

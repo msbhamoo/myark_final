@@ -410,14 +410,14 @@ export default function HomePageClient() {
 
       <main className="flex-1 pb-20 md:pb-0">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-20 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
+        <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-8 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.08] mix-blend-soft-light dark:opacity-[0.04]" />
             <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-orange-300/30 blur-3xl" />
             <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 translate-x-1/3 translate-y-1/3 rounded-full bg-sky-300/30 blur-3xl" />
           </div>
 
-          <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-between">
+          <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-orange-600 shadow-sm ring-1 ring-orange-200/70 backdrop-blur dark:bg-slate-800/80 dark:text-orange-200 dark:ring-orange-300/40">
                 <Sparkles className="h-4 w-4" />
@@ -426,10 +426,10 @@ export default function HomePageClient() {
               <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
                 Discover Your Next Big Moment
               </h1>
-              <p className="mt-4 text-lg leading-relaxed text-slate-700 md:text-xl dark:text-slate-100/80">
+              <p className="hidden md:block mt-4 text-lg leading-relaxed text-slate-700 md:text-xl dark:text-slate-100/80">
                 Curated opportunities for Grades 4-12 students and the parents who cheer them on.
               </p>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
+              <div className="hidden md:flex mt-6 flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
                 {HERO_GRADE_SEGMENTS.map((segment) => (
                   <Link
                     key={segment.href}
@@ -441,7 +441,7 @@ export default function HomePageClient() {
                   </Link>
                 ))}
               </div>
-              <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
+              <div className="hidden md:flex mt-8 w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
                 <Button
                   asChild
                   className="inline-flex items-center justify-center rounded-full bg-orange-500 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-orange-500/30 transition hover:bg-orange-600 hover:shadow-orange-500/40"

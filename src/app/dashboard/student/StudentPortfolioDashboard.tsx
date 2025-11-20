@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -29,7 +30,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { fetchStudentProfile, updateStudentProfile } from '@/lib/studentProfileClient';
-import { StudentProfileGamificationSection } from '@/components/gamification/StudentProfileGamificationSection';
+
 import {
   ModernAcademicCard,
   ModernAchievementCard,
@@ -37,6 +38,7 @@ import {
   ModernExtracurricularCard,
   SubjectPerformanceCard,
 } from '@/components/profile/ModernSectionComponents';
+import AppliedOpportunityCard from '@/components/AppliedOpportunityCard';
 import type { AppUserProfile } from '@/context/AuthContext';
 import type {
   StudentProfile,
@@ -47,28 +49,34 @@ import type {
   StudentProfileExtracurricular,
   StudentProfileUpdatePayload,
   StudentProfileVisibility,
+  StudentProfileCompletionStep,
 } from '@/types/studentProfile';
 import type { Opportunity } from '@/types/opportunity';
-import type { LucideIcon } from 'lucide-react';
 import {
   BookOpen,
+  Briefcase,
   Calendar,
   CheckCircle,
+  Circle as CircleIcon,
+  Edit,
   ExternalLink,
   Flag,
   Globe2,
   GraduationCap,
   Loader2,
-  Lock,
+  MapPin,
   PenLine,
   Plus,
   RefreshCw,
+  Share2,
   Shield,
   Star,
   Trophy,
   UploadCloud,
   Users2,
 } from 'lucide-react';
+
+// --- Types ---
 
 type StudentPortfolioDashboardProps = {
   user: AppUserProfile;
@@ -77,6 +85,15 @@ type StudentPortfolioDashboardProps = {
 };
 
 type SavedOpportunity = Opportunity & { savedAt?: string | null };
+
+type AppliedOpportunity = {
+  id: string;
+  opportunityId: string;
+  opportunityTitle: string;
+  registeredAt: string;
+  status?: string;
+  registrationType?: 'internal' | 'external';
+};
 
 type AcademicYearDraft = {
   id?: string;
@@ -152,19 +169,9 @@ type SchoolInfoDraft = {
   otherBoard: string;
 };
 
+// --- Constants & Helpers ---
+
 const MAX_SUBJECTS_PER_YEAR = 16;
-const DEFAULT_BOARDS = ['CBSE', 'ICSE', 'IB', 'Cambridge', 'State Board', 'Other'];
-const DEFAULT_CLASSES = [
-  'Grade 6',
-  'Grade 7',
-  'Grade 8',
-  'Grade 9',
-  'Grade 10',
-  'Grade 11',
-  'Grade 12',
-  'First Year',
-  'Second Year',
-];
 
 const ACHIEVEMENT_LEVEL_LABELS: Record<string, string> = {
   school: 'School',
@@ -181,22 +188,7 @@ const EVENT_STATUS_LABELS: Record<string, string> = {
   completed: 'Completed',
 };
 
-const VISIBILITY_LABELS: Record<StudentProfileVisibility, { title: string; description: string }> = {
-  private: {
-    title: 'Private',
-    description: 'Only you can view this portfolio.',
-  },
-  teachers: {
-    title: 'Teachers only',
-    description: 'Share safely with your teachers and mentors inside Myark.',
-  },
-  public: {
-    title: 'Public',
-    description: 'Create a link to share with colleges and friends.',
-  },
-};
-
-const completionLabels: Record<string, string> = {
+const completionLabels: Record<StudentProfileCompletionStep, string> = {
   profile: 'Profile basics',
   school: 'School information',
   academicHistory: 'Academic history',
@@ -205,32 +197,11 @@ const completionLabels: Record<string, string> = {
   visibility: 'Visibility settings',
 };
 
-const DASHBOARD_SECTIONS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'progress', label: 'Progress' },
-  { id: 'academics', label: 'Academics' },
-  { id: 'achievements', label: 'Achievements' },
-  { id: 'competitions', label: 'Competitions' },
-  { id: 'extracurricular', label: 'Extracurricular' },
-  { id: 'resources', label: 'Resources' },
-] as const;
-
-const PANEL_BASE_CLASSES =
-  'rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-4 sm:p-6 shadow-lg shadow-slate-200/60';
-
 const normalizeInterests = (value: string): string[] =>
-  value
-    .split(/[,;\n]/)
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, 20);
+  value.split(/[,;\n]/).map((item) => item.trim()).filter(Boolean).slice(0, 20);
 
 const normalizeTags = (value: string): string[] =>
-  value
-    .split(/[,;\n]/)
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, 8);
+  value.split(/[,;\n]/).map((item) => item.trim()).filter(Boolean).slice(0, 8);
 
 const sanitizeNumber = (value: string): number | null => {
   const trimmed = value.trim();
@@ -239,30 +210,14 @@ const sanitizeNumber = (value: string): number | null => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
-const formatSavedDate = (value?: string | null): string => {
-  if (!value) return 'Recently saved';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return 'Recently saved';
-  return date.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-};
-
 const buildAvatarFallback = (value: string | null | undefined): string => {
   if (!value) return 'ST';
   const parts = value.trim().split(/\s+/);
-  if (parts.length === 1) {
-    return parts[0]!.slice(0, 2).toUpperCase();
-  }
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
   return `${parts[0]![0] ?? ''}${parts[parts.length - 1]![0] ?? ''}`.toUpperCase();
 };
 
-const formatAcademicTitle = (year: StudentProfileAcademicYear): string => {
-  const tokens = [year.session, year.grade, year.board].filter(Boolean);
-  return tokens.length > 0 ? tokens.join(' • ') : 'Untitled academic record';
-};
+// --- Main Component ---
 
 export default function StudentPortfolioDashboard({
   user,
@@ -271,144 +226,169 @@ export default function StudentPortfolioDashboard({
 }: StudentPortfolioDashboardProps) {
   const router = useRouter();
   const [profile, setProfile] = useState<StudentProfile | null>(null);
-  const [profileError, setProfileError] = useState<string | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [profileError, setProfileError] = useState<string | null>(null);
 
+  // Data States
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [isLoadingSaved, setIsLoadingSaved] = useState(false);
-  const [savedError, setSavedError] = useState<string | null>(null);
+  const [appliedOpportunities, setAppliedOpportunities] = useState<AppliedOpportunity[]>([]);
+  const [isLoadingApplied, setIsLoadingApplied] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(
-    null,
-  );
+  // UI States
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [pendingAction, setPendingAction] = useState<string | null>(null);
 
+  // Dialog States
   const [isBasicsOpen, setIsBasicsOpen] = useState(false);
   const [basicsDraft, setBasicsDraft] = useState<BasicProfileDraft | null>(null);
-  const [basicsError, setBasicsError] = useState<string | null>(null);
-
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [statsDraft, setStatsDraft] = useState<StatsDraft | null>(null);
-  const [statsError, setStatsError] = useState<string | null>(null);
   const [isSchoolOpen, setIsSchoolOpen] = useState(false);
   const [schoolDraft, setSchoolDraft] = useState<SchoolInfoDraft | null>(null);
-  const [schoolError, setSchoolError] = useState<string | null>(null);
-
   const [isAcademicOpen, setIsAcademicOpen] = useState(false);
   const [academicDraft, setAcademicDraft] = useState<AcademicYearDraft | null>(null);
-  const [academicError, setAcademicError] = useState<string | null>(null);
-
   const [isAchievementOpen, setIsAchievementOpen] = useState(false);
   const [achievementDraft, setAchievementDraft] = useState<AchievementDraft | null>(null);
-  const [achievementError, setAchievementError] = useState<string | null>(null);
-
   const [isCompetitionOpen, setIsCompetitionOpen] = useState(false);
   const [competitionDraft, setCompetitionDraft] = useState<CompetitionDraft | null>(null);
-  const [competitionError, setCompetitionError] = useState<string | null>(null);
-
   const [isExtracurricularOpen, setIsExtracurricularOpen] = useState(false);
-  const [extracurricularDraft, setExtracurricularDraft] = useState<ExtracurricularDraft | null>(
-    null,
-  );
-  const [extracurricularError, setExtracurricularError] = useState<string | null>(null);
-
+  const [extracurricularDraft, setExtracurricularDraft] = useState<ExtracurricularDraft | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [slugDraft, setSlugDraft] = useState('');
+
+  // --- Data Loading ---
 
   useEffect(() => {
     const loadProfile = async () => {
       setIsLoadingProfile(true);
-      setProfileError(null);
       try {
         const token = await getIdToken();
-        if (!token) {
-          throw new Error('Missing auth token');
-        }
+        if (!token) throw new Error('Missing auth token');
         const data = await fetchStudentProfile(token);
         setProfile(data);
         setSlugDraft(data.slug ?? '');
       } catch (error) {
-        console.error('Failed to load student profile', error);
-        setProfileError(
-          error instanceof Error ? error.message : 'Failed to load student profile.',
-        );
+        console.error('Failed to load profile', error);
+        setProfileError('Failed to load profile');
       } finally {
         setIsLoadingProfile(false);
       }
     };
-
-    loadProfile().catch((error) => {
-      console.error('Unexpected profile load error', error);
-    });
+    loadProfile();
   }, [getIdToken]);
 
   const loadSavedOpportunities = useCallback(async () => {
     setIsLoadingSaved(true);
-    setSavedError(null);
     try {
       const token = await getIdToken();
-      if (!token) {
-        setSavedOpportunities([]);
-        return;
-      }
+      if (!token) return;
       const response = await fetch('/api/opportunities/saved', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) {
-        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(payload?.error ?? 'Failed to load saved opportunities');
+      if (response.ok) {
+        const body = await response.json();
+        setSavedOpportunities(body.items ?? []);
       }
-      const body = (await response.json()) as { items?: SavedOpportunity[] };
-      setSavedOpportunities(body.items ?? []);
     } catch (error) {
-      console.error('Failed to load saved opportunities', error);
-      setSavedError(
-        error instanceof Error ? error.message : 'Failed to load saved opportunities',
-      );
+      console.error('Failed to load saved', error);
     } finally {
       setIsLoadingSaved(false);
     }
   }, [getIdToken]);
 
+  const loadAppliedOpportunities = useCallback(async () => {
+    setIsLoadingApplied(true);
+    try {
+      const token = await getIdToken();
+      if (!token) return;
+      const response = await fetch('/api/opportunities/applied', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const body = await response.json();
+        setAppliedOpportunities(body.items ?? []);
+      }
+    } catch (error) {
+      console.error('Failed to load applied', error);
+    } finally {
+      setIsLoadingApplied(false);
+    }
+  }, [getIdToken]);
+
   useEffect(() => {
-    loadSavedOpportunities().catch((error) => {
-      console.error('Unexpected saved opportunities error', error);
-    });
-  }, [loadSavedOpportunities]);
+    loadSavedOpportunities();
+    loadAppliedOpportunities();
+  }, [loadSavedOpportunities, loadAppliedOpportunities]);
+
+  // --- Handlers ---
 
   const handleUpdate = useCallback(
     async (payload: StudentProfileUpdatePayload, actionKey: string) => {
       if (!profile) return null;
       setPendingAction(actionKey);
-      setFeedback(null);
       try {
         const token = await getIdToken();
-        if (!token) {
-          throw new Error('Missing auth token');
-        }
+        if (!token) throw new Error('Missing auth token');
         const updated = await updateStudentProfile(token, payload);
         setProfile(updated);
-        setFeedback({ type: 'success', message: 'Profile updated successfully.' });
+        setFeedback({ type: 'success', message: 'Updated successfully' });
         return updated;
       } catch (error) {
-        console.error('Failed to update student profile', error);
-        setFeedback({
-          type: 'error',
-          message: error instanceof Error ? error.message : 'Failed to update profile.',
-        });
+        setFeedback({ type: 'error', message: 'Update failed' });
         return null;
       } finally {
         setPendingAction(null);
       }
     },
-    [getIdToken, profile],
+    [getIdToken, profile]
   );
 
-  const openBasicsDialog = useCallback(() => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'avatar' | 'banner') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const token = await getIdToken();
+      if (!token) throw new Error('Missing auth token');
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', type);
+
+      const response = await fetch('/api/student/upload', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+
+      const data = await response.json();
+
+      if (type === 'avatar') {
+        await handleUpdate({ photoUrl: data.url }, 'avatar');
+      } else {
+        await handleUpdate({ bannerUrl: data.url }, 'banner');
+      }
+
+      setFeedback({ type: 'success', message: `${type === 'avatar' ? 'Profile picture' : 'Banner'} updated` });
+    } catch (error) {
+      console.error('Upload error:', error);
+      setFeedback({ type: 'error', message: 'Failed to upload image' });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // --- Dialog Openers ---
+
+  const openBasicsDialog = () => {
     if (!profile) return;
-    setBasicsError(null);
     setBasicsDraft({
       displayName: profile.displayName ?? '',
       photoUrl: profile.photoUrl ?? '',
@@ -418,11 +398,10 @@ export default function StudentPortfolioDashboard({
       interests: profile.interests.join(', '),
     });
     setIsBasicsOpen(true);
-  }, [profile]);
+  };
 
-  const openStatsDialog = useCallback(() => {
+  const openStatsDialog = () => {
     if (!profile) return;
-    setStatsError(null);
     setStatsDraft({
       currentClass: profile.stats.currentClass ?? '',
       gpa: profile.stats.gpa?.toString() ?? '',
@@ -431,11 +410,10 @@ export default function StudentPortfolioDashboard({
       competitionsParticipated: profile.stats.competitionsParticipated?.toString() ?? '',
     });
     setIsStatsOpen(true);
-  }, [profile]);
+  };
 
-  const openSchoolDialog = useCallback(() => {
+  const openSchoolDialog = () => {
     if (!profile) return;
-    setSchoolError(null);
     setSchoolDraft({
       schoolName: profile.schoolInfo.schoolName ?? '',
       board: profile.schoolInfo.board ?? '',
@@ -444,433 +422,207 @@ export default function StudentPortfolioDashboard({
       otherBoard: profile.schoolInfo.otherBoard ?? '',
     });
     setIsSchoolOpen(true);
-  }, [profile]);
-
-  const buildAcademicDraft = (item?: StudentProfileAcademicYear): AcademicYearDraft => {
-    if (!item) {
-      return {
-        session: '',
-        grade: '',
-        board: '',
-        schoolName: '',
-        summary: '',
-        teacherComments: '',
-        subjects: [
-          {
-            id: crypto.randomUUID(),
-            name: '',
-            marks: '',
-            maxMarks: '',
-            grade: '',
-            teacherComment: '',
-          },
-        ],
-      };
-    }
-
-    return {
-      id: item.id,
-      session: item.session ?? '',
-      grade: item.grade ?? '',
-      board: item.board ?? '',
-      schoolName: item.schoolName ?? '',
-      summary: item.summary ?? '',
-      teacherComments: item.teacherComments ?? '',
-      subjects:
-        item.subjects.length > 0
-          ? item.subjects.map((subject) => ({
-              id: subject.id || crypto.randomUUID(),
-              name: subject.name ?? '',
-              marks: subject.marks?.toString() ?? '',
-              maxMarks: subject.maxMarks?.toString() ?? '',
-              grade: subject.grade ?? '',
-              teacherComment: subject.teacherComment ?? '',
-            }))
-          : [
-              {
-                id: crypto.randomUUID(),
-                name: '',
-                marks: '',
-                maxMarks: '',
-                grade: '',
-                teacherComment: '',
-              },
-            ],
-    };
   };
 
-  const openAcademicDialog = useCallback(
-    (item?: StudentProfileAcademicYear) => {
-      setAcademicError(null);
-      setAcademicDraft(buildAcademicDraft(item));
-      setIsAcademicOpen(true);
-    },
-    [],
-  );
+  const openAcademicDialog = (item?: StudentProfileAcademicYear) => {
+    setAcademicDraft({
+      id: item?.id,
+      session: item?.session ?? '',
+      grade: item?.grade ?? '',
+      board: item?.board ?? '',
+      schoolName: item?.schoolName ?? '',
+      summary: item?.summary ?? '',
+      teacherComments: item?.teacherComments ?? '',
+      subjects: item?.subjects.map(s => ({
+        id: s.id,
+        name: s.name,
+        marks: s.marks?.toString() ?? '',
+        maxMarks: s.maxMarks?.toString() ?? '',
+        grade: s.grade ?? '',
+        teacherComment: s.teacherComment ?? '',
+      })) ?? [{ id: crypto.randomUUID(), name: '', marks: '', maxMarks: '', grade: '', teacherComment: '' }],
+    });
+    setIsAcademicOpen(true);
+  };
 
-  const buildAchievementDraft = (item?: StudentProfileAchievement): AchievementDraft => ({
-    id: item?.id,
-    title: item?.title ?? '',
-    description: item?.description ?? '',
-    level: item?.level ?? '',
-    year: item?.year ?? '',
-    certificateUrl: item?.certificateUrl ?? '',
-    tags: (item?.tags ?? []).join(', '),
-  });
-
-  const openAchievementDialog = useCallback((item?: StudentProfileAchievement) => {
-    setAchievementError(null);
-    setAchievementDraft(buildAchievementDraft(item));
+  const openAchievementDialog = (item?: StudentProfileAchievement) => {
+    setAchievementDraft({
+      id: item?.id,
+      title: item?.title ?? '',
+      description: item?.description ?? '',
+      level: item?.level ?? '',
+      year: item?.year ?? '',
+      certificateUrl: item?.certificateUrl ?? '',
+      tags: (item?.tags ?? []).join(', '),
+    });
     setIsAchievementOpen(true);
-  }, []);
+  };
 
-  const buildCompetitionDraft = (item?: StudentProfileCompetition): CompetitionDraft => ({
-    id: item?.id,
-    name: item?.name ?? '',
-    category: item?.category ?? '',
-    result: item?.result ?? '',
-    date: item?.date ?? '',
-    status: item?.status ?? '',
-    description: item?.description ?? '',
-    location: item?.location ?? '',
-  });
-
-  const openCompetitionDialog = useCallback((item?: StudentProfileCompetition) => {
-    setCompetitionError(null);
-    setCompetitionDraft(buildCompetitionDraft(item));
+  const openCompetitionDialog = (item?: StudentProfileCompetition) => {
+    setCompetitionDraft({
+      id: item?.id,
+      name: item?.name ?? '',
+      category: item?.category ?? '',
+      result: item?.result ?? '',
+      date: item?.date ?? '',
+      status: item?.status ?? '',
+      description: item?.description ?? '',
+      location: item?.location ?? '',
+    });
     setIsCompetitionOpen(true);
-  }, []);
+  };
 
-  const buildExtracurricularDraft = (
-    item?: StudentProfileExtracurricular,
-  ): ExtracurricularDraft => ({
-    id: item?.id,
-    name: item?.name ?? '',
-    role: item?.role ?? '',
-    description: item?.description ?? '',
-    startDate: item?.startDate ?? '',
-    endDate: item?.endDate ?? '',
-    status: item?.status ?? '',
-  });
-
-  const openExtracurricularDialog = useCallback((item?: StudentProfileExtracurricular) => {
-    setExtracurricularError(null);
-    setExtracurricularDraft(buildExtracurricularDraft(item));
+  const openExtracurricularDialog = (item?: StudentProfileExtracurricular) => {
+    setExtracurricularDraft({
+      id: item?.id,
+      name: item?.name ?? '',
+      role: item?.role ?? '',
+      description: item?.description ?? '',
+      startDate: item?.startDate ?? '',
+      endDate: item?.endDate ?? '',
+      status: item?.status ?? '',
+    });
     setIsExtracurricularOpen(true);
-  }, []);
+  };
 
-  const normalizeSubjects = (
-    subjects: AcademicYearDraft['subjects'],
-  ): StudentProfileAcademicSubject[] =>
-    subjects
-      .map((subject) => ({
-        id: subject.id,
-        name: subject.name.trim(),
-        marks: sanitizeNumber(subject.marks),
-        maxMarks: sanitizeNumber(subject.maxMarks),
-        grade: subject.grade.trim() || null,
-        teacherComment: subject.teacherComment.trim() || null,
-      }))
-      .filter((subject) => subject.name.length > 0)
-      .slice(0, MAX_SUBJECTS_PER_YEAR);
+  // --- Submission Handlers ---
 
   const handleSubmitBasics = async () => {
     if (!basicsDraft) return;
-    if (!basicsDraft.displayName.trim()) {
-      setBasicsError('Display name is required.');
-      return;
-    }
-    const payload: StudentProfileUpdatePayload = {
-      displayName: basicsDraft.displayName.trim(),
-      photoUrl: basicsDraft.photoUrl.trim() || null,
-      tagline: basicsDraft.tagline.trim() || null,
-      bio: basicsDraft.bio.trim() || null,
-      location: basicsDraft.location.trim() || null,
+    const updated = await handleUpdate({
+      displayName: basicsDraft.displayName,
+      photoUrl: basicsDraft.photoUrl || null,
+      tagline: basicsDraft.tagline || null,
+      bio: basicsDraft.bio || null,
+      location: basicsDraft.location || null,
       interests: normalizeInterests(basicsDraft.interests),
-    };
-    const updated = await handleUpdate(payload, 'basics');
-    if (updated) {
-      setIsBasicsOpen(false);
-    }
+    }, 'basics');
+    if (updated) setIsBasicsOpen(false);
   };
 
   const handleSubmitStats = async () => {
     if (!statsDraft) return;
-    const payload: StudentProfileUpdatePayload = {
+    const updated = await handleUpdate({
       stats: {
-        currentClass: statsDraft.currentClass.trim() || null,
+        currentClass: statsDraft.currentClass || null,
         gpa: sanitizeNumber(statsDraft.gpa),
         averageScore: sanitizeNumber(statsDraft.averageScore),
         totalAwards: sanitizeNumber(statsDraft.totalAwards),
         competitionsParticipated: sanitizeNumber(statsDraft.competitionsParticipated),
-      },
-    };
-    const updated = await handleUpdate(payload, 'stats');
-    if (updated) {
-      setIsStatsOpen(false);
-    }
+      }
+    }, 'stats');
+    if (updated) setIsStatsOpen(false);
   };
 
   const handleSubmitSchool = async () => {
     if (!schoolDraft) return;
-    if (!schoolDraft.schoolName.trim()) {
-      setSchoolError('Please add your school name.');
-      return;
-    }
-    const payload: StudentProfileUpdatePayload = {
+    const updated = await handleUpdate({
       schoolInfo: {
-        schoolName: schoolDraft.schoolName.trim(),
-        board: schoolDraft.board.trim() || null,
-        className: schoolDraft.className.trim() || null,
-        otherSchoolName: schoolDraft.otherSchoolName.trim() || null,
-        otherBoard: schoolDraft.otherBoard.trim() || null,
-      },
-    };
-    const updated = await handleUpdate(payload, 'school');
-    if (updated) {
-      setIsSchoolOpen(false);
-    }
+        schoolName: schoolDraft.schoolName,
+        board: schoolDraft.board || null,
+        className: schoolDraft.className || null,
+        otherSchoolName: schoolDraft.otherSchoolName || null,
+        otherBoard: schoolDraft.otherBoard || null,
+      }
+    }, 'school');
+    if (updated) setIsSchoolOpen(false);
   };
 
   const handleSubmitAcademic = async () => {
     if (!academicDraft || !profile) return;
-    const subjects = normalizeSubjects(academicDraft.subjects);
-    if (!academicDraft.session.trim() && subjects.length === 0) {
-      setAcademicError('Add a session name or at least one subject to save this record.');
-      return;
-    }
+    const subjects: StudentProfileAcademicSubject[] = academicDraft.subjects
+      .filter(s => s.name.trim())
+      .map(s => ({
+        id: s.id,
+        name: s.name,
+        marks: sanitizeNumber(s.marks),
+        maxMarks: sanitizeNumber(s.maxMarks),
+        grade: s.grade || null,
+        teacherComment: s.teacherComment || null,
+      }));
+
     const entry: StudentProfileAcademicYear = {
       id: academicDraft.id ?? crypto.randomUUID(),
-      session: academicDraft.session.trim() || null,
-      grade: academicDraft.grade.trim() || null,
-      board: academicDraft.board.trim() || null,
-      schoolName: academicDraft.schoolName.trim() || null,
-      summary: academicDraft.summary.trim() || null,
-      teacherComments: academicDraft.teacherComments.trim() || null,
+      session: academicDraft.session || null,
+      grade: academicDraft.grade || null,
+      board: academicDraft.board || null,
+      schoolName: academicDraft.schoolName || null,
+      summary: academicDraft.summary || null,
+      teacherComments: academicDraft.teacherComments || null,
       subjects,
     };
-    const nextHistory = academicDraft.id
-      ? profile.academicHistory.map((item) => (item.id === academicDraft.id ? entry : item))
-      : [...profile.academicHistory, entry];
-    const updated = await handleUpdate({ academicHistory: nextHistory }, 'academic');
-    if (updated) {
-      setIsAcademicOpen(false);
-    }
-  };
 
-  const handleRemoveAcademicYear = async (id: string) => {
-    if (!profile) return;
-    const nextHistory = profile.academicHistory.filter((item) => item.id !== id);
-    await handleUpdate({ academicHistory: nextHistory }, 'academic-remove');
+    const nextHistory = academicDraft.id
+      ? profile.academicHistory.map(item => item.id === academicDraft.id ? entry : item)
+      : [...profile.academicHistory, entry];
+
+    const updated = await handleUpdate({ academicHistory: nextHistory }, 'academic');
+    if (updated) setIsAcademicOpen(false);
   };
 
   const handleSubmitAchievement = async () => {
     if (!achievementDraft || !profile) return;
-    if (!achievementDraft.title.trim()) {
-      setAchievementError('Achievement title is required.');
-      return;
-    }
     const entry: StudentProfileAchievement = {
       id: achievementDraft.id ?? crypto.randomUUID(),
-      title: achievementDraft.title.trim(),
-      description: achievementDraft.description.trim() || null,
-      level: achievementDraft.level
-        ? (achievementDraft.level as StudentProfileAchievement['level'])
-        : null,
-      year: achievementDraft.year.trim() || null,
-      certificateUrl: achievementDraft.certificateUrl.trim() || null,
+      title: achievementDraft.title,
+      description: achievementDraft.description || null,
+      level: achievementDraft.level as any || null,
+      year: achievementDraft.year || null,
+      certificateUrl: achievementDraft.certificateUrl || null,
       tags: normalizeTags(achievementDraft.tags),
-      approved: profile.achievements.find((item) => item.id === achievementDraft.id)?.approved ?? null,
+      approved: null,
     };
     const nextAchievements = achievementDraft.id
-      ? profile.achievements.map((item) => (item.id === achievementDraft.id ? entry : item))
+      ? profile.achievements.map(item => item.id === achievementDraft.id ? entry : item)
       : [...profile.achievements, entry];
     const updated = await handleUpdate({ achievements: nextAchievements }, 'achievement');
-    if (updated) {
-      setIsAchievementOpen(false);
-    }
-  };
-
-  const handleRemoveAchievement = async (id: string) => {
-    if (!profile) return;
-    const nextAchievements = profile.achievements.filter((item) => item.id !== id);
-    await handleUpdate({ achievements: nextAchievements }, 'achievement-remove');
+    if (updated) setIsAchievementOpen(false);
   };
 
   const handleSubmitCompetition = async () => {
     if (!competitionDraft || !profile) return;
-    if (!competitionDraft.name.trim()) {
-      setCompetitionError('Competition name is required.');
-      return;
-    }
     const entry: StudentProfileCompetition = {
       id: competitionDraft.id ?? crypto.randomUUID(),
-      name: competitionDraft.name.trim(),
-      category: competitionDraft.category.trim() || null,
-      result: competitionDraft.result.trim() || null,
-      date: competitionDraft.date.trim() || null,
-      status: competitionDraft.status
-        ? (competitionDraft.status as StudentProfileCompetition['status'])
-        : null,
-      description: competitionDraft.description.trim() || null,
-      location: competitionDraft.location.trim() || null,
+      name: competitionDraft.name,
+      category: competitionDraft.category || null,
+      result: competitionDraft.result || null,
+      date: competitionDraft.date || null,
+      status: competitionDraft.status as any || null,
+      description: competitionDraft.description || null,
+      location: competitionDraft.location || null,
     };
     const nextCompetitions = competitionDraft.id
-      ? profile.competitions.map((item) => (item.id === competitionDraft.id ? entry : item))
+      ? profile.competitions.map(item => item.id === competitionDraft.id ? entry : item)
       : [...profile.competitions, entry];
     const updated = await handleUpdate({ competitions: nextCompetitions }, 'competition');
-    if (updated) {
-      setIsCompetitionOpen(false);
-    }
-  };
-
-  const handleRemoveCompetition = async (id: string) => {
-    if (!profile) return;
-    const nextCompetitions = profile.competitions.filter((item) => item.id !== id);
-    await handleUpdate({ competitions: nextCompetitions }, 'competition-remove');
+    if (updated) setIsCompetitionOpen(false);
   };
 
   const handleSubmitExtracurricular = async () => {
     if (!extracurricularDraft || !profile) return;
-    if (!extracurricularDraft.name.trim()) {
-      setExtracurricularError('Activity name is required.');
-      return;
-    }
     const entry: StudentProfileExtracurricular = {
       id: extracurricularDraft.id ?? crypto.randomUUID(),
-      name: extracurricularDraft.name.trim(),
-      role: extracurricularDraft.role.trim() || null,
-      description: extracurricularDraft.description.trim() || null,
-      startDate: extracurricularDraft.startDate.trim() || null,
-      endDate: extracurricularDraft.endDate.trim() || null,
-      status: extracurricularDraft.status
-        ? (extracurricularDraft.status as StudentProfileExtracurricular['status'])
-        : null,
+      name: extracurricularDraft.name,
+      role: extracurricularDraft.role || null,
+      description: extracurricularDraft.description || null,
+      startDate: extracurricularDraft.startDate || null,
+      endDate: extracurricularDraft.endDate || null,
+      status: extracurricularDraft.status as any || null,
     };
     const nextExtracurriculars = extracurricularDraft.id
-      ? profile.extracurriculars.map((item) =>
-          item.id === extracurricularDraft.id ? entry : item,
-        )
+      ? profile.extracurriculars.map(item => item.id === extracurricularDraft.id ? entry : item)
       : [...profile.extracurriculars, entry];
     const updated = await handleUpdate({ extracurriculars: nextExtracurriculars }, 'extracurricular');
-    if (updated) {
-      setIsExtracurricularOpen(false);
-    }
+    if (updated) setIsExtracurricularOpen(false);
   };
 
-  const handleRemoveExtracurricular = async (id: string) => {
-    if (!profile) return;
-    const nextExtracurriculars = profile.extracurriculars.filter((item) => item.id !== id);
-    await handleUpdate({ extracurriculars: nextExtracurriculars }, 'extracurricular-remove');
-  };
-
-  const handleVisibilityChange = async (visibility: StudentProfileVisibility) => {
-    await handleUpdate({ visibility }, 'visibility');
-  };
-
-  const handleSlugSave = async () => {
-    if (!profile) return;
-    const normalized = slugDraft.trim().toLowerCase();
-    if (!normalized) {
-      setFeedback({ type: 'error', message: 'Enter a profile link before saving.' });
-      return;
-    }
-    const updated = await handleUpdate({ slug: normalized }, 'slug');
-    if (updated) {
-      setSlugDraft(updated.slug ?? normalized);
-    }
-  };
-
-  const toggleDownloadSetting = async (value: boolean) => {
-    if (!profile) return;
-    await handleUpdate(
-      {
-        settings: {
-          allowDownload: value,
-          showProgressBar: profile.settings.showProgressBar,
-        },
-      },
-      'settings-download',
-    );
-  };
-
-  const toggleProgressSetting = async (value: boolean) => {
-    if (!profile) return;
-    await handleUpdate(
-      {
-        settings: {
-          allowDownload: profile.settings.allowDownload,
-          showProgressBar: value,
-        },
-      },
-      'settings-progress',
-    );
-  };
-
-  const shareUrl = useMemo(() => {
-    if (!profile?.shareablePath) return null;
-    if (typeof window !== 'undefined') {
-      return `${window.location.origin}${profile.shareablePath}`;
-    }
-    return profile.shareablePath;
-  }, [profile?.shareablePath]);
-
-  const handleCopyShareLink = async () => {
-    if (!profile?.shareablePath) {
-      setFeedback({
-        type: 'error',
-        message: 'Create a public profile link before sharing.',
-      });
-      return;
-    }
-    try {
-      const link =
-        shareUrl ??
-        (typeof window !== 'undefined'
-          ? `${window.location.origin}${profile.shareablePath}`
-          : profile.shareablePath);
-      await navigator.clipboard.writeText(link);
-      setFeedback({ type: 'success', message: 'Shareable link copied to clipboard!' });
-    } catch (error) {
-      console.error('Failed to copy share link', error);
-      setFeedback({ type: 'error', message: 'Unable to copy link right now.' });
-    }
-  };
-
-  const handleDownload = () => {
-    if (!profile?.settings.allowDownload) {
-      setFeedback({
-        type: 'error',
-        message: 'Enable downloads in settings to export your profile.',
-      });
-      return;
-    }
-    if (typeof window !== 'undefined') {
-      window.print();
-    }
-  };
-
-  const completionChecklist = useMemo(() => {
-    if (!profile) return []; // Ensure profile is not null
-    const completed = new Set<keyof typeof completionLabels>(profile.completion.completedSteps);
-    return Object.entries(completionLabels).map(([key, label]) => ({
-      key,
-      label,
-      done: completed.has(key),
-    }));
-  }, [profile]);
+  // --- Derived State ---
 
   const subjectSummary = useMemo(() => {
     if (!profile) return [];
-    const map = new Map<
-      string,
-      {
-        totalMarks: number;
-        totalMax: number;
-      }
-    >();
-    profile.academicHistory.forEach((year) => {
-      year.subjects.forEach((subject) => {
+    const map = new Map<string, { totalMarks: number; totalMax: number }>();
+    profile.academicHistory.forEach(year => {
+      year.subjects.forEach(subject => {
         const key = subject.name.trim();
         if (!key) return;
         const current = map.get(key) ?? { totalMarks: 0, totalMax: 0 };
@@ -882,2013 +634,627 @@ export default function StudentPortfolioDashboard({
     return Array.from(map.entries())
       .map(([name, stats]) => ({
         name,
-        percent:
-          stats.totalMax > 0 ? Math.round((stats.totalMarks / stats.totalMax) * 100) : null,
+        percent: stats.totalMax > 0 ? Math.round((stats.totalMarks / stats.totalMax) * 100) : null,
       }))
       .sort((a, b) => (b.percent ?? 0) - (a.percent ?? 0))
       .slice(0, 6);
   }, [profile]);
 
-  const renderFeedbackBanner = () => {
-    if (!feedback) return null;
-    return (
-      <div
-        className={cn(
-          'flex items-center justify-between rounded-xl border p-3 text-sm',
-          feedback.type === 'success'
-            ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-100'
-            : 'border-red-500/40 bg-red-500/10 text-red-100',
-        )}
-      >
-        <span>{feedback.message}</span>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 text-xs text-slate-600 dark:text-white/70"
-          onClick={() => setFeedback(null)}
-        >
-          Dismiss
-        </Button>
-      </div>
-    );
-  };
+  const completionChecklist = useMemo(() => {
+    if (!profile) return [];
+    const completed = new Set(profile.completion.completedSteps);
+    return Object.entries(completionLabels).map(([key, label]) => ({
+      key,
+      label,
+      done: completed.has(key as StudentProfileCompletionStep),
+    }));
+  }, [profile]);
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile || !profile) {
     return (
-      <div className="space-y-6">
-        <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-8">
-          <div className="flex items-center gap-4">
-            <Skeleton className="h-20 w-20 rounded-2xl" />
-            <div className="space-y-4">
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-4 w-64" />
-            </div>
-          </div>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Skeleton className="h-40 rounded-2xl" />
-          <Skeleton className="h-40 rounded-2xl" />
-        </div>
-        <Skeleton className="h-96 rounded-3xl" />
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
       </div>
     );
   }
 
-  if (profileError) {
-    return (
-      <div className="rounded-3xl border border-red-500/40 bg-red-500/10 p-10 text-center text-red-100">
-        <h2 className="text-2xl font-semibold">We couldn&apos;t load your dashboard</h2>
-        <p className="mt-3 text-sm opacity-80">{profileError}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button
-            onClick={() => router.refresh()}
-            className="bg-card/70 dark:bg-white/10 text-foreground dark:text-white hover:bg-card/60 dark:bg-white/20"
-          >
-            Try again
-          </Button>
-          <Button
-            variant="ghost"
-            className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white"
-            onClick={() => signOut()}
-          >
-            Sign out
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!profile) {
-    return null;
-  }
-
-  const heroCards: Array<{
-    key: string;
-    label: string;
-    value: string;
-    description: string;
-    icon: LucideIcon;
-    action?: { label: string; onClick: () => void };
-  }> = [
-    {
-      key: 'class',
-      label: 'Academic level',
-      value: profile.stats.currentClass ?? profile.schoolInfo.className ?? 'Add class',
-      description: 'Keep your academic progress up to date.',
-      icon: GraduationCap,
-      action: {
-        label: 'Update stats',
-        onClick: openStatsDialog,
-      },
-    },
-    {
-      key: 'visibility',
-      label: 'Discoverability',
-      value: VISIBILITY_LABELS[profile.visibility].title,
-      description: VISIBILITY_LABELS[profile.visibility].description,
-      icon: Shield,
-      action: {
-        label: 'Manage',
-        onClick: () => setIsSettingsOpen(true),
-      },
-    },
-    {
-      key: 'school',
-      label: 'School information',
-      value: profile.schoolInfo.schoolName ?? 'Add school',
-      description: profile.schoolInfo.board
-        ? `Board: ${profile.schoolInfo.board}`
-        : 'Tell us where you study.',
-      icon: BookOpen,
-      action: {
-        label: 'Update',
-        onClick: openSchoolDialog,
-      },
-    },
-  ];
-
-  const firstName = profile.displayName?.split(' ')[0] ?? 'there';
+  // --- Render ---
 
   return (
-    <>
-      <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-        {renderFeedbackBanner()}
-        
-        {/* Gamification Section - Full Width */}
-        <StudentProfileGamificationSection
-          user={user}
-          profile={profile}
-          className="w-full"
-        />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 w-full overflow-x-hidden">
+      <div className="mx-auto max-w-[1400px] p-4 sm:p-6 lg:p-8 w-full">
 
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1fr,280px] xl:grid-cols-[320px,1fr]">
-        <aside className="order-2 space-y-4 sm:space-y-6 lg:order-1 w-full lg:w-auto">
-          <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-xl shadow-slate-200/60 dark:shadow-none">
-            <div className="relative h-24 sm:h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.35),transparent_55%)]" />
-              <div className="absolute bottom-0 left-4 sm:left-6 translate-y-1/2">
-                <Avatar className="h-16 sm:h-24 w-16 sm:w-24 rounded-2xl sm:rounded-3xl border-4 border-white shadow-xl shadow-purple-300/40 dark:shadow-purple-950/40">
-                  <AvatarImage src={profile.photoUrl ?? undefined} alt={profile.displayName} />
-                  <AvatarFallback className="rounded-2xl sm:rounded-3xl bg-indigo-100 dark:bg-indigo-900/40 text-sm sm:text-lg font-semibold text-indigo-600 dark:text-indigo-300">
-                    {buildAvatarFallback(profile.displayName)}
-                  </AvatarFallback>
-                </Avatar>
+        {/* Feedback Banner */}
+        {feedback && (
+          <div className={cn(
+            "mb-6 flex items-center justify-between rounded-xl border p-4 text-sm",
+            feedback.type === 'success' ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-red-200 bg-red-50 text-red-800"
+          )}>
+            <span>{feedback.message}</span>
+            <Button variant="ghost" size="sm" onClick={() => setFeedback(null)}>Dismiss</Button>
+          </div>
+        )}
+
+        {/* 2-Column Layout: Sidebar (4) | Content (8) */}
+        <div className="grid gap-6 lg:grid-cols-12 w-full">
+
+          {/* --- LEFT SIDEBAR (4/12) --- */}
+          <aside className="space-y-6 lg:col-span-4 xl:col-span-3 lg:sticky lg:top-24 lg:self-start w-full">
+
+            {/* Profile Card */}
+            <Card className="overflow-hidden border-none shadow-lg w-full group">
+              <div className="relative h-28 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                {profile.bannerUrl && (
+                  <img src={profile.bannerUrl} alt="Cover" className="absolute inset-0 h-full w-full object-cover" />
+                )}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent)]" />
+                <label className="absolute top-2 right-2 p-2 bg-black/30 hover:bg-black/50 rounded-full cursor-pointer text-white transition-colors opacity-0 group-hover:opacity-100">
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'banner')} disabled={isUploading} />
+                  {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Edit className="h-4 w-4" />}
+                </label>
               </div>
-            </div>
-            <div className="px-3 sm:px-4 pb-4 sm:pb-6 pt-12 sm:pt-20 md:px-6">
-              <div className="space-y-5">
-                <div className="space-y-4">
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-slate-900 dark:text-white break-words">{profile.displayName}</h1>
-                    <Badge
-                      className="flex items-center gap-2 rounded-full bg-indigo-50 dark:bg-indigo-900/40 px-3 py-1 text-xs font-medium text-indigo-700 dark:text-indigo-300 flex-shrink-0"
-                    >
-                      <Star className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
-                      Student
-                    </Badge>
+              <div className="relative px-6 pb-6">
+                <div className="absolute -top-12 left-6 group/avatar">
+                  <Avatar className="h-24 w-24 border-4 border-white dark:border-slate-900 shadow-xl relative overflow-visible">
+                    <AvatarImage src={profile.photoUrl || undefined} alt={profile.displayName} className="object-cover rounded-full h-full w-full" />
+                    <AvatarFallback className="bg-indigo-100 text-2xl font-bold text-indigo-600 rounded-full h-full w-full flex items-center justify-center">
+                      {buildAvatarFallback(profile.displayName)}
+                    </AvatarFallback>
+                    <label className="absolute bottom-0 right-0 p-1.5 bg-white dark:bg-slate-800 rounded-full shadow-md border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors z-10">
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'avatar')} disabled={isUploading} />
+                      {isUploading ? <Loader2 className="h-3 w-3 animate-spin text-indigo-600" /> : <Edit className="h-3 w-3 text-indigo-600" />}
+                    </label>
+                  </Avatar>
+                </div>
+
+                <div className="mt-14 space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <h1 className="text-2xl font-bold text-slate-900 dark:text-white truncate">{profile.displayName}</h1>
+                      <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 shrink-0">Student</Badge>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 line-clamp-2 break-words">
+                      {profile.tagline || 'Aspiring Student'}
+                    </p>
                   </div>
-                  {profile.tagline && <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{profile.tagline}</p>}
-                  <div className="space-y-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+
+                  <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
                     {profile.location && (
-                      <div className="flex items-center gap-2 min-w-0">
-                        <Globe2 className="h-4 w-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
-                        <span className="truncate">{profile.location}</span>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-slate-400" />
+                        <span>{profile.location}</span>
                       </div>
                     )}
                     {profile.schoolInfo.schoolName && (
-                      <div className="flex items-center gap-2 min-w-0">
-                        <BookOpen className="h-4 w-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
-                        <span className="font-medium text-slate-600 dark:text-slate-300 truncate">
-                          {profile.schoolInfo.schoolName}
-                        </span>
+                      <div className="flex items-center gap-2">
+                        <GraduationCap className="h-4 w-4 text-slate-400" />
+                        <span>{profile.schoolInfo.schoolName}</span>
                       </div>
                     )}
                   </div>
-                </div>
-                {profile.bio && (
-                  <p className="rounded-2xl bg-slate-50 dark:bg-white/5 p-4 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                    {profile.bio}
-                  </p>
-                )}
-                {profile.interests.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {profile.interests.slice(0, 3).map((interest) => (
-                      <Badge
-                        key={interest}
-                        variant="outline"
-                        className="border-indigo-100 dark:border-indigo-900/40 bg-indigo-50 dark:bg-indigo-900/20 px-2 sm:px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-300"
-                      >
-                        #{interest}
-                      </Badge>
-                    ))}
-                    {profile.interests.length > 3 && (
-                      <Badge className="border-slate-200 dark:border-white/10 px-2 sm:px-3 py-1 text-xs text-slate-600 dark:text-slate-300">
-                        +{profile.interests.length - 3} more
-                      </Badge>
-                    )}
-                  </div>
-                )}
-                <div className="grid gap-2 grid-cols-2 sm:grid-cols-2">
-                  <Button
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white dark:text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={openBasicsDialog}
-                  >
-                    <PenLine className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Edit</span>
-                    <span className="sm:hidden">Edit</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={() => setIsSettingsOpen(true)}
-                  >
-                    <Shield className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Settings</span>
-                    <span className="sm:hidden">⚙️</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={handleCopyShareLink}
-                  >
-                    <ExternalLink className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Share</span>
-                    <span className="sm:hidden">Share</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={handleDownload}
-                  >
-                    <UploadCloud className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">PDF</span>
-                    <span className="sm:hidden">PDF</span>
-                  </Button>
-                </div>
-                <Button
-                  variant="ghost"
-                  className="w-full border border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 text-xs sm:text-sm h-9"
-                  onClick={() => signOut()}
-                >
-                  Sign out
-                </Button>
-              </div>
-            </div>
-          </div>
-        </aside>
-        <div className="order-1 space-y-4 sm:space-y-6 lg:order-2">
-          <div className="flex items-center gap-2 overflow-x-auto rounded-full border border-slate-200 bg-white/90 px-2 py-2 sm:px-3 shadow-sm backdrop-blur md:hidden">
-            {DASHBOARD_SECTIONS.map((section) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                className="whitespace-nowrap rounded-full px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100"
-              >
-                {section.label}
-              </a>
-            ))}
-          </div>
-          <nav className="sticky top-20 z-20 hidden items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm backdrop-blur md:flex">
-            {DASHBOARD_SECTIONS.map((section) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                className="rounded-full px-3 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
-              >
-                {section.label}
-              </a>
-            ))}
-          </nav>
 
-          <section id="overview" className={cn(PANEL_BASE_CLASSES, 'relative overflow-hidden lg:p-8')}>
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.12),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.08),transparent_60%)]" />
-            <div className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-orange-200/40 dark:bg-orange-900/20 blur-3xl" />
-            <div className="pointer-events-none absolute -right-16 -bottom-24 h-48 w-48 rounded-full bg-sky-200/30 dark:bg-sky-900/20 blur-3xl" />
-            <div className="relative z-10 space-y-6 sm:space-y-8">
-              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div className="space-y-2 sm:space-y-3">
-                  <Badge className="w-fit bg-orange-100 dark:bg-orange-900/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600 dark:text-orange-300">
-                    Portfolio snapshot
-                  </Badge>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold leading-tight text-slate-900 dark:text-white">Welcome back, {firstName}</h2>
-                  <p className="max-w-2xl text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                    Keep refining your journey, highlight wins you are proud of, and share a polished portfolio with mentors and colleges.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
-                  <Button
-                    className="bg-indigo-600 dark:bg-indigo-600 text-white shadow-md shadow-indigo-300/40 hover:bg-indigo-700 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={() => openAcademicDialog()}
-                  >
-                    <BookOpen className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Log academic year</span>
-                    <span className="sm:hidden">Academic</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 dark:border-white/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={() => openAchievementDialog()}
-                  >
-                    <Plus className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Add achievement</span>
-                    <span className="sm:hidden">Achievement</span>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 w-full sm:w-auto text-xs sm:text-sm h-9 sm:h-10"
-                    onClick={() => handleDownload()}
-                  >
-                    <UploadCloud className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Download PDF</span>
-                    <span className="sm:hidden">PDF</span>
-                  </Button>
-                </div>
-              </div>
-              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {heroCards.map((card) => {
-                  const Icon = card.icon;
-                  return (
-                    <div
-                      key={card.key}
-                      className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 sm:p-5 text-slate-900 dark:text-white shadow-sm shadow-slate-200/60 dark:shadow-none"
-                    >
-                      <div className="flex items-start justify-between gap-2 sm:gap-3 min-w-0">
-                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex-shrink-0">
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <div className="min-w-0">
-                            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                              {card.label}
-                            </p>
-                            <p className="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-slate-900 dark:text-white truncate">
-                              {card.value}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="mt-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">{card.description}</p>
-                      {card.action && (
-                        <Button
-                          variant="ghost"
-                          className="mt-4 w-fit px-0 text-xs sm:text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-transparent hover:text-indigo-700 dark:hover:text-indigo-300"
-                          onClick={card.action.onClick}
-                        >
-                          {card.action.label}
-                          <ExternalLink className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          <section id="progress" className={cn(PANEL_BASE_CLASSES, 'lg:p-8')}>
-            <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-start md:justify-between">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white">Profile progress</h2>
-                <p className="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                  Complete the steps to unlock a standout public portfolio.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 sm:gap-3 text-slate-500 dark:text-slate-400">
-                <span className="text-xs sm:text-sm uppercase tracking-wide">Completion</span>
-                <span className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-white">
-                  {Math.round(profile.completion.percent)}%
-                </span>
-              </div>
-            </div>
-            {profile.settings.showProgressBar && (
-              <Progress
-                value={profile.completion.percent}
-                className="my-6 h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-white/10"
-              />
-            )}
-            <div className="grid gap-3 md:grid-cols-2">
-              {completionChecklist.map((item) => (
-                <div
-                  key={item.key}
-                  className={cn(
-                    'flex items-center gap-3 rounded-2xl border p-4 text-sm transition-colors',
-                    item.done
-                      ? 'border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
-                      : 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-400',
-                  )}
-                >
-                  {item.done ? (
-                    <CheckCircle className="h-5 w-5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  ) : (
-                    <CircleIcon className="h-5 w-5 text-slate-300 dark:text-slate-600 flex-shrink-0" />
-                  )}
-                  <span>{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section id="academics" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_60%)]" />
-            <div className="pointer-events-none absolute -right-32 top-0 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl" />
-            <div className="relative z-10">
-              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
-                <div className="space-y-2">
-                  <Badge className="w-fit bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-600 dark:bg-blue-900/40 dark:text-blue-300">
-                    📚 Academic Journey
-                  </Badge>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Academic Story</h2>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    Track your grades, subjects, and academic progress year by year with teacher insights.
-                  </p>
-                </div>
-                <Button
-                  className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md shadow-blue-500/30 hover:from-blue-600 hover:to-indigo-600 w-full lg:w-auto"
-                  onClick={() => openAcademicDialog()}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  <span className="hidden sm:inline">Add academic year</span>
-                  <span className="sm:hidden">Academic year</span>
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                {profile.academicHistory.length === 0 ? (
-                  <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-blue-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-blue-950/30">
-                    <GraduationCap className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Start your academic journey</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add your first year to showcase grades and achievements.</p>
-                  </div>
-                ) : (
-                  <div className="grid gap-4 lg:grid-cols-2">
-                    {profile.academicHistory.map((year) => (
-                      <ModernAcademicCard
-                        key={year.id}
-                        year={year}
-                        schoolName={profile.schoolInfo.schoolName || ''}
-                        onEdit={() => openAcademicDialog(year)}
-                        onRemove={() => handleRemoveAcademicYear(year.id)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {subjectSummary.length > 0 && (
-                <div className="mt-8 rounded-2xl border border-blue-200/40 bg-gradient-to-br from-blue-50/80 via-white/60 to-indigo-50/40 p-6 backdrop-blur-xl dark:from-blue-950/20 dark:via-white/3 dark:to-indigo-950/20 dark:border-blue-900/30">
-                  <div className="space-y-2 mb-6">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-blue-500" />
-                      Subject Performance Highlights
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Your strongest subjects based on average scores across the years.
+                  {profile.bio && (
+                    <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
+                      {profile.bio}
                     </p>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {subjectSummary.map((subject) => (
-                      <SubjectPerformanceCard
-                        key={subject.name}
-                        name={subject.name}
-                        percent={subject.percent}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </section>
+                  )}
 
-          <section id="achievements" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,119,6,0.12),transparent_60%)]" />
-            <div className="pointer-events-none absolute -left-32 -bottom-16 h-64 w-64 rounded-full bg-amber-200/30 blur-3xl" />
-            <div className="relative z-10">
-              <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
-                <div className="space-y-2">
-                  <Badge className="w-fit bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-600 dark:bg-amber-900/40 dark:text-amber-300">
-                    🏆 Your Accolades
-                  </Badge>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Achievements &amp; Awards</h2>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    Celebrate your milestones with descriptions, levels, certificates, and tags.
-                  </p>
+                  {profile.interests.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {profile.interests.slice(0, 5).map(i => (
+                        <Badge key={i} variant="outline" className="text-xs">#{i}</Badge>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="grid gap-2">
+                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700" onClick={openBasicsDialog}>
+                      <Edit className="mr-2 h-4 w-4" /> Edit Profile
+                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button variant="outline" size="sm" onClick={() => setIsSettingsOpen(true)}>
+                        <Shield className="mr-2 h-4 w-4" /> Settings
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => signOut()}>
+                        Sign Out
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <Button
-                  className="bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/30 hover:from-amber-600 hover:to-orange-600 w-full lg:w-auto"
-                  onClick={() => openAchievementDialog()}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  <span className="hidden sm:inline">Add achievement</span>
-                  <span className="sm:hidden">Achievement</span>
+              </div>
+            </Card>
+
+            {/* Progress Card */}
+            <Card className="p-6 border-none shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold">Profile Strength</h3>
+                <span className="text-lg font-bold text-indigo-600">{Math.round(profile.completion.percent)}%</span>
+              </div>
+              <Progress value={profile.completion.percent} className="h-2 mb-4" />
+              <div className="space-y-2">
+                {completionChecklist.slice(0, 4).map(item => (
+                  <div key={item.key} className="flex items-center gap-2 text-sm">
+                    {item.done ? (
+                      <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    ) : (
+                      <CircleIcon className="h-4 w-4 text-slate-300" />
+                    )}
+                    <span className={item.done ? 'text-slate-500' : 'text-slate-900'}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card className="p-6 border-none shadow-lg">
+              <h3 className="font-semibold mb-4">Quick Actions</h3>
+              <div className="space-y-2">
+                <Button variant="ghost" className="w-full justify-start" onClick={openStatsDialog}>
+                  <Trophy className="mr-2 h-4 w-4 text-amber-500" /> Update Stats
+                </Button>
+                <Button variant="ghost" className="w-full justify-start" onClick={openSchoolDialog}>
+                  <BookOpen className="mr-2 h-4 w-4 text-blue-500" /> School Info
+                </Button>
+              </div>
+            </Card>
+          </aside>
+
+          {/* --- MAIN CONTENT (8/12) --- */}
+          <main className="space-y-8 lg:col-span-8 xl:col-span-9">
+
+            {/* Welcome Banner */}
+            <div className="rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-white shadow-lg">
+              <h2 className="text-3xl font-bold">Welcome back, {profile.displayName?.split(' ')[0]}! 👋</h2>
+              <p className="mt-2 text-indigo-100 max-w-xl">
+                Your portfolio is looking great. Keep adding your achievements and academic progress to stand out.
+              </p>
+            </div>
+
+            {/* Applied Opportunities */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <Briefcase className="h-5 w-5 text-indigo-600" /> Applied Opportunities
+                </h3>
+                <Button variant="ghost" size="sm" onClick={loadAppliedOpportunities} disabled={isLoadingApplied}>
+                  <RefreshCw className={cn("h-4 w-4", isLoadingApplied && "animate-spin")} />
                 </Button>
               </div>
 
-              {profile.achievements.length === 0 ? (
-                <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-amber-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-amber-950/30">
-                  <Trophy className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                  <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Your achievements shine here</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add awards, certifications, and recognition to showcase your excellence.</p>
-                </div>
-              ) : (
-                <div className="grid gap-4 lg:grid-cols-2">
-                  {profile.achievements.map((achievement) => (
-                    <ModernAchievementCard
-                      key={achievement.id}
-                      achievement={achievement}
-                      onEdit={() => openAchievementDialog(achievement)}
-                      onRemove={() => handleRemoveAchievement(achievement.id)}
+              {appliedOpportunities.length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {appliedOpportunities.map(item => (
+                    <AppliedOpportunityCard
+                      key={item.id}
+                      id={item.id}
+                      opportunityId={item.opportunityId}
+                      opportunityTitle={item.opportunityTitle}
+                      registeredAt={item.registeredAt}
+                      registrationType={item.registrationType}
                     />
                   ))}
                 </div>
-              )}
-            </div>
-          </section>
-
-      <section id="competitions" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.12),transparent_60%)]" />
-        <div className="pointer-events-none absolute -left-32 top-0 h-64 w-64 rounded-full bg-purple-200/30 blur-3xl" />
-        <div className="relative z-10">
-          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
-            <div className="space-y-2">
-              <Badge className="w-fit bg-purple-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-purple-600 dark:bg-purple-900/40 dark:text-purple-300">
-                ⚡ Competitive Spirit
-              </Badge>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Competitions &amp; Challenges</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Showcase Olympiads, hackathons, tournaments, and competitive experiences.
-              </p>
-            </div>
-            <Button
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md shadow-purple-500/30 hover:from-purple-600 hover:to-pink-600 w-full lg:w-auto"
-              onClick={() => openCompetitionDialog()}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              <span className="hidden sm:inline">Add competition</span>
-              <span className="sm:hidden">Competition</span>
-            </Button>
-          </div>
-
-          {profile.competitions.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-purple-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-purple-950/30">
-              <Flag className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Show your competitive edge</p>
-              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Add competitions to showcase your grit, talent, and determination.</p>
-            </div>
-          ) : (
-            <div className="grid gap-4 lg:grid-cols-2">
-              {profile.competitions.map((competition) => (
-                <ModernCompetitionCard
-                  key={competition.id}
-                  competition={competition}
-                  onEdit={() => openCompetitionDialog(competition)}
-                  onRemove={() => handleRemoveCompetition(competition.id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section id="extracurricular" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.12),transparent_60%)]" />
-        <div className="pointer-events-none absolute -right-32 -bottom-16 h-64 w-64 rounded-full bg-green-200/30 blur-3xl" />
-        <div className="relative z-10">
-          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
-            <div className="space-y-2">
-              <Badge className="w-fit bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-300">
-                🌟 Life Beyond Classroom
-              </Badge>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Extracurricular Life</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Share clubs, leadership roles, volunteering, and passion projects you're proud of.
-              </p>
-            </div>
-            <Button
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/30 hover:from-emerald-600 hover:to-teal-600 w-full lg:w-auto"
-              onClick={() => openExtracurricularDialog()}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              <span className="hidden sm:inline">Add activity</span>
-              <span className="sm:hidden">Activity</span>
-            </Button>
-          </div>
-
-          {profile.extracurriculars.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-emerald-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-emerald-950/30">
-              <Users2 className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Show what drives you</p>
-              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Share your activities, roles, and passions that define who you are.</p>
-            </div>
-          ) : (
-            <div className="grid gap-4 lg:grid-cols-2">
-              {profile.extracurriculars.map((activity) => (
-                <ModernExtracurricularCard
-                  key={activity.id}
-                  activity={activity}
-                  onEdit={() => openExtracurricularDialog(activity)}
-                  onRemove={() => handleRemoveExtracurricular(activity.id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section id="resources" className={cn(PANEL_BASE_CLASSES, 'lg:p-8 relative overflow-hidden')}>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(79,70,229,0.12),transparent_60%)]" />
-        <div className="pointer-events-none absolute -right-32 top-0 h-64 w-64 rounded-full bg-indigo-200/30 blur-3xl" />
-        <div className="relative z-10">
-          <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-center lg:justify-between mb-8">
-            <div className="space-y-2">
-              <Badge className="w-fit bg-indigo-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300">
-                🎯 Your Bookmarks
-              </Badge>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Saved Opportunities</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Access programmes you bookmarked and track upcoming deadlines.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3">
-              <Button
-                variant="outline"
-                className="border-slate-200 text-indigo-600 hover:bg-indigo-50 w-full sm:w-auto dark:border-white/10 dark:text-indigo-400 dark:hover:bg-indigo-950/30"
-                onClick={() => loadSavedOpportunities()}
-                disabled={isLoadingSaved}
-              >
-                {isLoadingSaved ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                )}
-                <span className="hidden sm:inline">Refresh</span>
-              </Button>
-              <Button
-                asChild
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full sm:w-auto"
-              >
-                <Link href="/opportunities">Browse more</Link>
-              </Button>
-            </div>
-          </div>
-
-          {savedError && (
-            <div className="mb-6 rounded-xl border border-rose-200/40 bg-rose-50/60 dark:bg-rose-950/20 dark:border-rose-900/30 p-4 text-sm text-rose-600 dark:text-rose-400 backdrop-blur-xs">
-              ⚠️ {savedError}
-            </div>
-          )}
-
-          {isLoadingSaved ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-indigo-950/30">
-              <Loader2 className="h-8 w-8 text-indigo-400 dark:text-indigo-500 mx-auto mb-3 animate-spin" />
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Loading your saved opportunities...</p>
-            </div>
-          ) : savedOpportunities.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-gradient-to-br from-slate-50 to-indigo-50/30 p-8 text-center dark:border-white/10 dark:from-white/5 dark:to-indigo-950/30">
-              <BookOpen className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Start bookmarking opportunities</p>
-              <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Explore programmes and save the ones that excite you.</p>
-            </div>
-          ) : (
-            <div className="grid gap-4 lg:grid-cols-2">
-              {savedOpportunities.map((item) => (
-                <div
-                  key={item.id}
-                  className="group rounded-2xl border border-indigo-200/40 bg-gradient-to-br from-indigo-50/80 via-white/60 to-purple-50/40 p-6 backdrop-blur-xl shadow-lg shadow-indigo-200/20 hover:shadow-xl hover:shadow-indigo-300/30 transition-all duration-300 dark:from-indigo-950/20 dark:via-white/3 dark:to-purple-950/20 dark:border-indigo-900/30 dark:shadow-indigo-950/40 flex flex-col"
-                >
-                  <div className="space-y-4 flex-1">
-                    <div className="flex flex-wrap items-start gap-2">
-                      <Badge className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-900 dark:from-indigo-900/40 dark:to-purple-900/40 dark:text-indigo-300 font-semibold">
-                        {item.category || 'Opportunity'}
-                      </Badge>
-                      {item.mode && (
-                        <Badge variant="outline" className="border-slate-200 text-slate-600 text-xs dark:border-white/10 dark:text-slate-300">
-                          {item.mode === 'online' ? '🌐 Online' : '📍 Offline'}
-                        </Badge>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white line-clamp-2">{item.title}</h3>
-                      {item.organizer && (
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{item.organizer}</p>
-                      )}
-                    </div>
-
-                    {(item.registrationDeadline || item.savedAt) && (
-                      <div className="space-y-2 pt-2 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-200/50 dark:border-white/10">
-                        {item.registrationDeadline && (
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-indigo-500" />
-                            <span className="font-medium">
-                              {new Date(item.registrationDeadline).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                              })}
-                            </span>
-                          </div>
-                        )}
-                        {item.savedAt && (
-                          <p className="text-xs text-slate-500 dark:text-slate-500">Saved {formatSavedDate(item.savedAt)}</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col gap-3 mt-6 pt-4 border-t border-slate-200/50 dark:border-white/10">
-                    <Badge className="w-fit bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 text-xs font-medium">
-                      {item.gradeEligibility || 'All grades'}
-                    </Badge>
-                    <Button
-                      asChild
-                      className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md shadow-indigo-500/30 hover:from-indigo-600 hover:to-purple-600 w-full"
-                    >
-                      <Link href={`/opportunity/${item.id}`}>View Full Details</Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-        </div>
-      </div>
-    </div>
-
-    {/* Dialogs are rendered below */}
-    <Dialogs
-        state={{
-          basics: { open: isBasicsOpen, draft: basicsDraft, error: basicsError },
-          stats: { open: isStatsOpen, draft: statsDraft, error: statsError },
-          school: { open: isSchoolOpen, draft: schoolDraft, error: schoolError },
-          academic: { open: isAcademicOpen, draft: academicDraft, error: academicError },
-          achievement: { open: isAchievementOpen, draft: achievementDraft, error: achievementError },
-          competition: { open: isCompetitionOpen, draft: competitionDraft, error: competitionError },
-          extracurricular: {
-            open: isExtracurricularOpen,
-            draft: extracurricularDraft,
-            error: extracurricularError,
-          },
-          settings: { open: isSettingsOpen, slug: slugDraft },
-        }}
-        actions={{
-          setBasicsOpen: setIsBasicsOpen,
-          setStatsOpen: setIsStatsOpen,
-          setSchoolOpen: setIsSchoolOpen,
-          setAcademicOpen: setIsAcademicOpen,
-          setAchievementOpen: setIsAchievementOpen,
-          setCompetitionOpen: setIsCompetitionOpen,
-          setExtracurricularOpen: setIsExtracurricularOpen,
-          setSettingsOpen: setIsSettingsOpen,
-          setBasicsDraft,
-          setStatsDraft,
-          setSchoolDraft,
-          setAcademicDraft,
-          setAchievementDraft,
-          setCompetitionDraft,
-          setExtracurricularDraft,
-          setSlugDraft,
-        }}
-        handlers={{
-          handleSubmitBasics,
-          handleSubmitStats,
-          handleSubmitSchool,
-          handleSubmitAcademic,
-          handleSubmitAchievement,
-          handleSubmitCompetition,
-          handleSubmitExtracurricular,
-          pendingAction,
-          handleSlugSave,
-          toggleDownloadSetting,
-          toggleProgressSetting,
-          handleVisibilityChange,
-        }}
-        profile={profile}
-      />
-    </>
-  );
-}
-
-type DialogsProps = {
-  profile: StudentProfile;
-  state: {
-    basics: { open: boolean; draft: BasicProfileDraft | null; error: string | null };
-    stats: { open: boolean; draft: StatsDraft | null; error: string | null };
-    school: { open: boolean; draft: SchoolInfoDraft | null; error: string | null };
-    academic: { open: boolean; draft: AcademicYearDraft | null; error: string | null };
-    achievement: { open: boolean; draft: AchievementDraft | null; error: string | null };
-    competition: { open: boolean; draft: CompetitionDraft | null; error: string | null };
-    extracurricular: {
-      open: boolean;
-      draft: ExtracurricularDraft | null;
-      error: string | null;
-    };
-    settings: { open: boolean; slug: string };
-  };
-  actions: {
-    setBasicsOpen: (value: boolean) => void;
-    setStatsOpen: (value: boolean) => void;
-    setSchoolOpen: (value: boolean) => void;
-    setAcademicOpen: (value: boolean) => void;
-    setAchievementOpen: (value: boolean) => void;
-    setCompetitionOpen: (value: boolean) => void;
-    setExtracurricularOpen: (value: boolean) => void;
-    setSettingsOpen: (value: boolean) => void;
-    setBasicsDraft: Dispatch<SetStateAction<BasicProfileDraft | null>>;
-    setStatsDraft: Dispatch<SetStateAction<StatsDraft | null>>;
-    setSchoolDraft: Dispatch<SetStateAction<SchoolInfoDraft | null>>;
-    setAcademicDraft: Dispatch<SetStateAction<AcademicYearDraft | null>>;
-    setAchievementDraft: Dispatch<SetStateAction<AchievementDraft | null>>;
-    setCompetitionDraft: Dispatch<SetStateAction<CompetitionDraft | null>>;
-    setExtracurricularDraft: Dispatch<SetStateAction<ExtracurricularDraft | null>>;
-    setSlugDraft: Dispatch<SetStateAction<string>>;
-  };
-  handlers: {
-    handleSubmitBasics: () => void;
-    handleSubmitStats: () => void;
-    handleSubmitSchool: () => void;
-    handleSubmitAcademic: () => void;
-    handleSubmitAchievement: () => void;
-    handleSubmitCompetition: () => void;
-    handleSubmitExtracurricular: () => void;
-    handleVisibilityChange: (visibility: StudentProfileVisibility) => void;
-    handleSlugSave: () => void;
-    toggleDownloadSetting: (value: boolean) => void;
-    toggleProgressSetting: (value: boolean) => void;
-    pendingAction: string | null;
-  };
-};
-
-function Dialogs({ profile, state, actions, handlers }: DialogsProps) {
-  const {
-    basics,
-    stats,
-    school,
-    academic,
-    achievement,
-    competition,
-    extracurricular,
-    settings,
-  } = state;
-  const {
-    setBasicsOpen,
-    setStatsOpen,
-    setSchoolOpen,
-    setAcademicOpen,
-    setAchievementOpen,
-    setCompetitionOpen,
-    setExtracurricularOpen,
-    setSettingsOpen,
-    setBasicsDraft,
-    setStatsDraft,
-    setSchoolDraft,
-    setAcademicDraft,
-    setAchievementDraft,
-    setCompetitionDraft,
-    setExtracurricularDraft,
-    setSlugDraft,
-  } = actions;
-  const {
-    handleSubmitBasics,
-    handleSubmitStats,
-    handleSubmitSchool,
-    handleSubmitAcademic,
-    handleSubmitAchievement,
-    handleSubmitCompetition,
-    handleSubmitExtracurricular,
-    handleVisibilityChange,
-    handleSlugSave,
-    toggleDownloadSetting,
-    toggleProgressSetting,
-    pendingAction,
-  } = handlers;
-
-  return (
-    <>
-      <Dialog open={basics.open} onOpenChange={(value) => setBasicsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>Profile basics</DialogTitle>
-          </DialogHeader>
-          {basics.draft && (
-            <div className="space-y-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="displayName">Display name</Label>
-                <Input
-                  id="displayName"
-                  value={basics.draft.displayName}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, displayName: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="photoUrl">Profile photo URL</Label>
-                <Input
-                  id="photoUrl"
-                  value={basics.draft.photoUrl}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, photoUrl: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="https://…"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="tagline">Tagline</Label>
-                <Input
-                  id="tagline"
-                  value={basics.draft.tagline}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, tagline: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Aspiring engineer | Grade 10 | Science stream"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="bio">About you</Label>
-                <Textarea
-                  id="bio"
-                  rows={4}
-                  value={basics.draft.bio}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, bio: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Share your journey, motivations, and what excites you."
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  value={basics.draft.location}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, location: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Mumbai, India"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="interests">Interests (comma separated)</Label>
-                <Textarea
-                  id="interests"
-                  rows={3}
-                  value={basics.draft.interests}
-                  onChange={(event) =>
-                    setBasicsDraft({ ...basics.draft!, interests: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Robotics, Debate, Community service"
-                />
-              </div>
-              {basics.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {basics.error}
-                </p>
-              )}
-            </div>
-          )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setBasicsOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitBasics}
-              disabled={pendingAction === 'basics'}
-              className="bg-gradient-to-r from-orange-500 to-pink-500 text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600"
-            >
-              {pendingAction === 'basics' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                <PenLine className="mr-2 h-4 w-4" />
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">You haven't applied to any opportunities yet.</p>
+                  <Button variant="link" asChild className="mt-2">
+                    <Link href="/opportunities">Browse Opportunities</Link>
+                  </Button>
+                </div>
               )}
-              Save changes
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={extracurricular.open} onOpenChange={(value) => setExtracurricularOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>
-              {extracurricular.draft?.id
-                ? 'Edit extracurricular activity'
-                : 'Add extracurricular activity'}
-            </DialogTitle>
-          </DialogHeader>
-          {extracurricular.draft && (
-            <div className="space-y-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="activityName">Activity name</Label>
-                <Input
-                  id="activityName"
-                  value={extracurricular.draft.name}
-                  onChange={(event) =>
-                    setExtracurricularDraft({
-                      ...extracurricular.draft!,
-                      name: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="activityRole">Role</Label>
-                <Input
-                  id="activityRole"
-                  value={extracurricular.draft.role}
-                  onChange={(event) =>
-                    setExtracurricularDraft({
-                      ...extracurricular.draft!,
-                      role: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Team lead, Volunteer, Performer…"
-                />
-              </div>
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="activityStart">Start date</Label>
-                  <Input
-                    id="activityStart"
-                    value={extracurricular.draft.startDate}
-                    onChange={(event) =>
-                      setExtracurricularDraft({
-                        ...extracurricular.draft!,
-                        startDate: event.target.value,
-                      })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                    placeholder="Jan 2023"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="activityEnd">End date</Label>
-                  <Input
-                    id="activityEnd"
-                    value={extracurricular.draft.endDate}
-                    onChange={(event) =>
-                      setExtracurricularDraft({
-                        ...extracurricular.draft!,
-                        endDate: event.target.value,
-                      })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                    placeholder="Dec 2023"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label>Status</Label>
-                <Select
-                  value={extracurricular.draft.status}
-                  onValueChange={(value) =>
-                    setExtracurricularDraft({
-                      ...extracurricular.draft!,
-                      status: value,
-                    })
-                  }
-                >
-                  <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
-                    {Object.entries(EVENT_STATUS_LABELS).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="activityDescription">Description</Label>
-                <Textarea
-                  id="activityDescription"
-                  rows={3}
-                  value={extracurricular.draft.description}
-                  onChange={(event) =>
-                    setExtracurricularDraft({
-                      ...extracurricular.draft!,
-                      description: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Explain what you do, the impact, or skills you developed."
-                />
-              </div>
-              {extracurricular.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {extracurricular.error}
-                </p>
-              )}
-            </div>
-          )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setExtracurricularOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitExtracurricular}
-              disabled={pendingAction === 'extracurricular'}
-              className="bg-gradient-to-r from-emerald-500 to-lime-500 text-slate-900 hover:from-emerald-400 hover:to-lime-400"
-            >
-              {pendingAction === 'extracurricular' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Star className="mr-2 h-4 w-4" />
-              )}
-              Save activity
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={competition.open} onOpenChange={(value) => setCompetitionOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>
-              {competition.draft?.id ? 'Edit competition' : 'Add competition'}
-            </DialogTitle>
-          </DialogHeader>
-          {competition.draft && (
-            <div className="space-y-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="competitionName">Competition name</Label>
-                <Input
-                  id="competitionName"
-                  value={competition.draft.name}
-                  onChange={(event) =>
-                    setCompetitionDraft({ ...competition.draft!, name: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="competitionCategory">Category</Label>
-                <Input
-                  id="competitionCategory"
-                  value={competition.draft.category}
-                  onChange={(event) =>
-                    setCompetitionDraft({
-                      ...competition.draft!,
-                      category: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Robotics, Debate, Sports…"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="competitionResult">Result / Outcome</Label>
-                <Input
-                  id="competitionResult"
-                  value={competition.draft.result}
-                  onChange={(event) =>
-                    setCompetitionDraft({ ...competition.draft!, result: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Winner, Finalist, Participation"
-                />
-              </div>
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="competitionDate">Date</Label>
-                  <Input
-                    id="competitionDate"
-                    value={competition.draft.date}
-                    onChange={(event) =>
-                      setCompetitionDraft({ ...competition.draft!, date: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                    placeholder="July 2024"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label>Status</Label>
-                  <Select
-                    value={competition.draft.status}
-                    onValueChange={(value) =>
-                      setCompetitionDraft({ ...competition.draft!, status: value })
-                    }
-                  >
-                    <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-900 text-foreground dark:text-white">
-                      {Object.entries(EVENT_STATUS_LABELS).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="competitionLocation">Location</Label>
-                <Input
-                  id="competitionLocation"
-                  value={competition.draft.location}
-                  onChange={(event) =>
-                    setCompetitionDraft({
-                      ...competition.draft!,
-                      location: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Delhi, India"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="competitionDescription">Description</Label>
-                <Textarea
-                  id="competitionDescription"
-                  rows={3}
-                  value={competition.draft.description}
-                  onChange={(event) =>
-                    setCompetitionDraft({
-                      ...competition.draft!,
-                      description: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Share highlights, learnings, or results."
-                />
-              </div>
-              {competition.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {competition.error}
-                </p>
-              )}
-            </div>
-          )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setCompetitionOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitCompetition}
-              disabled={pendingAction === 'competition'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
-            >
-              {pendingAction === 'competition' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Flag className="mr-2 h-4 w-4" />
-              )}
-              Save competition
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={achievement.open} onOpenChange={(value) => setAchievementOpen(value)}>
-        <DialogContent className="border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>
-              {achievement.draft?.id ? 'Edit achievement' : 'Add achievement'}
-            </DialogTitle>
-          </DialogHeader>
-          {achievement.draft && (
-            <div className="space-y-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="achievementTitle">Title</Label>
-                <Input
-                  id="achievementTitle"
-                  value={achievement.draft.title}
-                  onChange={(event) =>
-                    setAchievementDraft({
-                      ...achievement.draft!,
-                      title: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="achievementDescription">Description</Label>
-                <Textarea
-                  id="achievementDescription"
-                  rows={3}
-                  value={achievement.draft.description}
-                  onChange={(event) =>
-                    setAchievementDraft({
-                      ...achievement.draft!,
-                      description: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="What makes this achievement special?"
-                />
-              </div>
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label>Level</Label>
-                  <Select
-                    value={achievement.draft.level}
-                    onValueChange={(value) =>
-                      setAchievementDraft({ ...achievement.draft!, level: value })
-                    }
-                  >
-                    <SelectTrigger className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
-                      <SelectValue placeholder="Select level" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-900 text-foreground dark:text-white">
-                      {Object.entries(ACHIEVEMENT_LEVEL_LABELS).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="achievementYear">Year</Label>
-                  <Input
-                    id="achievementYear"
-                    value={achievement.draft.year}
-                    onChange={(event) =>
-                      setAchievementDraft({ ...achievement.draft!, year: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                    placeholder="2024"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="achievementCertificate">Certificate link</Label>
-                <Input
-                  id="achievementCertificate"
-                  value={achievement.draft.certificateUrl}
-                  onChange={(event) =>
-                    setAchievementDraft({
-                      ...achievement.draft!,
-                      certificateUrl: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="https://…"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="achievementTags">Tags (comma separated)</Label>
-                <Input
-                  id="achievementTags"
-                  value={achievement.draft.tags}
-                  onChange={(event) =>
-                    setAchievementDraft({ ...achievement.draft!, tags: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="STEM, Leadership"
-                />
-              </div>
-              {achievement.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {achievement.error}
-                </p>
-              )}
-            </div>
-          )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setAchievementOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitAchievement}
-              disabled={pendingAction === 'achievement'}
-              className="bg-gradient-to-r from-orange-500 to-pink-500 text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600"
-            >
-              {pendingAction === 'achievement' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Trophy className="mr-2 h-4 w-4" />
-              )}
-              Save achievement
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={academic.open} onOpenChange={(value) => setAcademicOpen(value)}>
-        <DialogContent className="max-h-[90vh] w-full max-w-3xl overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>
-              {academic.draft?.id ? 'Edit academic year' : 'Add academic year'}
-            </DialogTitle>
-          </DialogHeader>
-          {academic.draft && (
-            <div className="space-y-4 py-4">
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="session">Session</Label>
-                  <Input
-                    id="session"
-                    value={academic.draft.session}
-                    onChange={(event) =>
-                      setAcademicDraft({ ...academic.draft!, session: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="grade">Class / Grade</Label>
-                  <Input
-                    id="grade"
-                    value={academic.draft.grade}
-                    onChange={(event) =>
-                      setAcademicDraft({ ...academic.draft!, grade: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="board">Board</Label>
-                  <Input
-                    id="board"
-                    value={academic.draft.board}
-                    onChange={(event) =>
-                      setAcademicDraft({ ...academic.draft!, board: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="school">School</Label>
-                  <Input
-                    id="school"
-                    value={academic.draft.schoolName}
-                    onChange={(event) =>
-                      setAcademicDraft({ ...academic.draft!, schoolName: event.target.value })
-                    }
-                    className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="summary">Highlights</Label>
-                <Textarea
-                  id="summary"
-                  rows={3}
-                  value={academic.draft.summary}
-                  onChange={(event) =>
-                    setAcademicDraft({ ...academic.draft!, summary: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="teacherComments">Teacher comments</Label>
-                <Textarea
-                  id="teacherComments"
-                  rows={3}
-                  value={academic.draft.teacherComments}
-                  onChange={(event) =>
-                    setAcademicDraft({
-                      ...academic.draft!,
-                      teacherComments: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <Separator className="bg-card/70 dark:bg-white/10" />
+            </section>
+
+            {/* Academic Journey */}
+            <section className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground dark:text-white">Subjects</h3>
-                <Button
-                  variant="outline"
-                  className="border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-                  onClick={() =>
-                    setAcademicDraft({
-                      ...academic.draft!,
-                      subjects: [
-                        ...academic.draft!.subjects,
-                        {
-                          id: crypto.randomUUID(),
-                          name: '',
-                          marks: '',
-                          maxMarks: '',
-                          grade: '',
-                          teacherComment: '',
-                        },
-                      ].slice(0, MAX_SUBJECTS_PER_YEAR),
-                    })
-                  }
-                  disabled={academic.draft.subjects.length >= MAX_SUBJECTS_PER_YEAR}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add subject
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5 text-blue-600" /> Academic Journey
+                </h3>
+                <Button size="sm" onClick={() => openAcademicDialog()}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Year
                 </Button>
               </div>
-              <div className="space-y-4">
-                {academic.draft.subjects.map((subject, index) => (
-                  <div
-                    key={subject.id}
-                    className="rounded-xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-foreground dark:text-white">Subject {index + 1}</h4>
-                      <Button
-                        variant="ghost"
-                        className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-red-500/10 hover:text-red-100"
-                        onClick={() =>
-                          setAcademicDraft({
-                            ...academic.draft!,
-                            subjects: academic.draft!.subjects.filter((item) => item.id !== subject.id),
-                          })
-                        }
-                      >
-                        Remove
+
+              {profile.academicHistory.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {profile.academicHistory.map(year => (
+                    <ModernAcademicCard
+                      key={year.id}
+                      year={year}
+                      schoolName={profile.schoolInfo.schoolName || ''}
+                      onEdit={() => openAcademicDialog(year)}
+                      onRemove={() => { }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">Add your academic history to showcase your grades.</p>
+                </div>
+              )}
+
+              {/* Subject Performance */}
+              {subjectSummary.length > 0 && (
+                <div className="mt-6 rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900">
+                  <h4 className="font-semibold mb-4">Top Performing Subjects</h4>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {subjectSummary.map(s => (
+                      <SubjectPerformanceCard key={s.name} name={s.name} percent={s.percent} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Achievements */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <Trophy className="h-5 w-5 text-amber-500" /> Achievements
+                </h3>
+                <Button size="sm" variant="outline" onClick={() => openAchievementDialog()}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Achievement
+                </Button>
+              </div>
+
+              {profile.achievements.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {profile.achievements.map(item => (
+                    <ModernAchievementCard
+                      key={item.id}
+                      achievement={item}
+                      onEdit={() => openAchievementDialog(item)}
+                      onRemove={() => { }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">Showcase your awards and certificates.</p>
+                </div>
+              )}
+            </section>
+
+            {/* Competitions */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <Flag className="h-5 w-5 text-purple-500" /> Competitions
+                </h3>
+                <Button size="sm" variant="outline" onClick={() => openCompetitionDialog()}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Competition
+                </Button>
+              </div>
+
+              {profile.competitions.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {profile.competitions.map(item => (
+                    <ModernCompetitionCard
+                      key={item.id}
+                      competition={item}
+                      onEdit={() => openCompetitionDialog(item)}
+                      onRemove={() => { }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">Add competitions you've participated in.</p>
+                </div>
+              )}
+            </section>
+
+            {/* Extracurriculars */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <Users2 className="h-5 w-5 text-emerald-500" /> Extracurriculars
+                </h3>
+                <Button size="sm" variant="outline" onClick={() => openExtracurricularDialog()}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Activity
+                </Button>
+              </div>
+
+              {profile.extracurriculars.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {profile.extracurriculars.map(item => (
+                    <ModernExtracurricularCard
+                      key={item.id}
+                      activity={item}
+                      onEdit={() => openExtracurricularDialog(item)}
+                      onRemove={() => { }}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">Share your clubs, volunteering, and hobbies.</p>
+                </div>
+              )}
+            </section>
+
+            {/* Saved Opportunities */}
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-pink-500" /> Saved Opportunities
+                </h3>
+                <Button variant="ghost" size="sm" onClick={loadSavedOpportunities} disabled={isLoadingSaved}>
+                  <RefreshCw className={cn("h-4 w-4", isLoadingSaved && "animate-spin")} />
+                </Button>
+              </div>
+
+              {savedOpportunities.length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {savedOpportunities.map(item => (
+                    <Card key={item.id} className="p-4 hover:shadow-md transition-shadow w-full max-w-full">
+                      <div className="flex justify-between items-start gap-2">
+                        <Badge variant="secondary" className="shrink-0">{item.category || 'Opportunity'}</Badge>
+                        {item.registrationDeadline && (
+                          <span className="text-xs text-slate-500 shrink-0 text-right">
+                            Due {new Date(item.registrationDeadline).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="mt-2 font-semibold line-clamp-2 break-words">{item.title}</h4>
+                      <p className="text-sm text-slate-600 mt-1 break-words">{item.organizer}</p>
+                      <Button asChild className="w-full mt-4" variant="outline" size="sm">
+                        <Link href={`/opportunity/${item.id}`}>View Details</Link>
                       </Button>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border-2 border-dashed p-8 text-center bg-white dark:bg-slate-900">
+                  <p className="text-slate-500">You haven't saved any opportunities yet.</p>
+                </div>
+              )}
+            </section>
+
+          </main>
+        </div>
+      </div>
+
+      {/* --- DIALOGS --- */}
+
+      {/* Basics Dialog */}
+      <Dialog open={isBasicsOpen} onOpenChange={setIsBasicsOpen}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
+          {basicsDraft && (
+            <div className="space-y-4 py-4">
+              <div className="grid gap-2">
+                <Label>Display Name</Label>
+                <Input value={basicsDraft.displayName} onChange={e => setBasicsDraft({ ...basicsDraft, displayName: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Tagline</Label>
+                <Input value={basicsDraft.tagline} onChange={e => setBasicsDraft({ ...basicsDraft, tagline: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Bio</Label>
+                <Textarea value={basicsDraft.bio} onChange={e => setBasicsDraft({ ...basicsDraft, bio: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Location</Label>
+                <Input value={basicsDraft.location} onChange={e => setBasicsDraft({ ...basicsDraft, location: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Interests</Label>
+                <Textarea value={basicsDraft.interests} onChange={e => setBasicsDraft({ ...basicsDraft, interests: e.target.value })} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={handleSubmitBasics} disabled={pendingAction === 'basics'}>Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Stats Dialog */}
+      <Dialog open={isStatsOpen} onOpenChange={setIsStatsOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Update Stats</DialogTitle></DialogHeader>
+          {statsDraft && (
+            <div className="space-y-4 py-4">
+              <div className="grid gap-2">
+                <Label>Current Class</Label>
+                <Input value={statsDraft.currentClass} onChange={e => setStatsDraft({ ...statsDraft, currentClass: e.target.value })} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>GPA</Label>
+                  <Input value={statsDraft.gpa} onChange={e => setStatsDraft({ ...statsDraft, gpa: e.target.value })} />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Avg Score</Label>
+                  <Input value={statsDraft.averageScore} onChange={e => setStatsDraft({ ...statsDraft, averageScore: e.target.value })} />
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={handleSubmitStats}>Save Stats</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* School Dialog */}
+      <Dialog open={isSchoolOpen} onOpenChange={setIsSchoolOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>School Information</DialogTitle></DialogHeader>
+          {schoolDraft && (
+            <div className="space-y-4 py-4">
+              <div className="grid gap-2">
+                <Label>School Name</Label>
+                <Input value={schoolDraft.schoolName} onChange={e => setSchoolDraft({ ...schoolDraft, schoolName: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Board</Label>
+                <Input value={schoolDraft.board} onChange={e => setSchoolDraft({ ...schoolDraft, board: e.target.value })} />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={handleSubmitSchool}>Save School Info</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Academic Dialog */}
+      <Dialog open={isAcademicOpen} onOpenChange={setIsAcademicOpen}>
+        <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+          <DialogHeader><DialogTitle>Academic Year</DialogTitle></DialogHeader>
+          {academicDraft && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>Session</Label>
+                  <Input value={academicDraft.session} onChange={e => setAcademicDraft({ ...academicDraft, session: e.target.value })} placeholder="2023-2024" />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Grade</Label>
+                  <Input value={academicDraft.grade} onChange={e => setAcademicDraft({ ...academicDraft, grade: e.target.value })} placeholder="Grade 10" />
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Label>School</Label>
+                <Input value={academicDraft.schoolName} onChange={e => setAcademicDraft({ ...academicDraft, schoolName: e.target.value })} />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <Label>Subjects</Label>
+                  <Button size="sm" variant="outline" onClick={() => setAcademicDraft({
+                    ...academicDraft,
+                    subjects: [...academicDraft.subjects, { id: crypto.randomUUID(), name: '', marks: '', maxMarks: '', grade: '', teacherComment: '' }]
+                  })}>Add Subject</Button>
+                </div>
+                {academicDraft.subjects.map((subject, idx) => (
+                  <div key={subject.id} className="grid grid-cols-12 gap-2 items-end">
+                    <div className="col-span-5">
+                      <Input placeholder="Subject Name" value={subject.name} onChange={e => {
+                        const newSubjects = [...academicDraft.subjects];
+                        newSubjects[idx].name = e.target.value;
+                        setAcademicDraft({ ...academicDraft, subjects: newSubjects });
+                      }} />
                     </div>
-                    <div className="mt-3 grid gap-3 md:grid-cols-2">
-                      <div className="grid gap-2">
-                        <Label>Name</Label>
-                        <Input
-                          value={subject.name}
-                          onChange={(event) =>
-                            setAcademicDraft({
-                              ...academic.draft!,
-                              subjects: academic.draft!.subjects.map((item) =>
-                                item.id === subject.id ? { ...item, name: event.target.value } : item,
-                              ),
-                            })
-                          }
-                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label>Marks obtained</Label>
-                        <Input
-                          value={subject.marks}
-                          onChange={(event) =>
-                            setAcademicDraft({
-                              ...academic.draft!,
-                              subjects: academic.draft!.subjects.map((item) =>
-                                item.id === subject.id ? { ...item, marks: event.target.value } : item,
-                              ),
-                            })
-                          }
-                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                          placeholder="90"
-                        />
-                      </div>
+                    <div className="col-span-3">
+                      <Input placeholder="Marks" value={subject.marks} onChange={e => {
+                        const newSubjects = [...academicDraft.subjects];
+                        newSubjects[idx].marks = e.target.value;
+                        setAcademicDraft({ ...academicDraft, subjects: newSubjects });
+                      }} />
                     </div>
-                    <div className="mt-3 grid gap-3 md:grid-cols-2">
-                      <div className="grid gap-2">
-                        <Label>Max marks</Label>
-                        <Input
-                          value={subject.maxMarks}
-                          onChange={(event) =>
-                            setAcademicDraft({
-                              ...academic.draft!,
-                              subjects: academic.draft!.subjects.map((item) =>
-                                item.id === subject.id ? { ...item, maxMarks: event.target.value } : item,
-                              ),
-                            })
-                          }
-                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                          placeholder="100"
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label>Grade</Label>
-                        <Input
-                          value={subject.grade}
-                          onChange={(event) =>
-                            setAcademicDraft({
-                              ...academic.draft!,
-                              subjects: academic.draft!.subjects.map((item) =>
-                                item.id === subject.id ? { ...item, grade: event.target.value } : item,
-                              ),
-                            })
-                          }
-                          className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                          placeholder="A+"
-                        />
-                      </div>
+                    <div className="col-span-3">
+                      <Input placeholder="Max" value={subject.maxMarks} onChange={e => {
+                        const newSubjects = [...academicDraft.subjects];
+                        newSubjects[idx].maxMarks = e.target.value;
+                        setAcademicDraft({ ...academicDraft, subjects: newSubjects });
+                      }} />
                     </div>
-                    <div className="mt-3 grid gap-2">
-                      <Label>Teacher comment</Label>
-                      <Textarea
-                        rows={2}
-                        value={subject.teacherComment}
-                        onChange={(event) =>
-                          setAcademicDraft({
-                            ...academic.draft!,
-                            subjects: academic.draft!.subjects.map((item) =>
-                              item.id === subject.id ? { ...item, teacherComment: event.target.value } : item,
-                            ),
-                          })
-                        }
-                        className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                        placeholder="Student demonstrates excellent problem-solving skills."
-                      />
+                    <div className="col-span-1">
+                      <Button variant="ghost" size="icon" onClick={() => {
+                        const newSubjects = academicDraft.subjects.filter((_, i) => i !== idx);
+                        setAcademicDraft({ ...academicDraft, subjects: newSubjects });
+                      }}>×</Button>
                     </div>
                   </div>
                 ))}
               </div>
-              {academic.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {academic.error}
-                </p>
-              )}
             </div>
           )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setAcademicOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitAcademic}
-              disabled={pendingAction === 'academic'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
-            >
-              {pendingAction === 'academic' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <CheckCircle className="mr-2 h-4 w-4" />
-              )}
-              Save academic year
-            </Button>
+          <DialogFooter>
+            <Button onClick={handleSubmitAcademic}>Save Academic Year</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Dialog open={school.open} onOpenChange={(value) => setSchoolOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>School information</DialogTitle>
-          </DialogHeader>
-          {school.draft && (
+
+      {/* Achievement Dialog */}
+      <Dialog open={isAchievementOpen} onOpenChange={setIsAchievementOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Achievement</DialogTitle></DialogHeader>
+          {achievementDraft && (
             <div className="space-y-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="schoolName">School name</Label>
-                <Input
-                  id="schoolName"
-                  value={school.draft.schoolName}
-                  onChange={(event) =>
-                    setSchoolDraft({ ...school.draft!, schoolName: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Mumbai International School"
-                />
+                <Label>Title</Label>
+                <Input value={achievementDraft.title} onChange={e => setAchievementDraft({ ...achievementDraft, title: e.target.value })} />
               </div>
               <div className="grid gap-2">
-                <Label>Board</Label>
-                <Select
-                  value={school.draft.board}
-                  onValueChange={(value) =>
-                    setSchoolDraft({
-                      ...school.draft!,
-                      board: value === 'other' ? '' : value,
-                      otherBoard: value === 'other' ? school.draft!.otherBoard : '',
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
-                    <SelectValue placeholder="Select board" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
-                    {DEFAULT_BOARDS.map((boardName) => (
-                      <SelectItem key={boardName} value={boardName === 'Other' ? 'other' : boardName}>
-                        {boardName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {school.draft.board === '' && (
-                  <Input
-                    value={school.draft.otherBoard}
-                    onChange={(event) =>
-                      setSchoolDraft({ ...school.draft!, otherBoard: event.target.value })
-                    }
-                    className="mt-2 bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                    placeholder="Your board"
-                  />
-                )}
+                <Label>Description</Label>
+                <Textarea value={achievementDraft.description} onChange={e => setAchievementDraft({ ...achievementDraft, description: e.target.value })} />
               </div>
-              <div className="grid gap-2">
-                <Label>Class / Grade</Label>
-                <Select
-                  value={school.draft.className}
-                  onValueChange={(value) =>
-                    setSchoolDraft({ ...school.draft!, className: value })
-                  }
-                >
-                  <SelectTrigger className="w-full bg-white/90 dark:bg-white/5 text-foreground dark:text-white">
-                    <SelectValue placeholder="Select class" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-900 text-foreground dark:text-white">
-                    {DEFAULT_CLASSES.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>Level</Label>
+                  <Select value={achievementDraft.level} onValueChange={v => setAchievementDraft({ ...achievementDraft, level: v })}>
+                    <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(ACHIEVEMENT_LEVEL_LABELS).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Year</Label>
+                  <Input value={achievementDraft.year} onChange={e => setAchievementDraft({ ...achievementDraft, year: e.target.value })} />
+                </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="otherSchoolName">Previous / Alternate school</Label>
-                <Input
-                  id="otherSchoolName"
-                  value={school.draft.otherSchoolName}
-                  onChange={(event) =>
-                    setSchoolDraft({
-                      ...school.draft!,
-                      otherSchoolName: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="Optional"
-                />
-              </div>
-              {school.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {school.error}
-                </p>
-              )}
             </div>
           )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setSchoolOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitSchool}
-              disabled={pendingAction === 'school'}
-              className="bg-gradient-to-r from-emerald-500 to-lime-500 text-slate-900 hover:from-emerald-400 hover:to-lime-400"
-            >
-              {pendingAction === 'school' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <CheckCircle className="mr-2 h-4 w-4" />
-              )}
-              Save school info
-            </Button>
+          <DialogFooter>
+            <Button onClick={handleSubmitAchievement}>Save Achievement</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Dialog open={stats.open} onOpenChange={(value) => setStatsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>Academic stats</DialogTitle>
-          </DialogHeader>
-          {stats.draft && (
+
+      {/* Competition Dialog */}
+      <Dialog open={isCompetitionOpen} onOpenChange={setIsCompetitionOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Competition</DialogTitle></DialogHeader>
+          {competitionDraft && (
             <div className="space-y-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="currentClass">Current class</Label>
-                <Input
-                  id="currentClass"
-                  value={stats.draft.currentClass}
-                  onChange={(event) =>
-                    setStatsDraft({ ...stats.draft!, currentClass: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
+                <Label>Name</Label>
+                <Input value={competitionDraft.name} onChange={e => setCompetitionDraft({ ...competitionDraft, name: e.target.value })} />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="gpa">GPA / Average grade</Label>
-                <Input
-                  id="gpa"
-                  value={stats.draft.gpa}
-                  onChange={(event) =>
-                    setStatsDraft({ ...stats.draft!, gpa: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
+                <Label>Result</Label>
+                <Input value={competitionDraft.result} onChange={e => setCompetitionDraft({ ...competitionDraft, result: e.target.value })} />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="averageScore">Average score (%)</Label>
-                <Input
-                  id="averageScore"
-                  value={stats.draft.averageScore}
-                  onChange={(event) =>
-                    setStatsDraft({ ...stats.draft!, averageScore: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="totalAwards">Total awards</Label>
-                <Input
-                  id="totalAwards"
-                  value={stats.draft.totalAwards}
-                  onChange={(event) =>
-                    setStatsDraft({ ...stats.draft!, totalAwards: event.target.value })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="competitions">Competitions participated</Label>
-                <Input
-                  id="competitions"
-                  value={stats.draft.competitionsParticipated}
-                  onChange={(event) =>
-                    setStatsDraft({
-                      ...stats.draft!,
-                      competitionsParticipated: event.target.value,
-                    })
-                  }
-                  className="bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                />
-              </div>
-              {stats.error && (
-                <p className="rounded-md border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-100">
-                  {stats.error}
-                </p>
-              )}
             </div>
           )}
-          <DialogFooter className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setStatsOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitStats}
-              disabled={pendingAction === 'stats'}
-              className="bg-gradient-to-r from-sky-500 to-violet-500 text-foreground dark:text-white hover:from-sky-600 hover:to-violet-600"
-            >
-              {pendingAction === 'stats' ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <CheckCircle className="mr-2 h-4 w-4" />
-              )}
-              Save stats
-            </Button>
+          <DialogFooter>
+            <Button onClick={handleSubmitCompetition}>Save Competition</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Dialog open={settings.open} onOpenChange={(value) => setSettingsOpen(value)}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto border-slate-200 dark:border-white/10 bg-slate-950 text-foreground dark:text-white">
-          <DialogHeader>
-            <DialogTitle>Visibility & sharing</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-6 py-4">
-            <div className="space-y-3">
-              <p className="text-sm text-slate-600 dark:text-white/70">
-                Control who can view your portfolio and personalise your shareable link.
-              </p>
-              <div className="space-y-3">
-                {(Object.keys(VISIBILITY_LABELS) as StudentProfileVisibility[]).map((key) => {
-                  const option = VISIBILITY_LABELS[key];
-                  const Icon =
-                    key === 'public' ? Globe2 : key === 'teachers' ? Users2 : (Lock as typeof Lock);
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => handleVisibilityChange(key)}
-                      className={cn(
-                        'flex w-full items-start gap-4 rounded-2xl border p-4 text-left transition-colors',
-                        profile.visibility === key
-                          ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-100'
-                          : 'border-white/10 bg-white/90 dark:bg-white/5 text-foreground dark:text-white/80 hover:bg-card/70 dark:bg-white/10',
-                      )}
-                    >
-                      <Icon className="mt-0.5 h-5 w-5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium">{option.title}</p>
-                        <p className="mt-1 text-sm text-slate-600 dark:text-white/60">{option.description}</p>
-                      </div>
-                    </button>
-                  );
-                })}
+
+      {/* Extracurricular Dialog */}
+      <Dialog open={isExtracurricularOpen} onOpenChange={setIsExtracurricularOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Activity</DialogTitle></DialogHeader>
+          {extracurricularDraft && (
+            <div className="space-y-4 py-4">
+              <div className="grid gap-2">
+                <Label>Activity Name</Label>
+                <Input value={extracurricularDraft.name} onChange={e => setExtracurricularDraft({ ...extracurricularDraft, name: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Role</Label>
+                <Input value={extracurricularDraft.role} onChange={e => setExtracurricularDraft({ ...extracurricularDraft, role: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <Label>Description</Label>
+                <Textarea value={extracurricularDraft.description} onChange={e => setExtracurricularDraft({ ...extracurricularDraft, description: e.target.value })} />
               </div>
             </div>
-
-            <Separator className="bg-card/70 dark:bg-white/10" />
-
-            <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-foreground dark:text-white">Public profile link</h3>
-              <div className="flex flex-col gap-3 md:flex-row md:items-center">
-                <Input
-                  value={settings.slug}
-                  onChange={(event) => setSlugDraft(event.target.value.toLowerCase())}
-                  className="flex-1 bg-white/90 dark:bg-white/5 text-foreground dark:text-white"
-                  placeholder="mahi-kumar"
-                />
-                <Button
-                  variant="outline"
-                  className="border-white/20 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-                  onClick={handleSlugSave}
-                  disabled={pendingAction === 'slug'}
-                >
-                  {pendingAction === 'slug' ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <CheckCircle className="mr-2 h-4 w-4" />
-                  )}
-                  Save link
-                </Button>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-white/60">
-                Your public profile will be available at{' '}
-                <code className="rounded bg-card/70 dark:bg-white/10 px-2 py-1">
-                  myark.in/student/{settings.slug || 'your-name'}
-                </code>
-              </p>
-            </div>
-
-            <Separator className="bg-card/70 dark:bg-white/10" />
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground dark:text-white">Profile preferences</h3>
-              <div className="flex items-start justify-between gap-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4">
-                <div>
-                  <p className="font-medium text-foreground dark:text-white">Enable résumé download</p>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-white/60">
-                    Allow Myark to generate a PDF of your profile when you choose download.
-                  </p>
-                </div>
-                <Switch
-                  checked={profile.settings.allowDownload}
-                  onCheckedChange={toggleDownloadSetting}
-                  disabled={pendingAction?.startsWith('settings-')}
-                />
-              </div>
-              <div className="flex items-start justify-between gap-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4">
-                <div>
-                  <p className="font-medium text-foreground dark:text-white">Show progress tracker</p>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-white/60">
-                    Display the completion percentage and guidance checklist on your dashboard.
-                  </p>
-                </div>
-                <Switch
-                  checked={profile.settings.showProgressBar}
-                  onCheckedChange={toggleProgressSetting}
-                  disabled={pendingAction?.startsWith('settings-')}
-                />
-              </div>
-            </div>
-          </div>
-          <DialogFooter className="flex justify-end">
-            <Button
-              variant="ghost"
-              className="border border-slate-200 dark:border-white/10 text-foreground dark:text-white hover:bg-card/70 dark:bg-white/10"
-              onClick={() => setSettingsOpen(false)}
-            >
-              Close
-            </Button>
+          )}
+          <DialogFooter>
+            <Button onClick={handleSubmitExtracurricular}>Save Activity</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+
+    </div>
   );
 }
-
-function CircleIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <circle cx="12" cy="12" r="10" />
-    </svg>
-  );
-}
-
-
-
-
-
