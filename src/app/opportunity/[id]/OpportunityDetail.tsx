@@ -919,10 +919,51 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   const formattedDeadline = formatDate(opportunity.registrationDeadline);
   const modeLabel = normalizeModeLabel(opportunity.mode);
   const displayFee = formatFee(opportunity);
-  const timelineEntries: OpportunityTimelineEvent[] = (opportunity.timeline ?? []).map((item) => ({
-    ...item,
-    date: item.date ?? '',
-  }));
+  const timelineEntries: OpportunityTimelineEvent[] = (() => {
+    const rawEvents = (opportunity.timeline ?? []).map((item) => ({
+      ...item,
+      date: item.date ?? '',
+    }));
+
+    // Sort by date
+    const sortedEvents = rawEvents.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return (Number.isNaN(dateA) ? 0 : dateA) - (Number.isNaN(dateB) ? 0 : dateB);
+    });
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Compare dates only, ignore time for "passed" check
+
+    let hasSetNextActive = false;
+
+    return sortedEvents.map((event) => {
+      const eventDate = new Date(event.date);
+      eventDate.setHours(0, 0, 0, 0);
+
+      let status: OpportunityTimelineStatus = 'upcoming';
+
+      if (Number.isNaN(eventDate.getTime())) {
+        // Invalid date, keep as upcoming or original? Default upcoming.
+        status = 'upcoming';
+      } else if (eventDate.getTime() < now.getTime()) {
+        status = 'completed';
+      } else {
+        // Future or Today
+        if (!hasSetNextActive) {
+          status = 'active';
+          hasSetNextActive = true;
+        } else {
+          status = 'upcoming';
+        }
+      }
+
+      return {
+        ...event,
+        status
+      };
+    });
+  })();
   const dateDisplay =
     formattedEndDate !== 'TBA' && formattedEndDate !== formattedStartDate
       ? `${formattedStartDate} - ${formattedEndDate}`
@@ -1322,71 +1363,102 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
                           Important Timeline
                         </h2>
-                        <div className="space-y-6">
-                          {timelineEntries.map((item, index) => (
-                            <div key={index} className="relative flex gap-4 group">
-                              {/* Stepper Line */}
-                              <div className="flex flex-col items-center">
-                                {/* Circle Indicator */}
-                                <div className={`h-14 w-14 rounded-full flex items-center justify-center border-2 transition-all duration-300 relative z-10
-                                  ${item.status === 'active'
-                                    ? 'bg-gradient-to-br from-orange-50 to-pink-50 border-orange-500 dark:from-orange-500/20 dark:to-pink-500/20 dark:border-orange-400 shadow-lg shadow-orange-500/20'
-                                    : item.status === 'completed'
-                                      ? 'bg-emerald-50 border-emerald-500 dark:bg-emerald-500/20 dark:border-emerald-400'
-                                      : 'bg-slate-50 border-slate-300 dark:bg-slate-800 dark:border-slate-600'
-                                  }`}
-                                >
-                                  {item.status === 'active' ? (
-                                    <Clock className="h-7 w-7 text-orange-500 dark:text-orange-300" />
-                                  ) : item.status === 'completed' ? (
-                                    <CheckCircle2 className="h-7 w-7 text-emerald-500 dark:text-emerald-300" />
-                                  ) : (
-                                    <Calendar className="h-7 w-7 text-slate-400 dark:text-slate-500" />
-                                  )}
-                                </div>
-                                {/* Vertical Connecting Line */}
-                                {index < timelineEntries.length - 1 && (
-                                  <div className={`w-0.5 h-full min-h-[60px] transition-all duration-300
-                                    ${item.status === 'completed'
-                                      ? 'bg-emerald-300 dark:bg-emerald-600'
-                                      : 'bg-slate-200 dark:bg-slate-700'
-                                    }`}
-                                  ></div>
-                                )}
-                              </div>
+                        <div className="relative pl-4 md:pl-8 space-y-0">
+                          {/* Continuous Vertical Line */}
+                          <div className="absolute left-[27px] md:left-[43px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-200 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700"></div>
 
-                              {/* Event Card */}
-                              <div className="flex-1 pb-4">
-                                <div className={`p-5 rounded-xl border-2 transition-all duration-300 group-hover:shadow-md
-                                  ${item.status === 'active'
-                                    ? 'bg-gradient-to-br from-orange-50 to-pink-50 border-orange-200 dark:from-orange-500/10 dark:to-pink-500/10 dark:border-orange-500/30'
-                                    : item.status === 'completed'
-                                      ? 'bg-emerald-50 border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/30'
-                                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700'
-                                  }`}
-                                >
-                                  {/* Event Title */}
-                                  <div className="flex items-start justify-between gap-3 mb-2">
-                                    <p className="font-bold text-lg text-foreground dark:text-white leading-snug">
+                          {timelineEntries.map((item, index) => {
+                            const isLast = index === timelineEntries.length - 1;
+                            const isFirst = index === 0;
+
+                            // Determine icon and color based on event content and status
+                            let Icon = Calendar;
+                            let colorClass = "text-slate-500 dark:text-slate-400";
+                            let bgClass = "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700";
+                            let iconBgClass = "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700";
+
+                            const lowerEvent = item.event.toLowerCase();
+                            if (lowerEvent.includes('registration')) {
+                              Icon = PenTool;
+                              if (item.status === 'active') {
+                                colorClass = "text-blue-500 dark:text-blue-400";
+                                bgClass = "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800";
+                                iconBgClass = "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700";
+                              }
+                            } else if (lowerEvent.includes('admit card') || lowerEvent.includes('hall ticket')) {
+                              Icon = Download;
+                              if (item.status === 'active') {
+                                colorClass = "text-purple-500 dark:text-purple-400";
+                                bgClass = "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800";
+                                iconBgClass = "bg-purple-100 dark:bg-purple-900/40 border-purple-200 dark:border-purple-700";
+                              }
+                            } else if (lowerEvent.includes('exam') || lowerEvent.includes('test')) {
+                              Icon = FileText;
+                              if (item.status === 'active') {
+                                colorClass = "text-orange-500 dark:text-orange-400";
+                                bgClass = "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800";
+                                iconBgClass = "bg-orange-100 dark:bg-orange-900/40 border-orange-200 dark:border-orange-700";
+                              }
+                            } else if (lowerEvent.includes('result') || lowerEvent.includes('announcement')) {
+                              Icon = Trophy;
+                              if (item.status === 'active' || item.status === 'completed') {
+                                colorClass = "text-emerald-500 dark:text-emerald-400";
+                                bgClass = "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800";
+                                iconBgClass = "bg-emerald-100 dark:bg-emerald-900/40 border-emerald-200 dark:border-emerald-700";
+                              }
+                            }
+
+                            // Override for active status generic
+                            if (item.status === 'active' && bgClass.includes('slate')) {
+                              colorClass = "text-pink-500 dark:text-pink-400";
+                              bgClass = "bg-pink-50 dark:bg-pink-900/20 border-pink-200 dark:border-pink-800";
+                              iconBgClass = "bg-pink-100 dark:bg-pink-900/40 border-pink-200 dark:border-pink-700";
+                            }
+
+                            // Override for completed status generic
+                            if (item.status === 'completed' && !lowerEvent.includes('result')) {
+                              colorClass = "text-slate-400 dark:text-slate-500";
+                              bgClass = "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 opacity-80";
+                              iconBgClass = "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700";
+                              Icon = CheckCircle2;
+                            }
+
+
+                            return (
+                              <div key={index} className="relative flex gap-6 md:gap-8 group pb-8 last:pb-0">
+                                {/* Timeline Node */}
+                                <div className="relative z-10 flex-shrink-0">
+                                  <div className={`h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center border-2 shadow-sm transition-all duration-300 ${iconBgClass} ${item.status === 'active' ? 'scale-110 ring-4 ring-white dark:ring-slate-900' : ''}`}>
+                                    <Icon className={`h-3 w-3 md:h-4 md:w-4 ${colorClass}`} />
+                                  </div>
+                                </div>
+
+                                {/* Content Card */}
+                                <div className={`flex-1 rounded-xl border p-4 md:p-5 transition-all duration-300 hover:shadow-md ${bgClass} ${item.status === 'active' ? 'shadow-md transform translate-x-1' : ''}`}>
+                                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                    <h3 className={`font-bold text-base md:text-lg ${item.status === 'completed' ? 'text-slate-500 dark:text-slate-400 line-through decoration-slate-400' : 'text-foreground dark:text-white'}`}>
                                       {item.event}
-                                    </p>
+                                    </h3>
                                     {item.status === 'active' && (
-                                      <Badge className="bg-orange-500 text-white text-xs shrink-0">Live</Badge>
+                                      <Badge className="w-fit bg-gradient-to-r from-orange-500 to-pink-500 border-0 text-white text-xs px-2 py-0.5 shadow-sm animate-pulse">
+                                        Live Now
+                                      </Badge>
                                     )}
-                                    {item.status === 'completed' && (
-                                      <Badge className="bg-emerald-500 text-white text-xs shrink-0">Done</Badge>
+                                    {item.status === 'upcoming' && (
+                                      <Badge variant="outline" className="w-fit border-slate-300 text-slate-500 text-xs px-2 py-0.5">
+                                        Upcoming
+                                      </Badge>
                                     )}
                                   </div>
 
-                                  {/* Event Date */}
                                   <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                                    <Calendar className="h-4 w-4" />
-                                    <span>{formatDate(item.date)}</span>
+                                    <Clock className="h-4 w-4 opacity-70" />
+                                    <span className="font-medium">{formatDate(item.date)}</span>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </Card>
                     ),
