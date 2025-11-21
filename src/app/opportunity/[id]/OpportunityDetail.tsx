@@ -834,6 +834,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
   };
 
+  const [activePatternIndex, setActivePatternIndex] = useState(0);
+
   const handleExternalConfirmation = async (confirmed: boolean) => {
     setShowExternalConfirmation(false);
     if (!confirmed) return;
@@ -1151,7 +1153,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               </div>
 
               {/* Title */}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-white leading-tight">
+              <h1 className="text-xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-white leading-tight">
                 {title}
               </h1>
 
@@ -1203,7 +1205,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
             {/* Price */}
             <div className="mb-4 text-center">
               <p className="text-sm text-slate-600 dark:text-slate-300 mb-1">Registration Fee</p>
-              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
+              <p className="text-xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
             </div>
 
             {/* Countdown Timer */}
@@ -1215,15 +1217,15 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 </p>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="rounded-xl border border-orange-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-2xl font-bold text-orange-500">{countdown.days}</div>
-                    <div className="text-xs text-slate-600 dark:text-slate-300">Days</div>
+                    <div className="text-lg md:text-2xl font-bold text-orange-500">{countdown.days}</div>
+                    <div className="text-[10px] md:text-xs text-slate-600 dark:text-slate-300">Days</div>
                   </div>
                   <div className="rounded-xl border border-pink-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-2xl font-bold text-pink-500">{countdown.hours}</div>
-                    <div className="text-xs text-slate-600 dark:text-slate-300">Hours</div>
+                    <div className="text-lg md:text-2xl font-bold text-pink-500">{countdown.hours}</div>
+                    <div className="text-[10px] md:text-xs text-slate-600 dark:text-slate-300">Hours</div>
                   </div>
                   <div className="rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-2xl font-bold text-purple-500">{countdown.minutes}</div>
+                    <div className="text-lg md:text-2xl font-bold text-purple-500">{countdown.minutes}</div>
                     <div className="text-xs text-slate-600 dark:text-slate-300">Mins</div>
                   </div>
                 </div>
@@ -1291,7 +1293,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <div className="space-y-6">
                           <div>
-                            <h2 className="text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
+                            <h2 className="text-lg md:text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
                               <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                               About This Opportunity
                             </h2>
@@ -1303,7 +1305,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           <Separator className="bg-white/80 dark:bg-slate-800/70" />
 
                           <div>
-                            <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                            <h3 className="text-base md:text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                               <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
                               Key Benefits
                             </h3>
@@ -1332,7 +1334,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     label: 'Eligibility',
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                           Eligibility Criteria
                         </h2>
@@ -1359,7 +1361,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     label: 'Timeline',
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
+                        <h2 className="text-lg md:text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
                           Important Timeline
                         </h2>
@@ -1436,7 +1438,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                 {/* Content Card */}
                                 <div className={`flex-1 rounded-xl border p-4 md:p-5 transition-all duration-300 hover:shadow-md ${bgClass} ${item.status === 'active' ? 'shadow-md transform translate-x-1' : ''}`}>
                                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                                    <h3 className={`font-bold text-base md:text-lg ${item.status === 'completed' ? 'text-slate-500 dark:text-slate-400 line-through decoration-slate-400' : 'text-foreground dark:text-white'}`}>
+                                    <h3 className={`font-bold text-sm md:text-lg ${item.status === 'completed' ? 'text-slate-500 dark:text-slate-400 line-through decoration-slate-400' : 'text-foreground dark:text-white'}`}>
                                       {item.event}
                                     </h3>
                                     {item.status === 'active' && (
@@ -1451,7 +1453,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                     )}
                                   </div>
 
-                                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                                  <div className="flex items-center gap-2 text-[10px] md:text-sm text-slate-600 dark:text-slate-300">
                                     <Clock className="h-4 w-4 opacity-70" />
                                     <span className="font-medium">{formatDate(item.date)}</span>
                                   </div>
@@ -1470,7 +1472,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                           <div>
-                            <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                            <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                               <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                               How to Register
                             </h2>
@@ -1491,7 +1493,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           </div>
 
                           <div>
-                            <h3 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                            <h3 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                               <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
                               Contact Information
                             </h3>
@@ -1540,102 +1542,130 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     label: 'Exam Pattern',
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                           Examination Pattern
                         </h2>
 
                         {(opportunity.examPatterns && opportunity.examPatterns.length > 0) ? (
-                          <div className="space-y-12">
-                            {opportunity.examPatterns.map((pattern, pIndex) => {
+                          <div className="space-y-6">
+                            {/* Pattern Selection Tabs */}
+                            {opportunity.examPatterns.length > 1 && (
+                              <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+                                {opportunity.examPatterns.map((pattern, index) => {
+                                  let tabLabel = `Pattern ${index + 1}`;
+                                  if (pattern.classSelection?.type === 'single') {
+                                    tabLabel = `Class ${pattern.classSelection.selectedClasses[0]}`;
+                                  } else if (pattern.classSelection?.type === 'multiple') {
+                                    tabLabel = `Classes ${pattern.classSelection.selectedClasses.join(', ')}`;
+                                  } else if (pattern.classSelection?.type === 'range') {
+                                    tabLabel = `Classes ${pattern.classSelection.rangeStart}-${pattern.classSelection.rangeEnd}`;
+                                  }
+
+                                  return (
+                                    <button
+                                      key={index}
+                                      onClick={() => setActivePatternIndex(index)}
+                                      className={`
+                                        whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border
+                                        ${activePatternIndex === index
+                                          ? 'bg-orange-500 text-white border-orange-500 shadow-md'
+                                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700'
+                                        }
+                                      `}
+                                    >
+                                      {tabLabel}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            )}
+
+                            {/* Active Pattern Content */}
+                            {(() => {
+                              const pattern = opportunity.examPatterns[activePatternIndex] || opportunity.examPatterns[0];
                               const durationLabel = typeof pattern.durationMinutes === 'number'
                                 ? `${Math.floor(pattern.durationMinutes / 60)}h ${pattern.durationMinutes % 60}m`
                                 : 'Not specified';
                               const negativeMarkingLabel = pattern.negativeMarking
                                 ? (typeof pattern.negativeMarksPerQuestion === 'number'
-                                  ? `Yes (-${pattern.negativeMarksPerQuestion} per question)`
+                                  ? `Yes (-${pattern.negativeMarksPerQuestion})`
                                   : 'Yes')
                                 : 'No';
 
-                              let classLabel = '';
-                              if (pattern.classSelection?.type === 'single') {
-                                classLabel = `Class ${pattern.classSelection.selectedClasses[0] || '?'}`;
-                              } else if (pattern.classSelection?.type === 'multiple') {
-                                classLabel = `Classes ${pattern.classSelection.selectedClasses.join(', ')}`;
-                              } else if (pattern.classSelection?.type === 'range') {
-                                classLabel = `Classes ${pattern.classSelection.rangeStart} - ${pattern.classSelection.rangeEnd}`;
-                              }
-
                               return (
-                                <div key={pattern.id || pIndex} className="relative">
-                                  {opportunity.examPatterns && opportunity.examPatterns.length > 1 && (
-                                    <div className="mb-4">
-                                      <Badge variant="outline" className="text-sm font-medium border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-300">
-                                        {classLabel || `Pattern ${pIndex + 1}`}
-                                      </Badge>
+                                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                  {/* Key Stats Grid */}
+                                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8">
+                                    <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
+                                      <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                                          <BookOpen className="h-4 w-4 text-orange-500" />
+                                        </div>
+                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Questions</span>
+                                      </div>
+                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{pattern.totalQuestions ?? '—'}</p>
                                     </div>
-                                  )}
 
-                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
-                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <BookOpen className="h-6 w-6 text-orange-400" />
+                                    <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
+                                      <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-pink-500/10 flex items-center justify-center">
+                                          <Timer className="h-4 w-4 text-pink-500" />
+                                        </div>
+                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Duration</span>
                                       </div>
-                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{pattern.totalQuestions ?? '—'}</p>
-                                      <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
+                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{durationLabel}</p>
                                     </div>
-                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
-                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <Timer className="h-6 w-6 text-pink-400" />
+
+                                    <div className="col-span-2 md:col-span-1 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
+                                      <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                                          <AlertCircle className="h-4 w-4 text-red-500" />
+                                        </div>
+                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Neg. Marking</span>
                                       </div>
-                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
-                                      <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
-                                    </div>
-                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
-                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <AlertCircle className="h-6 w-6 text-red-400" />
-                                      </div>
-                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
-                                      <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
+                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{negativeMarkingLabel}</p>
                                     </div>
                                   </div>
 
-                                  <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                                    Section-wise Distribution
-                                  </h3>
-                                  <div className="space-y-4">
-                                    {(pattern.sections ?? []).map((section, index) => (
-                                      <div
-                                        key={index}
-                                        className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
-                                      >
-                                        <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                                          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <BookOpen className="h-5 w-5 text-orange-400" />
-                                          </div>
-                                          <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
-                                        </div>
-                                        <div className="flex gap-6 text-sm">
-                                          <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                            <span className="text-slate-500 dark:text-slate-300">Questions: </span>
-                                            <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
-                                          </div>
-                                          <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                            <span className="text-slate-500 dark:text-slate-300">Marks: </span>
-                                            <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
+                                  {/* Section-wise Distribution */}
+                                  <div>
+                                    <h3 className="text-lg font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                                      Section-wise Distribution
+                                    </h3>
 
-                                  {pIndex < (opportunity.examPatterns?.length ?? 0) - 1 && (
-                                    <Separator className="my-8 bg-slate-200 dark:bg-slate-700" />
-                                  )}
+                                    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
+                                      <table className="w-full text-sm text-left min-w-[300px]">
+                                        <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-medium border-b border-slate-200 dark:border-slate-700">
+                                          <tr>
+                                            <th className="px-4 py-3">Section</th>
+                                            <th className="px-4 py-3 text-center">Ques</th>
+                                            <th className="px-4 py-3 text-center">Marks</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                                          {(pattern.sections ?? []).map((section, index) => (
+                                            <tr key={index} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                                              <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
+                                              <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-300">{section.questions ?? '-'}</td>
+                                              <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-300">{section.marks ?? '-'}</td>
+                                            </tr>
+                                          ))}
+                                          {(!pattern.sections || pattern.sections.length === 0) && (
+                                            <tr>
+                                              <td colSpan={3} className="px-4 py-6 text-center text-slate-500 dark:text-slate-400 italic">
+                                                No section details available
+                                              </td>
+                                            </tr>
+                                          )}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
                                 </div>
                               );
-                            })}
+                            })()}
                           </div>
                         ) : (
                           /* Legacy Single Pattern Fallback */
