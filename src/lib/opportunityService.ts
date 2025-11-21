@@ -10,6 +10,8 @@ import { getDb } from './firebaseAdmin';
 import type {
   Opportunity,
   OpportunityExamPattern,
+  OpportunityExamPatternBlock,
+  ClassSelection,
   OpportunityExamSection,
   OpportunityListResponse,
   OpportunityTimelineEvent,
@@ -132,6 +134,47 @@ const mapExamPattern = (value: unknown): OpportunityExamPattern | undefined => {
   };
 };
 
+const mapClassSelection = (value: unknown): ClassSelection => {
+  if (typeof value !== 'object' || value === null) {
+    return { type: 'single', selectedClasses: [] };
+  }
+  const record = value as Record<string, unknown>;
+  const type = (typeof record.type === 'string' && ['single', 'multiple', 'range'].includes(record.type))
+    ? (record.type as ClassSelection['type'])
+    : 'single';
+
+  return {
+    type,
+    selectedClasses: normalizeArray(record.selectedClasses),
+    rangeStart: typeof record.rangeStart === 'string' ? record.rangeStart : undefined,
+    rangeEnd: typeof record.rangeEnd === 'string' ? record.rangeEnd : undefined,
+  };
+};
+
+const mapExamPatterns = (value: unknown): OpportunityExamPatternBlock[] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.map((entry) => {
+    if (typeof entry !== 'object' || entry === null) {
+      return undefined;
+    }
+    const record = entry as Record<string, unknown>;
+    const pattern = mapExamPattern(record);
+    if (!pattern) return undefined;
+
+    const id = typeof record.id === 'string' ? record.id : crypto.randomUUID();
+    const classSelection = mapClassSelection(record.classSelection);
+
+    return {
+      ...pattern,
+      id,
+      classSelection,
+    };
+  }).filter((item): item is OpportunityExamPatternBlock => Boolean(item));
+};
+
 const mapResourceType = (value: unknown): OpportunityResource['type'] => {
   if (typeof value !== 'string') {
     return 'link';
@@ -224,6 +267,7 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     timeline: mapTimeline(data.timeline),
     registrationProcess: normalizeArray(data.registrationProcess),
     examPattern: mapExamPattern(data.examPattern),
+    examPatterns: mapExamPatterns(data.examPatterns),
     contactInfo: mapContactInfo(data.contactInfo),
     resources: mapResources(data.resources),
     segments: normalizeArray(data.segments),
@@ -628,7 +672,8 @@ export const getOpportunityByIdOrSlug = cache(
 
     return opportunity;
   },
-  ['get-opportunity'],
+
+  ['get-opportunity-v2'],
   {
     revalidate: 3600,
     tags: ['opportunities'],

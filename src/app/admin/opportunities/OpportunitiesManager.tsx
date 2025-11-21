@@ -39,6 +39,18 @@ type ExamPattern = {
   sections: ExamSection[];
 };
 
+type ClassSelection = {
+  type: 'single' | 'multiple' | 'range';
+  selectedClasses: string[];
+  rangeStart?: string;
+  rangeEnd?: string;
+};
+
+type ExamPatternBlock = ExamPattern & {
+  id: string;
+  classSelection: ClassSelection;
+};
+
 type HomeSegmentOption = {
   id: string | null;
   segmentKey: string;
@@ -79,7 +91,8 @@ type OpportunityItem = {
   benefits: string[];
   registrationProcess: string[];
   timeline: TimelineItem[];
-  examPattern: ExamPattern;
+  examPattern: ExamPattern; // Legacy support
+  examPatterns?: ExamPatternBlock[]; // New support
   contactInfo: {
     email: string;
     phone: string;
@@ -127,11 +140,15 @@ type OpportunityFormState = {
   benefitsText: string;
   registrationProcessText: string;
   timelineText: string;
-  examTotalQuestions: string;
-  examDurationMinutes: string;
-  examNegativeMarking: boolean;
-  examNegativeMarksPerQuestion: string;
-  examSectionsText: string;
+  examPatterns: {
+    id: string;
+    classSelection: ClassSelection;
+    totalQuestions: string;
+    durationMinutes: string;
+    negativeMarking: boolean;
+    negativeMarksPerQuestion: string;
+    sectionsText: string;
+  }[];
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string;
@@ -167,11 +184,17 @@ const defaultForm: OpportunityFormState = {
   benefitsText: '',
   registrationProcessText: '',
   timelineText: '',
-  examTotalQuestions: '',
-  examDurationMinutes: '',
-  examNegativeMarking: false,
-  examNegativeMarksPerQuestion: '',
-  examSectionsText: '',
+  examPatterns: [
+    {
+      id: 'default',
+      classSelection: { type: 'single', selectedClasses: [] },
+      totalQuestions: '',
+      durationMinutes: '',
+      negativeMarking: false,
+      negativeMarksPerQuestion: '',
+      sectionsText: '',
+    },
+  ],
   contactEmail: '',
   contactPhone: '',
   contactWebsite: '',
@@ -181,6 +204,7 @@ const defaultForm: OpportunityFormState = {
 
 const modeOptions = ['online', 'offline', 'hybrid'];
 const statusOptions = ['pending', 'draft', 'approved', 'published', 'archived', 'rejected'];
+const CLASS_OPTIONS = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 
 const splitLines = (value: string) =>
   value
@@ -588,11 +612,28 @@ export function OpportunitiesManager() {
       benefitsText: joinLines(item.benefits ?? []),
       registrationProcessText: joinLines(item.registrationProcess ?? []),
       timelineText: timelineToText(item.timeline ?? []),
-      examTotalQuestions: item.examPattern?.totalQuestions?.toString() ?? '',
-      examDurationMinutes: item.examPattern?.durationMinutes?.toString() ?? '',
-      examNegativeMarking: Boolean(item.examPattern?.negativeMarking),
-      examNegativeMarksPerQuestion: item.examPattern?.negativeMarksPerQuestion?.toString() ?? '',
-      examSectionsText: sectionsToText(item.examPattern?.sections ?? []),
+      examPatterns:
+        item.examPatterns && item.examPatterns.length > 0
+          ? item.examPatterns.map((pattern) => ({
+            id: pattern.id || crypto.randomUUID(),
+            classSelection: pattern.classSelection || { type: 'single', selectedClasses: [] },
+            totalQuestions: pattern.totalQuestions?.toString() ?? '',
+            durationMinutes: pattern.durationMinutes?.toString() ?? '',
+            negativeMarking: Boolean(pattern.negativeMarking),
+            negativeMarksPerQuestion: pattern.negativeMarksPerQuestion?.toString() ?? '',
+            sectionsText: sectionsToText(pattern.sections ?? []),
+          }))
+          : [
+            {
+              id: 'legacy',
+              classSelection: { type: 'single', selectedClasses: [] },
+              totalQuestions: item.examPattern?.totalQuestions?.toString() ?? '',
+              durationMinutes: item.examPattern?.durationMinutes?.toString() ?? '',
+              negativeMarking: Boolean(item.examPattern?.negativeMarking),
+              negativeMarksPerQuestion: item.examPattern?.negativeMarksPerQuestion?.toString() ?? '',
+              sectionsText: sectionsToText(item.examPattern?.sections ?? []),
+            },
+          ],
       contactEmail: item.contactInfo?.email ?? '',
       contactPhone: item.contactInfo?.phone ?? '',
       contactWebsite: item.contactInfo?.website ?? '',
@@ -618,6 +659,38 @@ export function OpportunitiesManager() {
     }));
   };
 
+  const handleAddPattern = () => {
+    setFormState((prev) => ({
+      ...prev,
+      examPatterns: [
+        ...prev.examPatterns,
+        {
+          id: crypto.randomUUID(),
+          classSelection: { type: 'single', selectedClasses: [] },
+          totalQuestions: '',
+          durationMinutes: '',
+          negativeMarking: false,
+          negativeMarksPerQuestion: '',
+          sectionsText: '',
+        },
+      ],
+    }));
+  };
+
+  const handleRemovePattern = (id: string) => {
+    setFormState((prev) => ({
+      ...prev,
+      examPatterns: prev.examPatterns.filter((p) => p.id !== id),
+    }));
+  };
+
+  const handlePatternChange = (id: string, field: keyof OpportunityFormState['examPatterns'][number], value: any) => {
+    setFormState((prev) => ({
+      ...prev,
+      examPatterns: prev.examPatterns.map((p) => (p.id === id ? { ...p, [field]: value } : p)),
+    }));
+  };
+
   const buildPayload = () => {
     const selectedOrganizer = organizers.find((entry) => entry.id === formState.organizerId);
     const selectedCategory = categories.find((entry) => entry.id === formState.categoryId);
@@ -638,7 +711,17 @@ export function OpportunitiesManager() {
     const benefits = splitLines(formState.benefitsText);
     const registrationProcess = splitLines(formState.registrationProcessText);
     const timeline = textToTimeline(formState.timelineText);
-    const examSections = textToSections(formState.examSectionsText);
+    // const examSections = textToSections(formState.examSectionsText); // Removed legacy single pattern logic
+
+    const examPatterns = formState.examPatterns.map((pattern) => ({
+      id: pattern.id,
+      classSelection: pattern.classSelection,
+      totalQuestions: toNumberOrNull(pattern.totalQuestions),
+      durationMinutes: toNumberOrNull(pattern.durationMinutes),
+      negativeMarking: pattern.negativeMarking,
+      negativeMarksPerQuestion: toNumberOrNull(pattern.negativeMarksPerQuestion),
+      sections: textToSections(pattern.sectionsText),
+    }));
 
     const normalizedState: OpportunityFormState['state'] = formState.state && INDIAN_STATES_SET.has(formState.state) ? (formState.state as OpportunityFormState['state']) : '';
 
@@ -667,13 +750,8 @@ export function OpportunitiesManager() {
       benefits,
       registrationProcess,
       timeline,
-      examPattern: {
-        totalQuestions: toNumberOrNull(formState.examTotalQuestions),
-        durationMinutes: toNumberOrNull(formState.examDurationMinutes),
-        negativeMarking: formState.examNegativeMarking,
-        negativeMarksPerQuestion: toNumberOrNull(formState.examNegativeMarksPerQuestion),
-        sections: examSections,
-      },
+      examPatterns, // New field
+      examPattern: examPatterns[0] || null, // Legacy fallback
       contactInfo: {
         email: formState.contactEmail,
         phone: formState.contactPhone,
@@ -1356,83 +1434,217 @@ export function OpportunitiesManager() {
                 />
               </div>
 
-              <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
-                <h3 className='text-sm font-semibold text-foreground dark:text-white'>Exam pattern</h3>
-                <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-4'>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-exam-questions'>
-                      Total questions
-                    </label>
-                    <Input
-                      id='op-exam-questions'
-                      value={formState.examTotalQuestions}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, examTotalQuestions: event.target.value }))
-                      }
-                      placeholder='100'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-exam-duration'>
-                      Duration (minutes)
-                    </label>
-                    <Input
-                      id='op-exam-duration'
-                      value={formState.examDurationMinutes}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, examDurationMinutes: event.target.value }))
-                      }
-                      placeholder='120'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-exam-negative'>
-                      Negative marking?
-                    </label>
-                    <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
-                      <input
-                        id='op-exam-negative'
-                        type='checkbox'
-                        checked={formState.examNegativeMarking}
+              <div className='md:col-span-2 space-y-4'>
+                <div className="flex items-center justify-between">
+                  <h3 className='text-sm font-semibold text-foreground dark:text-white'>Exam patterns</h3>
+                  <Button type="button" variant="outline" size="sm" onClick={handleAddPattern}>
+                    Add Pattern
+                  </Button>
+                </div>
+
+                {formState.examPatterns.map((pattern, index) => (
+                  <div key={pattern.id} className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4 relative'>
+                    <div className="absolute right-4 top-4">
+                      {formState.examPatterns.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-400 hover:text-red-500 hover:bg-red-500/10"
+                          onClick={() => handleRemovePattern(pattern.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+
+                    <h4 className="text-xs font-medium text-muted-foreground mb-4 uppercase tracking-wide">
+                      Pattern {index + 1}
+                    </h4>
+
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-4">
+                      <div className="space-y-2">
+                        <label className="text-xs text-muted-foreground">Class Selection Type</label>
+                        <select
+                          value={pattern.classSelection.type}
+                          onChange={(e) =>
+                            handlePatternChange(pattern.id, 'classSelection', {
+                              ...pattern.classSelection,
+                              type: e.target.value,
+                              selectedClasses: [], // Reset selection on type change
+                              rangeStart: '',
+                              rangeEnd: '',
+                            })
+                          }
+                          className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                        >
+                          <option value="single">Single Class</option>
+                          <option value="multiple">Multiple Classes</option>
+                          <option value="range">Class Range</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs text-muted-foreground">Select Class(es)</label>
+                        {pattern.classSelection.type === 'single' && (
+                          <select
+                            value={pattern.classSelection.selectedClasses[0] || ''}
+                            onChange={(e) =>
+                              handlePatternChange(pattern.id, 'classSelection', {
+                                ...pattern.classSelection,
+                                selectedClasses: [e.target.value],
+                              })
+                            }
+                            className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                          >
+                            <option value="">Select Class</option>
+                            {CLASS_OPTIONS.map((cls) => (
+                              <option key={cls} value={cls}>
+                                Class {cls}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        {pattern.classSelection.type === 'multiple' && (
+                          <div className="flex flex-wrap gap-2 p-2 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 min-h-[38px]">
+                            {CLASS_OPTIONS.map((cls) => (
+                              <label key={cls} className="flex items-center gap-1 text-sm cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={pattern.classSelection.selectedClasses.includes(cls)}
+                                  onChange={(e) => {
+                                    const current = pattern.classSelection.selectedClasses;
+                                    const next = e.target.checked
+                                      ? [...current, cls]
+                                      : current.filter((c) => c !== cls);
+                                    handlePatternChange(pattern.id, 'classSelection', {
+                                      ...pattern.classSelection,
+                                      selectedClasses: next,
+                                    });
+                                  }}
+                                  className="rounded border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500"
+                                />
+                                <span className="text-foreground dark:text-white">{cls}</span>
+                              </label>
+                            ))}
+                          </div>
+                        )}
+
+                        {pattern.classSelection.type === 'range' && (
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={pattern.classSelection.rangeStart || ''}
+                              onChange={(e) =>
+                                handlePatternChange(pattern.id, 'classSelection', {
+                                  ...pattern.classSelection,
+                                  rangeStart: e.target.value,
+                                })
+                              }
+                              className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                            >
+                              <option value="">From</option>
+                              {CLASS_OPTIONS.map((cls) => (
+                                <option key={cls} value={cls}>
+                                  Class {cls}
+                                </option>
+                              ))}
+                            </select>
+                            <span className="text-muted-foreground">-</span>
+                            <select
+                              value={pattern.classSelection.rangeEnd || ''}
+                              onChange={(e) =>
+                                handlePatternChange(pattern.id, 'classSelection', {
+                                  ...pattern.classSelection,
+                                  rangeEnd: e.target.value,
+                                })
+                              }
+                              className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                            >
+                              <option value="">To</option>
+                              {CLASS_OPTIONS.map((cls) => (
+                                <option key={cls} value={cls}>
+                                  Class {cls}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
+                      <div className='space-y-2'>
+                        <label className='text-xs text-muted-foreground'>
+                          Total questions
+                        </label>
+                        <Input
+                          value={pattern.totalQuestions}
+                          onChange={(event) =>
+                            handlePatternChange(pattern.id, 'totalQuestions', event.target.value)
+                          }
+                          placeholder='100'
+                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                        />
+                      </div>
+                      <div className='space-y-2'>
+                        <label className='text-xs text-muted-foreground'>
+                          Duration (minutes)
+                        </label>
+                        <Input
+                          value={pattern.durationMinutes}
+                          onChange={(event) =>
+                            handlePatternChange(pattern.id, 'durationMinutes', event.target.value)
+                          }
+                          placeholder='120'
+                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                        />
+                      </div>
+                      <div className='space-y-2'>
+                        <label className='text-xs text-muted-foreground'>
+                          Negative marking?
+                        </label>
+                        <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
+                          <input
+                            type='checkbox'
+                            checked={pattern.negativeMarking}
+                            onChange={(event) =>
+                              handlePatternChange(pattern.id, 'negativeMarking', event.target.checked)
+                            }
+                            className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
+                          />
+                          <span>Enabled</span>
+                        </div>
+                      </div>
+                      <div className='space-y-2'>
+                        <label className='text-xs text-muted-foreground'>
+                          Penalty per question
+                        </label>
+                        <Input
+                          value={pattern.negativeMarksPerQuestion}
+                          onChange={(event) =>
+                            handlePatternChange(pattern.id, 'negativeMarksPerQuestion', event.target.value)
+                          }
+                          placeholder='0.25'
+                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                        />
+                      </div>
+                    </div>
+                    <div className='mt-4 space-y-2'>
+                      <label className='text-xs text-muted-foreground'>
+                        Sections (one per line as <code>name|questions|marks</code>)
+                      </label>
+                      <Textarea
+                        value={pattern.sectionsText}
                         onChange={(event) =>
-                          setFormState((prev) => ({ ...prev, examNegativeMarking: event.target.checked }))
+                          handlePatternChange(pattern.id, 'sectionsText', event.target.value)
                         }
-                        className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
+                        placeholder='Physics|25|25'
+                        className='min-h-[100px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                       />
-                      <span>Enabled</span>
                     </div>
                   </div>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-exam-penalty'>
-                      Penalty per question
-                    </label>
-                    <Input
-                      id='op-exam-penalty'
-                      value={formState.examNegativeMarksPerQuestion}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, examNegativeMarksPerQuestion: event.target.value }))
-                      }
-                      placeholder='0.25'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                </div>
-                <div className='mt-4 space-y-2'>
-                  <label className='text-xs text-muted-foreground' htmlFor='op-exam-sections'>
-                    Sections (one per line as <code>name|questions|marks</code>)
-                  </label>
-                  <Textarea
-                    id='op-exam-sections'
-                    value={formState.examSectionsText}
-                    onChange={(event) =>
-                      setFormState((prev) => ({ ...prev, examSectionsText: event.target.value }))
-                    }
-                    placeholder='Physics|25|25'
-                    className='min-h-[100px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                  />
-                </div>
+                ))}
               </div>
 
               <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>

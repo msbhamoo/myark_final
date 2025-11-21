@@ -286,6 +286,59 @@ type ExamPattern = {
   sections: Array<{ name: string; questions: number | null; marks: number | null }>;
 };
 
+type ClassSelection = {
+  type: 'single' | 'multiple' | 'range';
+  selectedClasses: string[];
+  rangeStart?: string;
+  rangeEnd?: string;
+};
+
+type ExamPatternBlock = ExamPattern & {
+  id: string;
+  classSelection: ClassSelection;
+};
+
+const sanitizeClassSelection = (value: unknown): ClassSelection => {
+  if (typeof value !== 'object' || value === null) {
+    return { type: 'single', selectedClasses: [] };
+  }
+  const record = value as Record<string, unknown>;
+  const type = (typeof record.type === 'string' && ['single', 'multiple', 'range'].includes(record.type))
+    ? (record.type as ClassSelection['type'])
+    : 'single';
+
+  return {
+    type,
+    selectedClasses: sanitizeStringArray(record.selectedClasses),
+    rangeStart: typeof record.rangeStart === 'string' ? record.rangeStart : undefined,
+    rangeEnd: typeof record.rangeEnd === 'string' ? record.rangeEnd : undefined,
+  };
+};
+
+const sanitizeExamPatternsForResponse = (value: unknown): ExamPatternBlock[] => {
+  if (!Array.isArray(value)) return [];
+  return value.map((entry) => {
+    if (typeof entry !== 'object' || entry === null) return null;
+    const record = entry as Record<string, unknown>;
+    const pattern = sanitizeExamPatternForResponse(record);
+    const id = typeof record.id === 'string' ? record.id : randomUUID();
+    const classSelection = sanitizeClassSelection(record.classSelection);
+    return { ...pattern, id, classSelection };
+  }).filter((entry): entry is ExamPatternBlock => Boolean(entry));
+};
+
+const parseExamPatternsForStore = (value: unknown): ExamPatternBlock[] => {
+  if (!Array.isArray(value)) return [];
+  return value.map((entry) => {
+    if (typeof entry !== 'object' || entry === null) return null;
+    const record = entry as Record<string, unknown>;
+    const pattern = parseExamPatternForStore(record);
+    const id = typeof record.id === 'string' ? record.id : randomUUID();
+    const classSelection = sanitizeClassSelection(record.classSelection);
+    return { ...pattern, id, classSelection };
+  }).filter((entry): entry is ExamPatternBlock => Boolean(entry));
+};
+
 const serializeDoc = (doc: QueryDocumentSnapshot) => {
   const data = doc.data();
   return {
@@ -318,6 +371,7 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     registrationProcess: sanitizeStringArray(data.registrationProcess),
     timeline: sanitizeTimelineForResponse(data.timeline),
     examPattern: sanitizeExamPatternForResponse(data.examPattern),
+    examPatterns: sanitizeExamPatternsForResponse(data.examPatterns),
     contactInfo: sanitizeContactInfoForResponse(data.contactInfo),
     resources: sanitizeResourcesForResponse(data.resources),
     submittedBy: data.submittedBy ?? null,
@@ -394,6 +448,7 @@ export async function POST(request: Request) {
       registrationProcess: sanitizeStringArray(payload.registrationProcess),
       timeline: parseTimelineForStore(payload.timeline),
       examPattern: parseExamPatternForStore(payload.examPattern),
+      examPatterns: parseExamPatternsForStore(payload.examPatterns),
       contactInfo: parseContactInfoForStore(payload.contactInfo),
       resources: parseResourcesForStore(payload.resources),
       registrationMode: payload.registrationMode === 'external' ? 'external' : 'internal',

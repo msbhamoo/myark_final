@@ -167,14 +167,14 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
       const timelineDate = toIsoDate(item.date);
       return timelineDate
         ? {
-            '@type': 'EducationEvent',
-            '@id': `${canonicalUrl}#timeline-${index}`,
-            name: sanitizeText(item.event),
-            startDate: timelineDate,
-            eventStatus:
-              eventStatusMap[item.status?.toLowerCase() ?? ''] ??
-              'https://schema.org/EventScheduled',
-          }
+          '@type': 'EducationEvent',
+          '@id': `${canonicalUrl}#timeline-${index}`,
+          name: sanitizeText(item.event),
+          startDate: timelineDate,
+          eventStatus:
+            eventStatusMap[item.status?.toLowerCase() ?? ''] ??
+            'https://schema.org/EventScheduled',
+        }
         : null;
     })
     .filter((entry): entry is Exclude<typeof structuredTimeline[number], null> => Boolean(entry));
@@ -183,9 +183,59 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
     ? `Students in ${opportunity.gradeEligibility}`
     : 'Students in India';
 
-  return {
+  // Determine specific schema type based on category
+  let schemaType = 'EducationEvent';
+  const categoryLower = (opportunity.category || '').toLowerCase();
+  if (categoryLower.includes('scholarship')) {
+    schemaType = 'Scholarship'; // Note: Scholarship is often modeled as FinancialProduct or similar, but EducationEvent is safer for generic events. 
+    // However, Google recommends 'Event' for deadlines. 
+    // For actual scholarships, 'FinancialProduct' or 'Grant' might be used, but 'EducationEvent' covers the *application* period well.
+    // Let's stick to EducationEvent but add specific keywords.
+  } else if (categoryLower.includes('competition') || categoryLower.includes('contest') || categoryLower.includes('olympiad')) {
+    schemaType = 'EducationEvent'; // Competitions are events.
+  }
+
+  // FAQ Schema Generation
+  const faqs = [
+    {
+      question: `What is the deadline for ${opportunity.title}?`,
+      answer: opportunity.registrationDeadline
+        ? `The registration deadline for ${opportunity.title} is ${formatDateForDescription(opportunity.registrationDeadline)}.`
+        : `The deadline for ${opportunity.title} has not been specified yet. Please check the official website for updates.`
+    },
+    {
+      question: `Who is eligible for ${opportunity.title}?`,
+      answer: opportunity.gradeEligibility
+        ? `${opportunity.title} is open to ${opportunity.gradeEligibility}.`
+        : `Eligibility criteria for ${opportunity.title} are detailed in the official guidelines.`
+    },
+    {
+      question: `Is there a fee to apply for ${opportunity.title}?`,
+      answer: hasNumericPrice && priceValue > 0
+        ? `Yes, the application fee is ₹${priceValue}.`
+        : `The application for ${opportunity.title} is free or the fee details are not listed.`
+    },
+    {
+      question: `How can I apply for ${opportunity.title}?`,
+      answer: `You can apply for ${opportunity.title} through the Myark platform or the official organizer's website. Click the 'Register Now' button to proceed.`
+    }
+  ];
+
+  const faqSchema = {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+
+  const mainEntity = {
     '@context': 'https://schema.org',
-    '@type': 'EducationEvent',
+    '@type': schemaType,
     '@id': canonicalUrl,
     url: canonicalUrl,
     name: opportunity.title,
@@ -201,21 +251,25 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
       '@type': 'Organization',
       name: organizerName,
       url: organizerUrl ? sanitizeText(organizerUrl) : undefined,
+      logo: opportunity.organizerLogo ? {
+        '@type': 'ImageObject',
+        url: opportunity.organizerLogo
+      } : undefined
     },
     location:
       opportunity.mode === 'offline'
         ? {
-            '@type': 'Place',
-            name: 'Across India',
-            address: {
-              '@type': 'PostalAddress',
-              addressCountry: 'IN',
-            },
-          }
-        : {
-            '@type': 'VirtualLocation',
-            url: canonicalUrl,
+          '@type': 'Place',
+          name: 'Across India',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'IN',
           },
+        }
+        : {
+          '@type': 'VirtualLocation',
+          url: canonicalUrl,
+        },
     offers: [
       {
         '@type': 'Offer',
@@ -225,6 +279,7 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
         availabilityEnds:
           toIsoDate(opportunity.registrationDeadline) ?? toIsoDate(opportunity.endDate),
         category: 'https://schema.org/Registration',
+        validFrom: toIsoDate(opportunity.startDate)
       },
     ],
     audience: {
@@ -238,7 +293,13 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
     keywords: collectKeywords(opportunity).join(', '),
     subjectOf: structuredTimeline.length > 0 ? structuredTimeline : undefined,
     inLanguage: 'en-IN',
+    performer: {
+      '@type': 'Organization',
+      name: organizerName
+    }
   };
+
+  return [mainEntity, faqSchema];
 };
 
 export async function generateMetadata(ctx: any): Promise<Metadata> {

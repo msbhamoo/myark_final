@@ -49,6 +49,20 @@ export interface OpportunityResource {
   description?: string;
 }
 
+export type ClassSelectionType = 'single' | 'multiple' | 'range';
+
+export interface ClassSelection {
+  type: ClassSelectionType;
+  selectedClasses: string[];
+  rangeStart?: string;
+  rangeEnd?: string;
+}
+
+export interface OpportunityExamPatternBlock extends OpportunityExamPattern {
+  id: string;
+  classSelection: ClassSelection;
+}
+
 export interface Opportunity {
   id: string;
   title: string;
@@ -77,6 +91,7 @@ export interface Opportunity {
   timeline?: OpportunityTimelineEvent[];
   registrationProcess?: string[];
   examPattern?: OpportunityExamPattern;
+  examPatterns?: OpportunityExamPatternBlock[];
   contactInfo?: OpportunityContactInfo;
   resources?: OpportunityResource[];
   segments?: string[];

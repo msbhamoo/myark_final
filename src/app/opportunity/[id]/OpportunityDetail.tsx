@@ -42,6 +42,7 @@ import {
   Mail,
   Phone,
   Globe,
+  HelpCircle,
 } from 'lucide-react';
 
 const formatDate = (value?: string | null, fallback = 'TBA') => {
@@ -1463,68 +1464,165 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     ),
                   },
                   {
-                    value: 'pattern',
+                    value: 'exam-pattern',
                     label: 'Exam Pattern',
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
+                        <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
                           Examination Pattern
                         </h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
-                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                              <BookOpen className="h-6 w-6 text-orange-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
-                            <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
-                          </div>
-                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
-                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                              <Timer className="h-6 w-6 text-pink-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
-                            <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
-                          </div>
-                          <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
-                            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                              <AlertCircle className="h-6 w-6 text-red-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
-                            <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
-                          </div>
-                        </div>
+                        {(opportunity.examPatterns && opportunity.examPatterns.length > 0) ? (
+                          <div className="space-y-12">
+                            {opportunity.examPatterns.map((pattern, pIndex) => {
+                              const durationLabel = typeof pattern.durationMinutes === 'number'
+                                ? `${Math.floor(pattern.durationMinutes / 60)}h ${pattern.durationMinutes % 60}m`
+                                : 'Not specified';
+                              const negativeMarkingLabel = pattern.negativeMarking
+                                ? (typeof pattern.negativeMarksPerQuestion === 'number'
+                                  ? `Yes (-${pattern.negativeMarksPerQuestion} per question)`
+                                  : 'Yes')
+                                : 'No';
 
-                        <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                          Section-wise Distribution
-                        </h3>
-                        <div className="space-y-4">
-                          {examSections.map((section, index) => (
-                            <div
-                              key={index}
-                              className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
-                            >
-                              <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                  <BookOpen className="h-5 w-5 text-orange-400" />
+                              let classLabel = '';
+                              if (pattern.classSelection?.type === 'single') {
+                                classLabel = `Class ${pattern.classSelection.selectedClasses[0] || '?'}`;
+                              } else if (pattern.classSelection?.type === 'multiple') {
+                                classLabel = `Classes ${pattern.classSelection.selectedClasses.join(', ')}`;
+                              } else if (pattern.classSelection?.type === 'range') {
+                                classLabel = `Classes ${pattern.classSelection.rangeStart} - ${pattern.classSelection.rangeEnd}`;
+                              }
+
+                              return (
+                                <div key={pattern.id || pIndex} className="relative">
+                                  {opportunity.examPatterns && opportunity.examPatterns.length > 1 && (
+                                    <div className="mb-4">
+                                      <Badge variant="outline" className="text-sm font-medium border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-300">
+                                        {classLabel || `Pattern ${pIndex + 1}`}
+                                      </Badge>
+                                    </div>
+                                  )}
+
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
+                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <BookOpen className="h-6 w-6 text-orange-400" />
+                                      </div>
+                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{pattern.totalQuestions ?? '—'}</p>
+                                      <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
+                                    </div>
+                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
+                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <Timer className="h-6 w-6 text-pink-400" />
+                                      </div>
+                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
+                                      <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
+                                    </div>
+                                    <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
+                                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <AlertCircle className="h-6 w-6 text-red-400" />
+                                      </div>
+                                      <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
+                                      <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
+                                    </div>
+                                  </div>
+
+                                  <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                                    Section-wise Distribution
+                                  </h3>
+                                  <div className="space-y-4">
+                                    {(pattern.sections ?? []).map((section, index) => (
+                                      <div
+                                        key={index}
+                                        className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                                      >
+                                        <div className="flex items-center gap-3 mb-3 sm:mb-0">
+                                          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <BookOpen className="h-5 w-5 text-orange-400" />
+                                          </div>
+                                          <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
+                                        </div>
+                                        <div className="flex gap-6 text-sm">
+                                          <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                            <span className="text-slate-500 dark:text-slate-300">Questions: </span>
+                                            <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
+                                          </div>
+                                          <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                            <span className="text-slate-500 dark:text-slate-300">Marks: </span>
+                                            <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+
+                                  {pIndex < (opportunity.examPatterns?.length ?? 0) - 1 && (
+                                    <Separator className="my-8 bg-slate-200 dark:bg-slate-700" />
+                                  )}
                                 </div>
-                                <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          /* Legacy Single Pattern Fallback */
+                          <>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                  <BookOpen className="h-6 w-6 text-orange-400" />
+                                </div>
+                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
                               </div>
-                              <div className="flex gap-6 text-sm">
-                                <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                  <span className="text-slate-500 dark:text-slate-300">Questions: </span>
-                                  <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
+                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                  <Timer className="h-6 w-6 text-pink-400" />
                                 </div>
-                                <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                  <span className="text-slate-500 dark:text-slate-300">Marks: </span>
-                                  <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
+                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
+                              </div>
+                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                  <AlertCircle className="h-6 w-6 text-red-400" />
                                 </div>
+                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
                               </div>
                             </div>
-                          ))}
-                        </div>
+
+                            <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              Section-wise Distribution
+                            </h3>
+                            <div className="space-y-4">
+                              {examSections.map((section, index) => (
+                                <div
+                                  key={index}
+                                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                                >
+                                  <div className="flex items-center gap-3 mb-3 sm:mb-0">
+                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                      <BookOpen className="h-5 w-5 text-orange-400" />
+                                    </div>
+                                    <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
+                                  </div>
+                                  <div className="flex gap-6 text-sm">
+                                    <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                      <span className="text-slate-500 dark:text-slate-300">Questions: </span>
+                                      <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
+                                    </div>
+                                    <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
+                                      <span className="text-slate-500 dark:text-slate-300">Marks: </span>
+                                      <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </Card>
                     ),
                   },
@@ -1620,6 +1718,60 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                             ))}
                           </div>
                         )}
+                      </Card>
+                    ),
+                  },
+                  {
+                    value: 'faq',
+                    label: 'FAQ',
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                          Frequently Asked Questions
+                        </h2>
+                        <div className="space-y-4">
+                          {[
+                            {
+                              q: `What is the deadline for ${title}?`,
+                              a: formattedDeadline !== 'TBA'
+                                ? `The registration deadline is ${formattedDeadline}. Make sure to apply before this date.`
+                                : `The deadline has not been announced yet. Please keep checking for updates.`
+                            },
+                            {
+                              q: `Who is eligible to apply?`,
+                              a: opportunity.gradeEligibility
+                                ? `This opportunity is open to ${opportunity.gradeEligibility}. Please check the eligibility section for more details.`
+                                : `Eligibility details are available in the eligibility section.`
+                            },
+                            {
+                              q: `Is there a registration fee?`,
+                              a: displayFee === 'FREE'
+                                ? `No, this opportunity is free to register.`
+                                : `Yes, the registration fee is ${displayFee}.`
+                            },
+                            {
+                              q: `How do I register?`,
+                              a: `You can register by clicking the "Register Now" button on this page. If it's an external registration, you'll be redirected to the official website.`
+                            },
+                            {
+                              q: `When does the event start?`,
+                              a: formattedStartDate !== 'TBA'
+                                ? `The event is scheduled to start on ${formattedStartDate}.`
+                                : `The start date has not been announced yet.`
+                            }
+                          ].map((faq, index) => (
+                            <div key={index} className="p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+                              <h3 className="font-semibold text-foreground dark:text-white flex items-start gap-2 mb-2">
+                                <HelpCircle className="h-5 w-5 text-purple-400 shrink-0 mt-0.5" />
+                                {faq.q}
+                              </h3>
+                              <p className="text-slate-600 dark:text-slate-300 pl-7">
+                                {faq.a}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </Card>
                     ),
                   },
