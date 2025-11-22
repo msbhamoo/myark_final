@@ -45,6 +45,12 @@ export const metadata: Metadata = {
     },
 };
 
+import { Suspense } from 'react';
+
 export default function ForSchoolsPage() {
-    return <ForSchoolsClient />;
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-white dark:bg-slate-950" />}>
+            <ForSchoolsClient />
+        </Suspense>
+    );
 }
