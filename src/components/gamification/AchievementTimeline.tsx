@@ -73,8 +73,8 @@ export function AchievementTimeline({
           title: `Achievement: ${achievement.title}`,
           description: achievement.description ?? undefined,
           date: new Date(), // Use current date since we don't have achievement dates
-          icon: <Trophy className="h-5 w-5 text-amber-500" />,
-          color: 'from-amber-500/20 to-orange-500/20',
+          icon: <Trophy className="h-5 w-5 text-primary" />,
+          color: 'from-primary/20 to-primaryDark/20',
           details: { achievement },
         });
       });
@@ -140,7 +140,7 @@ export function AchievementTimeline({
               'rounded-2xl border-l-4 bg-white/50 p-4 backdrop-blur-sm transition-all hover:shadow-md dark:bg-white/5',
               {
                 'border-l-indigo-500 dark:border-l-indigo-400': event.type === 'badge',
-                'border-l-amber-500 dark:border-l-amber-400': event.type === 'achievement',
+                'border-l-primary dark:border-l-primary': event.type === 'achievement',
                 'border-l-purple-500 dark:border-l-purple-400': event.type === 'opportunity',
               },
             )}>
@@ -162,7 +162,7 @@ export function AchievementTimeline({
                       'whitespace-nowrap text-xs capitalize',
                       {
                         'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-200': event.type === 'badge',
-                        'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-200': event.type === 'achievement',
+                        'bg-accent text-accent-foreground dark:bg-primary/20 dark:text-accent': event.type === 'achievement',
                         'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-200': event.type === 'opportunity',
                       },
                     )}

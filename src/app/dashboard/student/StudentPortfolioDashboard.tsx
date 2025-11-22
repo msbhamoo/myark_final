@@ -653,7 +653,7 @@ export default function StudentPortfolioDashboard({
   if (isLoadingProfile || !profile) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -683,7 +683,7 @@ export default function StudentPortfolioDashboard({
 
             {/* Profile Card */}
             <Card className="overflow-hidden border-none shadow-lg w-full group">
-              <div className="relative h-28 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+              <div className="relative h-28 bg-gradient-to-r from-chart-1 via-chart-2 to-chart-3">
                 {profile.bannerUrl && (
                   <img src={profile.bannerUrl} alt="Cover" className="absolute inset-0 h-full w-full object-cover" />
                 )}
@@ -697,12 +697,12 @@ export default function StudentPortfolioDashboard({
                 <div className="absolute -top-12 left-6 group/avatar">
                   <Avatar className="h-24 w-24 border-4 border-white dark:border-slate-900 shadow-xl relative overflow-visible">
                     <AvatarImage src={profile.photoUrl || undefined} alt={profile.displayName} className="object-cover rounded-full h-full w-full" />
-                    <AvatarFallback className="bg-indigo-100 text-2xl font-bold text-indigo-600 rounded-full h-full w-full flex items-center justify-center">
+                    <AvatarFallback className="bg-accent text-2xl font-bold text-accent-foreground rounded-full h-full w-full flex items-center justify-center">
                       {buildAvatarFallback(profile.displayName)}
                     </AvatarFallback>
                     <label className="absolute bottom-0 right-0 p-1.5 bg-white dark:bg-slate-800 rounded-full shadow-md border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors z-10">
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'avatar')} disabled={isUploading} />
-                      {isUploading ? <Loader2 className="h-3 w-3 animate-spin text-indigo-600" /> : <Edit className="h-3 w-3 text-indigo-600" />}
+                      {isUploading ? <Loader2 className="h-3 w-3 animate-spin text-primary" /> : <Edit className="h-3 w-3 text-primary" />}
                     </label>
                   </Avatar>
                 </div>
@@ -711,7 +711,7 @@ export default function StudentPortfolioDashboard({
                   <div>
                     <div className="flex items-center justify-between gap-2">
                       <h1 className="text-2xl font-bold text-slate-900 dark:text-white truncate">{profile.displayName}</h1>
-                      <Badge variant="secondary" className="bg-indigo-50 text-indigo-700 shrink-0">Student</Badge>
+                      <Badge variant="secondary" className="bg-accent text-accent-foreground shrink-0">Student</Badge>
                     </div>
                     <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 line-clamp-2 break-words">
                       {profile.tagline || 'Aspiring Student'}
@@ -748,7 +748,7 @@ export default function StudentPortfolioDashboard({
                   )}
 
                   <div className="grid gap-2">
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700" onClick={openBasicsDialog}>
+                    <Button className="w-full bg-gradient-to-b from-chart-1 to-chart-2 hover:brightness-105 text-white shadow-md shadow-primary/20" onClick={openBasicsDialog}>
                       <Edit className="mr-2 h-4 w-4" /> Edit Profile
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
@@ -768,7 +768,7 @@ export default function StudentPortfolioDashboard({
             <Card className="p-6 border-none shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Profile Strength</h3>
-                <span className="text-lg font-bold text-indigo-600">{Math.round(profile.completion.percent)}%</span>
+                <span className="text-lg font-bold text-primary">{Math.round(profile.completion.percent)}%</span>
               </div>
               <Progress value={profile.completion.percent} className="h-2 mb-4" />
               <div className="space-y-2">

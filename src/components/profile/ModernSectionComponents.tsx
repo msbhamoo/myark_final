@@ -154,12 +154,12 @@ export function ModernAchievementCard({
   onRemove: () => void;
 }) {
   return (
-    <div className="group rounded-2xl border border-amber-200/40 bg-gradient-to-br from-amber-50/80 via-white/60 to-orange-50/40 p-4 sm:p-6 backdrop-blur-xl shadow-lg shadow-amber-200/20 hover:shadow-xl hover:shadow-amber-300/30 transition-all duration-300 dark:from-amber-950/20 dark:via-white/3 dark:to-orange-950/20 dark:border-amber-900/30 dark:shadow-amber-950/40 w-full max-w-full">
+    <div className="group rounded-2xl border border-[#DFF7C8]/40 bg-gradient-to-br from-[#DFF7C8]/80 via-white/60 to-[#58CC02]/10 p-4 sm:p-6 backdrop-blur-xl shadow-lg shadow-[#58CC02]/20 hover:shadow-xl hover:shadow-[#58CC02]/30 transition-all duration-300 dark:from-[#58CC02]/20 dark:via-white/3 dark:to-[#3FA001]/20 dark:border-[#58CC02]/30 dark:shadow-[#58CC02]/40 w-full max-w-full">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div className="space-y-3 flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="flex items-center gap-1.5 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 dark:from-amber-900/40 dark:to-orange-900/40 dark:text-amber-300 shrink-0">
+              <Badge className="flex items-center gap-1.5 bg-gradient-to-r from-[#DFF7C8] to-[#58CC02]/20 text-[#1A2A33] dark:from-[#58CC02]/40 dark:to-[#3FA001]/40 dark:text-[#DFF7C8] shrink-0">
                 <Trophy className="h-3.5 w-3.5" />
                 <span className="truncate max-w-[150px]">{achievement.title}</span>
               </Badge>

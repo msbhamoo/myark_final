@@ -85,7 +85,7 @@ export function MobileFloatingCTA({
               <p className="text-lg font-bold text-emerald-600 dark:text-emerald-300">{fee}</p>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
-              <Clock className="h-3.5 w-3.5 text-orange-400 flex-shrink-0" />
+              <Clock className="h-3.5 w-3.5 text-primary flex-shrink-0" />
               <span className="truncate">Deadline: {deadline}</span>
             </div>
           </div>
@@ -102,7 +102,7 @@ export function MobileFloatingCTA({
             <Button
               onClick={onRegisterClick}
               disabled={registrationClosed}
-              className="h-10 px-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+              className="h-10 px-3 bg-gradient-to-r from-chart-1 to-chart-2 text-white text-sm font-semibold hover:from-chart-2 hover:to-chart-3 disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {registrationClosed ? 'Closed' : 'Register'}
             </Button>
@@ -118,7 +118,7 @@ export function MobileFloatingCTA({
             title={isBookmarked ? 'Remove from saved' : 'Save opportunity'}
           >
             <BookmarkIcon
-              className={`h-4 w-4 ${isBookmarked ? 'fill-current text-orange-400' : ''}`}
+              className={`h-4 w-4 ${isBookmarked ? 'fill-current text-primary' : ''}`}
             />
           </Button>
         </div>

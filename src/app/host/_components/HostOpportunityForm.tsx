@@ -125,12 +125,12 @@ export default function HostOpportunityForm() {
 
   const handleChange =
     (field: keyof FormState) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState((prev) => ({
-      ...prev,
-      [field]: event.target.value,
-    }));
-  };
+      (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormState((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
+      };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -222,13 +222,13 @@ export default function HostOpportunityForm() {
 
   if (!user) {
     return (
-      <div className="rounded-3xl border border-slate-200 bg-white/95 px-8 py-12 text-center shadow-lg shadow-orange-100/40 dark:border-slate-700 dark:bg-slate-800/50">
+      <div className="rounded-3xl border border-slate-200 bg-white/95 px-8 py-12 text-center shadow-lg shadow-primary/20 dark:border-slate-700 dark:bg-slate-800/50">
         <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Host an opportunity on MyArk</h1>
         <p className="mt-4 text-sm text-slate-600 dark:text-slate-100">
           Sign in or create an organization account to submit new opportunities for review. Once approved by our admin team, your program will appear on the public portal.
         </p>
         <Button
-          className="mt-8 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+          className="mt-8 bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"
           onClick={() => router.push('/login?redirect=/host&accountType=organization')}
         >
           Continue to login
@@ -239,13 +239,13 @@ export default function HostOpportunityForm() {
 
   if (user.accountType !== 'organization') {
     return (
-      <div className="rounded-3xl border border-amber-200 bg-white/95 px-8 py-12 text-center shadow-lg shadow-orange-100/40 dark:border-amber-600/40 dark:bg-slate-800/50">
+      <div className="rounded-3xl border border-amber-200 bg-white/95 px-8 py-12 text-center shadow-lg shadow-primary/20 dark:border-amber-600/40 dark:bg-slate-800/50">
         <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Organization account required</h1>
         <p className="mt-4 text-sm text-slate-600 dark:text-slate-100">
           Hosting opportunities is limited to organization accounts. Switch to the organizer profile linked to your email or reach out to support for help.
         </p>
         <Button
-          className="mt-8 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+          className="mt-8 bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"
           onClick={() => router.push('/login?redirect=/host&accountType=organization')}
         >
           Switch to organization account
@@ -256,8 +256,8 @@ export default function HostOpportunityForm() {
 
   return (
     <div className="space-y-10">
-      <header className="rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-lg shadow-orange-100/30 dark:border-slate-700 dark:bg-slate-800/50">
-        <p className="inline-flex rounded-full border border-orange-200 px-3 py-1 text-xs uppercase tracking-wide text-orange-500 dark:border-orange-400/40 dark:text-orange-200">
+      <header className="rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-lg shadow-primary/10 dark:border-slate-700 dark:bg-slate-800/50">
+        <p className="inline-flex rounded-full border border-primary/30 px-3 py-1 text-xs uppercase tracking-wide text-primary dark:border-primary/40 dark:text-primary">
           Host Opportunity
         </p>
         <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl dark:text-white">
@@ -269,7 +269,7 @@ export default function HostOpportunityForm() {
       </header>
 
       <form
-        className="space-y-8 rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-xl shadow-orange-100/30 dark:border-slate-700 dark:bg-slate-800/50"
+        className="space-y-8 rounded-3xl border border-slate-200 bg-white/95 p-8 shadow-xl shadow-primary/10 dark:border-slate-700 dark:bg-slate-800/50"
         onSubmit={handleSubmit}
       >
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -365,7 +365,7 @@ export default function HostOpportunityForm() {
             >
               <label
                 htmlFor="registration-mode-external"
-                className="flex h-full items-start gap-3 rounded-2xl border border-slate-200 bg-white/90 p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-orange-300 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100"
+                className="flex h-full items-start gap-3 rounded-2xl border border-slate-200 bg-white/90 p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-primary dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100"
               >
                 <RadioGroupItem id="registration-mode-external" value="external" className="mt-1" />
                 <div>
@@ -377,7 +377,7 @@ export default function HostOpportunityForm() {
               </label>
               <label
                 htmlFor="registration-mode-internal"
-                className="flex h-full items-start gap-3 rounded-2xl border border-slate-200 bg-white/90 p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-orange-300 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100"
+                className="flex h-full items-start gap-3 rounded-2xl border border-slate-200 bg-white/90 p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-primary dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100"
               >
                 <RadioGroupItem id="registration-mode-internal" value="internal" className="mt-1" />
                 <div>
@@ -585,7 +585,7 @@ export default function HostOpportunityForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+            className="bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"
           >
             {isSubmitting ? 'Submitting…' : 'Submit for review'}
           </Button>

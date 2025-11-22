@@ -97,7 +97,7 @@ export default function GamificationPage({
           {/* Streaks */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-orange-500" />
+              <TrendingUp className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-gray-900">Activity Streaks</h2>
             </div>
             <StreakTracker gamification={gamification} />
@@ -231,7 +231,7 @@ export function GamificationWidget({
         </div>
 
         <div className="bg-white rounded p-2 text-center">
-          <div className="text-lg font-bold text-orange-600">{streakStatus.currentDailyStreak}</div>
+          <div className="text-lg font-bold text-primary">{streakStatus.currentDailyStreak}</div>
           <div className="text-xs text-gray-600">Streak</div>
         </div>
       </div>

@@ -223,7 +223,7 @@ export function InstagramBadgesDisplay({
         <div className="flex items-center justify-center pt-4">
           <a
             href="#all-badges"
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+            className="text-sm font-medium text-primary hover:text-[#3FA001] dark:text-[#DFF7C8] dark:hover:text-primary"
           >
             View all {badges.length} badges →
           </a>
@@ -232,7 +232,7 @@ export function InstagramBadgesDisplay({
 
       {/* Achievements summary */}
       {badges.length > 0 && (
-        <div className="rounded-2xl border border-white/20 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 p-4 backdrop-blur-sm dark:border-white/10">
+        <div className="rounded-2xl border border-white/20 bg-gradient-to-br from-[#58CC02]/10 via-[#DFF7C8]/5 to-[#3FA001]/10 p-4 backdrop-blur-sm dark:border-white/10">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">

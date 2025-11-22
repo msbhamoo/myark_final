@@ -212,11 +212,10 @@ export default function LoginPage() {
                         key={value}
                         type="button"
                         onClick={() => setAccountType(value)}
-                        className={`rounded-lg sm:rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors text-xs sm:text-sm ${
-                          accountType === value
-                            ? 'border-orange-400/60 bg-orange-500/10 text-foreground dark:text-white'
-                            : 'border-white/10 bg-card/80 dark:bg-slate-800/50 text-muted-foreground dark:text-slate-100 hover:border-border/40 dark:hover:border-white/30 hover:text-white'
-                        }`}
+                        className={`rounded-lg sm:rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-colors text-xs sm:text-sm ${accountType === value
+                          ? 'border-primary/60 bg-primary/10 text-foreground dark:text-white'
+                          : 'border-white/10 bg-card/80 dark:bg-slate-800/50 text-muted-foreground dark:text-slate-100 hover:border-border/40 dark:hover:border-white/30 hover:text-white'
+                          }`}
                       >
                         <span className="block font-medium">
                           {ACCOUNT_TYPE_LABELS[value]}
@@ -266,7 +265,7 @@ export default function LoginPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"
                   >
                     {isSubmitting ? 'Signing in…' : 'Sign in'}
                   </Button>
@@ -355,7 +354,7 @@ export default function LoginPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+                    className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"
                   >
                     {isSubmitting ? 'Creating account…' : 'Create account'}
                   </Button>

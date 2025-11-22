@@ -74,7 +74,7 @@ export default async function OpportunitiesPage(props: any) {
   });
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:bg-[#050b3a]">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-[#DFF7C8]/30 via-white to-[#DFF7C8]/10 dark:bg-[#050b3a]">
       <Header />
       <main className="flex-1 pb-20 md:pb-0">
         <section className="relative overflow-hidden py-14 md:py-20">
@@ -82,7 +82,7 @@ export default async function OpportunitiesPage(props: any) {
           <div className="container relative mx-auto max-w-[1200px] px-4 md:px-6">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl space-y-3">
-                <p className="text-xs uppercase tracking-[0.3em] text-orange-500">Explore opportunities</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-primary">Explore opportunities</p>
                 <h1 className="text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">
                   Discover competitions, scholarships, and programs tailored for you
                 </h1>

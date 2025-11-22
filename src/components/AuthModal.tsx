@@ -1,32 +1,31 @@
 'use client';
 
-import React, { FormEvent, useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { X } from 'lucide-react';
+import React, { FormEvent, useState, useEffect } from 'react';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { X, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
 import { getFirebaseAuth } from '@/lib/firebaseClient';
 import { useAuth } from '@/context/AuthContext';
-
-type AuthMode = 'login' | 'register';
-type AccountType = 'organization' | 'user';
-
-const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
-  organization: 'Business / Organization Account',
-  user: 'User Account',
-};
-
-const validateEmail = (value: string): boolean => /\S+@\S+\.\S+/.test(value);
-const validatePassword = (value: string): boolean => value.length >= 8;
+import {
+  type AuthFlowState,
+  type AccountCheckResponse,
+  detectIdentifierType,
+  validateEmail,
+  validatePassword,
+  getIdentifierLabel,
+  getIdentifierPlaceholder,
+  formatPhoneDisplay,
+  generateSyntheticEmail,
+} from '@/lib/authHelpers';
 
 interface AuthModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  defaultMode?: AuthMode;
-  defaultAccountType?: AccountType;
+  defaultMode?: 'login' | 'register';  // Kept for backward compatibility but not used in new flow
+  defaultAccountType?: 'organization' | 'user';
   onSuccess?: () => void;
   redirectUrl?: string;
 }
@@ -34,165 +33,396 @@ interface AuthModalProps {
 export default function AuthModal({
   open,
   onOpenChange,
-  defaultMode = 'login',
   defaultAccountType = 'user',
   onSuccess,
   redirectUrl = '/dashboard',
 }: AuthModalProps) {
   const { refreshProfile } = useAuth();
-  const [mode, setMode] = useState<AuthMode>(defaultMode);
-  const [accountType, setAccountType] = useState<AccountType>(defaultAccountType);
+
+  const accountType = defaultAccountType; // Business or Student
+  const isBusiness = accountType === 'organization';
+
+  // Flow state management
+  const [flowState, setFlowState] = useState<AuthFlowState>('initial');
+  const [identifier, setIdentifier] = useState('');
+  const [identifierType, setIdentifierType] = useState<'email' | 'phone' | null>(null);
+  const [authEmail, setAuthEmail] = useState(''); // Actual or synthetic email for Firebase auth
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [organizationName, setOrganizationName] = useState('');
+  const [organizationDetails, setOrganizationDetails] = useState('');
+  const [recoveryEmail, setRecoveryEmail] = useState(''); // For phone accounts during password reset
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Reset state when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setTimeout(() => {
+        setFlowState('initial');
+        setIdentifier('');
+        setIdentifierType(null);
+        setAuthEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setFullName('');
+        setOrganizationName('');
+        setOrganizationDetails('');
+        setRecoveryEmail('');
+        setError(null);
+      }, 200);
+    }
+  }, [open]);
+
+  // Detect identifier type as user types
+  useEffect(() => {
+    const type = detectIdentifierType(identifier);
+    setIdentifierType(type);
+  }, [identifier]);
+
+  // Auto-check account existence when user stops typing (debounced)
+  useEffect(() => {
+    if (!identifier.trim() || !identifierType || flowState !== 'initial') return;
+
+    const timer = setTimeout(async () => {
+      try {
+        const response = await fetch('/api/auth/check-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: identifier.trim() }),
+        });
+
+        const data: AccountCheckResponse = await response.json();
+
+        if (response.ok) {
+          setAuthEmail(data.authEmail || '');
+          if (data.exists) {
+            setFlowState('existing-user');
+          }
+        }
+      } catch (err) {
+        // Silent fail - user can still click Continue
+        console.error('Auto account check failed:', err);
+      }
+    }, 800); // 800ms debounce
+
+    return () => clearTimeout(timer);
+  }, [identifier, identifierType, flowState]);
 
   const handleClose = (open: boolean) => {
     if (!isSubmitting) {
       onOpenChange(open);
-      if (!open) {
-        setError(null);
-      }
     }
   };
 
-  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleBack = () => {
     setError(null);
+    if (flowState === 'forgot-password') {
+      setFlowState('existing-user');
+    } else if (flowState === 'existing-user' || flowState === 'new-user') {
+      setFlowState('initial');
+      setPassword('');
+      setConfirmPassword('');
+      setFullName('');
+    }
+  };
+
+  // Step 1: Check if account exists
+  const handleContinue = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!identifierType) {
+      setError('Please enter a valid email address or mobile number.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
-      const email = String(formData.get('email') ?? '').trim();
-      const password = String(formData.get('password') ?? '');
+      const response = await fetch('/api/auth/check-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: identifier.trim() }),
+      });
 
-      if (!validateEmail(email)) {
-        setError('Please enter a valid email address.');
+      const data: AccountCheckResponse = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to check account');
         return;
       }
-      if (!validatePassword(password)) {
-        setError('Password must be at least 8 characters long.');
-        return;
-      }
 
-      const auth = getFirebaseAuth();
-      await signInWithEmailAndPassword(auth, email, password);
-      await refreshProfile();
-      
-      onOpenChange(false);
-      onSuccess?.();
-      
-      // Navigate after modal is closed
-      if (typeof window !== 'undefined') {
-        window.location.href = redirectUrl;
+      setAuthEmail(data.authEmail || '');
+
+      if (data.exists) {
+        setFlowState('existing-user');
+      } else {
+        setFlowState('new-user');
       }
-    } catch (loginError) {
-      console.error('Login failed', loginError);
-      setError('Invalid email or password. Please try again.');
+    } catch (err) {
+      console.error('Account check failed:', err);
+      setError('Connection error. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // Step 2a: Sign in existing user
+  const handleSignIn = async (e: FormEvent) => {
+    e.preventDefault();
     setError(null);
+
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
-      const email = String(formData.get('email') ?? '').trim();
-      const password = String(formData.get('password') ?? '');
-      const confirmPassword = String(formData.get('confirmPassword') ?? '');
-      const fullName = String(formData.get('fullName') ?? '').trim();
-      const organizationName = String(formData.get('organizationName') ?? '').trim();
-      const organizationDetails = String(formData.get('organizationDetails') ?? '').trim();
-
-      if (!validateEmail(email)) {
-        setError('Please provide a valid email address.');
-        return;
-      }
-      if (!validatePassword(password)) {
-        setError('Password must be at least 8 characters long.');
-        return;
-      }
-      if (password !== confirmPassword) {
-        setError('Passwords do not match.');
-        return;
-      }
-      if (!fullName) {
-        setError('Please provide your full name.');
-        return;
-      }
-      if (accountType === 'organization' && !organizationName) {
-        setError('Organization name is required for organization accounts.');
-        return;
-      }
-
       const auth = getFirebaseAuth();
-      const credential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(credential.user, {
-        displayName: accountType === 'organization' ? organizationName : fullName,
-      });
+      await signInWithEmailAndPassword(auth, authEmail, password);
+      await refreshProfile();
 
+      setFlowState('success');
+      onOpenChange(false);
+      onSuccess?.();
+
+      if (typeof window !== 'undefined') {
+        window.location.href = redirectUrl;
+      }
+    } catch (loginError: any) {
+      console.error('Login failed:', loginError);
+
+      if (loginError.code === 'auth/wrong-password' || loginError.code === 'auth/invalid-credential') {
+        setError('Incorrect password. Please try again or use "Forgot Password".');
+      } else if (loginError.code === 'auth/user-disabled') {
+        setError('This account has been disabled. Please contact support.');
+      } else {
+        setError('Failed to sign in. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Step 2b: Create new account
+  const handleSignUp = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!fullName.trim()) {
+      setError('Please enter your full name.');
+      return;
+    }
+
+    // Business accounts need organization name
+    if (isBusiness && !organizationName.trim()) {
+      setError('Please enter your organization name.');
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    // For phone signups, optionally collect email
+    if (identifierType === 'phone' && recoveryEmail && !validateEmail(recoveryEmail)) {
+      setError('Please enter a valid email address for account recovery.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const auth = getFirebaseAuth();
+
+      // Create Firebase account with authEmail (actual or synthetic)
+      const credential = await createUserWithEmailAndPassword(auth, authEmail, password);
+
+      // Get ID token for API calls
       const token = await credential.user.getIdToken(true);
+
+      // Store user profile in Firestore
+      const profileData: Record<string, unknown> = {
+        accountType: defaultAccountType,
+        displayName: fullName.trim(),
+        email: identifierType === 'email' ? identifier.trim() : (recoveryEmail.trim() || authEmail),
+      };
+
+      // Add business details
+      if (isBusiness) {
+        profileData.organizationName = organizationName.trim();
+        profileData.organizationDetails = organizationDetails.trim();
+      }
+
+      // Add mobileNumber if signing up with phone
+      if (identifierType === 'phone') {
+        profileData.mobileNumber = identifier.trim();
+      }
+
       const response = await fetch('/api/auth/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          accountType,
-          displayName: fullName,
-          organizationName: accountType === 'organization' ? organizationName : undefined,
-          organizationDetails,
-          email,
-        }),
+        body: JSON.stringify(profileData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to persist profile');
+        throw new Error('Failed to create user profile');
       }
 
       await refreshProfile();
-      
+
+      setFlowState('success');
       onOpenChange(false);
       onSuccess?.();
-      
-      // Navigate after modal is closed
+
       if (typeof window !== 'undefined') {
         window.location.href = redirectUrl;
       }
-    } catch (registerError) {
-      console.error('Registration failed', registerError);
-      setError('Failed to create account. Please try again.');
+    } catch (registerError: any) {
+      console.error('Registration failed:', registerError);
+
+      if (registerError.code === 'auth/email-already-in-use') {
+        setError('This account already exists. Please sign in instead.');
+      } else if (registerError.code === 'auth/weak-password') {
+        setError('Password is too weak. Please choose a stronger password.');
+      } else {
+        setError('Failed to create account. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleModeChange = (newMode: AuthMode) => {
-    setMode(newMode);
+  // Step 3: Password recovery
+  const handleForgotPassword = () => {
     setError(null);
+    setFlowState('forgot-password');
+  };
+
+  const handleResetPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    // For phone accounts, require recovery email
+    if (identifierType === 'phone' && !recoveryEmail) {
+      setError('Please enter your email address to receive the password reset link.');
+      return;
+    }
+
+    if (identifierType === 'phone' && !validateEmail(recoveryEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identifier: identifier.trim(),
+          emailFallback: identifierType === 'phone' ? recoveryEmail.trim() : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to send password reset email');
+        return;
+      }
+
+      // Show success message
+      alert('Password reset email sent! Please check your inbox.');
+      setFlowState('existing-user');
+      setPassword('');
+    } catch (err) {
+      console.error('Password reset failed:', err);
+      setError('Failed to send password reset email. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Render different UI based on flow state
+  // Render different UI based on flow state
+  const renderTitle = () => {
+    switch (flowState) {
+      case 'initial':
+        return isBusiness ? 'Partner with Myark' : 'Welcome to Myark';
+      case 'existing-user':
+        return `Welcome back${identifierType === 'phone' ? ', ' + formatPhoneDisplay(identifier) : ''}!`;
+      case 'new-user':
+        return isBusiness ? 'Register Organization' : 'Create your account';
+      case 'forgot-password':
+        return 'Reset your password';
+      default:
+        return 'Sign In';
+    }
+  };
+
+  const renderSubtitle = () => {
+    switch (flowState) {
+      case 'initial':
+        return isBusiness
+          ? 'Sign in or register your school/organization'
+          : 'Sign in or create an account to continue';
+      case 'existing-user':
+        return 'Enter your password to continue';
+      case 'new-user':
+        return isBusiness
+          ? 'Enter your organization details to get started'
+          : 'Just a few details to get started';
+      case 'forgot-password':
+        return 'We\'ll send you a link to reset your password';
+      default:
+        return '';
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="h-[90vh] max-h-[90vh] w-[95vw] max-w-md overflow-y-auto border-0 bg-gradient-to-b from-white to-slate-50 p-0 shadow-2xl dark:from-slate-900 dark:to-slate-950 rounded-2xl sm:h-auto sm:max-h-none sm:w-full"
+        className="h-auto max-h-[95vh] w-[96vw] max-w-md overflow-y-auto border-0 bg-gradient-to-b from-white to-slate-50 p-0 shadow-2xl dark:from-slate-900 dark:to-slate-950 rounded-xl sm:rounded-2xl sm:w-full"
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex flex-col gap-2 border-b border-slate-200/60 bg-gradient-to-r from-orange-500/5 to-pink-500/5 px-4 py-4 sm:px-6 sm:py-5 dark:border-slate-700/60 dark:from-orange-500/10 dark:to-pink-500/10">
+        <div className="sticky top-0 z-10 flex flex-col gap-2 border-b border-slate-200/60 bg-gradient-to-r from-primary/5 to-chart-2/5 px-4 py-4 sm:px-6 sm:py-5 dark:border-slate-700/60 dark:from-primary/10 dark:to-chart-2/10">
           <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground dark:text-white truncate">
-                {mode === 'login' ? 'Welcome back!' : 'Join MyArk'}
-              </h2>
-              <p className="mt-1 text-xs sm:text-xs text-muted-foreground dark:text-slate-400 line-clamp-2">
-                {mode === 'login'
-                  ? 'Access your opportunities and dashboard'
-                  : 'Start discovering amazing opportunities'}
-              </p>
+            <div className="flex-1 min-w-0 flex items-center gap-2">
+              {flowState !== 'initial' && (
+                <button
+                  onClick={handleBack}
+                  disabled={isSubmitting}
+                  className="flex-shrink-0 rounded-lg p-1 text-slate-500 transition-colors hover:bg-white/60 hover:text-slate-700 disabled:opacity-50 dark:hover:bg-white/10 dark:hover:text-white"
+                  aria-label="Go back"
+                >
+                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                </button>
+              )}
+              <div className="flex-1 min-w-0">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground dark:text-white truncate">
+                  {renderTitle()}
+                </h2>
+                <p className="mt-1 text-xs sm:text-xs text-muted-foreground dark:text-slate-400 line-clamp-2">
+                  {renderSubtitle()}
+                </p>
+              </div>
             </div>
             <button
               onClick={() => handleClose(false)}
@@ -205,101 +435,103 @@ export default function AuthModal({
           </div>
         </div>
 
-        {/* Mode Tabs */}
-        <div className="sticky top-14 sm:top-16 z-10 flex border-b border-slate-200/60 bg-white/50 px-4 pt-3 pb-0 sm:px-6 sm:pt-4 dark:border-slate-700/60 dark:bg-slate-900/50 backdrop-blur-sm">
-          <button
-            onClick={() => handleModeChange('login')}
-            className={`flex-1 px-2 pb-3 text-center text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-              mode === 'login'
-                ? 'border-b-2 border-orange-500 text-orange-600 dark:text-orange-400'
-                : 'text-muted-foreground hover:text-foreground dark:hover:text-slate-300'
-            }`}
-          >
-            Sign In
-          </button>
-          <button
-            onClick={() => handleModeChange('register')}
-            className={`flex-1 px-2 pb-3 text-center text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-              mode === 'register'
-                ? 'border-b-2 border-pink-500 text-pink-600 dark:text-pink-400'
-                : 'text-muted-foreground hover:text-foreground dark:hover:text-slate-300'
-            }`}
-          >
-            Create Account
-          </button>
-        </div>
-
         {/* Content */}
         <div className="px-4 py-5 sm:px-6 sm:py-6 space-y-4 sm:space-y-5">
-          {/* Account Type Selection for Register */}
-          {mode === 'register' && (
-            <div className="space-y-2 sm:space-y-3">
-              <Label className="text-xs sm:text-xs font-semibold text-muted-foreground dark:text-slate-400">
-                I want to register as:
-              </Label>
-              <div className="space-y-2 sm:space-y-2">
-                {(Object.keys(ACCOUNT_TYPE_LABELS) as AccountType[]).map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setAccountType(value)}
-                    className={`w-full rounded-lg sm:rounded-xl border-2 px-3 sm:px-4 py-2.5 sm:py-3 text-left transition-all duration-200 ${
-                      accountType === value
-                        ? 'border-orange-400 bg-orange-50/50 dark:border-orange-400/40 dark:bg-orange-500/10'
-                        : 'border-slate-200 bg-slate-50/50 hover:border-orange-200 dark:border-slate-700 dark:bg-slate-800/30 dark:hover:border-orange-400/30'
-                    }`}
-                  >
-                    <span className="block text-xs sm:text-sm font-semibold text-foreground dark:text-white truncate">
-                      {ACCOUNT_TYPE_LABELS[value]}
-                    </span>
-                    <span className="mt-0.5 sm:mt-1 block text-[10px] sm:text-xs text-muted-foreground dark:text-slate-400 line-clamp-1">
-                      {value === 'organization'
-                        ? 'Share programs and reach students'
-                        : 'Find opportunities and learn'}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Login Form */}
-          {mode === 'login' && (
-            <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="login-email" className="text-xs sm:text-sm font-semibold">
-                  Email Address
+          {/* Initial: Email/Phone Input */}
+          {flowState === 'initial' && (
+            <form onSubmit={handleContinue} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="identifier" className="text-sm font-semibold">
+                  {identifierType ? getIdentifierLabel(identifierType) : 'Email or Mobile Number'}
                 </Label>
                 <Input
-                  id="login-email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="identifier"
+                  name="identifier"
+                  type="text"
+                  autoComplete="username"
                   required
                   disabled={isSubmitting}
-                  placeholder="you@company.com"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder={getIdentifierPlaceholder(identifierType)}
+                  inputMode={identifierType === 'phone' ? 'tel' : identifierType === 'email' ? 'email' : 'text'}
+                  autoCapitalize="none"
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                />
+                {identifierType && (
+                  <p className="text-xs text-muted-foreground">
+                    {identifierType === 'email' ? '✓ Email format detected' : '✓ Indian mobile number detected'}
+                  </p>
+                )}
+              </div>
+
+              {error && (
+                <div className="rounded-lg bg-red-50/70 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                  {error}
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={isSubmitting || !identifierType}
+                className="h-11 w-full rounded-lg text-base bg-gradient-to-r from-chart-1 to-chart-2 font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:from-chart-2 hover:to-chart-3 hover:shadow-primary/30 disabled:opacity-70 dark:shadow-primary/10"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Checking...
+                  </>
+                ) : (
+                  'Continue'
+                )}
+              </Button>
+            </form>
+          )}
+
+          {/* Existing User: Password Input */}
+          {flowState === 'existing-user' && (
+            <form onSubmit={handleSignIn} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="identifier-display" className="text-sm font-semibold">
+                  {getIdentifierLabel(identifierType!)}
+                </Label>
+                <Input
+                  id="identifier-display"
+                  value={identifierType === 'phone' ? formatPhoneDisplay(identifier) : identifier}
+                  disabled
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/30 dark:text-slate-400"
                 />
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="login-password" className="text-xs sm:text-sm font-semibold">
-                  Password
-                </Label>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password" className="text-sm font-semibold">
+                    Password
+                  </Label>
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    className="text-xs font-semibold text-primary hover:text-primaryDark dark:text-primary dark:hover:text-primaryDark"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <Input
-                  id="login-password"
+                  id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
                   required
                   disabled={isSubmitting}
-                  placeholder="••••••••"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                 />
               </div>
 
               {error && (
-                <div className="rounded-lg bg-red-50/70 p-2.5 sm:p-3 text-xs sm:text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                <div className="rounded-lg bg-red-50/70 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
                   {error}
                 </div>
               )}
@@ -307,112 +539,154 @@ export default function AuthModal({
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-9 sm:h-10 w-full rounded-lg text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 font-semibold text-white shadow-lg shadow-orange-500/20 transition-all hover:from-orange-600 hover:to-pink-600 hover:shadow-orange-500/30 disabled:opacity-70 dark:shadow-orange-500/10"
+                className="h-11 w-full rounded-lg text-base bg-gradient-to-r from-chart-1 to-chart-2 font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:from-chart-2 hover:to-chart-3 hover:shadow-primary/30 disabled:opacity-70 dark:shadow-primary/10"
               >
-                {isSubmitting ? 'Signing in…' : 'Sign In'}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
               </Button>
             </form>
           )}
 
-          {/* Register Form */}
-          {mode === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-3 sm:space-y-4">
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="register-full-name" className="text-xs sm:text-sm font-semibold">
-                  Full Name
+          {/* New User: Sign Up Form */}
+          {flowState === 'new-user' && (
+            <form onSubmit={handleSignUp} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="identifier-signup" className="text-sm font-semibold">
+                  {getIdentifierLabel(identifierType!)}
                 </Label>
                 <Input
-                  id="register-full-name"
-                  name="fullName"
-                  required
-                  disabled={isSubmitting}
-                  placeholder="Alex Johnson"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  id="identifier-signup"
+                  value={identifierType === 'phone' ? formatPhoneDisplay(identifier) : identifier}
+                  disabled
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/30 dark:text-slate-400"
                 />
               </div>
 
-              {accountType === 'organization' && (
+              <div className="space-y-2">
+                <Label htmlFor="fullName" className="text-sm font-semibold">
+                  Full Name
+                </Label>
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  disabled={isSubmitting}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Enter your full name"
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                />
+              </div>
+
+              {isBusiness && (
                 <>
-                  <div className="space-y-1.5 sm:space-y-2">
-                    <Label htmlFor="register-organization-name" className="text-xs sm:text-sm font-semibold">
+                  <div className="space-y-2">
+                    <Label htmlFor="organizationName" className="text-sm font-semibold">
                       Organization Name
                     </Label>
                     <Input
-                      id="register-organization-name"
+                      id="organizationName"
                       name="organizationName"
+                      type="text"
+                      autoComplete="organization"
                       required
                       disabled={isSubmitting}
-                      placeholder="Your Organization"
-                      className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                      value={organizationName}
+                      onChange={(e) => setOrganizationName(e.target.value)}
+                      placeholder="Enter your school or organization name"
+                      className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                     />
                   </div>
 
-                  <div className="space-y-1.5 sm:space-y-2">
-                    <Label htmlFor="register-organization-details" className="text-xs sm:text-sm font-semibold">
-                      Organization Overview
+                  <div className="space-y-2">
+                    <Label htmlFor="organizationDetails" className="text-sm font-semibold">
+                      Organization Details (Optional)
                     </Label>
-                    <Textarea
-                      id="register-organization-details"
+                    <Input
+                      id="organizationDetails"
                       name="organizationDetails"
-                      placeholder="Tell us about your organization..."
+                      type="text"
                       disabled={isSubmitting}
-                      className="min-h-16 sm:min-h-20 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500 resize-none"
+                      value={organizationDetails}
+                      onChange={(e) => setOrganizationDetails(e.target.value)}
+                      placeholder="Role, department, or other details"
+                      className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                     />
                   </div>
                 </>
               )}
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="register-email" className="text-xs sm:text-sm font-semibold">
-                  Email Address
-                </Label>
-                <Input
-                  id="register-email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  disabled={isSubmitting}
-                  placeholder="you@company.com"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
-                />
-              </div>
+              {identifierType === 'phone' && (
+                <div className="space-y-2">
+                  <Label htmlFor="recovery-email" className="text-sm font-semibold">
+                    Email (Optional)
+                  </Label>
+                  <Input
+                    id="recovery-email"
+                    name="recoveryEmail"
+                    type="email"
+                    autoComplete="email"
+                    disabled={isSubmitting}
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Recommended for password recovery
+                  </p>
+                </div>
+              )}
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="register-password" className="text-xs sm:text-sm font-semibold">
+              <div className="space-y-2">
+                <Label htmlFor="new-password" className="text-sm font-semibold">
                   Password
                 </Label>
                 <Input
-                  id="register-password"
+                  id="new-password"
                   name="password"
                   type="password"
+                  autoComplete="new-password"
                   required
                   disabled={isSubmitting}
-                  placeholder="Create a secure password"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Create a password"
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                 />
-                <p className="text-[10px] sm:text-xs text-muted-foreground dark:text-slate-500">
+                <p className="text-xs text-muted-foreground">
                   Must be at least 8 characters
                 </p>
               </div>
 
-              <div className="space-y-1.5 sm:space-y-2">
-                <Label htmlFor="register-confirm-password" className="text-xs sm:text-sm font-semibold">
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password" className="text-sm font-semibold">
                   Confirm Password
                 </Label>
                 <Input
-                  id="register-confirm-password"
+                  id="confirm-password"
                   name="confirmPassword"
                   type="password"
+                  autoComplete="new-password"
                   required
                   disabled={isSubmitting}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="h-9 sm:h-10 text-sm rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
                 />
               </div>
 
               {error && (
-                <div className="rounded-lg bg-red-50/70 p-2.5 sm:p-3 text-xs sm:text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                <div className="rounded-lg bg-red-50/70 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
                   {error}
                 </div>
               )}
@@ -420,40 +694,83 @@ export default function AuthModal({
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-9 sm:h-10 w-full rounded-lg text-sm sm:text-base bg-gradient-to-r from-orange-500 to-pink-500 font-semibold text-white shadow-lg shadow-orange-500/20 transition-all hover:from-orange-600 hover:to-pink-600 hover:shadow-orange-500/30 disabled:opacity-70 dark:shadow-orange-500/10"
+                className="h-11 w-full rounded-lg text-base bg-gradient-to-r from-chart-1 to-chart-2 font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:from-chart-2 hover:to-chart-3 hover:shadow-primary/30 disabled:opacity-70 dark:shadow-primary/10"
               >
-                {isSubmitting ? 'Creating account…' : 'Create Account'}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account...
+                  </>
+                ) : (
+                  'Create Account'
+                )}
               </Button>
 
-              <p className="text-center text-[10px] sm:text-xs text-muted-foreground dark:text-slate-400">
+              <p className="text-center text-xs text-muted-foreground dark:text-slate-400">
                 By creating an account, you agree to our Terms of Service and Privacy Policy
               </p>
             </form>
           )}
-        </div>
 
-        {/* Footer */}
-        <div className="sticky bottom-0 border-t border-slate-200/60 bg-slate-50/50 px-4 py-3 sm:px-6 sm:py-4 text-center text-xs sm:text-xs text-muted-foreground dark:border-slate-700/60 dark:bg-slate-800/30 dark:text-slate-400">
-          {mode === 'login' ? (
-            <p>
-              Don&apos;t have an account?{' '}
-              <button
-                onClick={() => handleModeChange('register')}
-                className="font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+          {/* Password Recovery */}
+          {flowState === 'forgot-password' && (
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="identifier-reset" className="text-sm font-semibold">
+                  {getIdentifierLabel(identifierType!)}
+                </Label>
+                <Input
+                  id="identifier-reset"
+                  value={identifierType === 'phone' ? formatPhoneDisplay(identifier) : identifier}
+                  disabled
+                  className="h-11 text-base rounded-lg border border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/30 dark:text-slate-400"
+                />
+              </div>
+
+              {identifierType === 'phone' && (
+                <div className="space-y-2">
+                  <Label htmlFor="reset-email" className="text-sm font-semibold">
+                    Email Address
+                  </Label>
+                  <Input
+                    id="reset-email"
+                    name="resetEmail"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    disabled={isSubmitting}
+                    value={recoveryEmail}
+                    onChange={(e) => setRecoveryEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="h-11 text-base rounded-lg border border-slate-200 bg-white/70 text-foreground placeholder:text-slate-400 transition-colors dark:border-slate-700 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-500"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    We'll send the password reset link to this email
+                  </p>
+                </div>
+              )}
+
+              {error && (
+                <div className="rounded-lg bg-red-50/70 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                  {error}
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="h-11 w-full rounded-lg text-base bg-gradient-to-r from-chart-1 to-chart-2 font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:from-chart-2 hover:to-chart-3 hover:shadow-primary/30 disabled:opacity-70 dark:shadow-primary/10"
               >
-                Create one
-              </button>
-            </p>
-          ) : (
-            <p>
-              Already have an account?{' '}
-              <button
-                onClick={() => handleModeChange('login')}
-                className="font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
-              >
-                Sign in
-              </button>
-            </p>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  'Send Reset Link'
+                )}
+              </Button>
+            </form>
           )}
         </div>
       </DialogContent>

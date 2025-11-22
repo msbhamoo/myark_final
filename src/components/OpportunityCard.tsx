@@ -133,17 +133,17 @@ const CATEGORY_STYLES: Record<
     icon: '💼',
   },
   competition: {
-    badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-200',
-    accentClass: 'text-orange-600 dark:text-orange-300',
-    borderClass: 'border-orange-200/70 dark:border-orange-400/30',
-    bgGradient: 'from-orange-50/40 dark:from-orange-950/20',
+    badgeClass: 'bg-accent text-[#1A2A33] dark:bg-primary/20 dark:text-accent',
+    accentClass: 'text-primary dark:text-accent',
+    borderClass: 'border-accent/70 dark:border-primary/30',
+    bgGradient: 'from-accent/40 dark:from-primary/20',
     icon: '🏆',
   },
   competitions: {
-    badgeClass: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-200',
-    accentClass: 'text-orange-600 dark:text-orange-300',
-    borderClass: 'border-orange-200/70 dark:border-orange-400/30',
-    bgGradient: 'from-orange-50/40 dark:from-orange-950/20',
+    badgeClass: 'bg-accent text-[#1A2A33] dark:bg-primary/20 dark:text-accent',
+    accentClass: 'text-primary dark:text-accent',
+    borderClass: 'border-accent/70 dark:border-primary/30',
+    bgGradient: 'from-accent/40 dark:from-primary/20',
     icon: '🏆',
   },
   // Default fallback
@@ -208,7 +208,7 @@ export default function OpportunityCard({
 
   const feeBadgeClass = isFree
     ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200'
-    : 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-200';
+    : 'bg-accent text-[#1A2A33] dark:bg-primary/20 dark:text-accent';
 
   const computeDaysLeft = () => {
     if (!registrationDeadline) {
@@ -251,7 +251,7 @@ export default function OpportunityCard({
         className={cn(
           'group relative h-full overflow-hidden rounded-2xl border-b border-x transition-all duration-300 flex flex-col py-0 gap-0',
           'bg-white dark:bg-slate-900/90',
-          'hover:shadow-xl hover:-translate-y-1 hover:border-orange-200 dark:hover:border-orange-400/50',
+          'hover:shadow-xl hover:-translate-y-1 hover:border-accent dark:hover:border-primary/50',
           'border-slate-200/70 dark:border-slate-800/60',
           'cursor-pointer',
           className,
@@ -300,7 +300,7 @@ export default function OpportunityCard({
         <div className="flex flex-1 flex-col p-3 sm:p-4 transition-colors">
 
           {/* Title - Prominent */}
-          <h3 className="text-sm sm:text-base font-bold leading-tight text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-orange-600 transition-colors mt-1">
+          <h3 className="text-sm sm:text-base font-bold leading-tight text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-primary transition-colors mt-1">
             {title}
           </h3>
 

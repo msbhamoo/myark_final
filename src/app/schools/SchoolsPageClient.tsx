@@ -169,7 +169,7 @@ function SchoolCard({ school }: { school: School }) {
         <div className="flex flex-col gap-4 p-4">
           {/* School Name & Rating */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-900 transition group-hover:text-orange-600 dark:text-white line-clamp-2">
+            <h3 className="font-bold text-slate-900 transition group-hover:text-primary dark:text-white line-clamp-2">
               {school.name}
             </h3>
             <div className="flex items-center gap-1.5">
@@ -225,7 +225,7 @@ function SchoolCard({ school }: { school: School }) {
           </div>
 
           {/* CTA */}
-          <div className="flex items-center justify-between rounded-lg border border-slate-200/60 bg-gradient-to-r from-orange-50/50 to-pink-50/50 px-3 py-2 text-sm font-semibold text-orange-600 dark:border-slate-700 dark:from-orange-500/10 dark:to-pink-500/10 dark:text-orange-400 group-hover:shadow-md">
+          <div className="flex items-center justify-between rounded-lg border border-slate-200/60 bg-gradient-to-r from-accent/50 to-primary/10 px-3 py-2 text-sm font-semibold text-primary dark:border-slate-700 dark:from-primary/10 dark:to-primaryDark/10 dark:text-accent group-hover:shadow-md">
             <span>View Profile</span>
             <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" />
           </div>
@@ -307,7 +307,7 @@ export default function SchoolsPageClient() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-orange-50 to-pink-50 px-4 py-12 dark:from-orange-500/10 dark:to-pink-500/10 sm:py-16">
+        <section className="bg-gradient-to-br from-accent/30 to-white px-4 py-12 dark:from-primary/10 dark:to-slate-950 sm:py-16">
           <div className="mx-auto max-w-7xl">
             <div className="space-y-4 text-center">
               <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
@@ -345,7 +345,7 @@ export default function SchoolsPageClient() {
                 <Filter className="h-5 w-5" />
                 <span>Filters</span>
                 {activeFiltersCount > 0 && (
-                  <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
+                  <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                     {activeFiltersCount}
                   </span>
                 )}
@@ -356,7 +356,7 @@ export default function SchoolsPageClient() {
                   onClick={() =>
                     setFilters({ search: '', state: '', city: '', board: '', medium: '', grade: '' })
                   }
-                  className="text-sm font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+                  className="text-sm font-semibold text-primary hover:text-primaryDark dark:text-accent dark:hover:text-primary"
                 >
                   Clear all
                 </button>

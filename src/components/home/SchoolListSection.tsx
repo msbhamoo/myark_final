@@ -117,7 +117,7 @@ export default function SchoolListSection() {
             <div className="flex flex-col gap-3 p-3 sm:p-4">
               {/* Name & Rating */}
               <div className="space-y-1.5">
-                <h3 className="font-bold text-slate-900 transition group-hover:text-orange-600 dark:text-white line-clamp-2 text-sm sm:text-base">
+                <h3 className="font-bold text-slate-900 transition group-hover:text-primary dark:text-white line-clamp-2 text-sm sm:text-base">
                   {school.name}
                 </h3>
                 <div className="flex items-center gap-1.5">
@@ -186,7 +186,7 @@ export default function SchoolListSection() {
               </div>
 
               {/* CTA */}
-              <div className="flex items-center justify-between rounded-lg border border-slate-200/60 bg-gradient-to-r from-orange-50/50 to-pink-50/50 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-orange-600 dark:border-slate-700 dark:from-orange-500/10 dark:to-pink-500/10 dark:text-orange-400 group-hover:shadow-md">
+              <div className="flex items-center justify-between rounded-lg border border-slate-200/60 bg-gradient-to-r from-accent/50 to-chart-2/10 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-primary dark:border-slate-700 dark:from-primary/10 dark:to-chart-2/10 dark:text-accent group-hover:shadow-md">
                 <span>View Details</span>
                 <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 transition group-hover:translate-x-1" />
               </div>
@@ -199,7 +199,7 @@ export default function SchoolListSection() {
       <div className="pt-2">
         <Link
           href="/schools"
-          className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-6 py-3 text-sm font-semibold text-orange-600 shadow-sm transition hover:bg-orange-50 dark:border-orange-300/40 dark:bg-slate-900 dark:text-orange-400 dark:hover:bg-orange-500/10"
+          className="inline-flex items-center gap-2 rounded-full border border-accent bg-white px-6 py-3 text-sm font-semibold text-primary shadow-sm transition hover:bg-accent/20 dark:border-primary/40 dark:bg-slate-900 dark:text-accent dark:hover:bg-primary/10"
         >
           Browse All Schools
           <ChevronRight className="h-4 w-4" />

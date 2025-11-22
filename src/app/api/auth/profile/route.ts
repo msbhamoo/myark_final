@@ -109,6 +109,11 @@ export async function POST(request: NextRequest) {
         ? payload.organizationDetails.trim()
         : '';
 
+    const mobileNumber =
+      typeof payload.mobileNumber === 'string' && payload.mobileNumber.trim()
+        ? payload.mobileNumber.trim()
+        : null;
+
     const db = getDb();
     const userRef = db.collection(PROFILE_COLLECTION).doc(decoded.uid);
     const existing = await userRef.get();
@@ -130,6 +135,9 @@ export async function POST(request: NextRequest) {
     if (rawAccountType === 'organization' && organizationDetails) {
       docData.organizationDetails = organizationDetails;
     }
+    if (mobileNumber) {
+      docData.mobileNumber = mobileNumber;
+    }
 
     await userRef.set(docData, { merge: true });
 
@@ -145,9 +153,9 @@ export async function POST(request: NextRequest) {
           contactEmail: docData.email,
           displayName,
           overview: organizationDetails,
-           visibility: existingOrg.visibility ?? 'private',
-           isVerified: existingOrg.isVerified ?? false,
-           source: existingOrg.source ?? 'self-service',
+          visibility: existingOrg.visibility ?? 'private',
+          isVerified: existingOrg.isVerified ?? false,
+          source: existingOrg.source ?? 'self-service',
           updatedAt: now,
           createdAt: existingOrg.createdAt ?? now,
         },

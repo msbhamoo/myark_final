@@ -124,13 +124,13 @@ export default function OrganizationDashboard({
           <div className="flex flex-wrap gap-3">
             <Button
               onClick={() => router.push('/host')}
-              className="bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-pink-600"
+              className="bg-gradient-to-r from-chart-1 to-chart-2 text-white shadow-lg shadow-primary/30 hover:from-chart-2 hover:to-chart-3"
             >
               Submit opportunity
             </Button>
             <Button
               variant="outline"
-              className="border-orange-200 text-slate-900 dark:text-white hover:bg-orange-50 dark:bg-white/10"
+              className="border-accent text-slate-900 dark:text-white hover:bg-accent/50 dark:bg-white/10"
               onClick={() => signOut()}
             >
               Sign out

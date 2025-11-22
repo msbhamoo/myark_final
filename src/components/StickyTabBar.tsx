@@ -220,7 +220,7 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-all data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-sm dark:text-slate-300 dark:data-[state=active]:bg-orange-500 dark:data-[state=active]:text-white whitespace-nowrap flex-shrink-0"
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-all data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm dark:text-slate-300 dark:data-[state=active]:bg-primary dark:data-[state=active]:text-white whitespace-nowrap flex-shrink-0"
                   >
                     {tab.label}
                   </TabsTrigger>

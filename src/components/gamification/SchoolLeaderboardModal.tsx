@@ -41,7 +41,7 @@ export function SchoolLeaderboardModal({
       <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <Trophy className="h-6 w-6 text-amber-500" />
+            <Trophy className="h-6 w-6 text-primary" />
             <div>
               <DialogTitle className="text-2xl">{schoolName} Leaderboard</DialogTitle>
               <DialogDescription>
@@ -92,9 +92,9 @@ export function SchoolLeaderboardModal({
                         rank === 1,
                       'border-l-slate-400 bg-slate-50/50 dark:border-l-slate-600 dark:bg-slate-900/20':
                         rank === 2,
-                      'border-l-orange-400 bg-orange-50/50 dark:border-l-orange-600 dark:bg-orange-950/20':
+                      'border-l-amber-600 bg-amber-50/50 dark:border-l-amber-700 dark:bg-amber-950/20':
                         rank === 3,
-                      'border-l-indigo-300 bg-indigo-50/30 dark:border-l-indigo-700 dark:bg-indigo-950/10':
+                      'border-l-[#58CC02] bg-[#DFF7C8]/30 dark:border-l-[#58CC02] dark:bg-[#58CC02]/10':
                         rank > 3,
                     },
                   )}
@@ -135,9 +135,9 @@ export function SchoolLeaderboardModal({
                             rank === 1,
                           'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200':
                             rank === 2,
-                          'bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-200':
+                          'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200':
                             rank === 3,
-                          'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-200':
+                          'bg-[#DFF7C8] text-[#1A2A33] dark:bg-[#58CC02]/20 dark:text-[#DFF7C8]':
                             rank > 3,
                         },
                       )}

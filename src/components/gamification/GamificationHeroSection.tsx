@@ -239,7 +239,7 @@ export function GamificationHeroSection({
             </div>
 
             {/* Badges card */}
-            <div className="rounded-2xl border border-white/40 bg-gradient-to-br from-amber-500/20 to-orange-500/20 p-4 backdrop-blur-sm dark:border-white/10 dark:from-amber-500/10 dark:to-orange-500/10">
+            <div className="rounded-2xl border border-white/40 bg-gradient-to-br from-primary/20 to-primaryDark/20 p-4 backdrop-blur-sm dark:border-white/10 dark:from-primary/10 dark:to-primaryDark/10">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
                 Badges Earned
               </p>
@@ -261,7 +261,7 @@ export function GamificationHeroSection({
                   {streaks.daily.current}
                 </span>
                 <span className="text-lg">
-                  <Flame className="h-6 w-6 text-orange-500" />
+                  <Flame className="h-6 w-6 text-primary" />
                 </span>
               </div>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
@@ -329,7 +329,7 @@ export function GamificationHeroSection({
                       <Tooltip key={badge.id}>
                         <TooltipTrigger asChild>
                           <div className="group relative flex-shrink-0 cursor-pointer">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400/30 to-orange-400/20 transition-transform hover:scale-110 dark:from-amber-500/20 dark:to-orange-500/10">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/30 to-primaryDark/20 transition-transform hover:scale-110 dark:from-primary/20 dark:to-primaryDark/10">
                               <span className="text-2xl">{badgeDefinition?.icon ?? '🏆'}</span>
                             </div>
                             <div className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">

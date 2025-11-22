@@ -484,7 +484,7 @@ export function HomeSegmentsManager() {
               Reset form
             </Button>
             {formState.isDefault && (
-              <Badge variant="outline" className="border-orange-500/40 bg-orange-500/10 text-orange-200">
+              <Badge variant="outline" className="border-[#58CC02]/40 bg-[#58CC02]/10 text-primary">
                 Permanent segment
               </Badge>
             )}
@@ -513,8 +513,8 @@ export function HomeSegmentsManager() {
           {segmentsLoading
             ? 'Loading segments...'
             : hasSegments
-            ? `Showing ${segments.length} segment${segments.length === 1 ? '' : 's'}.`
-            : 'No saved segments yet. Defaults will be shown automatically.'}
+              ? `Showing ${segments.length} segment${segments.length === 1 ? '' : 's'}.`
+              : 'No saved segments yet. Defaults will be shown automatically.'}
         </p>
 
         <div className="mt-4 overflow-hidden rounded-xl border border-border/60 dark:border-white/10">
@@ -543,7 +543,7 @@ export function HomeSegmentsManager() {
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-foreground dark:text-white">{segment.title}</span>
                       {segment.isDefault && (
-                        <Badge variant="outline" className="border-orange-500/40 bg-orange-500/10 text-orange-200">
+                        <Badge variant="outline" className="border-[#58CC02]/40 bg-[#58CC02]/10 text-primary">
                           Default
                         </Badge>
                       )}
@@ -566,7 +566,7 @@ export function HomeSegmentsManager() {
                         variant="outline"
                         className={
                           segment.isVisible
-                            ? 'border-green-500/40 bg-green-500/10 text-green-200'
+                            ? 'border-[#58CC02]/40 bg-[#58CC02]/10 text-primary'
                             : 'border-red-500/40 bg-red-500/10 text-red-200'
                         }
                       >
@@ -595,7 +595,7 @@ export function HomeSegmentsManager() {
                       disabled={segmentSubmitting || !segment.persisted}
                       className={
                         segment.isDefault
-                          ? 'border-orange-500/30 bg-orange-500/10 text-orange-200 hover:bg-orange-500/20'
+                          ? 'border-[#58CC02]/30 bg-[#58CC02]/10 text-primary hover:bg-[#58CC02]/20'
                           : 'border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20'
                       }
                     >

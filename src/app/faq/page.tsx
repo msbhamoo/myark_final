@@ -13,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { 
+import {
   HelpCircle,
   Search,
   BookOpen,
@@ -30,7 +30,7 @@ export default function FAQPage() {
 
   const faqCategories = [
     { id: 'general', name: 'General', icon: HelpCircle, color: 'text-blue-500' },
-    { id: 'opportunities', name: 'Opportunities', icon: Trophy, color: 'text-orange-500' },
+    { id: 'opportunities', name: 'Opportunities', icon: Trophy, color: 'text-primary' },
     { id: 'practice', name: 'Practice & Papers', icon: FileText, color: 'text-green-500' },
     { id: 'scholarships', name: 'Scholarships', icon: Award, color: 'text-purple-500' },
     { id: 'account', name: 'Account', icon: User, color: 'text-pink-500' },
@@ -205,7 +205,7 @@ export default function FAQPage() {
             {Object.entries(faqs).map(([categoryId, questions]) => {
               const category = faqCategories.find(c => c.id === categoryId);
               const Icon = category?.icon || HelpCircle;
-              
+
               return (
                 <div key={categoryId} id={categoryId}>
                   <div className="flex items-center gap-3 mb-4">
@@ -213,7 +213,7 @@ export default function FAQPage() {
                     <h2 className="text-2xl font-bold">{category?.name}</h2>
                     <Badge variant="secondary">{questions.length}</Badge>
                   </div>
-                  
+
                   <Card className="p-2">
                     <Accordion type="single" collapsible className="w-full">
                       {questions.map((faq, index) => (

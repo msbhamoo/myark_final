@@ -7,13 +7,13 @@ import BottomNavigation from '@/components/BottomNavigation';
 import OpportunityCard from '@/components/OpportunityCard';
 import SchoolListSection from '@/components/home/SchoolListSection';
 import { Button } from '@/components/ui/button';
-import { 
-  Search, 
-  Filter, 
-  Sparkles, 
-  BookOpen, 
-  Target, 
-  TrendingUp, 
+import {
+  Search,
+  Filter,
+  Sparkles,
+  BookOpen,
+  Target,
+  TrendingUp,
   ChevronDown,
   GraduationCap,
   Trophy,
@@ -31,13 +31,13 @@ interface ParentGuideSectionProps {
   content: React.ReactNode;
 }
 
-const CareerPathOption = ({ 
-  title, 
-  description, 
-  opportunities 
-}: { 
-  title: string; 
-  description: string; 
+const CareerPathOption = ({
+  title,
+  description,
+  opportunities
+}: {
+  title: string;
+  description: string;
   opportunities: number;
 }) => (
   <div className="rounded-2xl border border-slate-200/70 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80">
@@ -66,11 +66,11 @@ export default function ParentGuidePage() {
     workshops: false,
   });
 
-  const grades = [
-    { value: '4-6', label: 'Grades 4-6' },
-    { value: '7-9', label: 'Grades 7-9' },
-    { value: '10-12', label: 'Grades 10-12' },
-  ];
+  // const grades = [
+  //   { value: '4-6', label: 'Grades 4-6' },
+  //   { value: '7-9', label: 'Grades 7-9' },
+  //   { value: '10-12', label: 'Grades 10-12' },
+  // ];
 
   const categories = [
     { value: 'scholarships', label: '🎓 Scholarships', color: 'from-amber-50' },

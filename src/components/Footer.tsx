@@ -49,9 +49,9 @@ export default function Footer() {
             <div className="space-y-6">
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 rounded-2xl border border-orange-300/20 bg-white/10 px-3 py-2 text-white shadow-sm shadow-orange-400/20 transition hover:-translate-y-[1px] hover:shadow-md"
+                className="inline-flex items-center gap-3 rounded-2xl border border-accent/20 bg-white/10 px-3 py-2 text-white shadow-sm shadow-primary/20 transition hover:-translate-y-[1px] hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-pink-500 text-lg font-semibold text-white shadow-inner shadow-orange-500/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 text-lg font-semibold text-white shadow-inner shadow-primary/40">
                   M
                 </div>
                 <span className="text-xl font-semibold">Myark</span>
@@ -69,8 +69,8 @@ export default function Footer() {
                     variant="ghost"
                     size="icon"
                     className={cn(
-                      'h-10 w-10 rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:-translate-y-[1px] hover:border-orange-300 hover:text-orange-200',
-                      'focus-visible:ring-2 focus-visible:ring-orange-400/50',
+                      'h-10 w-10 rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:-translate-y-[1px] hover:border-accent hover:text-accent',
+                      'focus-visible:ring-2 focus-visible:ring-primary/50',
                     )}
                     aria-label={item.label}
                   >
@@ -79,7 +79,7 @@ export default function Footer() {
                 ))}
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-orange-200">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-accent">
                   Stay in the loop
                 </h3>
                 <p className="mt-2 text-sm text-slate-300">
@@ -89,11 +89,11 @@ export default function Footer() {
                   <Input
                     type="email"
                     placeholder="Enter your email"
-                    className="h-11 flex-1 rounded-xl border border-white/20 bg-white/10 text-sm text-slate-100 placeholder:text-slate-400 focus-visible:border-orange-300 focus-visible:ring-orange-300/40"
+                    className="h-11 flex-1 rounded-xl border border-white/20 bg-white/10 text-sm text-slate-100 placeholder:text-slate-400 focus-visible:border-primary focus-visible:ring-primary/40"
                   />
                   <Button
                     type="submit"
-                    className="h-11 rounded-xl bg-orange-500 px-6 text-sm font-semibold text-white transition hover:bg-orange-600"
+                    className="h-11 rounded-xl bg-primary px-6 text-sm font-semibold text-white transition hover:bg-primaryDark"
                   >
                     Subscribe
                   </Button>
@@ -102,8 +102,8 @@ export default function Footer() {
             </div>
 
             <div className="space-y-6">
-              <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-orange-200">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-orange-500/20 text-orange-200">
+              <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-accent">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-accent">
                   ✶
                 </span>
                 For Students
@@ -177,15 +177,15 @@ export default function Footer() {
           <div className="mt-12 grid gap-6 border-t border-white/10 pt-8 text-sm text-slate-300 lg:grid-cols-2">
             <div className="flex flex-wrap gap-3">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                <Mail className="h-4 w-4 text-orange-300" aria-hidden="true" />
+                <Mail className="h-4 w-4 text-accent" aria-hidden="true" />
                 <span>support@myark.com</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                <Phone className="h-4 w-4 text-orange-300" aria-hidden="true" />
+                <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
                 <span>+91 (555) 123-4567</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                <MapPin className="h-4 w-4 text-orange-300" aria-hidden="true" />
+                <MapPin className="h-4 w-4 text-accent" aria-hidden="true" />
                 <span>Jaipur, Rajasthan</span>
               </div>
             </div>

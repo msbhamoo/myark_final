@@ -7,7 +7,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import type { OpportunityCategoryWithMeta } from '@/types/masters';
 
 const CATEGORY_COLORS = {
-  scholarships: { from: 'from-amber-400', to: 'to-orange-500' },
+  scholarships: { from: 'from-emerald-400', to: 'to-green-500' },
   olympiad: { from: 'from-purple-400', to: 'to-pink-500' },
   olympiads: { from: 'from-purple-400', to: 'to-pink-500' },
   workshop: { from: 'from-cyan-400', to: 'to-blue-500' },
@@ -18,10 +18,10 @@ const CATEGORY_COLORS = {
   summercamps: { from: 'from-emerald-400', to: 'to-green-500' },
   internship: { from: 'from-indigo-400', to: 'to-purple-500' },
   internships: { from: 'from-indigo-400', to: 'to-purple-500' },
-  hackathon: { from: 'from-yellow-400', to: 'to-orange-500' },
-  hackathons: { from: 'from-yellow-400', to: 'to-orange-500' },
-  hiring: { from: 'from-orange-400', to: 'to-pink-500' },
-  hiringchallenges: { from: 'from-orange-400', to: 'to-pink-500' },
+  hackathon: { from: 'from-violet-400', to: 'to-purple-500' },
+  hackathons: { from: 'from-violet-400', to: 'to-purple-500' },
+  hiring: { from: 'from-blue-400', to: 'to-indigo-500' },
+  hiringchallenges: { from: 'from-blue-400', to: 'to-indigo-500' },
   quiz: { from: 'from-blue-400', to: 'to-cyan-500' },
   quizzes: { from: 'from-blue-400', to: 'to-cyan-500' },
   conference: { from: 'from-slate-400', to: 'to-slate-600' },
@@ -30,8 +30,8 @@ const CATEGORY_COLORS = {
   competitions: { from: 'from-fuchsia-400', to: 'to-pink-500' },
   cultural: { from: 'from-violet-400', to: 'to-purple-500' },
   culturalevents: { from: 'from-violet-400', to: 'to-purple-500' },
-  sports: { from: 'from-red-400', to: 'to-orange-500' },
-  sportsevents: { from: 'from-red-400', to: 'to-orange-500' },
+  sports: { from: 'from-red-500', to: 'to-rose-600' },
+  sportsevents: { from: 'from-red-500', to: 'to-rose-600' },
   coding: { from: 'from-green-400', to: 'to-emerald-500' },
   codingchallenges: { from: 'from-green-400', to: 'to-emerald-500' },
   design: { from: 'from-pink-400', to: 'to-rose-500' },
@@ -160,7 +160,7 @@ export default function AllCategoriesSection() {
               <Link
                 key={category.id}
                 href={`/opportunities?category=${encodeURIComponent(categoryKey)}`}
-                className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950"
+                className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950"
               >
                 {/* Icon Circle */}
                 <div

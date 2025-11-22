@@ -15,6 +15,7 @@ import { FALLBACK_HOME_SEGMENTS as HOME_SEGMENT_DEFINITIONS } from '@/constants/
 import { cn } from '@/lib/utils';
 import { MascotBurst, MascotOrb } from '@/components/MascotBurst';
 import { LoadingSpinner, LoadingGrid } from '@/components/LoadingSpinner';
+import { FloatingMotivation } from '@/components/home/FloatingMotivation';
 
 type HomeSegment = {
   id: string;
@@ -125,11 +126,11 @@ const formatStatValue = (value?: number) => {
   return `${formatter.format(value)}+`;
 };
 
-const HERO_GRADE_SEGMENTS = [
-  { label: 'Grades 4-6', href: '/opportunities?grades=4-6' },
-  { label: 'Grades 7-9', href: '/opportunities?grades=7-9' },
-  { label: 'Grades 10-12', href: '/opportunities?grades=10-12' },
-] as const;
+// const HERO_GRADE_SEGMENTS = [
+//   { label: 'Grades 4-6', href: '/opportunities?grades=4-6' },
+//   { label: 'Grades 7-9', href: '/opportunities?grades=7-9' },
+//   { label: 'Grades 10-12', href: '/opportunities?grades=10-12' },
+// ] as const;
 
 const HERO_SPOTLIGHTS = [
   {
@@ -172,9 +173,9 @@ const HERO_SPOTLIGHTS = [
     label: 'Blog',
     caption: 'Tips & success stories',
     href: '/opportunities?category=resources',
-    tone: 'orange',
+    tone: 'green',
     icon: '📝',
-    bgGradient: 'from-orange-400 to-orange-600',
+    bgGradient: 'from-chart-1 to-chart-2',
     emoji: '�',
   },
 ] as const;
@@ -404,24 +405,29 @@ export default function HomePageClient() {
   const displayedState = currentStateGroup?.state ?? '';
   const displayedOpportunities = currentStateGroup?.opportunities ?? [];
 
+
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
       <Header />
 
       <main className="flex-1 pb-20 md:pb-0">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-orange-200/70 via-pink-100 to-sky-100 px-4 pt-8 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
+        <section className="relative overflow-hidden bg-gradient-to-br from-accent/70 via-white to-accent/30 px-4 pt-8 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.08] mix-blend-soft-light dark:opacity-[0.04]" />
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-orange-300/30 blur-3xl" />
+            <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
             <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 translate-x-1/3 translate-y-1/3 rounded-full bg-sky-300/30 blur-3xl" />
+            <FloatingMotivation />
           </div>
 
           <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-orange-600 shadow-sm ring-1 ring-orange-200/70 backdrop-blur dark:bg-slate-800/80 dark:text-orange-200 dark:ring-orange-300/40">
-                <Sparkles className="h-4 w-4" />
-                Bright futures start here
+              <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/5 to-accent/10 px-6 py-2.5 text-base font-bold text-primary shadow-sm ring-1 ring-accent/50 backdrop-blur-md transition-all hover:scale-105 hover:shadow-md dark:from-primary/20 dark:to-accent/10 dark:text-accent dark:ring-primary/40">
+                <Sparkles className="h-5 w-5 animate-pulse text-accent dark:text-primary" />
+                <span className="tracking-wide">
+                  Be Remyarkable
+                </span>
               </div>
               <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
                 Discover Your Next Big Moment
@@ -429,38 +435,55 @@ export default function HomePageClient() {
               <p className="hidden md:block mt-4 text-lg leading-relaxed text-slate-700 md:text-xl dark:text-slate-100/80">
                 Curated opportunities for Grades 4-12 students and the parents who cheer them on.
               </p>
-              <div className="hidden md:flex mt-6 flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
+              {/* <div className="hidden md:flex mt-6 flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
                 {HERO_GRADE_SEGMENTS.map((segment) => (
                   <Link
                     key={segment.href}
                     href={segment.href}
-                    className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-[1px] hover:ring-orange-200/70 dark:bg-slate-800/80 dark:text-slate-100"
+                    className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-[1px] hover:ring-accent/70 dark:bg-slate-800/80 dark:text-slate-100"
                   >
-                    <span className="h-2 w-2 rounded-full bg-orange-400" />
+                    <span className="h-2 w-2 rounded-full bg-primary" />
                     {segment.label}
                   </Link>
                 ))}
-              </div>
+              </div> */}
               <div className="hidden md:flex mt-8 w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
                 <Button
                   asChild
-                  className="inline-flex items-center justify-center rounded-full bg-orange-500 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-orange-500/30 transition hover:bg-orange-600 hover:shadow-orange-500/40"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-b from-chart-1 to-chart-2 px-8 py-6 text-lg font-semibold text-white shadow-lg shadow-primary/30 transition-all hover:scale-105 hover:brightness-110 hover:shadow-primary/50"
                 >
                   <Link href="/opportunities">
                     Explore Opportunities
-                    <ChevronRight className="ml-2 h-4 w-4" />
+                    <ChevronRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
                 <Button
                   variant="outline"
                   asChild
-                  className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 bg-white/70 px-7 py-3 text-base font-semibold text-orange-600 transition hover:border-orange-300 hover:bg-white dark:border-orange-300/70 dark:bg-slate-900 dark:text-orange-200"
+                  className="inline-flex items-center justify-center rounded-full border-2 border-accent bg-white/50 px-8 py-6 text-lg font-semibold text-primary backdrop-blur-sm transition-all hover:border-primary hover:bg-white hover:scale-105 dark:border-primary/50 dark:bg-slate-900/50 dark:text-accent dark:hover:bg-slate-900"
                 >
                   <Link href="/parent-guide">
                     Guide Your Child
-                    <Sparkles className="ml-2 h-4 w-4" />
+                    <Sparkles className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
+              </div>
+
+              {/* Stats Section - Integrated into Hero (Desktop Only) */}
+              <div className="hidden md:grid mt-10 grid-cols-4 gap-8 border-t border-slate-200/60 pt-8 dark:border-slate-800/60">
+                {STAT_CONFIG.map(({ key, label }) => {
+                  const value = formatStatValue(stats[key]);
+                  return (
+                    <div key={key} className="flex flex-col gap-1">
+                      <p className={`text-2xl font-bold text-slate-900 dark:text-white ${statsLoading ? 'animate-pulse' : ''}`}>
+                        {value}
+                      </p>
+                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider dark:text-slate-400 leading-tight">
+                        {label.replace('Students discovering opportunities', 'Students').replace('Organizations on the platform', 'Organizations').replace('Verified schools & colleges', 'Schools').replace('Total active opportunities', 'Opportunities')}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -468,8 +491,8 @@ export default function HomePageClient() {
               <div className="flex justify-end pr-2">
                 <MascotBurst size="sm" className="hidden lg:inline-flex" />
               </div>
-              <div className="relative overflow-hidden rounded-3xl border border-orange-200/60 bg-white/80 p-4 sm:p-6 shadow-lg shadow-orange-200/40 dark:border-orange-300/20 dark:bg-slate-900/80">
-                <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700 dark:bg-orange-400/20 dark:text-orange-200">
+              <div className="relative overflow-hidden rounded-3xl border border-accent/60 bg-white/80 p-4 sm:p-6 shadow-lg shadow-primary/20 dark:border-primary/20 dark:bg-slate-900/80">
+                <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-[#1A2A33] dark:bg-primary/20 dark:text-accent">
                   Weekly spotlight
                 </span>
                 <h3 className="mt-4 text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">Jump in this week</h3>
@@ -495,56 +518,34 @@ export default function HomePageClient() {
               </div>
               <div className="grid gap-2 sm:gap-4 grid-cols-1 sm:grid-cols-2">
                 <Link
-                  href="/opportunities?mode=online"
+                  href="/innovation-labs"
                   className="flex items-center gap-3 rounded-2xl sm:rounded-3xl border border-sky-200/70 bg-white/80 p-3 sm:p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-sky-300/30 dark:bg-slate-900/80"
                 >
                   <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-sky-100 text-sky-600 flex-shrink-0 dark:bg-sky-500/20 dark:text-sky-200">
                     <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">Skill Labs</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">Workshops & clubs</p>
+                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">Innovation Labs</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">Robotics & IOT</p>
                   </div>
                 </Link>
                 <Link
-                  href="/opportunities?category=scholarships"
+                  href="/ai-in-schools"
                   className="flex items-center gap-3 rounded-2xl sm:rounded-3xl border border-emerald-200/70 bg-white/80 p-3 sm:p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-emerald-300/30 dark:bg-slate-900/80"
                 >
                   <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-100 text-emerald-600 flex-shrink-0 dark:bg-emerald-500/20 dark:text-emerald-200">
                     <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">Scholarships</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">Financial support</p>
+                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate">AI In Schools</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">AI & ML</p>
                   </div>
                 </Link>
               </div>
             </div>
           </div>
         </section>
-        <section className="hidden md:block border-y border-orange-100 bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 py-12 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-          <div className="container mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {STAT_CONFIG.map(({ key, label }) => {
-                const value = formatStatValue(stats[key]);
-                return (
-                  <div
-                    key={key}
-                    className="rounded-2xl border border-white/60 bg-white/90 px-6 py-8 text-center shadow-sm shadow-orange-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-200 dark:border-slate-800/80 dark:bg-slate-900/80"
-                  >
-                    <p className={`text-3xl font-bold text-orange-600 md:text-4xl dark:text-orange-200 ${statsLoading ? 'animate-pulse' : ''}`}>
-                      {value}
-                    </p>
-                    <p className="mt-2 text-sm uppercase tracking-wide text-slate-600 dark:text-slate-300">{label}</p>
-                  </div>
-                );
-              })}
-            </div>
-            {statsError && (
-              <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">{statsError}</p>
-            )}
-          </div>
-        </section>
+
 
         {segmentsError && (
           <div className="mx-auto mt-4 max-w-4xl rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-center text-red-600 shadow-sm dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
@@ -566,12 +567,12 @@ export default function HomePageClient() {
             const hasItems = items.length > 0;
 
             const highlightClasses = segment.highlight
-              ? 'bg-gradient-to-br from-orange-50 via-pink-50 to-sky-50 dark:from-[#0b1030] dark:via-[#101b4a] dark:to-[#0b1030]'
+              ? 'bg-gradient-to-br from-accent/30 via-white to-accent/30 dark:from-[#0b1030] dark:via-[#101b4a] dark:to-[#0b1030]'
               : 'bg-white dark:bg-[#0f1538]';
             const viewAllDisabled = !hasItems;
             const viewAllClasses = [
               'inline-flex items-center gap-2 rounded-full border px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all duration-300',
-              'border-orange-200 text-orange-600 hover:border-orange-300 hover:bg-orange-100/60 dark:border-orange-400/40 dark:text-orange-200 dark:hover:bg-orange-500/10',
+              'border-accent text-primary hover:border-primary hover:bg-accent/60 dark:border-primary/40 dark:text-accent dark:hover:bg-primary/10',
               viewAllDisabled ? 'pointer-events-none opacity-50' : '',
             ]
               .filter(Boolean)
@@ -585,8 +586,8 @@ export default function HomePageClient() {
                   <div className="mb-6 flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="rounded-xl border border-orange-100 bg-white/80 p-2 sm:p-3 shadow-sm dark:border-white/20 dark:bg-white/10 shrink-0">
-                          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
+                        <div className="rounded-xl border border-accent bg-white/80 p-2 sm:p-3 shadow-sm dark:border-white/20 dark:bg-white/10 shrink-0">
+                          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                         </div>
                         <h2 className="text-lg sm:text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl dark:text-white truncate">{segment.title}</h2>
                       </div>
@@ -709,9 +710,9 @@ export default function HomePageClient() {
                           aria-pressed={isActive}
                           onClick={() => setSelectedState(group.state)}
                           className={cn(
-                            'rounded-full border px-4 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-orange-400/60',
+                            'rounded-full border px-4 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-primary/60',
                             isActive
-                              ? 'border-orange-200 bg-white text-orange-600 shadow-sm dark:border-orange-300/60 dark:bg-orange-500/10 dark:text-orange-200'
+                              ? 'border-accent bg-white text-primary shadow-sm dark:border-primary/60 dark:bg-primary/10 dark:text-accent'
                               : 'border-slate-200 bg-white/70 text-slate-600 hover:bg-white dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100'
                           )}
                         >
@@ -768,20 +769,20 @@ export default function HomePageClient() {
 
         {/* Blog section */}
         {blogs.length > 0 && (
-          <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-orange-50/50 dark:from-slate-950 dark:via-slate-900/95 dark:to-slate-900">
+          <section className="relative overflow-hidden py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-accent/50 dark:from-slate-950 dark:via-slate-900/95 dark:to-slate-900">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.7),transparent_60%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_60%)]" />
             <div className="container relative mx-auto max-w-[1920px] px-4 md:px-6 lg:px-8 xl:px-16">
               <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
                 <div>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="rounded-xl border border-orange-100 bg-white/80 p-3 shadow-sm dark:border-orange-400/20 dark:bg-white/10">
-                      <Sparkles className="h-5 w-5 text-orange-500" />
+                    <div className="rounded-xl border border-accent bg-white/80 p-3 shadow-sm dark:border-primary/20 dark:bg-white/10">
+                      <Sparkles className="h-5 w-5 text-primary" />
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 md:text-4xl dark:text-white">Latest from our Blog</h2>
                   </div>
                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl">Insights, tips, and success stories to help you make the most of your opportunities</p>
                 </div>
-                <Link href="/blog" className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-5 py-2.5 text-sm font-semibold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-white dark:border-orange-400/40 dark:bg-slate-800/80 dark:text-orange-200 dark:hover:bg-slate-800">
+                <Link href="/blog" className="inline-flex items-center gap-2 rounded-full border border-accent bg-white/80 px-5 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:border-primary hover:bg-white dark:border-primary/40 dark:bg-slate-800/80 dark:text-accent dark:hover:bg-slate-800">
                   View all posts
                   <ChevronRight className="h-4 w-4" />
                 </Link>
@@ -803,7 +804,7 @@ export default function HomePageClient() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           {blogs[0].tags && blogs[0].tags.length > 0 && (
                             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                              <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-primary/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                                 {blogs[0].tags[0]}
                               </span>
                             </div>
@@ -825,7 +826,7 @@ export default function HomePageClient() {
                           </div>
                         </div>
 
-                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white line-clamp-3 mb-3 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white line-clamp-3 mb-3 group-hover:text-primary dark:group-hover:text-primary transition">
                           {blogs[0].title}
                         </h3>
 
@@ -833,7 +834,7 @@ export default function HomePageClient() {
                           {blogs[0].excerpt}
                         </p>
 
-                        <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold text-sm group-hover:gap-3 transition-all">
+                        <div className="flex items-center gap-2 text-primary dark:text-accent font-semibold text-sm group-hover:gap-3 transition-all">
                           Read article
                           <ChevronRight className="h-4 w-4" />
                         </div>
@@ -865,7 +866,7 @@ export default function HomePageClient() {
                         {/* Content */}
                         <div className="flex flex-1 flex-col justify-between min-w-0">
                           <div>
-                            <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                            <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-primary dark:group-hover:text-primary transition">
                               {post.title}
                             </h4>
                             <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -881,6 +882,27 @@ export default function HomePageClient() {
             </div>
           </section>
         )}
+
+        {/* Mobile Stats Section (Bottom) */}
+        <section className="md:hidden border-t border-slate-200 bg-slate-50 py-12 dark:border-slate-800 dark:bg-slate-900/50">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 gap-6">
+              {STAT_CONFIG.map(({ key, label }) => {
+                const value = formatStatValue(stats[key]);
+                return (
+                  <div key={key} className="flex flex-col items-center text-center gap-1">
+                    <p className={`text-3xl font-bold text-primary dark:text-accent ${statsLoading ? 'animate-pulse' : ''}`}>
+                      {value}
+                    </p>
+                    <p className="text-xs font-medium text-slate-600 uppercase tracking-wider dark:text-slate-400">
+                      {label.replace('Students discovering opportunities', 'Students').replace('Organizations on the platform', 'Organizations').replace('Verified schools & colleges', 'Schools').replace('Total active opportunities', 'Opportunities')}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
       </main>
 

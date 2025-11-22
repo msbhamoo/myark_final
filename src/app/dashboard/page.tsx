@@ -28,7 +28,7 @@ export default function DashboardPage() {
           Sign in to manage opportunities and personalise your Myark experience.
         </p>
         <Button
-          className="bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
+          className="bg-gradient-to-r from-chart-1 to-chart-2 text-white hover:from-chart-2 hover:to-chart-3"
           onClick={() => router.push('/login?redirect=/dashboard')}
         >
           Go to login
@@ -46,7 +46,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:from-[#050b3a] dark:via-[#050b3a] dark:to-[#071045]">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-accent/30 via-white to-accent/10 dark:from-[#050b3a] dark:via-[#050b3a] dark:to-[#071045]">
       <Header />
       <main className="flex-1 px-4 py-12 text-slate-900 sm:px-6 lg:px-10 dark:text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-10">{content}</div>

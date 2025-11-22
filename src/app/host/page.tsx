@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import HostOpportunityForm from './_components/HostOpportunityForm';
 
 const PageShell = ({ children }: { children: ReactNode }) => (
-  <div className="flex min-h-screen flex-col bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:bg-[#050b3a]">
+  <div className="flex min-h-screen flex-col bg-gradient-to-br from-primary/30 via-white to-primary/10 dark:bg-[#050b3a]">
     <Header />
     <main className="flex-1">
       <div className="container mx-auto max-w-4xl px-4 py-20 md:px-6">{children}</div>

@@ -1126,7 +1126,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1 bg-gradient-to-br from-orange-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pb-32 md:pb-0">
+      <main className="flex-1 bg-gradient-to-br from-accent/30 via-white to-accent/10 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pb-32 md:pb-0">
         {/* Cover Image Section */}
         <div className="relative w-full bg-slate-100 dark:bg-slate-800">
           <div className="container mx-auto px-0 md:px-6 lg:px-8 xl:px-16 max-w-[1920px]">
@@ -1147,7 +1147,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
             <div className="flex flex-col gap-4">
               {/* Category Badge */}
               <div>
-                <Badge className="border border-orange-200 bg-orange-100 text-orange-600 dark:border-orange-500/20 dark:bg-orange-500/10 dark:text-orange-200 text-xs font-semibold">
+                <Badge className="border border-accent bg-accent/50 text-accent-foreground dark:border-primary/20 dark:bg-primary/10 dark:text-accent text-xs font-semibold">
                   {categoryLabel}
                 </Badge>
               </div>
@@ -1191,7 +1191,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                   </div>
                 )}
                 <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Clock className="h-4 w-4 text-orange-500 dark:text-orange-300" />
+                  <Clock className="h-4 w-4 text-primary dark:text-accent" />
                   <span className="text-slate-700 dark:text-slate-200">Updated: {formatDate((opportunity as any).updatedAt || (opportunity as any).createdAt)}</span>
                 </div>
               </div>
@@ -1201,7 +1201,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
         {/* Mobile Quick Actions - Show only on mobile */}
         <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] mt-6 lg:hidden relative z-10">
-          <Card className="p-4 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-slate-800 dark:to-slate-900 border-orange-200 dark:border-slate-700 relative">
+          <Card className="p-4 bg-gradient-to-br from-accent/30 to-primary/10 dark:from-slate-800 dark:to-slate-900 border-accent dark:border-slate-700 relative">
             {/* Price */}
             <div className="mb-4 text-center">
               <p className="text-sm text-slate-600 dark:text-slate-300 mb-1">Registration Fee</p>
@@ -1212,20 +1212,20 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
             {!registrationClosed && (
               <div className="mb-4">
                 <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 text-center flex items-center justify-center gap-2">
-                  <Clock className="h-4 w-4 text-orange-400" />
+                  <Clock className="h-4 w-4 text-primary" />
                   Time Remaining
                 </p>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-xl border border-orange-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-lg md:text-2xl font-bold text-orange-500">{countdown.days}</div>
+                  <div className="rounded-xl border border-accent dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-lg md:text-2xl font-bold text-primary">{countdown.days}</div>
                     <div className="text-[10px] md:text-xs text-slate-600 dark:text-slate-300">Days</div>
                   </div>
-                  <div className="rounded-xl border border-pink-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-lg md:text-2xl font-bold text-pink-500">{countdown.hours}</div>
+                  <div className="rounded-xl border border-accent dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-lg md:text-2xl font-bold text-chart-2">{countdown.hours}</div>
                     <div className="text-[10px] md:text-xs text-slate-600 dark:text-slate-300">Hours</div>
                   </div>
-                  <div className="rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
-                    <div className="text-lg md:text-2xl font-bold text-purple-500">{countdown.minutes}</div>
+                  <div className="rounded-xl border border-accent dark:border-slate-700 bg-white dark:bg-slate-800 p-3 text-center">
+                    <div className="text-lg md:text-2xl font-bold text-chart-3">{countdown.minutes}</div>
                     <div className="text-xs text-slate-600 dark:text-slate-300">Mins</div>
                   </div>
                 </div>
@@ -1257,7 +1257,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 type="button"
                 onClick={handleRegisterClick}
                 disabled={registrationClosed}
-                className="w-full h-12 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-base font-semibold hover:from-orange-600 hover:to-pink-600 disabled:opacity-60 disabled:cursor-not-allowed mb-3 relative z-10"
+                className="w-full h-12 bg-gradient-to-r from-chart-1 to-chart-2 text-white text-base font-semibold hover:from-chart-2 hover:to-chart-3 disabled:opacity-60 disabled:cursor-not-allowed mb-3 relative z-10"
               >
                 {registrationClosed ? 'Registration Closed' : 'Register Now'}
               </Button>
@@ -1271,7 +1271,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 disabled={bookmarkLoading}
                 className="flex-1 border-slate-200 dark:border-slate-700"
               >
-                <Bookmark className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-orange-400' : ''}`} />
+                <Bookmark className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-primary' : ''}`} />
                 {isBookmarked ? 'Saved' : 'Save'}
               </Button>
               <ShareButton opportunityId={opportunityId} opportunityTitle={title} />
@@ -1294,30 +1294,31 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                         <div className="space-y-6">
                           <div>
                             <h2 className="text-lg md:text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                               About This Opportunity
                             </h2>
-                            <p className="text-slate-600 dark:text-slate-100 whitespace-pre-line leading-relaxed">
-                              {opportunity.description || 'Detailed description will be available soon.'}
-                            </p>
+                            <div
+                              className="text-slate-600 dark:text-slate-100 leading-relaxed prose dark:prose-invert max-w-none"
+                              dangerouslySetInnerHTML={{ __html: opportunity.description || 'Detailed description will be available soon.' }}
+                            />
                           </div>
 
                           <Separator className="bg-white/80 dark:bg-slate-800/70" />
 
                           <div>
                             <h3 className="text-base md:text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              <span className="w-2 h-2 rounded-full bg-chart-2 animate-pulse"></span>
                               Key Benefits
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {(opportunity.benefits ?? []).map((benefit, index) => (
                                 <div
                                   key={index}
-                                  className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-orange-500/20 transition-colors"
+                                  className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-primary/20 transition-colors"
                                 >
                                   <div className="mt-1">
-                                    <div className="h-6 w-6 rounded-full bg-orange-500/10 flex items-center justify-center">
-                                      <CheckCircle2 className="h-4 w-4 text-orange-400" />
+                                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                      <CheckCircle2 className="h-4 w-4 text-primary" />
                                     </div>
                                   </div>
                                   <span className="text-slate-600 dark:text-slate-100">{benefit}</span>
@@ -1335,18 +1336,18 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                           Eligibility Criteria
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {(opportunity.eligibility ?? []).map((criterion, index) => (
                             <div
                               key={index}
-                              className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                              className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300"
                             >
                               <div className="mt-1">
-                                <div className="h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                  <AlertCircle className="h-5 w-5 text-orange-400" />
+                                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                  <AlertCircle className="h-5 w-5 text-primary" />
                                 </div>
                               </div>
                               <span className="text-slate-600 dark:text-slate-100 leading-relaxed">{criterion}</span>
@@ -1362,7 +1363,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <h2 className="text-lg md:text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                          <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
                           Important Timeline
                         </h2>
                         <div className="relative pl-4 md:pl-8 space-y-0">
@@ -1397,9 +1398,9 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                             } else if (lowerEvent.includes('exam') || lowerEvent.includes('test')) {
                               Icon = FileText;
                               if (item.status === 'active') {
-                                colorClass = "text-orange-500 dark:text-orange-400";
-                                bgClass = "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800";
-                                iconBgClass = "bg-orange-100 dark:bg-orange-900/40 border-orange-200 dark:border-orange-700";
+                                colorClass = "text-primary dark:text-accent";
+                                bgClass = "bg-accent/30 dark:bg-primary/20 border-accent dark:border-primary/40";
+                                iconBgClass = "bg-accent dark:bg-primary/40 border-accent dark:border-primary/70";
                               }
                             } else if (lowerEvent.includes('result') || lowerEvent.includes('announcement')) {
                               Icon = Trophy;
@@ -1412,9 +1413,9 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
                             // Override for active status generic
                             if (item.status === 'active' && bgClass.includes('slate')) {
-                              colorClass = "text-pink-500 dark:text-pink-400";
-                              bgClass = "bg-pink-50 dark:bg-pink-900/20 border-pink-200 dark:border-pink-800";
-                              iconBgClass = "bg-pink-100 dark:bg-pink-900/40 border-pink-200 dark:border-pink-700";
+                              colorClass = "text-primaryDark dark:text-accent";
+                              bgClass = "bg-accent/30 dark:bg-primaryDark/20 border-accent dark:border-primaryDark/40";
+                              iconBgClass = "bg-accent dark:bg-primaryDark/40 border-accent dark:border-primaryDark/70";
                             }
 
                             // Override for completed status generic
@@ -1442,7 +1443,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                       {item.event}
                                     </h3>
                                     {item.status === 'active' && (
-                                      <Badge className="w-fit bg-gradient-to-r from-orange-500 to-pink-500 border-0 text-white text-xs px-2 py-0.5 shadow-sm animate-pulse">
+                                      <Badge className="w-fit bg-gradient-to-r from-primary to-primaryDark border-0 text-white text-xs px-2 py-0.5 shadow-sm animate-pulse">
                                         Live Now
                                       </Badge>
                                     )}
@@ -1473,14 +1474,14 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                           <div>
                             <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                               How to Register
                             </h2>
                             <div className="space-y-4">
                               {(opportunity.registrationProcess ?? []).map((step, index) => (
-                                <div key={index} className="group flex items-start gap-4 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
+                                <div key={index} className="group flex items-start gap-4 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300">
                                   <div className="flex-shrink-0">
-                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 text-orange-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 text-primary flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                                       {index + 1}
                                     </div>
                                   </div>
@@ -1494,7 +1495,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
                           <div>
                             <h3 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
                               Contact Information
                             </h3>
                             <div className="space-y-4">
@@ -1543,7 +1544,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     content: (
                       <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                         <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                           Examination Pattern
                         </h2>
 
@@ -1569,8 +1570,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                       className={`
                                         whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border
                                         ${activePatternIndex === index
-                                          ? 'bg-orange-500 text-white border-orange-500 shadow-md'
-                                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700'
+                                          ? 'bg-primary text-white border-primary shadow-md'
+                                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary/30 dark:hover:border-primary/70'
                                         }
                                       `}
                                     >
@@ -1599,8 +1600,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8">
                                     <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
                                       <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
-                                          <BookOpen className="h-4 w-4 text-orange-500" />
+                                        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                          <BookOpen className="h-4 w-4 text-primary" />
                                         </div>
                                         <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Questions</span>
                                       </div>
@@ -1609,8 +1610,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
                                     <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
                                       <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-pink-500/10 flex items-center justify-center">
-                                          <Timer className="h-4 w-4 text-pink-500" />
+                                        <div className="h-8 w-8 rounded-lg bg-primaryDark/10 flex items-center justify-center">
+                                          <Timer className="h-4 w-4 text-primaryDark" />
                                         </div>
                                         <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Duration</span>
                                       </div>
@@ -1631,7 +1632,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                   {/* Section-wise Distribution */}
                                   <div>
                                     <h3 className="text-lg font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                                      <span className="w-1.5 h-1.5 rounded-full bg-primaryDark"></span>
                                       Section-wise Distribution
                                     </h3>
 
@@ -1671,22 +1672,22 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           /* Legacy Single Pattern Fallback */
                           <>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                  <BookOpen className="h-6 w-6 text-orange-400" />
+                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300">
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                  <BookOpen className="h-6 w-6 text-primary" />
                                 </div>
                                 <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
                                 <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
                               </div>
                               <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                  <Timer className="h-6 w-6 text-pink-400" />
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primaryDark/20 to-primaryDarker/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                  <Timer className="h-6 w-6 text-primaryDark" />
                                 </div>
                                 <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
                                 <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
                               </div>
                               <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-rose-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                   <AlertCircle className="h-6 w-6 text-red-400" />
                                 </div>
                                 <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
@@ -1695,18 +1696,18 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                             </div>
 
                             <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                              <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
                               Section-wise Distribution
                             </h3>
                             <div className="space-y-4">
                               {examSections.map((section, index) => (
                                 <div
                                   key={index}
-                                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-orange-500/20 transition-all duration-300"
+                                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300"
                                 >
                                   <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                      <BookOpen className="h-5 w-5 text-orange-400" />
+                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                      <BookOpen className="h-5 w-5 text-primary" />
                                     </div>
                                     <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
                                   </div>
@@ -1743,7 +1744,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                           {resourceItems.length > 0 && (
                             <Badge
                               variant="outline"
-                              className="border-orange-200 bg-orange-50 text-orange-600 dark:border-orange-400/40 dark:bg-orange-500/10 dark:text-orange-200"
+                              className="border-accent bg-accent/50 text-[#1A2A33] dark:border-primary/40 dark:bg-primary/10 dark:text-accent"
                             >
                               {resourceItems.length} resource{resourceItems.length === 1 ? '' : 's'}
                             </Badge>
@@ -1763,16 +1764,16 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                             {resourceItems.map((resource) => (
                               <div
                                 key={resource.id}
-                                className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/50 shadow-sm p-4 transition hover:border-orange-400/40 hover:bg-white dark:hover:bg-background/10 md:flex-row md:items-center md:justify-between"
+                                className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/50 shadow-sm p-4 transition hover:border-primary/40 hover:bg-white dark:hover:bg-background/10 md:flex-row md:items-center md:justify-between"
                               >
                                 <div className="flex flex-1 items-start gap-4">
-                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/15 text-orange-500">
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
                                     <resource.Icon className="h-6 w-6" />
                                   </div>
                                   <div className="space-y-1">
                                     <Badge
                                       variant="outline"
-                                      className="border-orange-200 bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-600 dark:border-white/20 dark:bg-slate-800/70 dark:text-white"
+                                      className="border-accent bg-accent/50 px-2.5 py-0.5 text-xs font-semibold text-[#1A2A33] dark:border-white/20 dark:bg-slate-800/70 dark:text-white"
                                     >
                                       {resource.typeLabel}
                                     </Badge>
@@ -1788,7 +1789,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                                 <div className="flex items-center gap-2 self-stretch md:self-auto">
                                   <Button
                                     variant="outline"
-                                    className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+                                    className="border-accent text-primary hover:bg-accent/20 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
                                     onClick={() => handleResourcePreview(resource)}
                                   >
                                     Preview
@@ -1884,7 +1885,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
             {/* Sidebar - Sticky on Desktop, Hidden on Mobile */}
             <div className="hidden lg:block lg:sticky lg:top-[140px] lg:self-start space-y-6">
               {/* Main Action Card */}
-              <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-pink-500/10 border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+              <Card className="p-6 bg-gradient-to-br from-accent/30 to-primaryDark/10 border-slate-200 dark:border-slate-700 backdrop-blur-sm">
                 {/* Price and Registration */}
                 <div className="flex items-center justify-between mb-6">
                   <div>
@@ -1892,7 +1893,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
                   </div>
                   <div>
-                    <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">
+                    <Badge className="bg-primary/20 text-primary border-primary/30">
                       {modeLabel}
                     </Badge>
                   </div>
@@ -1901,7 +1902,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 {/* Countdown Timer */}
                 <div className="mb-6">
                   <h3 className="mb-3 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
-                    <Clock className="h-4 w-4 text-orange-400" />
+                    <Clock className="h-4 w-4 text-primary" />
                     Registration Status
                   </h3>
                   {registrationClosed ? (
@@ -1910,17 +1911,17 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     </div>
                   ) : (
                     <div className="grid grid-cols-3 gap-3">
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-3 text-center backdrop-blur-sm">
-                        <div className="text-3xl font-bold text-orange-400">{countdown.days}</div>
-                        <div className="text-xs text-slate-600 dark:text-slate-100">Days</div>
+                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <div className="text-3xl font-bold text-primary">{countdown.days}</div>
+                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Days</div>
                       </div>
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-3 text-center backdrop-blur-sm">
-                        <div className="text-3xl font-bold text-pink-400">{countdown.hours}</div>
-                        <div className="text-xs text-slate-600 dark:text-slate-100">Hours</div>
+                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <div className="text-3xl font-bold text-primaryDark">{countdown.hours}</div>
+                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Hours</div>
                       </div>
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-3 text-center backdrop-blur-sm">
-                        <div className="text-3xl font-bold text-purple-400">{countdown.minutes}</div>
-                        <div className="text-xs text-slate-600 dark:text-slate-100">Mins</div>
+                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <div className="text-3xl font-bold text-primaryDarker">{countdown.minutes}</div>
+                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Mins</div>
                       </div>
                     </div>
                   )}
@@ -1944,7 +1945,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                   ) : (
                     <Button
                       size="lg"
-                      className="h-14 w-full bg-gradient-to-r from-orange-500 to-pink-500 text-lg font-semibold text-foreground dark:text-white hover:from-orange-600 hover:to-pink-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="h-14 w-full bg-gradient-to-r from-primary to-primaryDark text-lg font-semibold text-foreground dark:text-white hover:from-primaryDark hover:to-primaryDarker disabled:cursor-not-allowed disabled:opacity-60"
                       onClick={handleRegisterClick}
                       disabled={registrationClosed}
                     >
@@ -1955,17 +1956,17 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     <div className="space-y-1">
                       <Button
                         variant="outline"
-                        className="w-full border-orange-200 text-orange-600 hover:bg-orange-50 disabled:opacity-50 dark:border-orange-400/40 dark:text-orange-200 dark:hover:bg-orange-500/10"
+                        className="w-full border-accent text-primary hover:bg-accent/20 disabled:opacity-50 dark:border-primary/40 dark:text-accent dark:hover:bg-primary/10"
                         onClick={handleTimelineAction}
                         disabled={!normalizedRegisterUrl}
                       >
                         {timelineCTA.label}
                       </Button>
-                      <p className="text-center text-xs text-orange-500 dark:text-orange-200/80">
+                      <p className="text-center text-xs text-primary dark:text-accent/80">
                         {timelineCTA.event}
                       </p>
                       {!normalizedRegisterUrl && (
-                        <p className="text-center text-[11px] text-orange-400/70 dark:text-orange-200/60">
+                        <p className="text-center text-[11px] text-primary/70 dark:text-accent/60">
                           No link available; contact the organizer for this update.
                         </p>
                       )}
@@ -1979,7 +1980,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       disabled={bookmarkLoading}
                     >
                       <Bookmark
-                        className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-orange-400' : ''}`}
+                        className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-primary' : ''}`}
                       />
                       {bookmarkLoading ? 'Saving...' : isBookmarked ? 'Saved' : 'Save'}
                     </Button>
@@ -1991,7 +1992,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                   </div>
                   {(bookmarkError || actionMessage) && (
                     <p
-                      className={`text-center text-xs ${bookmarkError ? 'text-red-300' : 'text-orange-200'}`}
+                      className={`text-center text-xs ${bookmarkError ? 'text-red-300' : 'text-accent'}`}
                     >
                       {bookmarkError ?? actionMessage}
                     </p>

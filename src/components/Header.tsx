@@ -13,7 +13,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/opportunities', label: 'For Students' },
+  { href: '/for-schools', label: 'For Schools' },
   { href: '/faq', label: 'Support' },
 ];
 
@@ -24,15 +24,12 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState('');
 
   const handleHostClick = () => {
-    if (!user) {
-      openAuthModal({
-        mode: 'register',
-        accountType: 'organization',
-        redirectUrl: '/host',
-      });
-      return;
+    // If user is already logged in with organization account, go directly to host dashboard
+    if (user && user.accountType === 'organization') {
+      router.push('/host');
+    } else {
+      router.push('/for-schools?openAuth=true');
     }
-    router.push('/host');
   };
 
   const handleLoginClick = () => {
@@ -60,7 +57,7 @@ export default function Header() {
         key={item.href}
         href={item.href}
         className={cn(
-          'text-sm font-semibold text-slate-600 transition-colors hover:text-orange-500 dark:text-slate-300 dark:hover:text-orange-300',
+          'text-sm font-semibold text-slate-600 transition-colors hover:text-primary dark:text-slate-300 dark:hover:text-primary',
           linkClassName,
         )}
       >
@@ -93,7 +90,7 @@ export default function Header() {
                 </SheetHeader>
                 <div className="mt-8 flex flex-col gap-4">
                   <nav className="flex flex-col gap-3 text-lg font-semibold text-slate-700">
-                    {renderNavLinks('text-slate-700 hover:text-orange-500')}
+                    {renderNavLinks('text-slate-700 hover:text-primary')}
                   </nav>
                   <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
                     <Button variant="outline" onClick={handleHostClick}>
@@ -120,9 +117,9 @@ export default function Header() {
             </Sheet>
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-2xl border border-orange-100/50 bg-white/90 px-3 py-2 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md dark:border-orange-300/20 dark:bg-slate-900/80"
+              className="flex items-center gap-2 rounded-2xl border border-accent/50 bg-white/90 px-3 py-2 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md dark:border-primary/20 dark:bg-slate-900/80"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-pink-500 text-lg font-bold text-white shadow-md shadow-orange-400/30">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 text-lg font-bold text-white shadow-md shadow-primary/30">
                 M
               </div>
               <span className="text-lg font-semibold text-slate-900 dark:text-white">Myark</span>
@@ -153,7 +150,7 @@ export default function Header() {
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle className="hidden lg:flex" size="sm" />
             <Button
-              className="hidden whitespace-nowrap rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 lg:inline-flex"
+              className="hidden whitespace-nowrap rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primaryDark lg:inline-flex"
               onClick={handleHostClick}
             >
               Host with Us
@@ -162,13 +159,13 @@ export default function Header() {
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  className="hidden rounded-full border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-orange-500 transition hover:border-orange-300 hover:bg-orange-50 sm:inline-flex dark:border-slate-700 dark:bg-slate-900 dark:text-orange-200"
+                  className="hidden rounded-full border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-primary transition hover:border-primary hover:bg-accent/20 sm:inline-flex dark:border-slate-700 dark:bg-slate-900 dark:text-primary"
                   onClick={() => router.push('/dashboard')}
                 >
                   Dashboard
                 </Button>
                 <Button
-                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600"
+                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:bg-primary dark:hover:bg-primaryDark"
                   onClick={handleLogout}
                 >
                   Logout
@@ -177,7 +174,7 @@ export default function Header() {
             ) : (
               <Button
                 variant="outline"
-                className="rounded-full border-orange-200 bg-white px-5 py-2 text-sm font-semibold text-orange-600 shadow-sm transition hover:border-orange-300 hover:bg-orange-50 dark:border-orange-300/40 dark:bg-slate-900 dark:text-orange-200"
+                className="rounded-full border-accent bg-white px-5 py-2 text-sm font-semibold text-primary shadow-sm transition hover:border-primary hover:bg-accent/20 dark:border-primary/40 dark:bg-slate-900 dark:text-accent"
                 onClick={handleLoginClick}
                 disabled={loading}
               >

@@ -14,19 +14,19 @@ interface CategoryExplorerProps {
 }
 
 const CATEGORY_COLORS = {
-  scholarships: { from: 'from-amber-400', to: 'to-orange-500' },
+  scholarships: { from: 'from-emerald-400', to: 'to-green-500' },
   olympiad: { from: 'from-purple-400', to: 'to-pink-500' },
   workshop: { from: 'from-cyan-400', to: 'to-blue-500' },
   bootcamp: { from: 'from-rose-400', to: 'to-red-500' },
   summercamp: { from: 'from-emerald-400', to: 'to-green-500' },
   internship: { from: 'from-indigo-400', to: 'to-purple-500' },
-  hackathon: { from: 'from-yellow-400', to: 'to-orange-500' },
-  hiring: { from: 'from-orange-400', to: 'to-pink-500' },
+  hackathon: { from: 'from-violet-400', to: 'to-purple-500' },
+  hiring: { from: 'from-blue-400', to: 'to-indigo-500' },
   quiz: { from: 'from-blue-400', to: 'to-cyan-500' },
   conference: { from: 'from-slate-400', to: 'to-slate-600' },
   competition: { from: 'from-fuchsia-400', to: 'to-pink-500' },
   cultural: { from: 'from-violet-400', to: 'to-purple-500' },
-  sports: { from: 'from-red-400', to: 'to-orange-500' },
+  sports: { from: 'from-red-500', to: 'to-rose-600' },
   coding: { from: 'from-green-400', to: 'to-emerald-500' },
   design: { from: 'from-pink-400', to: 'to-rose-500' },
   other: { from: 'from-slate-400', to: 'to-slate-600' },
@@ -127,7 +127,7 @@ export default function CategoryExplorer({
                 placeholder="Search categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary"
               />
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function CategoryExplorer({
                         onSelectCategory?.(category);
                         onClose();
                       }}
-                      className="group flex flex-col items-center gap-2 rounded-2xl p-4 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+                      className="group flex flex-col items-center gap-2 rounded-2xl p-4 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900"
                     >
                       {/* Icon Circle */}
                       <div

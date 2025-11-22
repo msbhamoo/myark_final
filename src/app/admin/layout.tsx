@@ -17,6 +17,7 @@ const navLinks = [
   { href: '/admin/bulk', label: 'Bulk Uploads' },
   { href: '/admin/schools', label: 'Schools' },
   { href: '/admin/users', label: 'Users' },
+  { href: '/admin/theme', label: 'Theme' },
   { href: '/admin/settings', label: 'Settings' },
 ];
 

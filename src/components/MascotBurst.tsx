@@ -17,7 +17,7 @@ export function MascotBurst({ size = 'md', className }: MascotBurstProps) {
   return (
     <div
       className={cn(
-        'relative inline-flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 via-pink-500 to-sky-500 text-white shadow-lg shadow-orange-400/40 backdrop-blur',
+        'relative inline-flex items-center justify-center rounded-full bg-gradient-to-br from-chart-1 via-chart-2 to-chart-3 text-white shadow-lg shadow-primary/40 backdrop-blur',
         SIZE_CLASS[size!],
         className,
       )}
@@ -37,7 +37,7 @@ type MascotOrbProps = {
 
 const ORB_STYLE: Record<MascotOrbProps['tone'], string> = {
   sunset:
-    'from-orange-400 via-rose-400 to-amber-400 shadow-[0_18px_35px_rgba(249,115,22,0.35)]',
+    'from-chart-1 via-chart-2 to-chart-3 shadow-[0_18px_35px_rgba(88,204,2,0.35)]',
   violet:
     'from-violet-400 via-indigo-400 to-sky-400 shadow-[0_18px_35px_rgba(129,140,248,0.35)]',
   teal:

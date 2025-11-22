@@ -65,7 +65,7 @@ export default function BottomNavigation() {
                   loading
                     ? 'text-slate-400 cursor-not-allowed'
                     : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100',
-                  isProfileActive ? 'text-orange-600 dark:text-orange-400' : ''
+                  isProfileActive ? 'text-primary dark:text-primary' : ''
                 )}
               >
                 <Icon className="h-5 w-5" />
@@ -82,7 +82,7 @@ export default function BottomNavigation() {
               className={cn(
                 'flex flex-1 flex-col items-center justify-center gap-1 px-2 py-3 transition-colors',
                 isActive
-                  ? 'text-orange-600 dark:text-orange-400'
+                  ? 'text-primary dark:text-primary'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
               )}
             >

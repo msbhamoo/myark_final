@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
+import {
   Trophy,
   Search,
   Filter,
@@ -152,7 +152,7 @@ export default function CompetitionsPage() {
   const categories = [
     { name: 'STEM Competitions', count: 42, icon: Target, color: 'from-blue-400 to-blue-600' },
     { name: 'Arts & Creativity', count: 28, icon: Sparkles, color: 'from-purple-400 to-purple-600' },
-    { name: 'Olympiads', count: 35, icon: Trophy, color: 'from-orange-400 to-orange-600' },
+    { name: 'Olympiads', count: 35, icon: Trophy, color: 'from-purple-400 to-purple-600' },
     { name: 'Debate & Writing', count: 18, icon: Award, color: 'from-green-400 to-green-600' },
   ];
 
@@ -162,10 +162,10 @@ export default function CompetitionsPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-orange-50 via-white to-red-50 py-12 border-b">
+        <section className="bg-gradient-to-br from-accent/30 via-white to-primary/10 py-12 border-b">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-orange-500">
+              <Badge className="mb-4 bg-primary">
                 <Trophy className="h-3 w-3 mr-1" />
                 Competitions
               </Badge>
@@ -298,20 +298,20 @@ export default function CompetitionsPage() {
         </div>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-br from-orange-600 to-red-600 text-foreground dark:text-white py-16">
+        <section className="bg-gradient-to-br from-primary to-primaryDark text-foreground dark:text-white py-16">
           <div className="container mx-auto px-4 text-center">
             <Trophy className="h-16 w-16 mx-auto mb-4" />
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to Compete?
             </h2>
-            <p className="text-xl text-orange-100 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-accent max-w-2xl mx-auto mb-8">
               Register now and showcase your skills on national and international platforms
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button size="lg" variant="secondary">
                 View My Applications
               </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-white text-foreground dark:text-white hover:bg-white hover:text-orange-600">
+              <Button size="lg" variant="outline" className="bg-transparent border-white text-foreground dark:text-white hover:bg-white hover:text-primary">
                 Practice Resources
               </Button>
             </div>

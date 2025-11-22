@@ -423,7 +423,7 @@ export function SchoolsManager() {
                   <TableCell className='text-muted-foreground'>{countries.find(c => c.id === item.countryId)?.name || 'â€”'}</TableCell>
                   <TableCell>
                     {item.isVerified ? (
-                      <Badge variant='outline' className='border-green-500/40 text-green-300'>
+                      <Badge variant='outline' className='border-[#58CC02]/40 text-primary'>
                         Verified
                       </Badge>
                     ) : (

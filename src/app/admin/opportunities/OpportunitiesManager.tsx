@@ -16,8 +16,12 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { OpportunityCategory, Organizer } from '@/types/masters';
 import type { OpportunityResource } from '@/types/opportunity';
-import { X } from 'lucide-react';
+import { X, Plus, ArrowLeft } from 'lucide-react';
 import { INDIAN_STATES, INDIAN_STATES_SET } from '@/constants/india';
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 type TimelineItem = {
   date: string | null;
@@ -269,6 +273,7 @@ export function OpportunitiesManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [actioningId, setActioningId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'form'>('list');
 
   const segmentOptionLookup = useMemo(
     () => new Map(availableSegments.map((option) => [option.segmentKey, option])),
@@ -560,6 +565,16 @@ export function OpportunitiesManager() {
     setFormState(defaultForm);
   };
 
+  const handleCreateNew = () => {
+    handleReset();
+    setViewMode('form');
+  };
+
+  const handleBackToList = () => {
+    handleReset();
+    setViewMode('list');
+  };
+
   const handleOrganizerChange = async (organizerId: string) => {
     setFormState((prev) => ({ ...prev, organizerId }));
 
@@ -640,6 +655,7 @@ export function OpportunitiesManager() {
       registrationMode: item.registrationMode ?? 'internal',
       applicationUrl: item.applicationUrl ?? '',
     });
+    setViewMode('form');
   };
 
   const toggleSegmentSelection = (segmentKey: string) => {
@@ -797,6 +813,7 @@ export function OpportunitiesManager() {
 
       await loadItems();
       handleReset();
+      setViewMode('list');
     } catch (err) {
       console.error(err);
       setError((err as Error).message);
@@ -968,1085 +985,1122 @@ export function OpportunitiesManager() {
 
       {activeTab === 'opportunities' ? (
         <>
-          <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
-            <h2 className="text-lg font-semibold text-foreground dark:text-white">
-              {editingId ? 'Edit opportunity' : 'Create opportunity'}
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Provide core details and supporting metadata. Arrays accept newline separated values.
-            </p>
-
-            <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className='md:col-span-2 space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-title'>
-                  Title *
-                </label>
-                <Input
-                  id='op-title'
-                  value={formState.title}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, title: event.target.value }))}
-                  required
-                  placeholder='National Science Olympiad'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
+          {viewMode === 'list' ? (
+            <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
+              <div className='flex items-center justify-between mb-6'>
+                <div>
+                  <h2 className='text-lg font-semibold text-foreground dark:text-white'>Opportunities</h2>
+                  <p className='mt-1 text-sm text-muted-foreground'>
+                    Manage your opportunities here.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
+                    Refresh
+                  </Button>
+                  <Button onClick={handleCreateNew} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create New
+                  </Button>
+                </div>
               </div>
 
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-category'>
-                  Category *
-                </label>
-                <select
-                  id='op-category'
-                  value={formState.categoryId}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, categoryId: event.target.value }))}
-                  required
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  <option value=''>Select a category</option>
-                  {formState.categoryId &&
-                    !categories.some((category) => category.id === formState.categoryId) && (
-                      <option value={formState.categoryId}>
-                        {items.find((item) => item.categoryId === formState.categoryId)?.categoryName ??
-                          'Current category'}
-                      </option>
+              <div className="mt-4">
+                <div className="grid gap-4">
+                  {/* Desktop Table View */}
+                  <div className="hidden lg:block rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden">
+                    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10">
+                            <TableHead className="w-[25%] text-foreground dark:text-white font-semibold">Title & Info</TableHead>
+                            <TableHead className="w-[15%] text-foreground dark:text-white font-semibold">Category & Mode</TableHead>
+                            <TableHead className="w-[20%] text-foreground dark:text-white font-semibold">Organizer</TableHead>
+                            <TableHead className="w-[15%] text-foreground dark:text-white font-semibold text-center">Status & Source</TableHead>
+                            <TableHead className="w-[25%] text-foreground dark:text-white font-semibold text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {items.length === 0 && !isLoading && (
+                            <TableRow>
+                              <TableCell colSpan={5} className="h-32 text-center">
+                                <div className="flex flex-col items-center justify-center space-y-2 text-muted-foreground">
+                                  <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
+                                    <svg className="h-6 w-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                    </svg>
+                                  </div>
+                                  <p>No opportunities available</p>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                          {items.map((item) => (
+                            <TableRow key={item.id} className="group border-b border-border/70 dark:border-white/5 hover:bg-card/80 dark:bg-white/5">
+                              <TableCell>
+                                <div className="space-y-1">
+                                  <div className="font-medium text-foreground dark:text-white group-hover:text-orange-400 transition-colors">
+                                    {item.title}
+                                  </div>
+                                  <div className="flex flex-col space-y-1">
+                                    <span className="text-xs text-muted-foreground">
+                                      Added {formatDate(item.startDate)}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                      Deadline: {formatDate(item.registrationDeadline)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="space-y-2">
+                                  <Badge
+                                    variant="outline"
+                                    className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors"
+                                  >
+                                    {item.category?.name || item.categoryName || 'N/A'}
+                                  </Badge>
+                                  <div className="flex items-center">
+                                    <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
+                                      {item.mode}
+                                    </span>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center gap-3">
+                                  <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
+                                    <img
+                                      src={item.organizerLogo || 'https://via.placeholder.com/40'}
+                                      alt={item.organizer?.name || item.organizerName || 'Organizer'}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="text-sm font-medium text-foreground dark:text-white truncate">
+                                      {item.organizer?.name || item.organizerName || 'N/A'}
+                                    </div>
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {item.segments.slice(0, 2).map((segment, index) => (
+                                        <span
+                                          key={index}
+                                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
+                                        >
+                                          {segment}
+                                        </span>
+                                      ))}
+                                      {item.segments.length > 2 && (
+                                        <span className="text-xs text-muted-foreground">
+                                          +{item.segments.length - 2} more
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <div className="space-y-2 flex flex-col items-center">
+                                  {item.registrationMode === 'internal' ? (
+                                    <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-400">
+                                      {item.registrationCount ?? 0} Registrations
+                                    </Badge>
+                                  ) : (
+                                    <Badge variant="outline" className="border-gray-500/30 bg-gray-500/10 text-gray-400">
+                                      External
+                                    </Badge>
+                                  )}
+                                  <Badge
+                                    variant="outline"
+                                    className={`
+                                  ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
+                                        item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
+                                          item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
+                                            'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
+                                `}
+                                  >
+                                    {item.status}
+                                  </Badge>
+                                  {item.source === 'organization-submission' ? (
+                                    <Badge className="border-orange-500/40 bg-orange-500/20 text-orange-200">
+                                      Host
+                                    </Badge>
+                                  ) : (
+                                    <Badge className="border-blue-500/40 bg-blue-500/20 text-blue-200">
+                                      Admin
+                                    </Badge>
+                                  )}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex flex-wrap justify-end gap-2">
+                                  {item.registrationMode === 'internal' && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}
+                                      className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+                                    >
+                                      View Registrations
+                                    </Button>
+                                  )}
+                                  {item.registrationMode === 'external' && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}
+                                      className="border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
+                                    >
+                                      View Clicks
+                                    </Button>
+                                  )}
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleEdit(item)}
+                                    disabled={isSubmitting && editingId === item.id}
+                                    className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleQuickApprove(item, false)}
+                                    disabled={Boolean(actioningId) || item.status === 'approved' || item.status === 'published'}
+                                    className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+                                  >
+                                    Approve
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleQuickApprove(item, true)}
+                                    disabled={Boolean(actioningId) || item.status === 'published'}
+                                    className="border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
+                                  >
+                                    Publish
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleDelete(item.id)}
+                                    disabled={isSubmitting}
+                                    className="border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+
+                  {/* Mobile/Tablet Card View */}
+                  <div className="lg:hidden grid gap-4 sm:grid-cols-2">
+                    {items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4 hover:border-orange-500/20 transition-colors"
+                      >
+                        <div className="flex flex-col gap-4">
+                          {/* Header */}
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-medium text-foreground dark:text-white truncate">{item.title}</h3>
+                              <p className="mt-1 text-xs text-muted-foreground">Added {formatDate(item.startDate)}</p>
+                            </div>
+                            <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
+                              <img
+                                src={item.organizerLogo || 'https://via.placeholder.com/40'}
+                                alt={item.organizer?.name || item.organizerName || 'Organizer'}
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Details */}
+                          <div className="grid gap-2">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Category:</span>
+                              <Badge
+                                variant="outline"
+                                className="border-orange-500/20 bg-orange-500/10 text-orange-400"
+                              >
+                                {item.category?.name || item.categoryName || 'N/A'}
+                              </Badge>
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Organizer:</span>
+                              <span className="text-foreground dark:text-white">
+                                {item.organizer?.name || item.organizerName || 'N/A'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Mode:</span>
+                              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
+                                {item.mode}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Status:</span>
+                              <Badge
+                                variant="outline"
+                                className={`
+                              ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
+                                    item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
+                                      item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
+                                        'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
+                            `}
+                              >
+                                {item.status}
+                              </Badge>
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Deadline:</span>
+                              <span className="text-foreground dark:text-white">{formatDate(item.registrationDeadline)}</span>
+                            </div>
+                          </div>
+
+                          {/* Segments */}
+                          <div className="flex flex-wrap gap-1">
+                            {item.segments.map((segment, index) => (
+                              <span
+                                key={index}
+                                className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
+                              >
+                                {segment}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex flex-wrap gap-2 pt-2 border-t border-border/60 dark:border-white/10">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(item)}
+                              disabled={isSubmitting && editingId === item.id}
+                              className="flex-1 border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDelete(item.id)}
+                              disabled={isSubmitting}
+                              className="flex-1 border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleQuickApprove(item, true)}
+                              disabled={Boolean(actioningId) || item.status === 'published'}
+                              className="flex-1 border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
+                            >
+                              Publish
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {items.length === 0 && !isLoading && (
+                      <div className="col-span-full rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
+                        <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground">
+                          <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                            </svg>
+                          </div>
+                          <p className="text-lg font-medium">No opportunities available</p>
+                          <p className="text-sm text-slate-500">Create your first opportunity to get started</p>
+                        </div>
+                      </div>
                     )}
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                  </div>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={handleBackToList}>
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                  <div>
+                    <h2 className="text-lg font-semibold text-foreground dark:text-white">
+                      {editingId ? 'Edit opportunity' : 'Create opportunity'}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Provide core details and supporting metadata.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer'>
-                  Organizer *
-                </label>
-                <select
-                  id='op-organizer'
-                  value={formState.organizerId}
-                  onChange={(event) => handleOrganizerChange(event.target.value)}
-                  required
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  <option value=''>Select an organizer</option>
-                  {formState.organizerId &&
-                    !organizers.some((organizer) => organizer.id === formState.organizerId) && (
-                      <option value={formState.organizerId}>
-                        {items.find((item) => item.organizerId === formState.organizerId)?.organizerName ??
-                          'Current organizer (private)'}
-                      </option>
-                    )}
-                  {organizers.map((organizer) => (
-                    <option key={organizer.id} value={organizer.id}>
-                      {organizer.name}
-                      {organizer.visibility === 'private' ? ' (Private)' : ''}
-                      {organizer.isVerified ? '' : ' (Unverified)'}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer-logo'>
-                  Organizer logo URL
-                </label>
-                <Input
-                  id='op-organizer-logo'
-                  value={formState.organizerLogo}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, organizerLogo: event.target.value }))}
-                  placeholder='https://...'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-grade'>
-                  Grade eligibility
-                </label>
-                <Input
-                  id='op-grade'
-                  value={formState.gradeEligibility}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, gradeEligibility: event.target.value }))}
-                  placeholder='6-12'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-mode'>
-                  Mode
-                </label>
-                <select
-                  id='op-mode'
-                  value={formState.mode}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, mode: event.target.value }))}
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  {modeOptions.map((mode) => (
-                    <option key={mode} value={mode}>
-                      {mode}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-state'>
-                  State
-                </label>
-                <select
-                  id='op-state'
-                  value={formState.state}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    if (isValidState(value)) {
-                      setFormState((prev) => ({ ...prev, state: value }));
-                    }
-                  }}
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  <option value=''>Select state</option>
-                  {INDIAN_STATES.map((state) => (
-                    <option key={state} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-status'>
-                  Status
-                </label>
-                <select
-                  id='op-status'
-                  value={formState.status}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, status: event.target.value }))}
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  {statusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-mode'>
-                  Registration Mode
-                </label>
-                <select
-                  id='op-registration-mode'
-                  value={formState.registrationMode}
-                  onChange={(event) =>
-                    setFormState((prev) => ({
-                      ...prev,
-                      registrationMode: event.target.value as 'internal' | 'external',
-                    }))
-                  }
-                  className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                >
-                  <option value='internal'>Internal</option>
-                  <option value='external'>External</option>
-                </select>
-              </div>
-
-              {formState.registrationMode === 'external' && (
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-application-url'>
-                    Application URL
+              <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className='md:col-span-2 space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-title'>
+                    Title *
                   </label>
                   <Input
-                    id='op-application-url'
-                    value={formState.applicationUrl}
-                    onChange={(event) =>
-                      setFormState((prev) => ({ ...prev, applicationUrl: event.target.value }))
-                    }
-                    placeholder='https://example.com/apply'
+                    id='op-title'
+                    value={formState.title}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, title: event.target.value }))}
+                    required
+                    placeholder='National Science Olympiad'
                     className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                   />
                 </div>
-              )}
 
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-fee'>
-                  Fee
-                </label>
-                <Input
-                  id='op-fee'
-                  value={formState.fee}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, fee: event.target.value }))}
-                  placeholder='50'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-category'>
+                    Category *
+                  </label>
+                  <select
+                    id='op-category'
+                    value={formState.categoryId}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, categoryId: event.target.value }))}
+                    required
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    <option value=''>Select a category</option>
+                    {formState.categoryId &&
+                      !categories.some((category) => category.id === formState.categoryId) && (
+                        <option value={formState.categoryId}>
+                          {items.find((item) => item.categoryId === formState.categoryId)?.categoryName ??
+                            'Current category'}
+                        </option>
+                      )}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-currency'>
-                  Currency
-                </label>
-                <Input
-                  id='op-currency'
-                  value={formState.currency}
-                  readOnly
-                  aria-readonly='true'
-                  className='bg-card/60 dark:bg-white/5 text-muted-foreground'
-                />
-                <p className='text-xs text-muted-foreground'>All opportunities are shown in Indian Rupees (INR).</p>
-              </div>
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer'>
+                    Organizer *
+                  </label>
+                  <select
+                    id='op-organizer'
+                    value={formState.organizerId}
+                    onChange={(event) => handleOrganizerChange(event.target.value)}
+                    required
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    <option value=''>Select an organizer</option>
+                    {formState.organizerId &&
+                      !organizers.some((organizer) => organizer.id === formState.organizerId) && (
+                        <option value={formState.organizerId}>
+                          {items.find((item) => item.organizerId === formState.organizerId)?.organizerName ??
+                            'Current organizer (private)'}
+                        </option>
+                      )}
+                    {organizers.map((organizer) => (
+                      <option key={organizer.id} value={organizer.id}>
+                        {organizer.name}
+                        {organizer.visibility === 'private' ? ' (Private)' : ''}
+                        {organizer.isVerified ? '' : ' (Unverified)'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration'>
-                  Registration deadline
-                </label>
-                <Input
-                  id='op-registration'
-                  value={formState.registrationDeadline}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, registrationDeadline: event.target.value }))}
-                  placeholder='2024-02-28'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-start'>
-                  Start date
-                </label>
-                <Input
-                  id='op-start'
-                  value={formState.startDate}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, startDate: event.target.value }))}
-                  placeholder='2024-03-15'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-end'>
-                  End date
-                </label>
-                <Input
-                  id='op-end'
-                  value={formState.endDate}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, endDate: event.target.value }))}
-                  placeholder='2024-03-16'
-                  className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-image'>
-                  Cover image URL
-                </label>
-                <div className="flex flex-col gap-2">
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer-logo'>
+                    Organizer logo URL
+                  </label>
                   <Input
-                    id='op-image'
-                    value={formState.image}
-                    onChange={(event) => setFormState((prev) => ({ ...prev, image: event.target.value }))}
+                    id='op-organizer-logo'
+                    value={formState.organizerLogo}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, organizerLogo: event.target.value }))}
                     placeholder='https://...'
                     className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                   />
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-grade'>
+                    Grade eligibility
+                  </label>
                   <Input
-                    type="file"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
+                    id='op-grade'
+                    value={formState.gradeEligibility}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, gradeEligibility: event.target.value }))}
+                    placeholder='6-12'
+                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                  />
+                </div>
 
-                      const formData = new FormData();
-                      formData.append('file', file);
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-mode'>
+                    Mode
+                  </label>
+                  <select
+                    id='op-mode'
+                    value={formState.mode}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, mode: event.target.value }))}
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    {modeOptions.map((mode) => (
+                      <option key={mode} value={mode}>
+                        {mode}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                      try {
-                        const res = await fetch('/api/admin/upload', {
-                          method: 'POST',
-                          body: formData,
-                        });
-                        if (!res.ok) throw new Error('Upload failed');
-                        const data = await res.json();
-                        setFormState(prev => ({ ...prev, image: data.url }));
-                      } catch (err) {
-                        console.error(err);
-                        setError('Failed to upload image');
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-state'>
+                    State
+                  </label>
+                  <select
+                    id='op-state'
+                    value={formState.state}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      if (isValidState(value)) {
+                        setFormState((prev) => ({ ...prev, state: value }));
                       }
                     }}
-                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90'
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    <option value=''>Select state</option>
+                    {INDIAN_STATES.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-status'>
+                    Status
+                  </label>
+                  <select
+                    id='op-status'
+                    value={formState.status}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, status: event.target.value }))}
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    {statusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-mode'>
+                    Registration Mode
+                  </label>
+                  <select
+                    id='op-registration-mode'
+                    value={formState.registrationMode}
+                    onChange={(event) =>
+                      setFormState((prev) => ({
+                        ...prev,
+                        registrationMode: event.target.value as 'internal' | 'external',
+                      }))
+                    }
+                    className='h-10 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                  >
+                    <option value='internal'>Internal</option>
+                    <option value='external'>External</option>
+                  </select>
+                </div>
+
+                {formState.registrationMode === 'external' && (
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-application-url'>
+                      Application URL
+                    </label>
+                    <Input
+                      id='op-application-url'
+                      value={formState.applicationUrl}
+                      onChange={(event) =>
+                        setFormState((prev) => ({ ...prev, applicationUrl: event.target.value }))
+                      }
+                      placeholder='https://example.com/apply'
+                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                    />
+                  </div>
+                )}
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-fee'>
+                    Fee
+                  </label>
+                  <Input
+                    id='op-fee'
+                    value={formState.fee}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, fee: event.target.value }))}
+                    placeholder='50'
+                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                   />
                 </div>
-              </div>
 
-              <div className='md:col-span-2 space-y-3'>
-                <div className='flex items-center justify-between gap-2'>
-                  <label className='text-sm font-medium text-foreground dark:text-white'>
-                    Segments
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-currency'>
+                    Currency
                   </label>
-                  <a
-                    href='/admin/home'
-                    className='text-xs text-orange-300 hover:text-orange-200'
-                  >
-                    Manage segments
-                  </a>
-                </div>
-                <p className='text-xs text-muted-foreground'>
-                  Opportunities only appear on the home page sections you select below. Hidden segments from the home layout are shown with a warning.
-                </p>
-
-                <div className='min-h-[42px] rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-2'>
-                  {selectedSegmentOptions.length === 0 ? (
-                    <p className='text-sm text-muted-foreground'>
-                      No segments selected yet.
-                    </p>
-                  ) : (
-                    <div className='flex flex-wrap gap-2'>
-                      {selectedSegmentOptions.map((segment) => (
-                        <span
-                          key={`selected-${segment.segmentKey}`}
-                          className='inline-flex items-center gap-1 rounded-full border border-orange-500/40 bg-orange-500/10 px-3 py-1 text-xs text-orange-100'
-                        >
-                          <span className='flex items-center gap-1'>
-                            {segment.title}
-                            {!segment.isVisible && (
-                              <span className='rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-[1px] text-[10px] font-semibold uppercase tracking-wide text-yellow-200'>
-                                Hidden
-                              </span>
-                            )}
-                          </span>
-                          <button
-                            type='button'
-                            className='text-orange-200/80 hover:text-orange-100'
-                            onClick={() => removeSegmentSelection(segment.segmentKey)}
-                            aria-label={`Remove ${segment.title}`}
-                          >
-                            <X className='h-3 w-3' />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <Input
+                    id='op-currency'
+                    value={formState.currency}
+                    readOnly
+                    aria-readonly='true'
+                    className='bg-card/60 dark:bg-white/5 text-muted-foreground'
+                  />
+                  <p className='text-xs text-muted-foreground'>All opportunities are shown in Indian Rupees (INR).</p>
                 </div>
 
-                <div className='rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5'>
-                  <div className='flex items-center justify-between border-b border-border/60 dark:border-white/10 px-3 py-2'>
-                    <p className='text-xs font-medium text-foreground dark:text-white uppercase tracking-wide'>Available segments</p>
-                    {segmentsLoading && <span className='text-[11px] text-muted-foreground'>Loading...</span>}
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration'>
+                    Registration deadline
+                  </label>
+                  <Input
+                    id='op-registration'
+                    value={formState.registrationDeadline}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, registrationDeadline: event.target.value }))}
+                    placeholder='2024-02-28'
+                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-start'>
+                    Start date
+                  </label>
+                  <Input
+                    id='op-start'
+                    value={formState.startDate}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, startDate: event.target.value }))}
+                    placeholder='2024-03-15'
+                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-end'>
+                    End date
+                  </label>
+                  <Input
+                    id='op-end'
+                    value={formState.endDate}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, endDate: event.target.value }))}
+                    placeholder='2024-03-16'
+                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-image'>
+                    Cover image URL
+                  </label>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      id='op-image'
+                      value={formState.image}
+                      onChange={(event) => setFormState((prev) => ({ ...prev, image: event.target.value }))}
+                      placeholder='https://...'
+                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                    />
+                    <Input
+                      type="file"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        const formData = new FormData();
+                        formData.append('file', file);
+
+                        try {
+                          const res = await fetch('/api/admin/upload', {
+                            method: 'POST',
+                            body: formData,
+                          });
+                          if (!res.ok) throw new Error('Upload failed');
+                          const data = await res.json();
+                          setFormState(prev => ({ ...prev, image: data.url }));
+                        } catch (err) {
+                          console.error(err);
+                          setError('Failed to upload image');
+                        }
+                      }}
+                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90'
+                    />
                   </div>
-                  <div className='max-h-64 overflow-y-auto px-3 py-2 space-y-2'>
-                    {segmentsLoading ? (
-                      <p className='text-sm text-muted-foreground'>Fetching segments...</p>
-                    ) : availableSegments.length === 0 ? (
+                </div>
+
+                <div className='md:col-span-2 space-y-3'>
+                  <div className='flex items-center justify-between gap-2'>
+                    <label className='text-sm font-medium text-foreground dark:text-white'>
+                      Segments
+                    </label>
+                    <a
+                      href='/admin/home'
+                      className='text-xs text-orange-300 hover:text-orange-200'
+                    >
+                      Manage segments
+                    </a>
+                  </div>
+                  <p className='text-xs text-muted-foreground'>
+                    Opportunities only appear on the home page sections you select below. Hidden segments from the home layout are shown with a warning.
+                  </p>
+
+                  <div className='min-h-[42px] rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-2'>
+                    {selectedSegmentOptions.length === 0 ? (
                       <p className='text-sm text-muted-foreground'>
-                        No segments configured yet. Use the Home Page Segments section to add some.
+                        No segments selected yet.
                       </p>
                     ) : (
-                      availableSegments.map((segment) => {
-                        const checked = formState.selectedSegments.includes(segment.segmentKey);
-                        return (
-                          <label
-                            key={segment.segmentKey}
-                            className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-foreground dark:text-white hover:bg-card/80 dark:bg-white/5'
+                      <div className='flex flex-wrap gap-2'>
+                        {selectedSegmentOptions.map((segment) => (
+                          <span
+                            key={`selected-${segment.segmentKey}`}
+                            className='inline-flex items-center gap-1 rounded-full border border-orange-500/40 bg-orange-500/10 px-3 py-1 text-xs text-orange-100'
                           >
-                            <div className='flex items-center gap-2'>
-                              <input
-                                type='checkbox'
-                                checked={checked}
-                                onChange={() => toggleSegmentSelection(segment.segmentKey)}
-                                className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500'
-                              />
-                              <div>
-                                <p className='font-medium text-foreground dark:text-white'>{segment.title}</p>
-                                <p className='text-xs text-muted-foreground'>{segment.segmentKey}</p>
-                              </div>
-                            </div>
-                            {!segment.isVisible && (
-                              <span className='rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-[11px] font-medium text-yellow-200'>
-                                Hidden
-                              </span>
-                            )}
-                          </label>
-                        );
-                      })
+                            <span className='flex items-center gap-1'>
+                              {segment.title}
+                              {!segment.isVisible && (
+                                <span className='rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-[1px] text-[10px] font-semibold uppercase tracking-wide text-yellow-200'>
+                                  Hidden
+                                </span>
+                              )}
+                            </span>
+                            <button
+                              type='button'
+                              className='text-orange-200/80 hover:text-orange-100'
+                              onClick={() => removeSegmentSelection(segment.segmentKey)}
+                              aria-label={`Remove ${segment.title}`}
+                            >
+                              <X className='h-3 w-3' />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </div>
-              </div>
 
-              <div className='md:col-span-2 space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-description'>
-                  Description
-                </label>
-                <Textarea
-                  id='op-description'
-                  value={formState.description}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, description: event.target.value }))}
-                  placeholder='Narrative describing the opportunity...'
-                  className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-3'>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-eligibility'>
-                    Eligibility (one per line)
-                  </label>
-                  <Textarea
-                    id='op-eligibility'
-                    value={formState.eligibilityText}
-                    onChange={(event) => setFormState((prev) => ({ ...prev, eligibilityText: event.target.value }))}
-                    className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                  />
-                </div>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-benefits'>
-                    Benefits (one per line)
-                  </label>
-                  <Textarea
-                    id='op-benefits'
-                    value={formState.benefitsText}
-                    onChange={(event) => setFormState((prev) => ({ ...prev, benefitsText: event.target.value }))}
-                    className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                  />
-                </div>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-process'>
-                    Registration steps (one per line)
-                  </label>
-                  <Textarea
-                    id='op-registration-process'
-                    value={formState.registrationProcessText}
-                    onChange={(event) =>
-                      setFormState((prev) => ({ ...prev, registrationProcessText: event.target.value }))
-                    }
-                    className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                  />
-                </div>
-              </div>
-
-              <div className='md:col-span-2 space-y-2'>
-                <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-timeline'>
-                  Timeline (one per line as <code>date|event|status</code>)
-                </label>
-                <Textarea
-                  id='op-timeline'
-                  value={formState.timelineText}
-                  onChange={(event) => setFormState((prev) => ({ ...prev, timelineText: event.target.value }))}
-                  placeholder='2024-02-01|Registration Opens|completed'
-                  className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                />
-              </div>
-
-              <div className='md:col-span-2 space-y-4'>
-                <div className="flex items-center justify-between">
-                  <h3 className='text-sm font-semibold text-foreground dark:text-white'>Exam patterns</h3>
-                  <Button type="button" variant="outline" size="sm" onClick={handleAddPattern}>
-                    Add Pattern
-                  </Button>
-                </div>
-
-                {formState.examPatterns.map((pattern, index) => (
-                  <div key={pattern.id} className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4 relative'>
-                    <div className="absolute right-4 top-4">
-                      {formState.examPatterns.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-400 hover:text-red-500 hover:bg-red-500/10"
-                          onClick={() => handleRemovePattern(pattern.id)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
+                  <div className='rounded-lg border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5'>
+                    <div className='flex items-center justify-between border-b border-border/60 dark:border-white/10 px-3 py-2'>
+                      <p className='text-xs font-medium text-foreground dark:text-white uppercase tracking-wide'>Available segments</p>
+                      {segmentsLoading && <span className='text-[11px] text-muted-foreground'>Loading...</span>}
+                    </div>
+                    <div className='max-h-64 overflow-y-auto px-3 py-2 space-y-2'>
+                      {segmentsLoading ? (
+                        <p className='text-sm text-muted-foreground'>Fetching segments...</p>
+                      ) : availableSegments.length === 0 ? (
+                        <p className='text-sm text-muted-foreground'>
+                          No segments configured yet. Use the Home Page Segments section to add some.
+                        </p>
+                      ) : (
+                        availableSegments.map((segment) => {
+                          const checked = formState.selectedSegments.includes(segment.segmentKey);
+                          return (
+                            <label
+                              key={segment.segmentKey}
+                              className='flex items-start justify-between gap-3 rounded-md px-2 py-2 text-sm text-foreground dark:text-white hover:bg-card/80 dark:bg-white/5'
+                            >
+                              <div className='flex items-center gap-2'>
+                                <input
+                                  type='checkbox'
+                                  checked={checked}
+                                  onChange={() => toggleSegmentSelection(segment.segmentKey)}
+                                  className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500'
+                                />
+                                <div>
+                                  <p className='font-medium text-foreground dark:text-white'>{segment.title}</p>
+                                  <p className='text-xs text-muted-foreground'>{segment.segmentKey}</p>
+                                </div>
+                              </div>
+                              {!segment.isVisible && (
+                                <span className='rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-[11px] font-medium text-yellow-200'>
+                                  Hidden
+                                </span>
+                              )}
+                            </label>
+                          );
+                        })
                       )}
                     </div>
+                  </div>
+                </div>
 
-                    <h4 className="text-xs font-medium text-muted-foreground mb-4 uppercase tracking-wide">
-                      Pattern {index + 1}
-                    </h4>
+                <div className='md:col-span-2 space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-description'>
+                    Description
+                  </label>
+                  <div className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white rounded-md overflow-hidden">
+                    <ReactQuill
+                      theme="snow"
+                      value={formState.description}
+                      onChange={(value) => setFormState((prev) => ({ ...prev, description: value }))}
+                      modules={{
+                        toolbar: [
+                          ['bold', 'italic', 'underline', 'strike'],
+                          ['blockquote', 'code-block'],
+                          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                          [{ 'script': 'sub' }, { 'script': 'super' }],
+                          [{ 'indent': '-1' }, { 'indent': '+1' }],
+                          [{ 'direction': 'rtl' }],
+                          [{ 'size': ['small', false, 'large', 'huge'] }],
+                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                          [{ 'color': [] }, { 'background': [] }],
+                          [{ 'font': [] }],
+                          [{ 'align': [] }],
+                          ['clean'],
+                          ['link']
+                        ],
+                      }}
+                      className="text-foreground dark:text-white"
+                    />
+                  </div>
+                </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-4">
-                      <div className="space-y-2">
-                        <label className="text-xs text-muted-foreground">Class Selection Type</label>
-                        <select
-                          value={pattern.classSelection.type}
-                          onChange={(e) =>
-                            handlePatternChange(pattern.id, 'classSelection', {
-                              ...pattern.classSelection,
-                              type: e.target.value,
-                              selectedClasses: [], // Reset selection on type change
-                              rangeStart: '',
-                              rangeEnd: '',
-                            })
-                          }
-                          className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
-                        >
-                          <option value="single">Single Class</option>
-                          <option value="multiple">Multiple Classes</option>
-                          <option value="range">Class Range</option>
-                        </select>
+                <div className='md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-3'>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-eligibility'>
+                      Eligibility (one per line)
+                    </label>
+                    <Textarea
+                      id='op-eligibility'
+                      value={formState.eligibilityText}
+                      onChange={(event) => setFormState((prev) => ({ ...prev, eligibilityText: event.target.value }))}
+                      className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-benefits'>
+                      Benefits (one per line)
+                    </label>
+                    <Textarea
+                      id='op-benefits'
+                      value={formState.benefitsText}
+                      onChange={(event) => setFormState((prev) => ({ ...prev, benefitsText: event.target.value }))}
+                      className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration-process'>
+                      Registration steps (one per line)
+                    </label>
+                    <Textarea
+                      id='op-registration-process'
+                      value={formState.registrationProcessText}
+                      onChange={(event) =>
+                        setFormState((prev) => ({ ...prev, registrationProcessText: event.target.value }))
+                      }
+                      className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                    />
+                  </div>
+                </div>
+
+                <div className='md:col-span-2 space-y-2'>
+                  <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-timeline'>
+                    Timeline (one per line as <code>date|event|status</code>)
+                  </label>
+                  <Textarea
+                    id='op-timeline'
+                    value={formState.timelineText}
+                    onChange={(event) => setFormState((prev) => ({ ...prev, timelineText: event.target.value }))}
+                    placeholder='2024-02-01|Registration Opens|completed'
+                    className='min-h-[120px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                  />
+                </div>
+
+                <div className='md:col-span-2 space-y-4'>
+                  <div className="flex items-center justify-between">
+                    <h3 className='text-sm font-semibold text-foreground dark:text-white'>Exam patterns</h3>
+                    <Button type="button" variant="outline" size="sm" onClick={handleAddPattern}>
+                      Add Pattern
+                    </Button>
+                  </div>
+
+                  {formState.examPatterns.map((pattern, index) => (
+                    <div key={pattern.id} className='rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4 relative'>
+                      <div className="absolute right-4 top-4">
+                        {formState.examPatterns.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-400 hover:text-red-500 hover:bg-red-500/10"
+                            onClick={() => handleRemovePattern(pattern.id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-xs text-muted-foreground">Select Class(es)</label>
-                        {pattern.classSelection.type === 'single' && (
+                      <h4 className="text-xs font-medium text-muted-foreground mb-4 uppercase tracking-wide">
+                        Pattern {index + 1}
+                      </h4>
+
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-4">
+                        <div className="space-y-2">
+                          <label className="text-xs text-muted-foreground">Class Selection Type</label>
                           <select
-                            value={pattern.classSelection.selectedClasses[0] || ''}
+                            value={pattern.classSelection.type}
                             onChange={(e) =>
                               handlePatternChange(pattern.id, 'classSelection', {
                                 ...pattern.classSelection,
-                                selectedClasses: [e.target.value],
+                                type: e.target.value,
+                                selectedClasses: [], // Reset selection on type change
+                                rangeStart: '',
+                                rangeEnd: '',
                               })
                             }
                             className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
                           >
-                            <option value="">Select Class</option>
-                            {CLASS_OPTIONS.map((cls) => (
-                              <option key={cls} value={cls}>
-                                Class {cls}
-                              </option>
-                            ))}
+                            <option value="single">Single Class</option>
+                            <option value="multiple">Multiple Classes</option>
+                            <option value="range">Class Range</option>
                           </select>
-                        )}
-
-                        {pattern.classSelection.type === 'multiple' && (
-                          <div className="flex flex-wrap gap-2 p-2 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 min-h-[38px]">
-                            {CLASS_OPTIONS.map((cls) => (
-                              <label key={cls} className="flex items-center gap-1 text-sm cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={pattern.classSelection.selectedClasses.includes(cls)}
-                                  onChange={(e) => {
-                                    const current = pattern.classSelection.selectedClasses;
-                                    const next = e.target.checked
-                                      ? [...current, cls]
-                                      : current.filter((c) => c !== cls);
-                                    handlePatternChange(pattern.id, 'classSelection', {
-                                      ...pattern.classSelection,
-                                      selectedClasses: next,
-                                    });
-                                  }}
-                                  className="rounded border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500"
-                                />
-                                <span className="text-foreground dark:text-white">{cls}</span>
-                              </label>
-                            ))}
-                          </div>
-                        )}
-
-                        {pattern.classSelection.type === 'range' && (
-                          <div className="flex items-center gap-2">
-                            <select
-                              value={pattern.classSelection.rangeStart || ''}
-                              onChange={(e) =>
-                                handlePatternChange(pattern.id, 'classSelection', {
-                                  ...pattern.classSelection,
-                                  rangeStart: e.target.value,
-                                })
-                              }
-                              className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
-                            >
-                              <option value="">From</option>
-                              {CLASS_OPTIONS.map((cls) => (
-                                <option key={cls} value={cls}>
-                                  Class {cls}
-                                </option>
-                              ))}
-                            </select>
-                            <span className="text-muted-foreground">-</span>
-                            <select
-                              value={pattern.classSelection.rangeEnd || ''}
-                              onChange={(e) =>
-                                handlePatternChange(pattern.id, 'classSelection', {
-                                  ...pattern.classSelection,
-                                  rangeEnd: e.target.value,
-                                })
-                              }
-                              className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
-                            >
-                              <option value="">To</option>
-                              {CLASS_OPTIONS.map((cls) => (
-                                <option key={cls} value={cls}>
-                                  Class {cls}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
-                      <div className='space-y-2'>
-                        <label className='text-xs text-muted-foreground'>
-                          Total questions
-                        </label>
-                        <Input
-                          value={pattern.totalQuestions}
-                          onChange={(event) =>
-                            handlePatternChange(pattern.id, 'totalQuestions', event.target.value)
-                          }
-                          placeholder='100'
-                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                        />
-                      </div>
-                      <div className='space-y-2'>
-                        <label className='text-xs text-muted-foreground'>
-                          Duration (minutes)
-                        </label>
-                        <Input
-                          value={pattern.durationMinutes}
-                          onChange={(event) =>
-                            handlePatternChange(pattern.id, 'durationMinutes', event.target.value)
-                          }
-                          placeholder='120'
-                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                        />
-                      </div>
-                      <div className='space-y-2'>
-                        <label className='text-xs text-muted-foreground'>
-                          Negative marking?
-                        </label>
-                        <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
-                          <input
-                            type='checkbox'
-                            checked={pattern.negativeMarking}
-                            onChange={(event) =>
-                              handlePatternChange(pattern.id, 'negativeMarking', event.target.checked)
-                            }
-                            className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
-                          />
-                          <span>Enabled</span>
                         </div>
-                      </div>
-                      <div className='space-y-2'>
-                        <label className='text-xs text-muted-foreground'>
-                          Penalty per question
-                        </label>
-                        <Input
-                          value={pattern.negativeMarksPerQuestion}
-                          onChange={(event) =>
-                            handlePatternChange(pattern.id, 'negativeMarksPerQuestion', event.target.value)
-                          }
-                          placeholder='0.25'
-                          className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                        />
-                      </div>
-                    </div>
-                    <div className='mt-4 space-y-2'>
-                      <label className='text-xs text-muted-foreground'>
-                        Sections (one per line as <code>name|questions|marks</code>)
-                      </label>
-                      <Textarea
-                        value={pattern.sectionsText}
-                        onChange={(event) =>
-                          handlePatternChange(pattern.id, 'sectionsText', event.target.value)
-                        }
-                        placeholder='Physics|25|25'
-                        className='min-h-[100px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
 
-              <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
-                <h3 className='text-sm font-semibold text-foreground dark:text-white'>Contact information</h3>
-                <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-3'>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-contact-email'>
-                      Email
-                    </label>
-                    <Input
-                      id='op-contact-email'
-                      value={formState.contactEmail}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, contactEmail: event.target.value }))
-                      }
-                      placeholder='info@example.org'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-contact-phone'>
-                      Phone
-                    </label>
-                    <Input
-                      id='op-contact-phone'
-                      value={formState.contactPhone}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, contactPhone: event.target.value }))
-                      }
-                      placeholder='+1-800-123-4567'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                  <div className='space-y-2'>
-                    <label className='text-xs text-muted-foreground' htmlFor='op-contact-website'>
-                      Website
-                    </label>
-                    <Input
-                      id='op-contact-website'
-                      value={formState.contactWebsite}
-                      onChange={(event) =>
-                        setFormState((prev) => ({ ...prev, contactWebsite: event.target.value }))
-                      }
-                      placeholder='https://example.org'
-                      className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
-                  </div>
-                </div>
-              </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-muted-foreground">Select Class(es)</label>
+                          {pattern.classSelection.type === 'single' && (
+                            <select
+                              value={pattern.classSelection.selectedClasses[0] || ''}
+                              onChange={(e) =>
+                                handlePatternChange(pattern.id, 'classSelection', {
+                                  ...pattern.classSelection,
+                                  selectedClasses: [e.target.value],
+                                })
+                              }
+                              className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                            >
+                              <option value="">Select Class</option>
+                              {CLASS_OPTIONS.map((cls) => (
+                                <option key={cls} value={cls}>
+                                  Class {cls}
+                                </option>
+                              ))}
+                            </select>
+                          )}
 
-              <div className='md:col-span-2 flex items-center gap-3'>
-                <Button type='submit' disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : editingId ? 'Update opportunity' : 'Create opportunity'}
-                </Button>
-                {editingId && (
-                  <Button type='button' variant='ghost' onClick={handleReset} disabled={isSubmitting}>
-                    Cancel edit
-                  </Button>
-                )}
-              </div>
-
-              {error && (
-                <p className='md:col-span-2 text-sm text-red-400' role='alert'>
-                  {error}
-                </p>
-              )}
-            </form>
-          </section>
-
-          <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
-            <div className='flex items-center justify-between'>
-              <h2 className='text-lg font-semibold text-foreground dark:text-white'>Existing opportunities</h2>
-              <Button variant='outline' size='sm' onClick={loadItems} disabled={isLoading}>
-                Refresh
-              </Button>
-            </div>
-            <p className='mt-1 text-sm text-muted-foreground'>
-              {isLoading ? 'Loading... opportunities...' : `Showing ${items.length} record(s).`}
-            </p>
-
-            <div className="mt-4">
-              <div className="grid gap-4">
-                {/* Desktop Table View */}
-                <div className="hidden lg:block rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden">
-                  <div className="w-full overflow-x-auto scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10">
-                          <TableHead className="w-[25%] text-foreground dark:text-white font-semibold">Title & Info</TableHead>
-                          <TableHead className="w-[15%] text-foreground dark:text-white font-semibold">Category & Mode</TableHead>
-                          <TableHead className="w-[20%] text-foreground dark:text-white font-semibold">Organizer</TableHead>
-                          <TableHead className="w-[15%] text-foreground dark:text-white font-semibold text-center">Status & Source</TableHead>
-                          <TableHead className="w-[25%] text-foreground dark:text-white font-semibold text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {items.length === 0 && !isLoading && (
-                          <TableRow>
-                            <TableCell colSpan={5} className="h-32 text-center">
-                              <div className="flex flex-col items-center justify-center space-y-2 text-muted-foreground">
-                                <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
-                                  <svg className="h-6 w-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                  </svg>
-                                </div>
-                                <p>No opportunities available</p>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                        {items.map((item) => (
-                          <TableRow key={item.id} className="group border-b border-border/70 dark:border-white/5 hover:bg-card/80 dark:bg-white/5">
-                            <TableCell>
-                              <div className="space-y-1">
-                                <div className="font-medium text-foreground dark:text-white group-hover:text-orange-400 transition-colors">
-                                  {item.title}
-                                </div>
-                                <div className="flex flex-col space-y-1">
-                                  <span className="text-xs text-muted-foreground">
-                                    Added {formatDate(item.startDate)}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    Deadline: {formatDate(item.registrationDeadline)}
-                                  </span>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="space-y-2">
-                                <Badge
-                                  variant="outline"
-                                  className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors"
-                                >
-                                  {item.category?.name || item.categoryName || 'N/A'}
-                                </Badge>
-                                <div className="flex items-center">
-                                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
-                                    {item.mode}
-                                  </span>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
-                                  <img
-                                    src={item.organizerLogo || 'https://via.placeholder.com/40'}
-                                    alt={item.organizer?.name || item.organizerName || 'Organizer'}
-                                    className="h-full w-full object-cover"
+                          {pattern.classSelection.type === 'multiple' && (
+                            <div className="flex flex-wrap gap-2 p-2 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 min-h-[38px]">
+                              {CLASS_OPTIONS.map((cls) => (
+                                <label key={cls} className="flex items-center gap-1 text-sm cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={pattern.classSelection.selectedClasses.includes(cls)}
+                                    onChange={(e) => {
+                                      const current = pattern.classSelection.selectedClasses;
+                                      const next = e.target.checked
+                                        ? [...current, cls]
+                                        : current.filter((c) => c !== cls);
+                                      handlePatternChange(pattern.id, 'classSelection', {
+                                        ...pattern.classSelection,
+                                        selectedClasses: next,
+                                      });
+                                    }}
+                                    className="rounded border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5 text-orange-500 focus:ring-orange-500"
                                   />
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <div className="text-sm font-medium text-foreground dark:text-white truncate">
-                                    {item.organizer?.name || item.organizerName || 'N/A'}
-                                  </div>
-                                  <div className="flex flex-wrap gap-1 mt-1">
-                                    {item.segments.slice(0, 2).map((segment, index) => (
-                                      <span
-                                        key={index}
-                                        className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
-                                      >
-                                        {segment}
-                                      </span>
-                                    ))}
-                                    {item.segments.length > 2 && (
-                                      <span className="text-xs text-muted-foreground">
-                                        +{item.segments.length - 2} more
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-center">
-                              <div className="space-y-2 flex flex-col items-center">
-                                {item.registrationMode === 'internal' ? (
-                                  <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-400">
-                                    {item.registrationCount ?? 0} Registrations
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="outline" className="border-gray-500/30 bg-gray-500/10 text-gray-400">
-                                    External
-                                  </Badge>
-                                )}
-                                <Badge
-                                  variant="outline"
-                                  className={`
-                                ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
-                                      item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
-                                        item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
-                                          'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
-                              `}
-                                >
-                                  {item.status}
-                                </Badge>
-                                {item.source === 'organization-submission' ? (
-                                  <Badge className="border-orange-500/40 bg-orange-500/20 text-orange-200">
-                                    Host
-                                  </Badge>
-                                ) : (
-                                  <Badge className="border-blue-500/40 bg-blue-500/20 text-blue-200">
-                                    Admin
-                                  </Badge>
-                                )}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex flex-wrap justify-end gap-2">
-                                {item.registrationMode === 'internal' && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}
-                                    className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                                  >
-                                    View Registrations
-                                  </Button>
-                                )}
-                                {item.registrationMode === 'external' && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}
-                                    className="border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
-                                  >
-                                    View Clicks
-                                  </Button>
-                                )}
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleEdit(item)}
-                                  disabled={isSubmitting && editingId === item.id}
-                                  className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleQuickApprove(item, false)}
-                                  disabled={Boolean(actioningId) || item.status === 'approved' || item.status === 'published'}
-                                  className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                                >
-                                  Approve
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleQuickApprove(item, true)}
-                                  disabled={Boolean(actioningId) || item.status === 'published'}
-                                  className="border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                                >
-                                  Publish
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleDelete(item.id)}
-                                  disabled={isSubmitting}
-                                  className="border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                                >
-                                  Delete
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </div>
+                                  <span className="text-foreground dark:text-white">{cls}</span>
+                                </label>
+                              ))}
+                            </div>
+                          )}
 
-                {/* Mobile/Tablet Card View */}
-                <div className="lg:hidden grid gap-4 sm:grid-cols-2">
-                  {items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4 hover:border-orange-500/20 transition-colors"
-                    >
-                      <div className="flex flex-col gap-4">
-                        {/* Header */}
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="min-w-0 flex-1">
-                            <h3 className="font-medium text-foreground dark:text-white truncate">{item.title}</h3>
-                            <p className="mt-1 text-xs text-muted-foreground">Added {formatDate(item.startDate)}</p>
-                          </div>
-                          <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
-                            <img
-                              src={item.organizerLogo || 'https://via.placeholder.com/40'}
-                              alt={item.organizer?.name || item.organizerName || 'Organizer'}
-                              className="h-full w-full object-cover"
+                          {pattern.classSelection.type === 'range' && (
+                            <div className="flex items-center gap-2">
+                              <select
+                                value={pattern.classSelection.rangeStart || ''}
+                                onChange={(e) =>
+                                  handlePatternChange(pattern.id, 'classSelection', {
+                                    ...pattern.classSelection,
+                                    rangeStart: e.target.value,
+                                  })
+                                }
+                                className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                              >
+                                <option value="">From</option>
+                                {CLASS_OPTIONS.map((cls) => (
+                                  <option key={cls} value={cls}>
+                                    Class {cls}
+                                  </option>
+                                ))}
+                              </select>
+                              <span className="text-muted-foreground">-</span>
+                              <select
+                                value={pattern.classSelection.rangeEnd || ''}
+                                onChange={(e) =>
+                                  handlePatternChange(pattern.id, 'classSelection', {
+                                    ...pattern.classSelection,
+                                    rangeEnd: e.target.value,
+                                  })
+                                }
+                                className="w-full h-9 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white"
+                              >
+                                <option value="">To</option>
+                                {CLASS_OPTIONS.map((cls) => (
+                                  <option key={cls} value={cls}>
+                                    Class {cls}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
+                        <div className='space-y-2'>
+                          <label className='text-xs text-muted-foreground'>
+                            Total questions
+                          </label>
+                          <Input
+                            value={pattern.totalQuestions}
+                            onChange={(event) =>
+                              handlePatternChange(pattern.id, 'totalQuestions', event.target.value)
+                            }
+                            placeholder='100'
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                          />
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='text-xs text-muted-foreground'>
+                            Duration (minutes)
+                          </label>
+                          <Input
+                            value={pattern.durationMinutes}
+                            onChange={(event) =>
+                              handlePatternChange(pattern.id, 'durationMinutes', event.target.value)
+                            }
+                            placeholder='120'
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                          />
+                        </div>
+                        <div className='space-y-2'>
+                          <label className='text-xs text-muted-foreground'>
+                            Negative marking?
+                          </label>
+                          <div className='flex items-center gap-2 text-sm text-foreground dark:text-white'>
+                            <input
+                              type='checkbox'
+                              checked={pattern.negativeMarking}
+                              onChange={(event) =>
+                                handlePatternChange(pattern.id, 'negativeMarking', event.target.checked)
+                              }
+                              className='h-4 w-4 rounded border border-border/50 dark:border-white/20 bg-card/80 dark:bg-white/5'
                             />
+                            <span>Enabled</span>
                           </div>
                         </div>
-
-                        {/* Details */}
-                        <div className="grid gap-2">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Category:</span>
-                            <Badge
-                              variant="outline"
-                              className="border-orange-500/20 bg-orange-500/10 text-orange-400"
-                            >
-                              {item.category?.name || item.categoryName || 'N/A'}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Organizer:</span>
-                            <span className="text-foreground dark:text-white">
-                              {item.organizer?.name || item.organizerName || 'N/A'}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Mode:</span>
-                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
-                              {item.mode}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Status:</span>
-                            <Badge
-                              variant="outline"
-                              className={`
-                            ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
-                                  item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
-                                    item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
-                                      'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
-                          `}
-                            >
-                              {item.status}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">Deadline:</span>
-                            <span className="text-foreground dark:text-white">{formatDate(item.registrationDeadline)}</span>
-                          </div>
+                        <div className='space-y-2'>
+                          <label className='text-xs text-muted-foreground'>
+                            Penalty per question
+                          </label>
+                          <Input
+                            value={pattern.negativeMarksPerQuestion}
+                            onChange={(event) =>
+                              handlePatternChange(pattern.id, 'negativeMarksPerQuestion', event.target.value)
+                            }
+                            placeholder='0.25'
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                          />
                         </div>
-
-                        {/* Segments */}
-                        <div className="flex flex-wrap gap-1">
-                          {item.segments.map((segment, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
-                            >
-                              {segment}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex flex-wrap gap-2 pt-2 border-t border-border/60 dark:border-white/10">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEdit(item)}
-                            disabled={isSubmitting && editingId === item.id}
-                            className="flex-1 border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDelete(item.id)}
-                            disabled={isSubmitting}
-                            className="flex-1 border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                          >
-                            Delete
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleQuickApprove(item, true)}
-                            disabled={Boolean(actioningId) || item.status === 'published'}
-                            className="flex-1 border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                          >
-                            Publish
-                          </Button>
-                        </div>
+                      </div>
+                      <div className='mt-4 space-y-2'>
+                        <label className='text-xs text-muted-foreground'>
+                          Sections (one per line as <code>name|questions|marks</code>)
+                        </label>
+                        <Textarea
+                          value={pattern.sectionsText}
+                          onChange={(event) =>
+                            handlePatternChange(pattern.id, 'sectionsText', event.target.value)
+                          }
+                          placeholder='Physics|25|25'
+                          className='min-h-[100px] bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                        />
                       </div>
                     </div>
                   ))}
+                </div>
 
-                  {items.length === 0 && !isLoading && (
-                    <div className="col-span-full rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
-                      <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground">
-                        <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
-                          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                          </svg>
-                        </div>
-                        <p className="text-lg font-medium">No opportunities available</p>
-                        <p className="text-sm text-slate-500">Create your first opportunity to get started</p>
-                      </div>
+                <div className='md:col-span-2 rounded-xl border border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5 p-4'>
+                  <h3 className='text-sm font-semibold text-foreground dark:text-white'>Contact information</h3>
+                  <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-3'>
+                    <div className='space-y-2'>
+                      <label className='text-xs text-muted-foreground' htmlFor='op-contact-email'>
+                        Email
+                      </label>
+                      <Input
+                        id='op-contact-email'
+                        value={formState.contactEmail}
+                        onChange={(event) =>
+                          setFormState((prev) => ({ ...prev, contactEmail: event.target.value }))
+                        }
+                        placeholder='info@example.org'
+                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                      />
                     </div>
+                    <div className='space-y-2'>
+                      <label className='text-xs text-muted-foreground' htmlFor='op-contact-phone'>
+                        Phone
+                      </label>
+                      <Input
+                        id='op-contact-phone'
+                        value={formState.contactPhone}
+                        onChange={(event) =>
+                          setFormState((prev) => ({ ...prev, contactPhone: event.target.value }))
+                        }
+                        placeholder='+1-800-123-4567'
+                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                      />
+                    </div>
+                    <div className='space-y-2'>
+                      <label className='text-xs text-muted-foreground' htmlFor='op-contact-website'>
+                        Website
+                      </label>
+                      <Input
+                        id='op-contact-website'
+                        value={formState.contactWebsite}
+                        onChange={(event) =>
+                          setFormState((prev) => ({ ...prev, contactWebsite: event.target.value }))
+                        }
+                        placeholder='https://example.org'
+                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className='md:col-span-2 flex items-center gap-3'>
+                  <Button type='submit' disabled={isSubmitting}>
+                    {isSubmitting ? 'Saving...' : editingId ? 'Update opportunity' : 'Create opportunity'}
+                  </Button>
+                  {editingId && (
+                    <Button type='button' variant='ghost' onClick={handleReset} disabled={isSubmitting}>
+                      Cancel edit
+                    </Button>
                   )}
                 </div>
-              </div>
-            </div>
-          </section>
+
+                {error && (
+                  <p className='md:col-span-2 text-sm text-red-400' role='alert'>
+                    {error}
+                  </p>
+                )}
+              </form>
+            </section>
+          )}
         </>
       ) : (
         <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>

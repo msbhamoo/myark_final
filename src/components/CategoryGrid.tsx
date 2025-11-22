@@ -8,19 +8,19 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import type { OpportunityCategoryWithMeta } from '@/types/masters';
 
 const CATEGORY_COLORS = {
-  scholarships: { from: 'from-amber-400', to: 'to-orange-500' },
+  scholarships: { from: 'from-emerald-400', to: 'to-green-500' },
   olympiad: { from: 'from-purple-400', to: 'to-pink-500' },
   workshop: { from: 'from-cyan-400', to: 'to-blue-500' },
   bootcamp: { from: 'from-rose-400', to: 'to-red-500' },
   summercamp: { from: 'from-emerald-400', to: 'to-green-500' },
   internship: { from: 'from-indigo-400', to: 'to-purple-500' },
-  hackathon: { from: 'from-yellow-400', to: 'to-orange-500' },
-  hiring: { from: 'from-orange-400', to: 'to-pink-500' },
+  hackathon: { from: 'from-violet-400', to: 'to-purple-500' },
+  hiring: { from: 'from-blue-400', to: 'to-indigo-500' },
   quiz: { from: 'from-blue-400', to: 'to-cyan-500' },
   conference: { from: 'from-slate-400', to: 'to-slate-600' },
   competition: { from: 'from-fuchsia-400', to: 'to-pink-500' },
   cultural: { from: 'from-violet-400', to: 'to-purple-500' },
-  sports: { from: 'from-red-400', to: 'to-orange-500' },
+  sports: { from: 'from-red-500', to: 'to-rose-600' },
   coding: { from: 'from-green-400', to: 'to-emerald-500' },
   design: { from: 'from-pink-400', to: 'to-rose-500' },
   other: { from: 'from-slate-400', to: 'to-slate-600' },
@@ -149,7 +149,7 @@ export default function CategoryGrid({
               onClick={(e) => {
                 handleCategoryClick(category);
               }}
-              className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950"
+              className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950"
             >
               {/* 3D Icon Circle with Shadow */}
               <div
@@ -173,7 +173,7 @@ export default function CategoryGrid({
         {hasMoreCategories && (
           <button
             onClick={() => setIsExplorerOpen(true)}
-            className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950"
+            className="group flex flex-col items-center gap-2 rounded-2xl p-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950"
           >
             {/* More Icon Circle */}
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-slate-400 to-slate-600 text-2xl shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1 sm:h-16 sm:w-16 sm:text-3xl">
