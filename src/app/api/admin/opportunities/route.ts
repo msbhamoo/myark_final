@@ -289,8 +289,8 @@ type ExamPattern = {
 type ClassSelection = {
   type: 'single' | 'multiple' | 'range';
   selectedClasses: string[];
-  rangeStart?: string;
-  rangeEnd?: string;
+  rangeStart?: string | null;
+  rangeEnd?: string | null;
 };
 
 type ExamPatternBlock = ExamPattern & {
@@ -310,8 +310,8 @@ const sanitizeClassSelection = (value: unknown): ClassSelection => {
   return {
     type,
     selectedClasses: sanitizeStringArray(record.selectedClasses),
-    rangeStart: typeof record.rangeStart === 'string' ? record.rangeStart : undefined,
-    rangeEnd: typeof record.rangeEnd === 'string' ? record.rangeEnd : undefined,
+    rangeStart: typeof record.rangeStart === 'string' ? record.rangeStart : null,
+    rangeEnd: typeof record.rangeEnd === 'string' ? record.rangeEnd : null,
   };
 };
 
