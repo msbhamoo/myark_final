@@ -1283,9 +1283,34 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2">
-              <StickyTabBar
-                defaultValue="overview"
-                tabs={[
+              {(() => {
+                // Determine which tabs have content
+                const hasOverview = Boolean(opportunity.description?.trim()) || (opportunity.benefits && opportunity.benefits.length > 0);
+                const hasEligibility = opportunity.eligibility && opportunity.eligibility.length > 0;
+                const hasTimeline = timelineEntries && timelineEntries.length > 0;
+                const hasRegistration = (opportunity.registrationProcess && opportunity.registrationProcess.length > 0) ||
+                  Boolean(contactInfo.email || contactInfo.phone || contactInfo.website);
+                const hasExamPattern = (() => {
+                  // Check new exam patterns array
+                  if (opportunity.examPatterns && opportunity.examPatterns.length > 0) {
+                    return opportunity.examPatterns.some(pattern =>
+                      (pattern.totalQuestions && pattern.totalQuestions > 0) ||
+                      (pattern.sections && pattern.sections.length > 0)
+                    );
+                  }
+                  // Check legacy exam pattern
+                  if (examPattern.totalQuestions && examPattern.totalQuestions > 0) {
+                    return true;
+                  }
+                  if (examSections && examSections.length > 0) {
+                    return true;
+                  }
+                  return false;
+                })();
+                const hasResources = resourceItems.length > 0;
+
+                // Build full tabs array
+                const allTabs: TabItem[] = [
                   {
                     value: 'overview',
                     label: 'Overview',
@@ -1878,8 +1903,30 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       </Card>
                     ),
                   },
-                ]}
-              />
+                ];
+
+                // Filter tabs based on content availability
+                const visibleTabs = allTabs.filter(tab => {
+                  if (tab.value === 'overview') return hasOverview;
+                  if (tab.value === 'eligibility') return hasEligibility;
+                  if (tab.value === 'timeline') return hasTimeline;
+                  if (tab.value === 'registration') return hasRegistration;
+                  if (tab.value === 'exam-pattern') return hasExamPattern;
+                  if (tab.value === 'resources') return hasResources;
+                  if (tab.value === 'faq') return true; // FAQ is always visible
+                  return true;
+                });
+
+                // Determine the default tab (first visible tab)
+                const defaultTab = visibleTabs.length > 0 ? visibleTabs[0].value : 'overview';
+
+                return (
+                  <StickyTabBar
+                    defaultValue={defaultTab}
+                    tabs={visibleTabs}
+                  />
+                );
+              })()}
             </div>
 
             {/* Sidebar - Sticky on Desktop, Hidden on Mobile */}
