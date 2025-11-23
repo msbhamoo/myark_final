@@ -16,10 +16,25 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { OpportunityCategory, Organizer } from '@/types/masters';
 import type { OpportunityResource } from '@/types/opportunity';
-import { X, Plus, ArrowLeft } from 'lucide-react';
+import { X, Plus, ArrowLeft, MoreVertical, Eye, Edit, Trash, CheckCircle, Upload, ExternalLink } from 'lucide-react';
 import { INDIAN_STATES, INDIAN_STATES_SET } from '@/constants/india';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
@@ -269,6 +284,7 @@ export function OpportunitiesManager() {
   const [segmentsLoading, setSegmentsLoading] = useState(false);
   const [formState, setFormState] = useState<OpportunityFormState>(defaultForm);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingOpportunity, setViewingOpportunity] = useState<OpportunityItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [actioningId, setActioningId] = useState<string | null>(null);
@@ -1012,12 +1028,12 @@ export function OpportunitiesManager() {
                     <div className="w-full overflow-x-auto scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30">
                       <Table>
                         <TableHeader>
-                          <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10">
-                            <TableHead className="w-[25%] text-foreground dark:text-white font-semibold">Title & Info</TableHead>
-                            <TableHead className="w-[15%] text-foreground dark:text-white font-semibold">Category & Mode</TableHead>
+                          <TableRow className="bg-gradient-to-r from-white/10 to-white/5 hover:bg-card/70 dark:bg-white/10 border-b border-border/60 dark:border-white/10 sticky top-0 z-10">
+                            <TableHead className="w-[30%] text-foreground dark:text-white font-semibold">Title & Info</TableHead>
+                            <TableHead className="w-[15%] text-foreground dark:text-white font-semibold">Category</TableHead>
                             <TableHead className="w-[20%] text-foreground dark:text-white font-semibold">Organizer</TableHead>
-                            <TableHead className="w-[15%] text-foreground dark:text-white font-semibold text-center">Status & Source</TableHead>
-                            <TableHead className="w-[25%] text-foreground dark:text-white font-semibold text-right">Actions</TableHead>
+                            <TableHead className="w-[10%] text-foreground dark:text-white font-semibold text-center">Status</TableHead>
+                            <TableHead className="w-[5%] text-foreground dark:text-white font-semibold text-right">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -1037,11 +1053,14 @@ export function OpportunitiesManager() {
                           )}
                           {items.map((item) => (
                             <TableRow key={item.id} className="group border-b border-border/70 dark:border-white/5 hover:bg-card/80 dark:bg-white/5">
-                              <TableCell>
+                              <TableCell className="align-top py-4">
                                 <div className="space-y-1">
-                                  <div className="font-medium text-foreground dark:text-white group-hover:text-orange-400 transition-colors">
+                                  <button
+                                    onClick={() => setViewingOpportunity(item)}
+                                    className="font-medium text-foreground dark:text-white group-hover:text-orange-400 transition-colors text-left hover:underline whitespace-normal break-words"
+                                  >
                                     {item.title}
-                                  </div>
+                                  </button>
                                   <div className="flex flex-col space-y-1">
                                     <span className="text-xs text-muted-foreground">
                                       Added {formatDate(item.startDate)}
@@ -1052,24 +1071,17 @@ export function OpportunitiesManager() {
                                   </div>
                                 </div>
                               </TableCell>
-                              <TableCell>
-                                <div className="space-y-2">
-                                  <Badge
-                                    variant="outline"
-                                    className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors"
-                                  >
-                                    {item.category?.name || item.categoryName || 'N/A'}
-                                  </Badge>
-                                  <div className="flex items-center">
-                                    <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs capitalize bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10">
-                                      {item.mode}
-                                    </span>
-                                  </div>
-                                </div>
+                              <TableCell className="align-top py-4">
+                                <Badge
+                                  variant="outline"
+                                  className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors whitespace-normal text-center"
+                                >
+                                  {item.category?.name || item.categoryName || 'N/A'}
+                                </Badge>
                               </TableCell>
-                              <TableCell>
-                                <div className="flex items-center gap-3">
-                                  <div className="h-10 w-10 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0">
+                              <TableCell className="align-top py-4">
+                                <div className="flex items-start gap-3">
+                                  <div className="h-8 w-8 rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 overflow-hidden flex-shrink-0 mt-1">
                                     <img
                                       src={item.organizerLogo || 'https://via.placeholder.com/40'}
                                       alt={item.organizer?.name || item.organizerName || 'Organizer'}
@@ -1077,119 +1089,87 @@ export function OpportunitiesManager() {
                                     />
                                   </div>
                                   <div className="min-w-0 flex-1">
-                                    <div className="text-sm font-medium text-foreground dark:text-white truncate">
+                                    <div className="text-sm font-medium text-foreground dark:text-white whitespace-normal break-words">
                                       {item.organizer?.name || item.organizerName || 'N/A'}
                                     </div>
                                     <div className="flex flex-wrap gap-1 mt-1">
-                                      {item.segments.slice(0, 2).map((segment, index) => (
-                                        <span
-                                          key={index}
-                                          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10"
-                                        >
-                                          {segment}
-                                        </span>
-                                      ))}
-                                      {item.segments.length > 2 && (
-                                        <span className="text-xs text-muted-foreground">
-                                          +{item.segments.length - 2} more
-                                        </span>
-                                      )}
+                                      <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] bg-card/80 dark:bg-white/5 text-muted-foreground border border-border/60 dark:border-white/10 capitalize">
+                                        {item.mode}
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
                               </TableCell>
-                              <TableCell className="text-center">
-                                <div className="space-y-2 flex flex-col items-center">
-                                  {item.registrationMode === 'internal' ? (
-                                    <Badge variant="outline" className="border-blue-500/30 bg-blue-500/10 text-blue-400">
-                                      {item.registrationCount ?? 0} Registrations
-                                    </Badge>
-                                  ) : (
-                                    <Badge variant="outline" className="border-gray-500/30 bg-gray-500/10 text-gray-400">
-                                      External
-                                    </Badge>
-                                  )}
-                                  <Badge
-                                    variant="outline"
-                                    className={`
-                                  ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
-                                        item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
-                                          item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
-                                            'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
-                                `}
-                                  >
-                                    {item.status}
-                                  </Badge>
-                                  {item.source === 'organization-submission' ? (
-                                    <Badge className="border-orange-500/40 bg-orange-500/20 text-orange-200">
-                                      Host
-                                    </Badge>
-                                  ) : (
-                                    <Badge className="border-blue-500/40 bg-blue-500/20 text-blue-200">
-                                      Admin
-                                    </Badge>
-                                  )}
-                                </div>
+                              <TableCell className="align-top py-4 text-center">
+                                <Badge
+                                  variant="outline"
+                                  className={`
+                                    ${item.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
+                                      item.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
+                                        item.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
+                                          'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
+                                  `}
+                                >
+                                  {item.status}
+                                </Badge>
                               </TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex flex-wrap justify-end gap-2">
-                                  {item.registrationMode === 'internal' && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}
-                                      className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                                    >
-                                      View Registrations
+                              <TableCell className="align-top py-4 text-right">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+                                      <span className="sr-only">Open menu</span>
+                                      <MoreVertical className="h-4 w-4" />
                                     </Button>
-                                  )}
-                                  {item.registrationMode === 'external' && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}
-                                      className="border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20"
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                    <DropdownMenuItem onClick={() => setViewingOpportunity(item)}>
+                                      <Eye className="mr-2 h-4 w-4" />
+                                      View Details
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleEdit(item)} disabled={isSubmitting && editingId === item.id}>
+                                      <Edit className="mr-2 h-4 w-4" />
+                                      Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    {item.registrationMode === 'internal' && (
+                                      <DropdownMenuItem onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}>
+                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                        Registrations
+                                      </DropdownMenuItem>
+                                    )}
+                                    {item.registrationMode === 'external' && (
+                                      <DropdownMenuItem onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}>
+                                        <ExternalLink className="mr-2 h-4 w-4" />
+                                        External Clicks
+                                      </DropdownMenuItem>
+                                    )}
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                      onClick={() => handleQuickApprove(item, false)}
+                                      disabled={Boolean(actioningId) || item.status === 'approved' || item.status === 'published'}
                                     >
-                                      View Clicks
-                                    </Button>
-                                  )}
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleEdit(item)}
-                                    disabled={isSubmitting && editingId === item.id}
-                                    className="border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
-                                  >
-                                    Edit
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleQuickApprove(item, false)}
-                                    disabled={Boolean(actioningId) || item.status === 'approved' || item.status === 'published'}
-                                    className="border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                                  >
-                                    Approve
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleQuickApprove(item, true)}
-                                    disabled={Boolean(actioningId) || item.status === 'published'}
-                                    className="border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                                  >
-                                    Publish
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleDelete(item.id)}
-                                    disabled={isSubmitting}
-                                    className="border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                                  >
-                                    Delete
-                                  </Button>
-                                </div>
+                                      <CheckCircle className="mr-2 h-4 w-4" />
+                                      Approve
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => handleQuickApprove(item, true)}
+                                      disabled={Boolean(actioningId) || item.status === 'published'}
+                                    >
+                                      <Upload className="mr-2 h-4 w-4" />
+                                      Publish
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                      onClick={() => handleDelete(item.id)}
+                                      disabled={isSubmitting}
+                                      className="text-red-600 focus:text-red-600"
+                                    >
+                                      <Trash className="mr-2 h-4 w-4" />
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -1281,30 +1261,64 @@ export function OpportunitiesManager() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleEdit(item)}
-                              disabled={isSubmitting && editingId === item.id}
-                              className="flex-1 border-orange-500/20 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
+                              onClick={() => setViewingOpportunity(item)}
+                              className="flex-1 border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
                             >
-                              Edit
+                              <Eye className="mr-2 h-4 w-4" />
+                              View
                             </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleDelete(item.id)}
-                              disabled={isSubmitting}
-                              className="flex-1 border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                            >
-                              Delete
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleQuickApprove(item, true)}
-                              disabled={Boolean(actioningId) || item.status === 'published'}
-                              className="flex-1 border-green-500/20 bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                            >
-                              Publish
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm" className="flex-1">
+                                  Actions
+                                  <MoreVertical className="ml-2 h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem onClick={() => handleEdit(item)} disabled={isSubmitting && editingId === item.id}>
+                                  <Edit className="mr-2 h-4 w-4" />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                {item.registrationMode === 'internal' && (
+                                  <DropdownMenuItem onClick={() => router.push(`/admin/opportunities/${item.id}/registrations`)}>
+                                    <CheckCircle className="mr-2 h-4 w-4" />
+                                    Registrations
+                                  </DropdownMenuItem>
+                                )}
+                                {item.registrationMode === 'external' && (
+                                  <DropdownMenuItem onClick={() => router.push(`/admin/opportunities/${item.id}/external-clicks`)}>
+                                    <ExternalLink className="mr-2 h-4 w-4" />
+                                    External Clicks
+                                  </DropdownMenuItem>
+                                )}
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => handleQuickApprove(item, false)}
+                                  disabled={Boolean(actioningId) || item.status === 'approved' || item.status === 'published'}
+                                >
+                                  <CheckCircle className="mr-2 h-4 w-4" />
+                                  Approve
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleQuickApprove(item, true)}
+                                  disabled={Boolean(actioningId) || item.status === 'published'}
+                                >
+                                  <Upload className="mr-2 h-4 w-4" />
+                                  Publish
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(item.id)}
+                                  disabled={isSubmitting}
+                                  className="text-red-600 focus:text-red-600"
+                                >
+                                  <Trash className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </div>
                       </div>
@@ -2100,7 +2114,8 @@ export function OpportunitiesManager() {
                 )}
               </form>
             </section>
-          )}
+          )
+          }
         </>
       ) : (
         <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
@@ -2339,7 +2354,173 @@ export function OpportunitiesManager() {
           </div>
         </section>
       )}
-    </div>
+      {/* Opportunity Detail Modal */}
+      <Dialog open={!!viewingOpportunity} onOpenChange={(open) => !open && setViewingOpportunity(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-3">
+              {viewingOpportunity?.organizerLogo && (
+                <img
+                  src={viewingOpportunity.organizerLogo}
+                  alt="Logo"
+                  className="h-10 w-10 rounded-lg object-cover border border-border/60"
+                />
+              )}
+              {viewingOpportunity?.title}
+            </DialogTitle>
+            <DialogDescription>
+              Opportunity ID: {viewingOpportunity?.id}
+            </DialogDescription>
+          </DialogHeader>
+
+          {viewingOpportunity && (
+            <div className="space-y-6 mt-4">
+              {/* Meta Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-border/60">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Category</p>
+                  <p className="font-medium">{viewingOpportunity.category?.name || viewingOpportunity.categoryName || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Organizer</p>
+                  <p className="font-medium">{viewingOpportunity.organizer?.name || viewingOpportunity.organizerName || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Mode</p>
+                  <p className="font-medium capitalize">{viewingOpportunity.mode}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Status</p>
+                  <Badge
+                    variant="outline"
+                    className={`mt-1
+                      ${viewingOpportunity.status === 'published' ? 'border-green-500/30 bg-green-500/10 text-green-400' :
+                        viewingOpportunity.status === 'approved' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' :
+                          viewingOpportunity.status === 'rejected' ? 'border-red-500/30 bg-red-500/10 text-red-400' :
+                            'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'}
+                    `}
+                  >
+                    {viewingOpportunity.status}
+                  </Badge>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Registration</p>
+                  <p className="font-medium capitalize">{viewingOpportunity.registrationMode}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Fee</p>
+                  <p className="font-medium">{viewingOpportunity.currency} {viewingOpportunity.fee}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Deadline</p>
+                  <p className="font-medium">{formatDate(viewingOpportunity.registrationDeadline)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Event Date</p>
+                  <p className="font-medium">{formatDate(viewingOpportunity.startDate)}</p>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Description</h3>
+                <div
+                  className="prose prose-sm dark:prose-invert max-w-none bg-card/50 p-4 rounded-lg border border-border/60"
+                  dangerouslySetInnerHTML={{ __html: viewingOpportunity.description }}
+                />
+              </div>
+
+              {/* Eligibility & Benefits */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Eligibility</h3>
+                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground bg-card/50 p-4 rounded-lg border border-border/60">
+                    {viewingOpportunity.eligibility.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                    {viewingOpportunity.eligibility.length === 0 && <li>No eligibility criteria specified</li>}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Benefits</h3>
+                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground bg-card/50 p-4 rounded-lg border border-border/60">
+                    {viewingOpportunity.benefits.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                    {viewingOpportunity.benefits.length === 0 && <li>No benefits specified</li>}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Timeline</h3>
+                <div className="space-y-2 bg-card/50 p-4 rounded-lg border border-border/60">
+                  {viewingOpportunity.timeline.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between text-sm">
+                      <span className="font-medium">{item.event}</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-muted-foreground">{item.date}</span>
+                        <Badge variant="outline" className="text-xs">{item.status}</Badge>
+                      </div>
+                    </div>
+                  ))}
+                  {viewingOpportunity.timeline.length === 0 && <p className="text-sm text-muted-foreground">No timeline events</p>}
+                </div>
+              </div>
+
+              {/* Exam Patterns */}
+              {viewingOpportunity.examPatterns && viewingOpportunity.examPatterns.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Exam Patterns</h3>
+                  <div className="space-y-4">
+                    {viewingOpportunity.examPatterns.map((pattern, i) => (
+                      <div key={i} className="bg-card/50 p-4 rounded-lg border border-border/60">
+                        <div className="flex justify-between mb-2">
+                          <span className="font-medium text-sm">Pattern {i + 1}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {pattern.totalQuestions} Qs | {pattern.durationMinutes} Mins
+                          </span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mb-2">
+                          Classes: {pattern.classSelection.type === 'single' ? pattern.classSelection.selectedClasses[0] :
+                            pattern.classSelection.type === 'multiple' ? pattern.classSelection.selectedClasses.join(', ') :
+                              `${pattern.classSelection.rangeStart} - ${pattern.classSelection.rangeEnd}`}
+                        </div>
+                        <div className="text-xs whitespace-pre-wrap font-mono bg-slate-950/5 dark:bg-white/5 p-2 rounded">
+                          {sectionsToText(pattern.sections)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Info */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Contact Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-card/50 p-4 rounded-lg border border-border/60">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Email</p>
+                    <p className="text-sm">{viewingOpportunity.contactInfo?.email || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Phone</p>
+                    <p className="text-sm">{viewingOpportunity.contactInfo?.phone || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Website</p>
+                    <a href={viewingOpportunity.contactInfo?.website} target="_blank" rel="noreferrer" className="text-sm text-blue-500 hover:underline truncate block">
+                      {viewingOpportunity.contactInfo?.website || 'N/A'}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div >
   );
 }
 
