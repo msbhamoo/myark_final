@@ -39,7 +39,7 @@ export interface OpportunityContactInfo {
   website?: string;
 }
 
-export type OpportunityResourceType = 'pdf' | 'video' | 'link';
+export type OpportunityResourceType = 'pdf' | 'video' | 'link' | 'official';
 
 export interface OpportunityResource {
   id: string;
@@ -62,6 +62,9 @@ export interface OpportunityExamPatternBlock extends OpportunityExamPattern {
   id: string;
   classSelection: ClassSelection;
 }
+
+// Import CustomTab type
+import type { CustomTab } from './customTab';
 
 export interface Opportunity {
   id: string;
@@ -99,6 +102,7 @@ export interface Opportunity {
   applicationUrl?: string;
   registrationMode?: OpportunityRegistrationMode;
   registrationCount?: number;
+  customTabs?: CustomTab[];
 }
 
 export interface OpportunityListResponse {

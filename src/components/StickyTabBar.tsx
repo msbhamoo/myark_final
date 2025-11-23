@@ -151,7 +151,7 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
       isManualScroll.current = true;
 
       // Calculate scroll position (sticky tab bar height + header offset)
-      const headerOffset = window.innerWidth < 1024 ? 150 : 100;
+      const headerOffset = window.innerWidth < 1024 ? 100 : 100;
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition = window.pageYOffset + elementPosition - headerOffset;
 
@@ -176,7 +176,7 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
         defaultValue={defaultValue}
         className={`w-full ${className}`}
       >
-        <div className="sticky z-40 transition-all duration-200 bg-white dark:bg-slate-950 shadow-lg top-[120px] lg:top-[70px]">
+        <div className="sticky z-40 transition-all duration-200 bg-white dark:bg-slate-950 shadow-lg top-[52px] lg:top-[70px]">
           <div className="w-full rounded-xl border border-slate-200 bg-white/90 p-1 shadow-lg backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/50 h-10" />
         </div>
         <div className="mt-6" />
@@ -194,7 +194,7 @@ export function StickyTabBar({ tabs, defaultValue, className = '' }: StickyTabBa
       {/* Tab Bar - Sticky below header */}
       <div
         id="sticky-tab-bar"
-        className="sticky z-40 transition-all duration-200 bg-transparent pt-2 pb-2 top-[120px] lg:top-[70px]"
+        className="sticky z-40 transition-all duration-200 bg-transparent pt-2 pb-2 top-[52px] lg:top-[70px]"
       >
         <div className="w-full rounded-xl border border-slate-200 bg-white/95 p-1 shadow-md backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/90">
           <div className="relative flex items-center">

@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import OpportunityCard from '@/components/OpportunityCard';
 import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
 import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
+import { CustomTab, CustomTabContent } from '@/types/customTab';
 import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -531,6 +532,59 @@ const deriveTimelineCta = (timeline?: OpportunityTimelineEvent[]): TimelineCallT
     event: candidate.event,
     status: candidate.status,
   };
+};
+
+const renderCustomTabContent = (content: CustomTabContent) => {
+  switch (content.type) {
+    case 'rich-text':
+      return (
+        <div
+          className="text-slate-600 dark:text-slate-100 leading-relaxed prose dark:prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: content.html }}
+        />
+      );
+    case 'list':
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {content.items.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-primary/20 transition-colors"
+            >
+              <div className="mt-1">
+                <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                </div>
+              </div>
+              <span className="text-slate-600 dark:text-slate-100">{item}</span>
+            </div>
+          ))}
+        </div>
+      );
+    case 'structured-data':
+      return (
+        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
+          <table className="w-full text-sm text-left min-w-[300px]">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              {Object.entries(content.schema).map(([key, value], index) => (
+                <tr key={index} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td className="px-4 py-3 font-medium text-foreground dark:text-white w-1/3">{key}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{String(value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    case 'custom-json':
+      return (
+        <pre className="p-4 rounded-xl bg-slate-100 dark:bg-slate-900 overflow-auto text-xs">
+          {JSON.stringify(content.data, null, 2)}
+        </pre>
+      );
+    default:
+      return null;
+  }
 };
 
 export default function OpportunityDetail({ opportunity }: { opportunity: Opportunity }) {
@@ -1309,6 +1363,23 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 })();
                 const hasResources = resourceItems.length > 0;
 
+                // Build custom tabs
+                const customTabs: TabItem[] = (opportunity.customTabs || [])
+                  .sort((a, b) => a.order - b.order)
+                  .map((tab) => ({
+                    value: tab.id,
+                    label: tab.label,
+                    content: (
+                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                          {tab.label}
+                        </h2>
+                        {renderCustomTabContent(tab.content)}
+                      </Card>
+                    ),
+                  }));
+
                 // Build full tabs array
                 const allTabs: TabItem[] = [
                   {
@@ -1754,6 +1825,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       </Card>
                     ),
                   },
+                  ...customTabs,
                   {
                     value: 'resources',
                     label: 'Resources',

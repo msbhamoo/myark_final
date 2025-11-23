@@ -278,6 +278,81 @@ const parseResourcesForStore = (value: unknown) => {
     );
 };
 
+const parseCustomTabsForStore = (value: unknown) => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .map((entry) => {
+      if (typeof entry !== 'object' || entry === null) {
+        return null;
+      }
+      const record = entry as Record<string, unknown>;
+      const id = typeof record.id === 'string' ? record.id.trim() : randomUUID();
+      const label = typeof record.label === 'string' ? record.label.trim() : '';
+      const type = typeof record.type === 'string' ? record.type.trim() : '';
+      const order = toNumber(record.order) ?? 0;
+      const required = Boolean(record.required);
+
+      if (!label || !['rich-text', 'list', 'structured-data', 'custom-json'].includes(type)) {
+        return null;
+      }
+
+      let content;
+      if (typeof record.content !== 'object' || record.content === null) {
+        return null;
+      }
+
+      const contentRecord = record.content as Record<string, unknown>;
+      const contentType = contentRecord.type;
+
+      if (contentType === 'rich-text') {
+        content = {
+          type: 'rich-text' as const,
+          html: typeof contentRecord.html === 'string' ? contentRecord.html : '',
+        };
+      } else if (contentType === 'list') {
+        content = {
+          type: 'list' as const,
+          items: sanitizeStringArray(contentRecord.items),
+        };
+      } else if (contentType === 'structured-data') {
+        content = {
+          type: 'structured-data' as const,
+          schema: typeof contentRecord.schema === 'object' && contentRecord.schema !== null
+            ? (contentRecord.schema as Record<string, any>)
+            : {},
+        };
+      } else if (contentType === 'custom-json') {
+        content = {
+          type: 'custom-json' as const,
+          data: typeof contentRecord.data === 'object' && contentRecord.data !== null
+            ? (contentRecord.data as Record<string, any>)
+            : {},
+        };
+      } else {
+        return null;
+      }
+
+      return {
+        id,
+        label,
+        type: type as 'rich-text' | 'list' | 'structured-data' | 'custom-json',
+        order,
+        required,
+        content,
+      };
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
+};
+
+const sanitizeCustomTabsForResponse = (value: unknown) => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return parseCustomTabsForStore(value);
+};
+
 type ExamPattern = {
   totalQuestions: number | null;
   durationMinutes: number | null;
@@ -383,6 +458,7 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     applicationUrl: data.applicationUrl ?? '',
     registrationCount: data.registrationCount ?? 0,
     externalRegistrationClickCount: data.externalRegistrationClickCount ?? 0,
+    customTabs: sanitizeCustomTabsForResponse(data.customTabs),
   };
 };
 
@@ -453,6 +529,7 @@ export async function POST(request: Request) {
       resources: parseResourcesForStore(payload.resources),
       registrationMode: payload.registrationMode === 'external' ? 'external' : 'internal',
       applicationUrl: payload.registrationMode === 'external' && typeof payload.applicationUrl === 'string' ? payload.applicationUrl.trim() : '',
+      customTabs: parseCustomTabsForStore(payload.customTabs),
       registrationCount: 0,
       createdAt: now,
       updatedAt: now,

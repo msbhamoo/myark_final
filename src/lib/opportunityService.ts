@@ -18,6 +18,7 @@ import type {
   OpportunityContactInfo,
   OpportunityResource,
 } from '@/types/opportunity';
+import { CustomTab } from '@/types/customTab';
 import { INDIAN_STATES_SET } from '@/constants/india';
 
 const COLLECTION = 'opportunities';
@@ -234,6 +235,37 @@ const mapContactInfo = (value: unknown): OpportunityContactInfo | undefined => {
   return { email, phone, website };
 };
 
+const mapCustomTabs = (value: unknown): CustomTab[] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => {
+      if (typeof entry !== 'object' || entry === null) {
+        return undefined;
+      }
+      const record = entry as Record<string, unknown>;
+      const id = typeof record.id === 'string' ? record.id : '';
+      const label = typeof record.label === 'string' ? record.label : '';
+      const type = typeof record.type === 'string' ? record.type : 'rich-text';
+
+      if (!id || !label) {
+        return undefined;
+      }
+
+      return {
+        id,
+        label,
+        type: type as CustomTab['type'],
+        order: typeof record.order === 'number' ? record.order : 0,
+        required: Boolean(record.required),
+        content: record.content as CustomTab['content'],
+      };
+    })
+    .filter((item): item is CustomTab => Boolean(item));
+};
+
 const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
   const data = doc.data();
 
@@ -280,6 +312,7 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
       typeof data.registrationCount === 'number' && Number.isFinite(data.registrationCount)
         ? data.registrationCount
         : 0,
+    customTabs: mapCustomTabs(data.customTabs),
   };
 };
 
