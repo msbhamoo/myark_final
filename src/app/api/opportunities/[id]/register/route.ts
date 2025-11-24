@@ -48,9 +48,13 @@ export async function POST(
     const registrationRef = db.collection('opportunity_registrations').doc(`${opportunityId}_${user.uid}`);
 
     await db.runTransaction(async (transaction) => {
+      // ALL READS MUST COME FIRST
       const opportunityDoc = await transaction.get(opportunityRef);
       const registrationDoc = await transaction.get(registrationRef);
+      const userRef = db.collection('users').doc(user.uid);
+      const userDoc = await transaction.get(userRef);
 
+      // Validation
       if (!opportunityDoc.exists) {
         throw new Error('Opportunity not found');
       }
@@ -84,11 +88,28 @@ export async function POST(
         registrationType: isExternalConfirmation ? 'external' : 'internal',
       };
 
+      // ALL WRITES COME AFTER ALL READS
       transaction.set(registrationRef, registrationRecord);
 
       transaction.update(opportunityRef, {
         registrationCount: (opportunityData?.registrationCount || 0) + 1,
       });
+
+      // Increment opportunitiesApplied counter on user document
+      if (userDoc.exists) {
+        transaction.update(userRef, {
+          opportunitiesApplied: (userDoc.data()?.opportunitiesApplied || 0) + 1,
+        });
+      } else {
+        // Create user document if it doesn't exist
+        transaction.set(userRef, {
+          uid: user.uid,
+          email: user.email || null,
+          opportunitiesApplied: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }, { merge: true });
+      }
     });
 
     return NextResponse.json({ message: 'Successfully registered' });

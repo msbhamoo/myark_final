@@ -46,7 +46,15 @@ export async function GET(request: NextRequest) {
     const decoded = await auth.verifyIdToken(token);
 
     const db = getDb();
-    const doc = await db.collection(PROFILE_COLLECTION).doc(decoded.uid).get();
+    const docRef = db.collection(PROFILE_COLLECTION).doc(decoded.uid);
+    const doc = await docRef.get();
+
+    // Update lastActiveAt timestamp
+    const now = new Date();
+    await docRef.set({ lastActiveAt: now }, { merge: true }).catch(err => {
+      console.error('Failed to update lastActiveAt:', err);
+    });
+
     if (!doc.exists) {
       return NextResponse.json(
         buildProfileResponse(undefined, {
@@ -124,7 +132,7 @@ export async function POST(request: NextRequest) {
       email: decoded.email ?? (typeof payload.email === 'string' ? payload.email.trim() : ''),
       displayName,
       accountType: rawAccountType,
-      role: rawAccountType === 'organization' ? 'business' : 'student',
+      role: rawAccountType === 'organization' ? 'organizer' : 'student',
       updatedAt: now,
       createdAt: existing.exists ? existing.data()?.createdAt ?? now : now,
     };

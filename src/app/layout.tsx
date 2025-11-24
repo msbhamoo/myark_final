@@ -7,6 +7,7 @@ import { AppProviders } from "@/components/providers/AppProviders";
 import { ThemeClient } from "@/components/ThemeClient";
 import { GA_MEASUREMENT_ID } from "@/lib/gtag";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://myark.in";
 const metadataBase = (() => {

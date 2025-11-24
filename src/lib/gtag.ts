@@ -1,4 +1,4 @@
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XR6CQ3CKJZ';
 
 // https://developers.google.com/analytics/devguides/collection/ga4/views?client_type=gtag
 export const pageview = (url: string) => {

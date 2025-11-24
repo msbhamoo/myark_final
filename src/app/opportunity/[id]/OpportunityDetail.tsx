@@ -657,6 +657,31 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
   }, [opportunityId, opportunity]);
 
+  // Track opportunity view for logged-in users
+  useEffect(() => {
+    const trackView = async () => {
+      if (!user || !opportunityId) return;
+
+      try {
+        const token = await getIdToken();
+        if (!token) return;
+
+        await fetch(`/api/opportunities/${opportunityId}/track-view`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        // Silently fail - tracking is not critical
+        console.error('Failed to track opportunity view:', error);
+      }
+    };
+
+    trackView();
+  }, [user, opportunityId, getIdToken]);
+
   const closeResourcePreview = () => setActiveResource(null);
 
   const normalizeVideoEmbedUrl = (url: string) => {
