@@ -14,6 +14,7 @@ import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
 import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
 import { CustomTab, CustomTabContent } from '@/types/customTab';
 import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
+import * as gtag from '@/lib/gtag';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -643,6 +644,19 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     checkRegistrationStatus();
   }, [user, opportunityId, getIdToken]);
 
+  useEffect(() => {
+    if (opportunityId && opportunity) {
+      gtag.event({
+        action: 'opportunity_view',
+        category: 'engagement',
+        label: opportunity.title,
+        value: 1,
+        id: opportunityId,
+        organizer: opportunity.organizerName || opportunity.organizer,
+      });
+    }
+  }, [opportunityId, opportunity]);
+
   const closeResourcePreview = () => setActiveResource(null);
 
   const normalizeVideoEmbedUrl = (url: string) => {
@@ -795,6 +809,8 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     [opportunity?.registrationDeadline, registrationClosed],
   );
 
+
+
   const handleToggleBookmark = async () => {
     if (!opportunityId) {
       return;
@@ -842,6 +858,13 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   };
 
   const handleRegisterClick = async () => {
+    gtag.event({
+      action: 'registration_click',
+      category: 'conversion',
+      label: opportunity.title,
+      id: opportunityId,
+    });
+
     console.log('Register clicked - registrationClosed:', registrationClosed);
     console.log('Register clicked - user:', user);
     console.log('Register clicked - authLoading:', authLoading);
@@ -2251,7 +2274,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
             </div>
           </div>
         </section>
-      </main>
+      </main >
 
       <Dialog open={organizerModalOpen} onOpenChange={(open) => setOrganizerModalOpen(open)}>
         <DialogContent className="max-w-3xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900/90">
@@ -2426,7 +2449,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       />
 
       <Footer />
-    </div>
+    </div >
   );
 }
 
