@@ -5,6 +5,7 @@ import BottomNavigation from '@/components/BottomNavigation';
 import type { Opportunity } from '@/types/opportunity';
 import { getOpportunities } from '@/lib/opportunityService';
 import OpportunitiesSearch from './OpportunitiesSearch';
+import OpportunitiesFilters from './OpportunitiesFilters';
 import { OpportunitiesList } from '@/components/OpportunitiesList';
 
 const formatDate = (value?: string) => {
@@ -73,6 +74,15 @@ export default async function OpportunitiesPage(props: any) {
     limit: 60,
   });
 
+  // Extract unique categories for filter dropdown
+  const availableCategories = Array.from(
+    new Set(
+      opportunities
+        .map(opp => opp.category)
+        .filter((cat): cat is string => Boolean(cat))
+    )
+  ).sort();
+
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-[#DFF7C8]/30 via-white to-[#DFF7C8]/10 dark:bg-[#050b3a]">
       <Header />
@@ -97,6 +107,7 @@ export default async function OpportunitiesPage(props: any) {
 
         <section className="pb-20">
           <div className="container mx-auto max-w-[1200px] px-4 md:px-6">
+            <OpportunitiesFilters availableCategories={availableCategories} />
             <OpportunitiesList opportunities={opportunities} />
           </div>
         </section>

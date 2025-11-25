@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 
       // 1. Primary Query: Filter by Role
       // REMOVED orderBy to avoid "FAILED_PRECONDITION: The query requires an index"
-      let roleQuery = db.collection(COLLECTION);
+      let roleQuery: FirebaseFirestore.Query = db.collection(COLLECTION);
       if (roleFilter === 'organizer') {
         roleQuery = roleQuery.where('role', 'in', ['organizer', 'business']);
       } else {

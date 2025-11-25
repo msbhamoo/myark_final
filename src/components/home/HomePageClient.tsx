@@ -106,6 +106,39 @@ const normalizeMode = (mode?: Opportunity['mode']): Opportunity['mode'] => {
   return 'online';
 };
 
+const isOpportunityClosed = (opportunity: Opportunity): boolean => {
+  // Check if status is explicitly closed
+  if (opportunity.status?.toLowerCase() === 'closed') {
+    return true;
+  }
+  // Check if registration deadline has passed
+  if (opportunity.registrationDeadline) {
+    const deadline = new Date(opportunity.registrationDeadline);
+    const now = new Date();
+    return deadline < now;
+  }
+  return false;
+};
+
+const getDaysRemaining = (opportunity: Opportunity): number => {
+  if (!opportunity.registrationDeadline) {
+    return Infinity; // Opportunities without deadline go to the end
+  }
+  const deadline = new Date(opportunity.registrationDeadline);
+  const now = new Date();
+  const diffTime = deadline.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+};
+
+const sortOpportunitiesByDeadline = (opportunities: Opportunity[]): Opportunity[] => {
+  return [...opportunities].sort((a, b) => {
+    const daysA = getDaysRemaining(a);
+    const daysB = getDaysRemaining(b);
+    return daysA - daysB;
+  });
+};
+
 const STAT_CONFIG: Array<{ key: keyof HomeStats; label: string }> = [
   { key: 'students', label: 'Students discovering opportunities' },
   { key: 'organizations', label: 'Organizations on the platform' },
@@ -447,6 +480,7 @@ export default function HomePageClient() {
                   </Link>
                 ))}
               </div> */}
+
               <div className="hidden md:flex mt-8 w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
                 <Button
                   asChild
@@ -561,9 +595,15 @@ export default function HomePageClient() {
         {homeSegments
           .sort((a, b) => a.order - b.order)
           .map((segment) => {
-            const items = Array.isArray(segment.opportunities)
-              ? (segment.opportunities as Opportunity[]).slice(0, segment.limit)
+            // Filter out closed opportunities and sort by deadline
+            const filteredAndSorted = Array.isArray(segment.opportunities)
+              ? sortOpportunitiesByDeadline(
+                (segment.opportunities as Opportunity[]).filter(
+                  (opp) => !isOpportunityClosed(opp)
+                )
+              )
               : [];
+            const items = filteredAndSorted.slice(0, segment.limit);
             const hasItems = items.length > 0;
 
             const highlightClasses = segment.highlight
@@ -626,11 +666,6 @@ export default function HomePageClient() {
                     ) : hasItems ? (
                       <div className="flex gap-4 overflow-x-auto px-2 pb-4">
                         {items.map((item) => {
-                          // Determine if opportunity is closed
-                          const isClosed =
-                            item.status?.toLowerCase() === 'closed' ||
-                            (item.registrationDeadline && new Date(item.registrationDeadline) < new Date());
-
                           return (
                             <OpportunityCard
                               key={`${segment.id}-${item.id}`}
@@ -645,7 +680,7 @@ export default function HomePageClient() {
                               mode={normalizeMode(item.mode)}
                               fee={formatFee(item)}
                               image={item.image}
-                              status={isClosed ? 'closed' : 'active'}
+                              status={'active'}
                               className="w-[280px] flex-shrink-0"
                             />
                           );
@@ -734,12 +769,9 @@ export default function HomePageClient() {
                   </div>
                 ) : (
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {displayedOpportunities.map((opportunity) => {
-                      // Determine if opportunity is closed
-                      const isClosed =
-                        opportunity.status?.toLowerCase() === 'closed' ||
-                        (opportunity.registrationDeadline && new Date(opportunity.registrationDeadline) < new Date());
-
+                    {sortOpportunitiesByDeadline(
+                      displayedOpportunities.filter((opp) => !isOpportunityClosed(opp))
+                    ).map((opportunity) => {
                       return (
                         <OpportunityCard
                           key={`${displayedState}-${opportunity.id}`}
@@ -754,7 +786,7 @@ export default function HomePageClient() {
                           mode={normalizeMode(opportunity.mode)}
                           fee={formatFee(opportunity)}
                           image={opportunity.image}
-                          status={isClosed ? 'closed' : 'active'}
+                          status={'active'}
                           className="h-full"
                         />
                       );
