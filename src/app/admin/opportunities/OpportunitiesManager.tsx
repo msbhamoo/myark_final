@@ -40,8 +40,8 @@ export function OpportunitiesManager() {
   const loadMasters = useCallback(async () => {
     try {
       const [catRes, orgRes] = await Promise.all([
-        fetch('/api/admin/masters/categories'),
-        fetch('/api/admin/masters/organizers'),
+        fetch('/api/admin/opportunity-categories'),
+        fetch('/api/admin/organizers'),
       ]);
       if (catRes.ok) {
         const data = await catRes.json();
@@ -58,10 +58,10 @@ export function OpportunitiesManager() {
 
   const loadSegments = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/home');
+      const res = await fetch('/api/admin/home-segments');
       if (res.ok) {
         const data = await res.json();
-        const segments: HomeSegmentOption[] = (data.segments || []).map((seg: any) => ({
+        const segments: HomeSegmentOption[] = (data.items || []).map((seg: any) => ({
           segmentKey: seg.segmentKey,
           title: seg.title,
           isVisible: seg.isVisible,
