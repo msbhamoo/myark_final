@@ -429,6 +429,10 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     gradeEligibility: data.gradeEligibility ?? '',
     eligibilityType: data.eligibilityType ?? null,
     ageEligibility: data.ageEligibility ?? null,
+    targetAudience: data.targetAudience ?? 'students',
+    participationType: data.participationType ?? 'individual',
+    minTeamSize: data.minTeamSize ?? null,
+    maxTeamSize: data.maxTeamSize ?? null,
     mode: data.mode ?? 'online',
     state: (() => {
       const rawState = typeof data.state === 'string' ? data.state.trim() : '';
@@ -512,6 +516,10 @@ export async function POST(request: Request) {
       gradeEligibility: typeof payload.gradeEligibility === 'string' ? payload.gradeEligibility.trim() : '',
       eligibilityType: typeof payload.eligibilityType === 'string' ? payload.eligibilityType.trim() : null,
       ageEligibility: typeof payload.ageEligibility === 'string' ? payload.ageEligibility.trim() : null,
+      targetAudience: typeof payload.targetAudience === 'string' ? payload.targetAudience : 'students',
+      participationType: typeof payload.participationType === 'string' ? payload.participationType : 'individual',
+      minTeamSize: toNumber(payload.minTeamSize),
+      maxTeamSize: toNumber(payload.maxTeamSize),
       mode: typeof payload.mode === 'string' ? payload.mode : 'online',
       state:
         typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim() as any)

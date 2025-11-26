@@ -104,6 +104,10 @@ export const defaultForm: OpportunityFormState = {
   gradeEligibility: '',
   eligibilityType: 'grade', // Default to grade-based
   ageEligibility: '',
+  targetAudience: 'students',
+  participationType: 'individual',
+  minTeamSize: '',
+  maxTeamSize: '',
   mode: 'online',
   state: '',
   status: 'draft',

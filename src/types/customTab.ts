@@ -6,6 +6,7 @@ export interface CustomTab {
     type: CustomTabType;
     order: number;
     required: boolean;
+    visible?: boolean;
     content: CustomTabContent;
 }
 

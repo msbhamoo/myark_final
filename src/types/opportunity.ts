@@ -6,6 +6,8 @@ export type OpportunityTimelineStatus = 'completed' | 'active' | 'upcoming';
 export interface OpportunityTimelineEvent {
   date: string;
   event: string;
+  title?: string; // Alias for event if needed, or separate title
+  description?: string;
   status: OpportunityTimelineStatus;
 }
 
@@ -23,10 +25,13 @@ export interface OpportunityExamSection {
   name: string;
   questions?: number | null;
   marks?: number | null;
+  durationMinutes?: number;
 }
 
 export interface OpportunityExamPattern {
+  name?: string;
   totalQuestions?: number;
+  totalMarks?: number;
   durationMinutes?: number;
   negativeMarking?: boolean;
   negativeMarksPerQuestion?: number;
@@ -82,6 +87,12 @@ export interface Opportunity {
   gradeEligibility: string; // Legacy field - kept for backward compatibility
   eligibilityType?: 'grade' | 'age' | 'both'; // New: specifies what type of eligibility
   ageEligibility?: string; // New: e.g., "14-18 years", "Under 21"
+
+  // Audience & Participation
+  targetAudience?: 'students' | 'schools' | 'both';
+  participationType?: 'individual' | 'team';
+  minTeamSize?: number;
+  maxTeamSize?: number;
 
   mode: OpportunityMode;
   state?: string;

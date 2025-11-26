@@ -10,6 +10,9 @@ import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpportunityCard, { getEligibilityDisplay } from '@/components/OpportunityCard';
+import { OpportunityHero } from './components/OpportunityHero';
+import { OpportunityTabs } from './components/OpportunityTabs';
+import { SimilarOpportunities } from './components/SimilarOpportunities';
 import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
 import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
 import { CustomTab, CustomTabContent } from '@/types/customTab';
@@ -47,539 +50,33 @@ import {
   HelpCircle,
   Eye,
 } from 'lucide-react';
+import {
+  formatDate,
+  calculateCountdown,
+  formatFee,
+  normalizeModeLabel,
+  toTitleCase,
+  normalizeText,
+  getOpportunityIdentity,
+  normalizeMode,
+  toTokenSet,
+  extractGradeTokens,
+  intersectionSize,
+  parseDateSafe,
+  computeSimilarityScore,
+  rankCandidates,
+  buildQueryUrl,
+  collectCandidateOpportunities,
+  normalizeUrl,
+  extractUrlFromText,
+  deriveTimelineCta,
+  type TimelineCallToAction,
+  type ResourceDisplayItem,
+} from '@/lib/opportunity-utils';
 
-const formatDate = (value?: string | null, fallback = 'TBA') => {
-  if (!value) {
-    return fallback;
-  }
 
-  try {
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-    return format(date, 'PPP');
-  } catch {
-    return value;
-  }
-};
 
-const calculateCountdown = (deadline?: string) => {
-  if (!deadline) {
-    return { days: 0, hours: 0, minutes: 0 };
-  }
 
-  const target = new Date(deadline).getTime();
-  if (Number.isNaN(target)) {
-    return { days: 0, hours: 0, minutes: 0 };
-  }
-
-  const diff = target - Date.now();
-  if (diff <= 0) {
-    return { days: 0, hours: 0, minutes: 0 };
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
-  return { days, hours, minutes };
-};
-
-const formatFee = (opportunity: Opportunity) => {
-  const trimmedFee = opportunity.fee?.trim() ?? '';
-  const numeric = trimmedFee ? Number(trimmedFee) : Number.NaN;
-  const hasNumericValue = Number.isFinite(numeric);
-  const isFree =
-    !trimmedFee ||
-    trimmedFee.toLowerCase() === 'free' ||
-    (hasNumericValue && numeric <= 0);
-
-  if (isFree) {
-    return 'FREE';
-  }
-
-  if (hasNumericValue) {
-    const fractionDigits = Number.isInteger(numeric) ? 0 : 2;
-    try {
-      return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        minimumFractionDigits: fractionDigits,
-        maximumFractionDigits: fractionDigits,
-      }).format(numeric);
-    } catch {
-      return `₹${numeric.toFixed(fractionDigits)}`;
-    }
-  }
-
-  return trimmedFee;
-};
-
-const normalizeModeLabel = (mode?: Opportunity['mode']) => {
-  if (mode === 'online') return 'Online';
-  if (mode === 'offline') return 'Offline';
-  if (mode === 'hybrid') return 'Hybrid';
-  return 'Online';
-};
-
-const toTitleCase = (value: string) => {
-  return value
-    .replace(/[-_]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .split(' ')
-    .filter(Boolean)
-    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1).toLowerCase())
-    .join(' ');
-};
-
-const normalizeText = (value?: string | null) => {
-  if (typeof value !== 'string') {
-    return '';
-  }
-  return value.trim().toLowerCase();
-};
-
-const getOpportunityIdentity = (opportunity: Opportunity) =>
-  normalizeText(opportunity.slug) || normalizeText(opportunity.id);
-
-const normalizeMode = (mode?: Opportunity['mode']): Opportunity['mode'] => {
-  if (mode === 'offline' || mode === 'hybrid') {
-    return mode;
-  }
-  return 'online';
-};
-
-const toTokenSet = (inputs: Array<string | undefined | null>): Set<string> => {
-  const tokens = new Set<string>();
-  inputs.forEach((input) => {
-    if (!input) {
-      return;
-    }
-    input
-      .toLowerCase()
-      .split(/[^a-z0-9]+/g)
-      .map((token) => token.trim())
-      .filter((token) => token.length > 1)
-      .forEach((token) => tokens.add(token));
-  });
-  return tokens;
-};
-
-const extractGradeTokens = (value?: string) => {
-  const tokens = toTokenSet([value]);
-  if (!value) {
-    return tokens;
-  }
-  const numericMatches = value.match(/\d+/g);
-  numericMatches?.forEach((match) => tokens.add(match));
-  return tokens;
-};
-
-const intersectionSize = (a: Set<string>, b: Set<string>) => {
-  let count = 0;
-  a.forEach((item) => {
-    if (b.has(item)) {
-      count += 1;
-    }
-  });
-  return count;
-};
-
-const parseDateSafe = (value?: string | null) => {
-  if (!value) {
-    return null;
-  }
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
-};
-
-const computeSimilarityScore = (target: Opportunity, candidate: Opportunity) => {
-  let score = 0;
-
-  const targetCategory = normalizeText(target.categoryName || target.category);
-  const candidateCategory = normalizeText(candidate.categoryName || candidate.category);
-  if (targetCategory && candidateCategory) {
-    if (targetCategory === candidateCategory) {
-      score += 45;
-    } else if (candidateCategory.includes(targetCategory) || targetCategory.includes(candidateCategory)) {
-      score += 25;
-    }
-  }
-
-  const targetSegments = toTokenSet(target.segments ?? []);
-  const candidateSegments = toTokenSet(candidate.segments ?? []);
-  const sharedSegments = intersectionSize(targetSegments, candidateSegments);
-  if (sharedSegments > 0) {
-    score += sharedSegments * 18;
-  }
-
-  const targetKeywordTokens = toTokenSet(target.searchKeywords ?? []);
-  const candidateKeywordTokens = toTokenSet(candidate.searchKeywords ?? []);
-  const sharedKeywordCount = intersectionSize(targetKeywordTokens, candidateKeywordTokens);
-  if (sharedKeywordCount > 0) {
-    score += Math.min(sharedKeywordCount, 3) * 10;
-  }
-
-  const targetGrade = normalizeText(target.gradeEligibility);
-  const candidateGrade = normalizeText(candidate.gradeEligibility);
-  if (targetGrade && candidateGrade) {
-    if (targetGrade === candidateGrade) {
-      score += 24;
-    } else if (targetGrade.includes(candidateGrade) || candidateGrade.includes(targetGrade)) {
-      score += 14;
-    } else {
-      const targetGradeTokens = extractGradeTokens(target.gradeEligibility);
-      const candidateGradeTokens = extractGradeTokens(candidate.gradeEligibility);
-      const gradeOverlap = intersectionSize(targetGradeTokens, candidateGradeTokens);
-      if (gradeOverlap > 0) {
-        score += Math.min(gradeOverlap * 6, 18);
-      }
-    }
-  }
-
-  const titleOverlap = intersectionSize(
-    toTokenSet([target.title]),
-    toTokenSet([candidate.title]),
-  );
-  if (titleOverlap > 0) {
-    score += Math.min(titleOverlap * 3, 12);
-  }
-
-  if (normalizeMode(candidate.mode) === normalizeMode(target.mode)) {
-    score += 6;
-  }
-
-  const normalizedOrganizer = normalizeText(candidate.organizerName || candidate.organizer);
-  const targetOrganizer = normalizeText(target.organizerName || target.organizer);
-  if (normalizedOrganizer && targetOrganizer && normalizedOrganizer === targetOrganizer) {
-    score += 10;
-  }
-
-  const candidateStatus = normalizeText(candidate.status);
-  if (candidateStatus) {
-    if (['approved', 'published', 'active', 'upcoming'].includes(candidateStatus)) {
-      score += 8;
-    }
-    if (['closed', 'expired', 'archived'].includes(candidateStatus)) {
-      score -= 12;
-    }
-  }
-
-  const now = Date.now();
-  const targetDeadline = parseDateSafe(target.registrationDeadline ?? target.endDate);
-  const candidateDeadline = parseDateSafe(candidate.registrationDeadline ?? candidate.endDate);
-  if (candidateDeadline) {
-    if (candidateDeadline.getTime() >= now) {
-      score += 10;
-    } else if (candidateDeadline.getTime() >= now - 3 * 24 * 60 * 60 * 1000) {
-      score += 4;
-    } else {
-      score -= 12;
-    }
-  }
-  if (candidateDeadline && targetDeadline) {
-    const diffDays = Math.abs(candidateDeadline.getTime() - targetDeadline.getTime()) / (1000 * 60 * 60 * 24);
-    const closeness = Math.max(0, 12 - Math.min(12, diffDays));
-    score += closeness;
-  }
-
-  if (candidate.image) {
-    score += 2;
-  }
-
-  return score;
-};
-
-const rankCandidates = (target: Opportunity, candidates: Opportunity[], limit = 3) => {
-  const identity = getOpportunityIdentity(target);
-  const enriched = candidates
-    .filter((candidate) => getOpportunityIdentity(candidate) !== identity)
-    .map((candidate) => {
-      const score = computeSimilarityScore(target, candidate);
-      const deadline = parseDateSafe(candidate.registrationDeadline ?? candidate.endDate);
-      const deadlineValue = deadline ? deadline.getTime() : Number.MAX_SAFE_INTEGER;
-      const isExpired = Boolean(deadline && deadline.getTime() < Date.now() - 3 * 24 * 60 * 60 * 1000);
-      return {
-        candidate,
-        score,
-        deadlineValue,
-        isExpired,
-      };
-    });
-
-  enriched.sort((a, b) => {
-    if (b.score !== a.score) {
-      return b.score - a.score;
-    }
-    return a.deadlineValue - b.deadlineValue;
-  });
-
-  const shortlisted: Opportunity[] = [];
-
-  enriched.forEach((entry) => {
-    if (shortlisted.length >= limit) {
-      return;
-    }
-    if (entry.score <= 0) {
-      return;
-    }
-    if (entry.isExpired) {
-      return;
-    }
-    shortlisted.push(entry.candidate);
-  });
-
-  if (shortlisted.length < limit) {
-    enriched.forEach((entry) => {
-      if (shortlisted.length >= limit) {
-        return;
-      }
-      if (shortlisted.includes(entry.candidate)) {
-        return;
-      }
-      if (entry.score <= 0) {
-        return;
-      }
-      shortlisted.push(entry.candidate);
-    });
-  }
-
-  if (shortlisted.length < limit) {
-    enriched.forEach((entry) => {
-      if (shortlisted.length >= limit) {
-        return;
-      }
-      if (shortlisted.includes(entry.candidate)) {
-        return;
-      }
-      shortlisted.push(entry.candidate);
-    });
-  }
-
-  return shortlisted.slice(0, limit);
-};
-
-const buildQueryUrl = (params: Record<string, string | number | undefined>) => {
-  const searchParams = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value === undefined || value === null) {
-      return;
-    }
-    if (typeof value === 'number') {
-      if (Number.isFinite(value)) {
-        searchParams.set(key, String(Math.max(0, Math.floor(value))));
-      }
-      return;
-    }
-    const trimmed = value.trim();
-    if (!trimmed) {
-      return;
-    }
-    searchParams.set(key, trimmed);
-  });
-  return `/api/opportunities?${searchParams.toString()}`;
-};
-
-const collectCandidateOpportunities = async (opportunity: Opportunity) => {
-  const queries = new Set<string>();
-  const segments = (opportunity.segments ?? [])
-    .map((segment) => segment?.trim())
-    .filter((segment): segment is string => Boolean(segment))
-    .slice(0, 3);
-
-  segments.forEach((segment) => {
-    queries.add(buildQueryUrl({ segment, limit: 30 }));
-  });
-
-  const categoryCandidates = [
-    opportunity.category,
-    opportunity.categoryName,
-  ]
-    .map((value) => value?.trim())
-    .filter((value): value is string => Boolean(value));
-
-  categoryCandidates.forEach((category) => {
-    queries.add(buildQueryUrl({ category, limit: 30 }));
-  });
-
-  const keywordCandidates = (opportunity.searchKeywords ?? [])
-    .map((keyword) => keyword?.trim())
-    .filter((keyword): keyword is string => Boolean(keyword))
-    .slice(0, 3);
-  keywordCandidates.forEach((keyword) => {
-    queries.add(buildQueryUrl({ search: keyword, limit: 24 }));
-  });
-
-  const gradeTokens = Array.from(extractGradeTokens(opportunity.gradeEligibility)).slice(0, 2);
-  gradeTokens.forEach((token) => {
-    queries.add(buildQueryUrl({ search: token, limit: 20 }));
-  });
-
-  queries.add(buildQueryUrl({ limit: 60 }));
-
-  const settled = await Promise.allSettled(
-    Array.from(queries).map(async (url) => {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ${url}`);
-      }
-      const payload = (await response.json().catch(() => ({}))) as {
-        opportunities?: Opportunity[];
-        items?: Opportunity[];
-      };
-      return payload.opportunities ?? payload.items ?? [];
-    }),
-  );
-
-  const seen = new Map<string, Opportunity>();
-  settled.forEach((result) => {
-    if (result.status !== 'fulfilled') {
-      return;
-    }
-    result.value.forEach((item) => {
-      const identity = getOpportunityIdentity(item);
-      if (!identity || identity === getOpportunityIdentity(opportunity)) {
-        return;
-      }
-      if (!seen.has(identity)) {
-        seen.set(identity, item);
-      }
-    });
-  });
-
-  return Array.from(seen.values());
-};
-
-const normalizeUrl = (value?: string | null): string | null => {
-  if (!value) {
-    return null;
-  }
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return null;
-  }
-  if (/^https?:\/\//i.test(trimmed)) {
-    return trimmed;
-  }
-  return `https://${trimmed}`;
-};
-
-const extractUrlFromText = (value?: string): string | null => {
-  if (!value) {
-    return null;
-  }
-  const match = value.match(/https?:\/\/[^\s)]+/i);
-  if (!match) {
-    return null;
-  }
-  return match[0].replace(/[.,]$/, '');
-};
-
-type TimelineCallToAction = {
-  label: string;
-  event: string;
-  status: OpportunityTimelineStatus;
-};
-
-type ResourceDisplayItem = OpportunityResource & {
-  type: 'pdf' | 'video' | 'link';
-  typeLabel: string;
-  Icon: typeof FileText;
-  url: string;
-};
-
-const CTA_KEYWORDS: Array<{ pattern: RegExp; label: string }> = [
-  { pattern: /admit card/i, label: 'Download admit card' },
-  { pattern: /hall ticket/i, label: 'Download hall ticket' },
-  { pattern: /answer key/i, label: 'View answer key' },
-  { pattern: /result/i, label: 'View results' },
-  { pattern: /interview/i, label: 'View interview details' },
-];
-
-const deriveTimelineCta = (timeline?: OpportunityTimelineEvent[]): TimelineCallToAction | null => {
-  if (!timeline || timeline.length === 0) {
-    return null;
-  }
-
-  const sorted = [...timeline]
-    .filter((item): item is OpportunityTimelineEvent => Boolean(item))
-    .sort((a, b) => {
-      const aTime = new Date(a.date).getTime();
-      const bTime = new Date(b.date).getTime();
-      return (Number.isNaN(aTime) ? 0 : aTime) - (Number.isNaN(bTime) ? 0 : bTime);
-    });
-
-  const candidate =
-    sorted.find((item) => item.status === 'active') ??
-    sorted.find((item) => item.status === 'upcoming') ??
-    sorted.find((item) => {
-      const time = new Date(item.date).getTime();
-      return !Number.isNaN(time) && time >= Date.now();
-    }) ??
-    null;
-
-  if (!candidate || !candidate.event) {
-    return null;
-  }
-
-  const match = CTA_KEYWORDS.find(({ pattern }) => pattern.test(candidate.event));
-  if (!match) {
-    return null;
-  }
-
-  return {
-    label: match.label,
-    event: candidate.event,
-    status: candidate.status,
-  };
-};
-
-const renderCustomTabContent = (content: CustomTabContent) => {
-  switch (content.type) {
-    case 'rich-text':
-      return (
-        <div
-          className="text-slate-600 dark:text-slate-100 leading-relaxed prose dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: content.html }}
-        />
-      );
-    case 'list':
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {content.items.map((item, index) => (
-            <div key={index} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-              <p className="text-slate-700 dark:text-slate-200">{item}</p>
-            </div>
-          ))}
-        </div>
-      );
-    case 'structured-data':
-      return (
-        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
-          <table className="w-full text-sm text-left min-w-[300px]">
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {Object.entries(content.schema).map(([key, value], index) => (
-                <tr key={index} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td className="px-4 py-3 font-medium text-foreground dark:text-white w-1/3">{key}</td>
-                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{String(value)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
-    case 'custom-json':
-      return (
-        <pre className="p-4 rounded-xl bg-slate-100 dark:bg-slate-900 overflow-auto text-xs">
-          {JSON.stringify(content.data, null, 2)}
-        </pre>
-      );
-    default:
-      return null;
-  }
-};
 
 export default function OpportunityDetail({ opportunity }: { opportunity: Opportunity }) {
   const router = useRouter();
@@ -689,6 +186,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   }, [user, opportunityId, getIdToken]);
 
   const closeResourcePreview = () => setActiveResource(null);
+
 
   const normalizeVideoEmbedUrl = (url: string) => {
     try {
@@ -1032,6 +530,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   const timelineEntries: OpportunityTimelineEvent[] = (() => {
     const rawEvents = (opportunity.timeline ?? []).map((item) => ({
       ...item,
+      title: item.event,
       date: item.date ?? '',
     }));
 
@@ -1235,97 +734,16 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
       <Header />
 
       <main className="flex-1 bg-gradient-to-br from-accent/30 via-white to-accent/10 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pb-32 md:pb-0">
-        {/* Cover Image Section */}
-        <div className="relative w-full bg-slate-100 dark:bg-slate-800">
-          <div className="container mx-auto px-0 md:px-6 lg:px-8 xl:px-16 max-w-[1920px]">
-            <div className="relative w-full aspect-[21/9] md:aspect-[21/7] lg:rounded-2xl overflow-hidden">
-              <img
-                src={heroImage}
-                alt={title}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Primary Information Card */}
-        <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] -mt-8 md:-mt-12 relative z-10">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 md:p-8">
-            <div className="flex flex-col gap-4">
-              {/* Category Badge */}
-              {/* Category Badge */}
-              <div>
-                <Badge className="border border-accent bg-accent/50 text-accent-foreground dark:border-primary/20 dark:bg-primary/10 dark:text-accent text-xs font-semibold">
-                  {categoryLabel}
-                </Badge>
-              </div>
-
-              {/* Title */}
-              <h1 className="text-xl md:text-4xl lg:text-3xl font-bold text-foreground dark:text-white leading-tight">
-                {title}
-              </h1>
-
-              {/* Organizer and Meta Info */}
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 flex-shrink-0">
-                    <img
-                      src={opportunity.organizerLogo || 'https://via.placeholder.com/96x96.png?text=Org'}
-                      alt={organizerLabel}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Organized by</p>
-                    <p className="font-semibold text-foreground dark:text-white">{organizerLabel}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tags and Info Pills */}
-              <div className="flex flex-wrap gap-2">
-                {/* Views */}
-                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Eye className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                  <span className="text-slate-700 dark:text-slate-200">
-                    {viewCount.toLocaleString()} Views
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Calendar className="h-4 w-4 text-pink-500 dark:text-pink-300" />
-                  <span className="text-slate-700 dark:text-slate-200">{dateDisplay}</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Trophy className="h-4 w-4 text-sky-500 dark:text-sky-300" />
-                  <p className="text-sm text-slate-500 dark:text-slate-300">Eligibility</p>
-                  <p className="font-semibold text-foreground dark:text-white">{getEligibilityDisplay({
-                    gradeEligibility: opportunity.gradeEligibility || '',
-                    eligibilityType: opportunity.eligibilityType,
-                    ageEligibility: opportunity.ageEligibility,
-                    registrationDeadline: opportunity.registrationDeadline || ''
-                  } as any)}</p>
-                </div>
-                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Globe className="h-4 w-4 text-sky-500 dark:text-sky-300" />
-                  <span className="text-slate-700 dark:text-slate-200">{modeLabel}</span>
-                </div>
-                {opportunity.state && (
-                  <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                    <MapPin className="h-4 w-4 text-purple-500 dark:text-purple-300" />
-                    <span className="text-slate-700 dark:text-slate-200">{opportunity.state}</span>
-                  </div>
-                )}
-
-                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
-                  <Clock className="h-4 w-4 text-primary dark:text-accent" />
-                  <span className="text-slate-700 dark:text-slate-200">Updated: {formatDate((opportunity as any).updatedAt || (opportunity as any).createdAt)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <OpportunityHero
+          heroImage={heroImage}
+          title={title}
+          categoryLabel={categoryLabel}
+          organizerLabel={organizerLabel}
+          opportunity={opportunity}
+          viewCount={viewCount}
+          dateDisplay={dateDisplay}
+          modeLabel={modeLabel}
+        />
 
         {/* Mobile Quick Actions - Show only on mobile */}
         <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] mt-6 lg:hidden relative z-10">
@@ -1407,722 +825,68 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           </Card>
         </div>
 
+
         <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2">
-              {(() => {
-                // Determine which tabs have content
-                const hasOverview = Boolean(opportunity.description?.trim()) || (opportunity.benefits && opportunity.benefits.length > 0);
-                const hasEligibility = opportunity.eligibility && opportunity.eligibility.length > 0;
-                const hasTimeline = timelineEntries && timelineEntries.length > 0;
-                const hasRegistration = (opportunity.registrationProcess && opportunity.registrationProcess.length > 0) ||
-                  Boolean(contactInfo.email || contactInfo.phone || contactInfo.website);
-                const hasExamPattern = (() => {
-                  // Check new exam patterns array
-                  if (opportunity.examPatterns && opportunity.examPatterns.length > 0) {
-                    return opportunity.examPatterns.some(pattern =>
-                      (pattern.totalQuestions && pattern.totalQuestions > 0) ||
-                      (pattern.sections && pattern.sections.length > 0)
-                    );
-                  }
-                  // Check legacy exam pattern
-                  if (examPattern.totalQuestions && examPattern.totalQuestions > 0) {
-                    return true;
-                  }
-                  if (examSections && examSections.length > 0) {
-                    return true;
-                  }
-                  return false;
-                })();
-                const hasResources = resourceItems.length > 0;
-
-                // Build custom tabs
-                const customTabs: TabItem[] = (opportunity.customTabs || [])
-                  .sort((a, b) => a.order - b.order)
-                  .map((tab) => ({
-                    value: tab.id,
-                    label: tab.label,
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                          {tab.label}
-                        </h2>
-                        {renderCustomTabContent(tab.content)}
-                      </Card>
-                    ),
-                  }));
-
-                // Build full tabs array
-                const allTabs: TabItem[] = [
-                  {
-                    value: 'overview',
-                    label: 'Overview',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <div className="space-y-6">
-                          <div>
-                            <h2 className="text-lg md:text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                              About This Opportunity
-                            </h2>
-                            <div
-                              className="text-slate-600 dark:text-slate-100 leading-relaxed prose dark:prose-invert max-w-none"
-                              dangerouslySetInnerHTML={{ __html: opportunity.description || 'Detailed description will be available soon.' }}
-                            />
-                          </div>
-
-                          <Separator className="bg-white/80 dark:bg-slate-800/70" />
-
-                          <div>
-                            <h3 className="text-base md:text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-chart-2 animate-pulse"></span>
-                              Key Benefits
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {(opportunity.benefits ?? []).map((benefit, index) => (
-                                <div
-                                  key={index}
-                                  className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-primary/20 transition-colors"
-                                >
-                                  <div className="mt-1">
-                                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                                    </div>
-                                  </div>
-                                  <span className="text-slate-600 dark:text-slate-100">{benefit}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ),
-                  },
-                  {
-                    value: 'eligibility',
-                    label: 'Eligibility',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                          Eligibility Criteria
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {(opportunity.eligibility ?? []).map((criterion, index) => (
-                            <div
-                              key={index}
-                              className="group flex items-start gap-3 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300"
-                            >
-                              <div className="mt-1">
-                                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                  <AlertCircle className="h-5 w-5 text-primary" />
-                                </div>
-                              </div>
-                              <span className="text-slate-600 dark:text-slate-100 leading-relaxed">{criterion}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </Card>
-                    ),
-                  },
-                  {
-                    value: 'timeline',
-                    label: 'Timeline',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-lg md:text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
-                          Important Timeline
-                        </h2>
-                        <div className="relative pl-4 md:pl-8 space-y-0">
-                          {/* Continuous Vertical Line */}
-                          <div className="absolute left-[27px] md:left-[43px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-slate-200 via-slate-300 to-slate-200 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700"></div>
-
-                          {timelineEntries.map((item, index) => {
-                            const isLast = index === timelineEntries.length - 1;
-                            const isFirst = index === 0;
-
-                            // Determine icon and color based on event content and status
-                            let Icon = Calendar;
-                            let colorClass = "text-slate-500 dark:text-slate-400";
-                            let bgClass = "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700";
-                            let iconBgClass = "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700";
-
-                            const lowerEvent = item.event.toLowerCase();
-                            if (lowerEvent.includes('registration')) {
-                              Icon = PenTool;
-                              if (item.status === 'active') {
-                                colorClass = "text-blue-500 dark:text-blue-400";
-                                bgClass = "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800";
-                                iconBgClass = "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700";
-                              }
-                            } else if (lowerEvent.includes('admit card') || lowerEvent.includes('hall ticket')) {
-                              Icon = Download;
-                              if (item.status === 'active') {
-                                colorClass = "text-purple-500 dark:text-purple-400";
-                                bgClass = "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800";
-                                iconBgClass = "bg-purple-100 dark:bg-purple-900/40 border-purple-200 dark:border-purple-700";
-                              }
-                            } else if (lowerEvent.includes('exam') || lowerEvent.includes('test')) {
-                              Icon = FileText;
-                              if (item.status === 'active') {
-                                colorClass = "text-primary dark:text-accent";
-                                bgClass = "bg-accent/30 dark:bg-primary/20 border-accent dark:border-primary/40";
-                                iconBgClass = "bg-accent dark:bg-primary/40 border-accent dark:border-primary/70";
-                              }
-                            } else if (lowerEvent.includes('result') || lowerEvent.includes('announcement')) {
-                              Icon = Trophy;
-                              if (item.status === 'active' || item.status === 'completed') {
-                                colorClass = "text-emerald-500 dark:text-emerald-400";
-                                bgClass = "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800";
-                                iconBgClass = "bg-emerald-100 dark:bg-emerald-900/40 border-emerald-200 dark:border-emerald-700";
-                              }
-                            }
-
-                            // Override for active status generic
-                            if (item.status === 'active' && bgClass.includes('slate')) {
-                              colorClass = "text-primaryDark dark:text-accent";
-                              bgClass = "bg-accent/30 dark:bg-primaryDark/20 border-accent dark:border-primaryDark/40";
-                              iconBgClass = "bg-accent dark:bg-primaryDark/40 border-accent dark:border-primaryDark/70";
-                            }
-
-                            // Override for completed status generic
-                            if (item.status === 'completed' && !lowerEvent.includes('result')) {
-                              colorClass = "text-slate-400 dark:text-slate-500";
-                              bgClass = "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 opacity-80";
-                              iconBgClass = "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700";
-                              Icon = CheckCircle2;
-                            }
-
-
-                            return (
-                              <div key={index} className="relative flex gap-6 md:gap-8 group pb-8 last:pb-0">
-                                {/* Timeline Node */}
-                                <div className="relative z-10 flex-shrink-0">
-                                  <div className={`h-6 w-6 md:h-8 md:w-8 rounded-full flex items-center justify-center border-2 shadow-sm transition-all duration-300 ${iconBgClass} ${item.status === 'active' ? 'scale-110 ring-4 ring-white dark:ring-slate-900' : ''}`}>
-                                    <Icon className={`h-3 w-3 md:h-4 md:w-4 ${colorClass}`} />
-                                  </div>
-                                </div>
-
-                                {/* Content Card */}
-                                <div className={`flex-1 rounded-xl border p-4 md:p-5 transition-all duration-300 hover:shadow-md ${bgClass} ${item.status === 'active' ? 'shadow-md transform translate-x-1' : ''}`}>
-                                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                                    <h3 className={`font-bold text-sm md:text-lg ${item.status === 'completed' ? 'text-slate-500 dark:text-slate-400 line-through decoration-slate-400' : 'text-foreground dark:text-white'}`}>
-                                      {item.event}
-                                    </h3>
-                                    {item.status === 'active' && (
-                                      <Badge className="w-fit bg-gradient-to-r from-primary to-primaryDark border-0 text-white text-xs px-2 py-0.5 shadow-sm animate-pulse">
-                                        Live Now
-                                      </Badge>
-                                    )}
-                                    {item.status === 'upcoming' && (
-                                      <Badge variant="outline" className="w-fit border-slate-300 text-slate-500 text-xs px-2 py-0.5">
-                                        Upcoming
-                                      </Badge>
-                                    )}
-                                  </div>
-
-                                  <div className="flex items-center gap-2 text-[10px] md:text-sm text-slate-600 dark:text-slate-300">
-                                    <Clock className="h-4 w-4 opacity-70" />
-                                    <span className="font-medium">{formatDate(item.date)}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Card>
-                    ),
-                  },
-                  {
-                    value: 'registration',
-                    label: 'Registration',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                          <div>
-                            <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                              How to Register
-                            </h2>
-                            <div className="space-y-4">
-                              {(opportunity.registrationProcess ?? []).map((step, index) => (
-                                <div key={index} className="group flex items-start gap-4 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300">
-                                  <div className="flex-shrink-0">
-                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 text-primary flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-                                      {index + 1}
-                                    </div>
-                                  </div>
-                                  <div className="flex-1">
-                                    <p className="text-slate-600 dark:text-slate-100">{step}</p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div>
-                            <h3 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
-                              Contact Information
-                            </h3>
-                            <div className="space-y-4">
-                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-pink-500/20 transition-all duration-300">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Mail className="h-5 w-5 text-pink-400" />
-                                  </div>
-                                  <div>
-                                    <p className="text-sm text-slate-500 dark:text-slate-300">Email</p>
-                                    <p className="text-slate-700 dark:text-white">{contactInfo.email ?? 'Not provided'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-purple-500/20 transition-all duration-300">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Phone className="h-5 w-5 text-purple-400" />
-                                  </div>
-                                  <div>
-                                    <p className="text-sm text-slate-500 dark:text-slate-300">Phone</p>
-                                    <p className="text-slate-700 dark:text-white">{contactInfo.phone ?? 'Not provided'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl group hover:border-blue-500/20 transition-all duration-300">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Globe className="h-5 w-5 text-blue-400" />
-                                  </div>
-                                  <div>
-                                    <p className="text-sm text-slate-500 dark:text-slate-300">Website</p>
-                                    <p className="text-slate-700 dark:text-white">{contactInfo.website ?? 'Not provided'}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    ),
-                  },
-                  {
-                    value: 'exam-pattern',
-                    label: 'Exam Pattern',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                          Examination Pattern
-                        </h2>
-
-                        {(opportunity.examPatterns && opportunity.examPatterns.length > 0) ? (
-                          <div className="space-y-6">
-                            {/* Pattern Selection Tabs */}
-                            {opportunity.examPatterns.length > 1 && (
-                              <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
-                                {opportunity.examPatterns.map((pattern, index) => {
-                                  let tabLabel = `Pattern ${index + 1}`;
-                                  if (pattern.classSelection?.type === 'single') {
-                                    tabLabel = `Class ${pattern.classSelection.selectedClasses[0]}`;
-                                  } else if (pattern.classSelection?.type === 'multiple') {
-                                    tabLabel = `Classes ${pattern.classSelection.selectedClasses.join(', ')}`;
-                                  } else if (pattern.classSelection?.type === 'range') {
-                                    tabLabel = `Classes ${pattern.classSelection.rangeStart}-${pattern.classSelection.rangeEnd}`;
-                                  }
-
-                                  return (
-                                    <button
-                                      key={index}
-                                      onClick={() => setActivePatternIndex(index)}
-                                      className={`
-                                        whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border
-                                        ${activePatternIndex === index
-                                          ? 'bg-primary text-white border-primary shadow-md'
-                                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary/30 dark:hover:border-primary/70'
-                                        }
-                                      `}
-                                    >
-                                      {tabLabel}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            )}
-
-                            {/* Active Pattern Content */}
-                            {(() => {
-                              const pattern = opportunity.examPatterns[activePatternIndex] || opportunity.examPatterns[0];
-                              const durationLabel = typeof pattern.durationMinutes === 'number'
-                                ? `${Math.floor(pattern.durationMinutes / 60)}h ${pattern.durationMinutes % 60}m`
-                                : 'Not specified';
-                              const negativeMarkingLabel = pattern.negativeMarking
-                                ? (typeof pattern.negativeMarksPerQuestion === 'number'
-                                  ? `Yes (-${pattern.negativeMarksPerQuestion})`
-                                  : 'Yes')
-                                : 'No';
-
-                              return (
-                                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                                  {/* Key Stats Grid */}
-                                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8">
-                                    <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
-                                      <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                                          <BookOpen className="h-4 w-4 text-primary" />
-                                        </div>
-                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Questions</span>
-                                      </div>
-                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{pattern.totalQuestions ?? '—'}</p>
-                                    </div>
-
-                                    <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
-                                      <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-primaryDark/10 flex items-center justify-center">
-                                          <Timer className="h-4 w-4 text-primaryDark" />
-                                        </div>
-                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Duration</span>
-                                      </div>
-                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{durationLabel}</p>
-                                    </div>
-
-                                    <div className="col-span-2 md:col-span-1 p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
-                                      <div className="flex items-center gap-3 mb-2">
-                                        <div className="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center">
-                                          <AlertCircle className="h-4 w-4 text-red-500" />
-                                        </div>
-                                        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Neg. Marking</span>
-                                      </div>
-                                      <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{negativeMarkingLabel}</p>
-                                    </div>
-                                  </div>
-
-                                  {/* Section-wise Distribution */}
-                                  <div>
-                                    <h3 className="text-lg font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-primaryDark"></span>
-                                      Section-wise Distribution
-                                    </h3>
-
-                                    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
-                                      <table className="w-full text-sm text-left min-w-[300px]">
-                                        <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-medium border-b border-slate-200 dark:border-slate-700">
-                                          <tr>
-                                            <th className="px-4 py-3">Section</th>
-                                            <th className="px-4 py-3 text-center">Ques</th>
-                                            <th className="px-4 py-3 text-center">Marks</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                          {(pattern.sections ?? []).map((section, index) => (
-                                            <tr key={index} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
-                                              <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
-                                              <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-300">{section.questions ?? '-'}</td>
-                                              <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-300">{section.marks ?? '-'}</td>
-                                            </tr>
-                                          ))}
-                                          {(!pattern.sections || pattern.sections.length === 0) && (
-                                            <tr>
-                                              <td colSpan={3} className="px-4 py-6 text-center text-slate-500 dark:text-slate-400 italic">
-                                                No section details available
-                                              </td>
-                                            </tr>
-                                          )}
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                          </div>
-                        ) : (
-                          /* Legacy Single Pattern Fallback */
-                          <>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                  <BookOpen className="h-6 w-6 text-primary" />
-                                </div>
-                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{examPattern.totalQuestions ?? '—'}</p>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Total Questions</p>
-                              </div>
-                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-pink-500/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primaryDark/20 to-primaryDarker/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                  <Timer className="h-6 w-6 text-primaryDark" />
-                                </div>
-                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{durationLabel}</p>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Duration</p>
-                              </div>
-                              <div className="group p-6 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-red-500/20 transition-all duration-300">
-                                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500/20 to-rose-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                  <AlertCircle className="h-6 w-6 text-red-400" />
-                                </div>
-                                <p className="text-3xl font-bold text-foreground dark:text-white mb-1">{negativeMarkingLabel}</p>
-                                <p className="text-sm text-slate-500 dark:text-slate-300">Negative Marking</p>
-                              </div>
-                            </div>
-
-                            <h3 className="text-xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-primaryDark animate-pulse"></span>
-                              Section-wise Distribution
-                            </h3>
-                            <div className="space-y-4">
-                              {examSections.map((section, index) => (
-                                <div
-                                  key={index}
-                                  className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary/20 transition-all duration-300"
-                                >
-                                  <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-primaryDark/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                      <BookOpen className="h-5 w-5 text-primary" />
-                                    </div>
-                                    <span className="font-semibold text-foreground dark:text-white">{section.name}</span>
-                                  </div>
-                                  <div className="flex gap-6 text-sm">
-                                    <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                      <span className="text-slate-500 dark:text-slate-300">Questions: </span>
-                                      <strong className="text-slate-700 dark:text-white">{section.questions ?? '-'}</strong>
-                                    </div>
-                                    <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-800/50 shadow-sm border border-slate-200 dark:border-slate-700">
-                                      <span className="text-slate-500 dark:text-slate-300">Marks: </span>
-                                      <strong className="text-slate-700 dark:text-white">{section.marks ?? '-'}</strong>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </>
-                        )}
-                      </Card>
-                    ),
-                  },
-                  ...customTabs,
-                  {
-                    value: 'resources',
-                    label: 'Resources',
-                    content: (
-                      <Card className="p-6 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                          <div>
-                            <h2 className="text-2xl font-bold text-foreground dark:text-white">Resources</h2>
-                            <p className="text-sm text-slate-500 dark:text-slate-300">
-                              Curated links, documents, and videos to help you prepare.
-                            </p>
-                          </div>
-                          {resourceItems.length > 0 && (
-                            <Badge
-                              variant="outline"
-                              className="border-accent bg-accent/50 text-[#1A2A33] dark:border-primary/40 dark:bg-primary/10 dark:text-accent"
-                            >
-                              {resourceItems.length} resource{resourceItems.length === 1 ? '' : 's'}
-                            </Badge>
-                          )}
-                        </div>
-
-                        <Separator className="my-6 bg-white/80 dark:bg-slate-800/70" />
-
-                        {resourceItems.length === 0 ? (
-                          <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-800/50 shadow-sm p-6 text-center text-slate-600 dark:text-slate-100">
-                            <p className="text-sm">
-                              Organizers haven&apos;t shared supporting resources yet. Check back soon!
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="grid gap-4">
-                            {resourceItems.map((resource) => (
-                              <div
-                                key={resource.id}
-                                className="flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/50 shadow-sm p-4 transition hover:border-primary/40 hover:bg-white dark:hover:bg-background/10 md:flex-row md:items-center md:justify-between"
-                              >
-                                <div className="flex flex-1 items-start gap-4">
-                                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                                    <resource.Icon className="h-6 w-6" />
-                                  </div>
-                                  <div className="space-y-1">
-                                    <Badge
-                                      variant="outline"
-                                      className="border-accent bg-accent/50 px-2.5 py-0.5 text-xs font-semibold text-[#1A2A33] dark:border-white/20 dark:bg-slate-800/70 dark:text-white"
-                                    >
-                                      {resource.typeLabel}
-                                    </Badge>
-                                    <p className="text-lg font-semibold text-foreground dark:text-white">{resource.title}</p>
-                                    {resource.description && (
-                                      <p className="text-sm text-slate-500 dark:text-slate-300">{resource.description}</p>
-                                    )}
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 break-all">
-                                      {resource.url}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-2 self-stretch md:self-auto">
-                                  <Button
-                                    variant="outline"
-                                    className="border-accent text-primary hover:bg-accent/20 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                                    onClick={() => handleResourcePreview(resource)}
-                                  >
-                                    Preview
-                                  </Button>
-                                  <Button
-                                    asChild
-                                    variant="outline"
-                                    className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                                  >
-                                    <a href={resource.url} target="_blank" rel="noreferrer">
-                                      <Globe className="mr-2 h-4 w-4" />
-                                      Open tab
-                                    </a>
-                                  </Button>
-                                  {resource.type === 'pdf' && (
-                                    <Button
-                                      asChild
-                                      variant="outline"
-                                      className="border-slate-200 text-slate-700 hover:bg-white/90 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-                                    >
-                                      <a href={resource.url} download rel="noreferrer">
-                                        <Download className="mr-2 h-4 w-4" />
-                                        Download
-                                      </a>
-                                    </Button>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </Card>
-                    ),
-                  },
-                  {
-                    value: 'faq',
-                    label: 'FAQ',
-                    content: (
-                      <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                        <h2 className="text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-                          Frequently Asked Questions
-                        </h2>
-                        <div className="space-y-4">
-                          {[
-                            {
-                              q: `What is the deadline for ${title}?`,
-                              a: formattedDeadline !== 'TBA'
-                                ? `The registration deadline is ${formattedDeadline}. Make sure to apply before this date.`
-                                : `The deadline has not been announced yet. Please keep checking for updates.`
-                            },
-                            {
-                              q: `Who is eligible to apply?`,
-                              a: opportunity.gradeEligibility
-                                ? `This opportunity is open to ${opportunity.gradeEligibility}. Please check the eligibility section for more details.`
-                                : `Eligibility details are available in the eligibility section.`
-                            },
-                            {
-                              q: `Is there a registration fee?`,
-                              a: displayFee === 'FREE'
-                                ? `No, this opportunity is free to register.`
-                                : `Yes, the registration fee is ${displayFee}.`
-                            },
-                            {
-                              q: `How do I register?`,
-                              a: `You can register by clicking the "Register Now" button on this page. If it's an external registration, you'll be redirected to the official website.`
-                            },
-                            {
-                              q: `When does the event start?`,
-                              a: formattedStartDate !== 'TBA'
-                                ? `The event is scheduled to start on ${formattedStartDate}.`
-                                : `The start date has not been announced yet.`
-                            }
-                          ].map((faq, index) => (
-                            <div key={index} className="p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
-                              <h3 className="font-semibold text-foreground dark:text-white flex items-start gap-2 mb-2">
-                                <HelpCircle className="h-5 w-5 text-purple-400 shrink-0 mt-0.5" />
-                                {faq.q}
-                              </h3>
-                              <p className="text-slate-600 dark:text-slate-300 pl-7">
-                                {faq.a}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </Card>
-                    ),
-                  },
-                ];
-
-                // Filter tabs based on content availability
-                const visibleTabs = allTabs.filter(tab => {
-                  if (tab.value === 'overview') return hasOverview;
-                  if (tab.value === 'eligibility') return hasEligibility;
-                  if (tab.value === 'timeline') return hasTimeline;
-                  if (tab.value === 'registration') return hasRegistration;
-                  if (tab.value === 'exam-pattern') return hasExamPattern;
-                  if (tab.value === 'resources') return hasResources;
-                  if (tab.value === 'faq') return true; // FAQ is always visible
-                  return true;
-                });
-
-                // Determine the default tab (first visible tab)
-                const defaultTab = visibleTabs.length > 0 ? visibleTabs[0].value : 'overview';
-
-                return (
-                  <StickyTabBar
-                    defaultValue={defaultTab}
-                    tabs={visibleTabs}
-                  />
-                );
-              })()}
+              <OpportunityTabs
+                opportunity={opportunity}
+                timelineEntries={timelineEntries}
+                formattedDeadline={formattedDeadline}
+                displayFee={displayFee}
+                formattedStartDate={formattedStartDate}
+                resourceItems={resourceItems}
+                onResourcePreview={handleResourcePreview}
+              />
             </div>
 
-            {/* Sidebar - Sticky on Desktop, Hidden on Mobile */}
-            <div className="hidden lg:block lg:sticky lg:top-[140px] lg:self-start space-y-6">
-              {/* Main Action Card */}
-              <Card className="p-6 bg-gradient-to-br from-accent/30 to-primaryDark/10 border-slate-200 dark:border-slate-700 backdrop-blur-sm">
-                {/* Price and Registration */}
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <p className="text-sm text-slate-500 dark:text-slate-300">Registration Fee</p>
-                    <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
-                  </div>
-                  <div>
-                    <Badge className="bg-primary/20 text-primary border-primary/30">
-                      {modeLabel}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Countdown Timer */}
-                <div className="mb-6">
-                  <h3 className="mb-3 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
-                    <Clock className="h-4 w-4 text-primary" />
-                    Registration Status
-                  </h3>
-                  {registrationClosed ? (
-                    <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-center text-red-600 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
-                      Registrations are closed.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
-                        <div className="text-3xl font-bold text-primary">{countdown.days}</div>
-                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Days</div>
-                      </div>
-                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
-                        <div className="text-3xl font-bold text-primaryDark">{countdown.hours}</div>
-                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Hours</div>
-                      </div>
-                      <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
-                        <div className="text-3xl font-bold text-primaryDarker">{countdown.minutes}</div>
-                        <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Mins</div>
-                      </div>
-                    </div>
-                  )}
-                  <p className="mt-3 text-center text-xs text-slate-500 dark:text-slate-300">Deadline: {formattedDeadline}</p>
-                </div>
-
-                {/* Main Actions */}
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Main Actions */}
+              <Card className="p-6 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
                 <div className="space-y-3">
+                  {/* Price and Registration */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <p className="text-sm text-slate-500 dark:text-slate-300">Registration Fee</p>
+                      <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">{displayFee}</p>
+                    </div>
+                    <div>
+                      <Badge className="bg-primary/20 text-primary border-primary/30">
+                        {modeLabel}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {/* Countdown Timer */}
+                  <div className="mb-6">
+                    <h3 className="mb-3 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
+                      <Clock className="h-4 w-4 text-primary" />
+                      Registration Status
+                    </h3>
+                    {registrationClosed ? (
+                      <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-center text-red-600 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+                        Registrations are closed.
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-3 gap-3">
+                        <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                          <div className="text-3xl font-bold text-primary">{countdown.days}</div>
+                          <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Days</div>
+                        </div>
+                        <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                          <div className="text-3xl font-bold text-primaryDark">{countdown.hours}</div>
+                          <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Hours</div>
+                        </div>
+                        <div className="flex flex-col items-center p-3 bg-white/60 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-700">
+                          <div className="text-3xl font-bold text-primaryDarker">{countdown.minutes}</div>
+                          <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Mins</div>
+                        </div>
+                      </div>
+                    )}
+                    <p className="mt-3 text-center text-xs text-slate-500 dark:text-slate-300">Deadline: {formattedDeadline}</p>
+                  </div>
                   {isRegistered ? (
                     <div className="space-y-2">
                       <div className="h-14 w-full flex items-center justify-center gap-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 rounded-lg font-semibold border border-emerald-200 dark:border-emerald-500/30">
@@ -2228,6 +992,35 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       </div>
                     </div>
                   )}
+                  {/* Target Audience */}
+                  {opportunity.targetAudience && (
+                    <div className="flex items-start gap-3 p-3 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+                      <MapPin className="h-5 w-5 text-purple-400 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-500 dark:text-slate-300">Target Audience</p>
+                        <p className="font-semibold text-foreground dark:text-white">{opportunity.targetAudience}</p>
+                      </div>
+                    </div>
+                  )}
+
+
+                  {/* Participation Type */}
+                  {opportunity.participationType && (
+                    <div className="flex items-start gap-3 p-3 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+                      <MapPin className="h-5 w-5 text-purple-400 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-500 dark:text-slate-300">Team</p>
+                        <p className="font-semibold text-foreground dark:text-white">
+                          {opportunity.participationType}
+                          {opportunity.participationType === 'team' && opportunity.minTeamSize && opportunity.maxTeamSize && (
+                            <span className="ml-1 text-xs text-muted-foreground">
+                              ({opportunity.minTeamSize}-{opportunity.maxTeamSize} members)
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Card>
 
@@ -2262,62 +1055,13 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 </Button>
               </Card>
             </div>
-          </div>
-        </div>
-        <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
-          <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">
-            <h2 className="text-2xl font-bold text-foreground dark:text-white md:text-3xl">Related opportunities picked for you</h2>
-            <p className="mt-2 text-sm text-muted-foreground dark:text-white/70 md:text-base">
-              Tailored suggestions that weigh category, grade fit, segments, and timeline recency from this listing.
-            </p>
-            {relatedLoading ? (
-              <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {[0, 1, 2].map((index) => (
-                  <div
-                    key={index}
-                    className="h-48 animate-pulse rounded-2xl border border-slate-200 bg-white/80 shadow-sm dark:border-slate-700 dark:bg-slate-800/50"
-                  />
-                ))}
-              </div>
-            ) : relatedError ? (
-              <p className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-400/40 dark:bg-red-400/10 dark:text-red-200">
-                {relatedError}
-              </p>
-            ) : relatedOpportunities.length === 0 ? (
-              <div className="mt-6 rounded-xl border border-slate-200 bg-white/80 p-5 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
-                We are still gathering the closest matches. Explore the full listings to discover more programs right away.
-                <div className="mt-4">
-                  <Button asChild variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10">
-                    <Link href="/opportunities">Browse all opportunities</Link>
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {relatedOpportunities.map((item) => {
-                  const opportunityIdOrSlug = item.slug || item.id;
-                  const category = item.categoryName || item.category || 'Opportunity';
-                  const organizerName = item.organizerName || item.organizer || 'Organizer';
-                  const deadline = item.registrationDeadline || item.endDate || '';
-                  return (
-                    <OpportunityCard
-                      key={opportunityIdOrSlug}
-                      id={opportunityIdOrSlug}
-                      title={item.title}
-                      category={category}
-                      gradeEligibility={item.gradeEligibility || 'All Grades'}
-                      organizer={organizerName}
-                      registrationDeadline={deadline}
-                      mode={normalizeMode(item.mode)}
-                      fee={item.fee}
-                      className="border-slate-200 bg-white/95 dark:border-slate-700 dark:bg-slate-800/50"
-                    />
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </section>
+          </div >
+        </div >
+        <SimilarOpportunities
+          relatedLoading={relatedLoading}
+          relatedError={relatedError}
+          relatedOpportunities={relatedOpportunities}
+        />
 
         <section className="border-t border-slate-200 bg-white/[0.04] dark:border-slate-700">
           <div className="container mx-auto max-w-[1200px] px-4 py-12 md:px-6 md:py-16">

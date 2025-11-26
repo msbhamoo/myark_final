@@ -318,6 +318,19 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
         ? data.registrationCount
         : 0,
     customTabs: mapCustomTabs(data.customTabs),
+    views: typeof data.views === 'number' ? data.views : 0,
+    targetAudience:
+      typeof data.targetAudience === 'string' &&
+        ['students', 'schools', 'both'].includes(data.targetAudience)
+        ? (data.targetAudience as 'students' | 'schools' | 'both')
+        : undefined,
+    participationType:
+      typeof data.participationType === 'string' &&
+        ['individual', 'team'].includes(data.participationType)
+        ? (data.participationType as 'individual' | 'team')
+        : undefined,
+    minTeamSize: toNumber(data.minTeamSize),
+    maxTeamSize: toNumber(data.maxTeamSize),
   };
 };
 

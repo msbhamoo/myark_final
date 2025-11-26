@@ -425,6 +425,7 @@ export async function PUT(request: Request, context: any) {
     if (!payload) {
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
+    console.log('Admin PUT Payload:', JSON.stringify(payload, null, 2));
 
     const updates: Record<string, unknown> = { updatedAt: new Date(), currency: 'INR' };
     const has = (key: string) => Object.prototype.hasOwnProperty.call(payload, key);
@@ -457,6 +458,15 @@ export async function PUT(request: Request, context: any) {
       updates.ageEligibility =
         typeof payload.ageEligibility === 'string' ? payload.ageEligibility.trim() : null;
     }
+    if (has('targetAudience')) {
+      updates.targetAudience = typeof payload.targetAudience === 'string' ? payload.targetAudience : 'students';
+    }
+    if (has('participationType')) {
+      updates.participationType = typeof payload.participationType === 'string' ? payload.participationType : 'individual';
+    }
+    if (has('minTeamSize')) updates.minTeamSize = toNumber(payload.minTeamSize);
+    if (has('maxTeamSize')) updates.maxTeamSize = toNumber(payload.maxTeamSize);
+
     if (has('mode')) updates.mode = typeof payload.mode === 'string' ? payload.mode : 'online';
     if (has('state')) {
       const stateValue = typeof payload.state === 'string' ? payload.state.trim() : '';
@@ -496,6 +506,7 @@ export async function PUT(request: Request, context: any) {
     if (has('customTabs')) updates.customTabs = parseCustomTabsForStore(payload.customTabs);
 
     const db = getDb();
+    console.log('Admin PUT Updates:', JSON.stringify(updates, null, 2));
     await db.collection(COLLECTION).doc(id).set(updates, { merge: true });
     const updatedSnapshot = await db.collection(COLLECTION).doc(id).get();
 
@@ -517,6 +528,10 @@ export async function PUT(request: Request, context: any) {
         gradeEligibility: data.gradeEligibility ?? '',
         eligibilityType: data.eligibilityType ?? null,
         ageEligibility: data.ageEligibility ?? null,
+        targetAudience: data.targetAudience ?? 'students',
+        participationType: data.participationType ?? 'individual',
+        minTeamSize: data.minTeamSize ?? null,
+        maxTeamSize: data.maxTeamSize ?? null,
         registrationDeadline: toIsoString(data.registrationDeadline),
         registrationDeadlineTBD: Boolean(data.registrationDeadlineTBD),
         startDate: toIsoString(data.startDate),
