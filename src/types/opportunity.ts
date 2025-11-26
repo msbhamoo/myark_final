@@ -114,6 +114,7 @@ export interface Opportunity {
   registrationMode?: OpportunityRegistrationMode;
   registrationCount?: number;
   customTabs?: CustomTab[];
+  views?: number;
 }
 
 export interface OpportunityListResponse {

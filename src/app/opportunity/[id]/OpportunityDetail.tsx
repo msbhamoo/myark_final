@@ -45,6 +45,7 @@ import {
   Phone,
   Globe,
   HelpCircle,
+  Eye,
 } from 'lucide-react';
 
 const formatDate = (value?: string | null, fallback = 'TBA') => {
@@ -548,16 +549,8 @@ const renderCustomTabContent = (content: CustomTabContent) => {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {content.items.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 p-4 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 backdrop-blur-sm hover:border-primary/20 transition-colors"
-            >
-              <div className="mt-1">
-                <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
-                </div>
-              </div>
-              <span className="text-slate-600 dark:text-slate-100">{item}</span>
+            <div key={index} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+              <p className="text-slate-700 dark:text-slate-200">{item}</p>
             </div>
           ))}
         </div>
@@ -657,22 +650,35 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
     }
   }, [opportunityId, opportunity]);
 
-  // Track opportunity view for logged-in users
+  const [viewCount, setViewCount] = useState(opportunity.views || 0);
+
   useEffect(() => {
     const trackView = async () => {
-      if (!user || !opportunityId) return;
+      if (!opportunityId) return;
 
       try {
-        const token = await getIdToken();
-        if (!token) return;
+        let headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+        };
 
-        await fetch(`/api/opportunities/${opportunityId}/track-view`, {
+        if (user) {
+          const token = await getIdToken();
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+        }
+
+        const response = await fetch(`/api/opportunities/${opportunityId}/track-view`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
+          headers,
         });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.viewIncremented) {
+            setViewCount(prev => prev + 1);
+          }
+        }
       } catch (error) {
         // Silently fail - tracking is not critical
         console.error('Failed to track opportunity view:', error);
@@ -1248,6 +1254,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 md:p-8">
             <div className="flex flex-col gap-4">
               {/* Category Badge */}
+              {/* Category Badge */}
               <div>
                 <Badge className="border border-accent bg-accent/50 text-accent-foreground dark:border-primary/20 dark:bg-primary/10 dark:text-accent text-xs font-semibold">
                   {categoryLabel}
@@ -1255,7 +1262,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               </div>
 
               {/* Title */}
-              <h1 className="text-xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-white leading-tight">
+              <h1 className="text-xl md:text-4xl lg:text-3xl font-bold text-foreground dark:text-white leading-tight">
                 {title}
               </h1>
 
@@ -1278,6 +1285,14 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
 
               {/* Tags and Info Pills */}
               <div className="flex flex-wrap gap-2">
+                {/* Views */}
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                  <Eye className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                  <span className="text-slate-700 dark:text-slate-200">
+                    {viewCount.toLocaleString()} Views
+                  </span>
+                </div>
+
                 <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
                   <Calendar className="h-4 w-4 text-pink-500 dark:text-pink-300" />
                   <span className="text-slate-700 dark:text-slate-200">{dateDisplay}</span>
