@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { City, State } from '@/types/masters';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 const defaultForm = {
   name: '',
@@ -31,7 +32,7 @@ export function CitiesManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/cities');
+      const response = await fetch(API_ENDPOINTS.admin.cities);
       if (!response.ok) {
         throw new Error('Failed to load cities');
       }
@@ -47,7 +48,7 @@ export function CitiesManager() {
 
   const loadStates = async () => {
     try {
-      const response = await fetch('/api/admin/states');
+      const response = await fetch(API_ENDPOINTS.admin.states);
       if (!response.ok) {
         throw new Error('Failed to load states');
       }
@@ -73,7 +74,11 @@ export function CitiesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(editingId ? `/api/admin/cities/${editingId}` : '/api/admin/cities', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.cityById(editingId)
+        : API_ENDPOINTS.admin.cities;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formState),
@@ -105,7 +110,7 @@ export function CitiesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/cities/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.cityById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');

@@ -77,14 +77,25 @@ export interface Opportunity {
   organizerId?: string;
   organizerName?: string;
   organizerLogo?: string;
-  gradeEligibility: string;
+
+  // Eligibility - flexible support for grade and/or age
+  gradeEligibility: string; // Legacy field - kept for backward compatibility
+  eligibilityType?: 'grade' | 'age' | 'both'; // New: specifies what type of eligibility
+  ageEligibility?: string; // New: e.g., "14-18 years", "Under 21"
+
   mode: OpportunityMode;
   state?: string;
   status?: string;
   savedAt?: string | null;
+
+  // Dates - now support TBD (To Be Decided) status
   startDate?: string;
+  startDateTBD?: boolean; // New: true if start date is TBD
   endDate?: string;
+  endDateTBD?: boolean; // New: true if end date is TBD
   registrationDeadline?: string;
+  registrationDeadlineTBD?: boolean; // New: true if registration deadline is TBD
+
   fee?: string;
   currency?: string;
   image?: string;

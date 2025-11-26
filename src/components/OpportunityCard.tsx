@@ -7,15 +7,20 @@ import { OpportunityStatusBadgeMinimal } from '@/components/OpportunityStatusBad
 import { cn } from '@/lib/utils';
 
 
-interface OpportunityCardProps {
+export interface OpportunityCardProps {
   id: string;
   title: string;
   category: string;
   gradeEligibility: string;
+  eligibilityType?: 'grade' | 'age' | 'both';
+  ageEligibility?: string;
   organizer: string;
   startDate?: string;
+  startDateTBD?: boolean;
   endDate?: string;
+  endDateTBD?: boolean;
   registrationDeadline: string;
+  registrationDeadlineTBD?: boolean;
   mode: 'online' | 'offline' | 'hybrid';
   fee?: string;
   image?: string;
@@ -161,13 +166,53 @@ function getCategoryStyles(category: string) {
   return CATEGORY_STYLES[normalized] || CATEGORY_STYLES['default'];
 }
 
+// Helper to get eligibility display text
+export function getEligibilityDisplay(props: OpportunityCardProps): string {
+  const type = props.eligibilityType || 'grade';
+
+  // For 'age' type, ONLY show age (ignore grade even if it exists)
+  if (type === 'age') {
+    if (props.ageEligibility?.trim()) {
+      return `Age ${props.ageEligibility.trim()}`;
+    }
+    return 'Age eligibility TBD';
+  }
+
+  // For 'grade' type, ONLY show grade (ignore age even if it exists)
+  if (type === 'grade') {
+    if (props.gradeEligibility?.trim()) {
+      return `Grade ${props.gradeEligibility.trim()}`;
+    }
+    return 'All grades';
+  }
+
+  // For 'both' type, show both age and grade
+  if (type === 'both') {
+    const parts: string[] = [];
+    if (props.ageEligibility?.trim()) {
+      parts.push(`Age ${props.ageEligibility.trim()}`);
+    }
+    if (props.gradeEligibility?.trim()) {
+      parts.push(`Grade ${props.gradeEligibility.trim()}`);
+    }
+    return parts.length > 0 ? parts.join(' • ') : 'All grades';
+  }
+
+  return 'All grades';
+}
+
 export default function OpportunityCard({
   id,
   title,
   category,
   gradeEligibility,
+  eligibilityType,
+  ageEligibility,
   organizer,
   registrationDeadline,
+  registrationDeadlineTBD,
+  startDateTBD,
+  endDateTBD,
   mode,
   fee,
   className,
@@ -211,29 +256,33 @@ export default function OpportunityCard({
     : 'bg-accent text-[#1A2A33] dark:bg-primary/20 dark:text-accent';
 
   const computeDaysLeft = () => {
-    if (!registrationDeadline) {
-      return { label: 'Closes soon', days: null };
+    // Check if TBD first
+    if (registrationDeadlineTBD || !registrationDeadline) {
+      return { label: 'To Be Decided', days: null, isTBD: true };
     }
+
     const parsed = new Date(registrationDeadline);
     if (Number.isNaN(parsed.getTime())) {
-      return { label: registrationDeadline, days: null };
+      // Treat invalid dates as TBD
+      return { label: 'To Be Decided', days: null, isTBD: true };
     }
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const diff = Math.ceil((parsed.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    if (diff > 1) return { label: `${diff} days`, days: diff };
-    if (diff === 1) return { label: '1 day', days: 1 };
-    if (diff === 0) return { label: 'Today', days: 0 };
-    return { label: 'Closed', days: -1 };
+    if (diff > 1) return { label: `${diff} days`, days: diff, isTBD: false };
+    if (diff === 1) return { label: '1 day', days: 1, isTBD: false };
+    if (diff === 0) return { label: 'Today', days: 0, isTBD: false };
+    return { label: 'Closed', days: -1, isTBD: false };
   };
 
   const formatDisplayDeadline = () => {
-    if (!registrationDeadline) {
-      return 'TBA';
+    if (registrationDeadlineTBD || !registrationDeadline) {
+      return 'TBD';
     }
     const parsed = new Date(registrationDeadline);
     if (Number.isNaN(parsed.getTime())) {
-      return registrationDeadline;
+      return 'TBD';
     }
     return parsed.toLocaleDateString(undefined, {
       month: 'short',
@@ -241,9 +290,9 @@ export default function OpportunityCard({
     });
   };
 
-  const gradeLabel = gradeEligibility?.trim() || 'All grades';
-  const { label: daysLabel, days: daysCount } = computeDaysLeft();
-  const isUrgent = daysCount !== null && daysCount <= 1;
+  const eligibilityLabel = getEligibilityDisplay({ gradeEligibility, eligibilityType, ageEligibility } as OpportunityCardProps);
+  const { label: daysLabel, days: daysCount, isTBD } = computeDaysLeft();
+  const isUrgent = !isTBD && daysCount !== null && daysCount <= 1;
 
   return (
     <Link href={`/opportunity/${id}`}>
@@ -312,9 +361,9 @@ export default function OpportunityCard({
 
           {/* Info Pills - Horizontal Row */}
           <div className="flex flex-wrap gap-1.5 mb-2">
-            {/* Grade */}
+            {/* Eligibility */}
             <span className="inline-flex items-center rounded-lg bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-              {gradeLabel}
+              {eligibilityLabel}
             </span>
 
             {/* Mode */}

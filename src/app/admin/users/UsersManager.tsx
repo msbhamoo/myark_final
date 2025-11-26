@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/types/user';
 import { UserProfileModal } from './UserProfileModal';
+import { API_ENDPOINTS, buildUrl } from '@/constants/apiEndpoints';
 
 interface UserRow {
   id: string;
@@ -70,7 +71,8 @@ export function UsersManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/users?role=${role}`);
+      const url = buildUrl(API_ENDPOINTS.admin.users, { role });
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Failed to load users');
       }
@@ -117,7 +119,11 @@ export function UsersManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(editingId ? `/api/admin/users/${editingId}` : '/api/admin/users', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.userById(editingId)
+        : API_ENDPOINTS.admin.users;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formState),
@@ -154,7 +160,7 @@ export function UsersManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.userById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');

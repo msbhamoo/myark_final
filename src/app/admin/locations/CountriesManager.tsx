@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Country } from '@/types/masters';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 const defaultForm = {
   name: '',
@@ -29,7 +30,7 @@ export function CountriesManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/countries');
+      const response = await fetch(API_ENDPOINTS.admin.countries);
       if (!response.ok) {
         throw new Error('Failed to load countries');
       }
@@ -57,7 +58,11 @@ export function CountriesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(editingId ? `/api/admin/countries/${editingId}` : '/api/admin/countries', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.countryById(editingId)
+        : API_ENDPOINTS.admin.countries;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formState),
@@ -88,7 +93,7 @@ export function CountriesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/countries/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.countryById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');

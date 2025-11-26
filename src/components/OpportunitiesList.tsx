@@ -158,10 +158,15 @@ function OpportunitiesListContent({ opportunities }: OpportunitiesListProps) {
               title={opportunity.title}
               category={opportunity.category}
               gradeEligibility={opportunity.gradeEligibility || 'All Grades'}
+              eligibilityType={opportunity.eligibilityType}
+              ageEligibility={opportunity.ageEligibility}
               organizer={opportunity.organizer || 'Unknown Organizer'}
               startDate={formatDate(opportunity.startDate)}
               endDate={formatDate(opportunity.endDate)}
               registrationDeadline={opportunity.registrationDeadline ?? ''}
+              registrationDeadlineTBD={opportunity.registrationDeadlineTBD}
+              startDateTBD={opportunity.startDateTBD}
+              endDateTBD={opportunity.endDateTBD}
               mode={normalizeMode(opportunity.mode)}
               fee={formatFee(opportunity)}
               image={opportunity.image}

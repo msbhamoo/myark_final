@@ -14,6 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Country, State, City } from '@/types/masters';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 
 interface School {
@@ -65,7 +66,7 @@ export function SchoolsManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/schools');
+      const response = await fetch(API_ENDPOINTS.admin.schools);
       if (!response.ok) {
         throw new Error('Failed to load schools');
       }
@@ -82,9 +83,9 @@ export function SchoolsManager() {
   const loadLocations = async () => {
     try {
       const [countriesRes, statesRes, citiesRes] = await Promise.all([
-        fetch('/api/admin/countries'),
-        fetch('/api/admin/states'),
-        fetch('/api/admin/cities'),
+        fetch(API_ENDPOINTS.admin.countries),
+        fetch(API_ENDPOINTS.admin.states),
+        fetch(API_ENDPOINTS.admin.cities),
       ]);
       if (countriesRes.ok) {
         const payload = await countriesRes.json();
@@ -122,7 +123,11 @@ export function SchoolsManager() {
         ...formState,
         foundationYear: formState.foundationYear ? Number(formState.foundationYear) : null,
       };
-      const response = await fetch(editingId ? `/api/admin/schools/${editingId}` : '/api/admin/schools', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.schoolById(editingId)
+        : API_ENDPOINTS.admin.schools;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -164,7 +169,7 @@ export function SchoolsManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/schools/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.schoolById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');
@@ -224,7 +229,7 @@ export function SchoolsManager() {
                   formData.append('file', file);
 
                   try {
-                    const res = await fetch('/api/admin/upload', {
+                    const res = await fetch(API_ENDPOINTS.admin.upload, {
                       method: 'POST',
                       body: formData,
                     });

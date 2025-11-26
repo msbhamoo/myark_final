@@ -66,14 +66,19 @@ export function OpportunityForm({
                 organizerId: opportunity.organizerId,
                 organizerLogo: opportunity.organizerLogo ?? '',
                 gradeEligibility: opportunity.gradeEligibility,
+                eligibilityType: opportunity.eligibilityType || (opportunity.ageEligibility ? 'both' : 'grade'),
+                ageEligibility: opportunity.ageEligibility ?? '',
                 mode: opportunity.mode,
                 state: validatedState,
                 status: opportunity.status,
                 fee: opportunity.fee ?? '',
                 currency: 'INR',
                 registrationDeadline: opportunity.registrationDeadline ?? '',
+                registrationDeadlineTBD: opportunity.registrationDeadlineTBD ?? false,
                 startDate: opportunity.startDate ?? '',
+                startDateTBD: opportunity.startDateTBD ?? false,
                 endDate: opportunity.endDate ?? '',
+                endDateTBD: opportunity.endDateTBD ?? false,
                 selectedSegments: opportunity.segments,
                 image: opportunity.image ?? '',
                 description: opportunity.description ?? '',
@@ -233,14 +238,19 @@ export function OpportunityForm({
             organizer: fallbackOrganizerName,
             organizerLogo: formState.organizerLogo,
             gradeEligibility: formState.gradeEligibility,
+            eligibilityType: formState.eligibilityType,
+            ageEligibility: formState.ageEligibility || null,
             mode: formState.mode,
             state: normalizedState,
             status: formState.status,
             fee: formState.fee,
             currency: 'INR',
             registrationDeadline: formState.registrationDeadline || null,
+            registrationDeadlineTBD: formState.registrationDeadlineTBD,
             startDate: formState.startDate || null,
+            startDateTBD: formState.startDateTBD,
             endDate: formState.endDate || null,
+            endDateTBD: formState.endDateTBD,
             segments,
             image: formState.image,
             description: formState.description,
@@ -390,17 +400,53 @@ export function OpportunityForm({
                     />
                 </div>
 
-                <div className='space-y-2'>
-                    <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-grade'>
-                        Grade eligibility
+                <div className='md:col-span-2 space-y-3'>
+                    <label className='text-sm font-medium text-foreground dark:text-white'>
+                        Eligibility Criteria
                     </label>
-                    <Input
-                        id='op-grade'
-                        value={formState.gradeEligibility}
-                        onChange={(event) => setFormState((prev) => ({ ...prev, gradeEligibility: event.target.value }))}
-                        placeholder='6-12'
-                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
+                    <select
+                        value={formState.eligibilityType}
+                        onChange={(event) => setFormState((prev) => ({ ...prev, eligibilityType: event.target.value as 'grade' | 'age' | 'both' }))}
+                        className='h-10 w-full rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
+                    >
+                        <option value='grade'>By Grade</option>
+                        <option value='age'>By Age</option>
+                        <option value='both'>Both Grade & Age</option>
+                    </select>
+
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                        {(formState.eligibilityType === 'grade' || formState.eligibilityType === 'both') && (
+                            <div className='space-y-2'>
+                                <label className='text-xs font-medium text-muted-foreground' htmlFor='op-grade'>
+                                    Grade Range
+                                </label>
+                                <Input
+                                    id='op-grade'
+                                    value={formState.gradeEligibility}
+                                    onChange={(event) => setFormState((prev) => ({ ...prev, gradeEligibility: event.target.value }))}
+                                    placeholder='e.g., 6-12, 9-10'
+                                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                                />
+                            </div>
+                        )}
+                        {(formState.eligibilityType === 'age' || formState.eligibilityType === 'both') && (
+                            <div className='space-y-2'>
+                                <label className='text-xs font-medium text-muted-foreground' htmlFor='op-age'>
+                                    Age Range
+                                </label>
+                                <Input
+                                    id='op-age'
+                                    value={formState.ageEligibility}
+                                    onChange={(event) => setFormState((prev) => ({ ...prev, ageEligibility: event.target.value }))}
+                                    placeholder='e.g., 14-18 years, Under 21'
+                                    className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <p className='text-xs text-muted-foreground'>
+                        Choose whether eligibility is based on grade, age, or both. This helps students find relevant opportunities.
+                    </p>
                 </div>
 
                 <div className='space-y-2'>
@@ -531,39 +577,102 @@ export function OpportunityForm({
                     <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-registration'>
                         Registration deadline
                     </label>
-                    <Input
-                        id='op-registration'
-                        value={formState.registrationDeadline}
-                        onChange={(event) => setFormState((prev) => ({ ...prev, registrationDeadline: event.target.value }))}
-                        placeholder='2024-02-28'
-                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
+                    <div className='flex items-center gap-2'>
+                        <Input
+                            id='op-registration'
+                            type='date'
+                            value={formState.registrationDeadline}
+                            onChange={(event) => setFormState((prev) => ({ ...prev, registrationDeadline: event.target.value }))}
+                            disabled={formState.registrationDeadlineTBD}
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white disabled:opacity-50'
+                        />
+                        <label className='flex items-center gap-2 whitespace-nowrap text-sm'>
+                            <input
+                                type='checkbox'
+                                checked={formState.registrationDeadlineTBD}
+                                onChange={(e) => setFormState((prev) => ({
+                                    ...prev,
+                                    registrationDeadlineTBD: e.target.checked,
+                                    registrationDeadline: e.target.checked ? '' : prev.registrationDeadline
+                                }))}
+                                className='h-4 w-4 rounded border border-border/50 dark:border-white/20'
+                            />
+                            <span className='text-foreground dark:text-white'>TBD</span>
+                        </label>
+                    </div>
+                    {formState.registrationDeadlineTBD && (
+                        <p className='text-xs text-yellow-400'>
+                            Will display as "To Be Decided" on the frontend
+                        </p>
+                    )}
                 </div>
 
                 <div className='space-y-2'>
                     <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-start'>
                         Start date
                     </label>
-                    <Input
-                        id='op-start'
-                        value={formState.startDate}
-                        onChange={(event) => setFormState((prev) => ({ ...prev, startDate: event.target.value }))}
-                        placeholder='2024-03-15'
-                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
+                    <div className='flex items-center gap-2'>
+                        <Input
+                            id='op-start'
+                            type='date'
+                            value={formState.startDate}
+                            onChange={(event) => setFormState((prev) => ({ ...prev, startDate: event.target.value }))}
+                            disabled={formState.startDateTBD}
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white disabled:opacity-50'
+                        />
+                        <label className='flex items-center gap-2 whitespace-nowrap text-sm'>
+                            <input
+                                type='checkbox'
+                                checked={formState.startDateTBD}
+                                onChange={(e) => setFormState((prev) => ({
+                                    ...prev,
+                                    startDateTBD: e.target.checked,
+                                    startDate: e.target.checked ? '' : prev.startDate
+                                }))}
+                                className='h-4 w-4 rounded border border-border/50 dark:border-white/20'
+                            />
+                            <span className='text-foreground dark:text-white'>TBD</span>
+                        </label>
+                    </div>
+                    {formState.startDateTBD && (
+                        <p className='text-xs text-yellow-400'>
+                            Will display as "To Be Decided" on the frontend
+                        </p>
+                    )}
                 </div>
 
                 <div className='space-y-2'>
                     <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-end'>
                         End date
                     </label>
-                    <Input
-                        id='op-end'
-                        value={formState.endDate}
-                        onChange={(event) => setFormState((prev) => ({ ...prev, endDate: event.target.value }))}
-                        placeholder='2024-03-16'
-                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
-                    />
+                    <div className='flex items-center gap-2'>
+                        <Input
+                            id='op-end'
+                            type='date'
+                            value={formState.endDate}
+                            onChange={(event) => setFormState((prev) => ({ ...prev, endDate: event.target.value }))}
+                            disabled={formState.endDateTBD}
+                            className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white disabled:opacity-50'
+                        />
+                        <label className='flex items-center gap-2 whitespace-nowrap text-sm'>
+                            <input
+                                type='checkbox'
+                                checked={formState.endDateTBD}
+                                onChange={(e) => setFormState((prev) => ({
+                                    ...prev,
+                                    endDateTBD: e.target.checked,
+                                    endDate: e.target.checked ? '' : prev.endDate
+                                }))}
+                                className='h-4 w-4 rounded border border-border/50 dark:border-white/20'
+                            />
+                            <span className='text-foreground dark:text-white'>TBD</span>
+                        </label>
+                    </div>
+                    {formState.endDateTBD && (
+                        <p className='text-xs text-yellow-400'>
+                            Will display as "To Be Decided" on the frontend
+                        </p>
+                    )}
                 </div>
 
                 <div className='space-y-2'>

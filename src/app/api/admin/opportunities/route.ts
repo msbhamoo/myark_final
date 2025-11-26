@@ -427,6 +427,8 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     organizer: data.organizer ?? '',
     organizerLogo: data.organizerLogo ?? '',
     gradeEligibility: data.gradeEligibility ?? '',
+    eligibilityType: data.eligibilityType ?? null,
+    ageEligibility: data.ageEligibility ?? null,
     mode: data.mode ?? 'online',
     state: (() => {
       const rawState = typeof data.state === 'string' ? data.state.trim() : '';
@@ -436,8 +438,11 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     fee: data.fee ?? '',
     currency: data.currency ?? 'INR',
     registrationDeadline: toIsoString(data.registrationDeadline),
+    registrationDeadlineTBD: Boolean(data.registrationDeadlineTBD),
     startDate: toIsoString(data.startDate),
+    startDateTBD: Boolean(data.startDateTBD),
     endDate: toIsoString(data.endDate),
+    endDateTBD: Boolean(data.endDateTBD),
     segments: sanitizeStringArray(data.segments),
     image: data.image ?? '',
     description: data.description ?? '',
@@ -505,6 +510,8 @@ export async function POST(request: Request) {
       organizer: typeof payload.organizer === 'string' ? payload.organizer.trim() : '',
       organizerLogo: typeof payload.organizerLogo === 'string' ? payload.organizerLogo.trim() : '',
       gradeEligibility: typeof payload.gradeEligibility === 'string' ? payload.gradeEligibility.trim() : '',
+      eligibilityType: typeof payload.eligibilityType === 'string' ? payload.eligibilityType.trim() : null,
+      ageEligibility: typeof payload.ageEligibility === 'string' ? payload.ageEligibility.trim() : null,
       mode: typeof payload.mode === 'string' ? payload.mode : 'online',
       state:
         typeof payload.state === 'string' && INDIAN_STATES_SET.has(payload.state.trim() as any)
@@ -514,8 +521,11 @@ export async function POST(request: Request) {
       fee: typeof payload.fee === 'string' ? payload.fee.trim() : '',
       currency: 'INR',
       registrationDeadline: toDateValue(payload.registrationDeadline),
+      registrationDeadlineTBD: Boolean(payload.registrationDeadlineTBD),
       startDate: toDateValue(payload.startDate),
+      startDateTBD: Boolean(payload.startDateTBD),
       endDate: toDateValue(payload.endDate),
+      endDateTBD: Boolean(payload.endDateTBD),
       segments: sanitizeStringArray(payload.segments),
       image: typeof payload.image === 'string' ? payload.image.trim() : '',
       description: typeof payload.description === 'string' ? payload.description : '',

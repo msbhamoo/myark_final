@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 type HostRecord = {
   id: string;
@@ -48,7 +49,7 @@ export function HostsManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/hosts');
+      const response = await fetch(API_ENDPOINTS.admin.hosts);
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to load hosts');
@@ -71,7 +72,7 @@ export function HostsManager() {
     setUpdatingId(id);
     setError(null);
     try {
-      const response = await fetch('/api/admin/hosts', {
+      const response = await fetch(API_ENDPOINTS.admin.hosts, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, ...updates }),
@@ -85,15 +86,15 @@ export function HostsManager() {
         prev.map((host) =>
           host.id === id
             ? {
-                ...host,
-                organizer: {
-                  ...host.organizer,
-                  visibility: payload.visibility ?? host.organizer.visibility,
-                  isVerified:
-                    payload.isVerified === undefined ? host.organizer.isVerified : payload.isVerified,
-                  updatedAt: payload.updatedAt ?? host.organizer.updatedAt,
-                },
-              }
+              ...host,
+              organizer: {
+                ...host.organizer,
+                visibility: payload.visibility ?? host.organizer.visibility,
+                isVerified:
+                  payload.isVerified === undefined ? host.organizer.isVerified : payload.isVerified,
+                updatedAt: payload.updatedAt ?? host.organizer.updatedAt,
+              },
+            }
             : host,
         ),
       );
@@ -137,7 +138,7 @@ export function HostsManager() {
               key={host.id}
               className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-4 shadow-sm shadow-slate-950/20'
             >
-                <div className='flex flex-col gap-3'>
+              <div className='flex flex-col gap-3'>
                 <div>
                   <h3 className='text-base font-semibold text-foreground dark:text-white'>
                     {host.organizationName || host.displayName || host.email}

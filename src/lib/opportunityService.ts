@@ -281,6 +281,8 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     category: String(data.category ?? ''),
     organizer: String(data.organizer ?? ''),
     gradeEligibility: String(data.gradeEligibility ?? ''),
+    eligibilityType: data.eligibilityType ? (String(data.eligibilityType) as 'grade' | 'age' | 'both') : undefined,
+    ageEligibility: data.ageEligibility ? String(data.ageEligibility) : undefined,
     mode: (data.mode ?? 'online') as Opportunity['mode'],
     state: (() => {
       const rawState = typeof data.state === 'string' ? data.state.trim() : '';
@@ -290,6 +292,9 @@ const mapOpportunity = (doc: QueryDocumentSnapshot): Opportunity => {
     startDate: toIsoString(data.startDate),
     endDate: toIsoString(data.endDate),
     registrationDeadline: toIsoString(data.registrationDeadline),
+    registrationDeadlineTBD: Boolean(data.registrationDeadlineTBD),
+    startDateTBD: Boolean(data.startDateTBD),
+    endDateTBD: Boolean(data.endDateTBD),
     fee: data.fee ? String(data.fee) : undefined,
     currency: 'INR',
     image: data.image ? String(data.image) : undefined,

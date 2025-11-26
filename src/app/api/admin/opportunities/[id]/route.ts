@@ -449,6 +449,14 @@ export async function PUT(request: Request, context: any) {
       updates.gradeEligibility =
         typeof payload.gradeEligibility === 'string' ? payload.gradeEligibility.trim() : '';
     }
+    if (has('eligibilityType')) {
+      updates.eligibilityType =
+        typeof payload.eligibilityType === 'string' ? payload.eligibilityType.trim() : null;
+    }
+    if (has('ageEligibility')) {
+      updates.ageEligibility =
+        typeof payload.ageEligibility === 'string' ? payload.ageEligibility.trim() : null;
+    }
     if (has('mode')) updates.mode = typeof payload.mode === 'string' ? payload.mode : 'online';
     if (has('state')) {
       const stateValue = typeof payload.state === 'string' ? payload.state.trim() : '';
@@ -465,8 +473,11 @@ export async function PUT(request: Request, context: any) {
     }
 
     if (has('registrationDeadline')) updates.registrationDeadline = toDateValue(payload.registrationDeadline);
+    if (has('registrationDeadlineTBD')) updates.registrationDeadlineTBD = Boolean(payload.registrationDeadlineTBD);
     if (has('startDate')) updates.startDate = toDateValue(payload.startDate);
+    if (has('startDateTBD')) updates.startDateTBD = Boolean(payload.startDateTBD);
     if (has('endDate')) updates.endDate = toDateValue(payload.endDate);
+    if (has('endDateTBD')) updates.endDateTBD = Boolean(payload.endDateTBD);
 
     if (has('segments')) updates.segments = sanitizeStringArray(payload.segments);
     if (has('image')) updates.image = typeof payload.image === 'string' ? payload.image.trim() : '';
@@ -503,9 +514,15 @@ export async function PUT(request: Request, context: any) {
           return INDIAN_STATES_SET.has(rawState as any) ? rawState : '';
         })(),
         currency: 'INR',
+        gradeEligibility: data.gradeEligibility ?? '',
+        eligibilityType: data.eligibilityType ?? null,
+        ageEligibility: data.ageEligibility ?? null,
         registrationDeadline: toIsoString(data.registrationDeadline),
+        registrationDeadlineTBD: Boolean(data.registrationDeadlineTBD),
         startDate: toIsoString(data.startDate),
+        startDateTBD: Boolean(data.startDateTBD),
         endDate: toIsoString(data.endDate),
+        endDateTBD: Boolean(data.endDateTBD),
         category: data.category ?? '',
         categoryName: data.categoryName ?? '',
         organizerId: data.organizerId ?? null,

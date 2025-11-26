@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { OpportunityCategory, Organizer } from '@/types/masters';
 import { OpportunityItem, HomeSegmentOption } from './types';
 import { OpportunityForm } from './OpportunityForm';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { OpportunityListView } from './OpportunityListView';
 import { OpportunityResources } from './OpportunityResources';
 
@@ -25,7 +26,7 @@ export function OpportunitiesManager() {
   const loadItems = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('/api/admin/opportunities');
+      const res = await fetch(API_ENDPOINTS.admin.opportunities);
       if (!res.ok) throw new Error('Failed to load opportunities');
       const data = await res.json();
       setItems(data.items || []);
@@ -40,8 +41,8 @@ export function OpportunitiesManager() {
   const loadMasters = useCallback(async () => {
     try {
       const [catRes, orgRes] = await Promise.all([
-        fetch('/api/admin/opportunity-categories'),
-        fetch('/api/admin/organizers'),
+        fetch(API_ENDPOINTS.admin.opportunityCategories),
+        fetch(API_ENDPOINTS.admin.organizers),
       ]);
       if (catRes.ok) {
         const data = await catRes.json();
@@ -58,7 +59,7 @@ export function OpportunitiesManager() {
 
   const loadSegments = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/home-segments');
+      const res = await fetch(API_ENDPOINTS.admin.homeSegments);
       if (res.ok) {
         const data = await res.json();
         const segments: HomeSegmentOption[] = (data.items || []).map((seg: any) => ({
@@ -101,14 +102,15 @@ export function OpportunitiesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(
-        editingId ? `/api/admin/opportunities/${editingId}` : '/api/admin/opportunities',
-        {
-          method: editingId ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      );
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.opportunityById(editingId)
+        : API_ENDPOINTS.admin.opportunities;
+
+      const response = await fetch(endpoint, {
+        method: editingId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
@@ -132,7 +134,7 @@ export function OpportunitiesManager() {
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/admin/opportunities/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.opportunityById(id), { method: 'DELETE' });
       if (!response.ok) {
         throw new Error('Failed to delete');
       }
@@ -159,7 +161,7 @@ export function OpportunitiesManager() {
         customTabs: item.customTabs || [], // Ensure customTabs is array
       };
 
-      const response = await fetch(`/api/admin/opportunities/${item.id}`, {
+      const response = await fetch(API_ENDPOINTS.admin.opportunityById(item.id), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

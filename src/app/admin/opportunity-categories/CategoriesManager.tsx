@@ -13,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 interface OpportunityCategory {
   id: string;
@@ -37,7 +38,7 @@ export function CategoriesManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/opportunity-categories');
+      const response = await fetch(API_ENDPOINTS.admin.opportunityCategories);
       if (!response.ok) {
         throw new Error('Failed to load categories');
       }
@@ -70,7 +71,11 @@ export function CategoriesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(editingId ? `/api/admin/opportunity-categories/${editingId}` : '/api/admin/opportunity-categories', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.opportunityCategoryById(editingId)
+        : API_ENDPOINTS.admin.opportunityCategories;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formState),
@@ -102,7 +107,7 @@ export function CategoriesManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/opportunity-categories/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.opportunityCategoryById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');

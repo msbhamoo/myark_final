@@ -14,6 +14,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 type AdminHomeSegment = {
   id: string | null;
@@ -84,7 +85,7 @@ export function HomeSegmentsManager() {
     setSegmentsLoading(true);
     setSegmentsError(null);
     try {
-      const response = await fetch('/api/admin/home-segments');
+      const response = await fetch(API_ENDPOINTS.admin.homeSegments);
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to load home segments');
@@ -124,7 +125,7 @@ export function HomeSegmentsManager() {
     setStatsError(null);
     setStatsMessage(null);
     try {
-      const response = await fetch('/api/admin/home-stats');
+      const response = await fetch(API_ENDPOINTS.admin.homeStats);
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to load stats multiplier');
@@ -207,8 +208,8 @@ export function HomeSegmentsManager() {
 
     try {
       const endpoint = formState.persisted && formState.id
-        ? `/api/admin/home-segments/${formState.id}`
-        : '/api/admin/home-segments';
+        ? API_ENDPOINTS.admin.homeSegmentById(formState.id)
+        : API_ENDPOINTS.admin.homeSegments;
       const response = await fetch(endpoint, requestInit);
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
@@ -237,7 +238,7 @@ export function HomeSegmentsManager() {
     setSegmentSubmitting(true);
     setSegmentsError(null);
     try {
-      const response = await fetch(`/api/admin/home-segments/${segment.id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.homeSegmentById(segment.id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete segment');
@@ -268,7 +269,7 @@ export function HomeSegmentsManager() {
     const multiplier = clampMultiplier(parsed);
 
     try {
-      const response = await fetch('/api/admin/home-stats', {
+      const response = await fetch(API_ENDPOINTS.admin.homeStats, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ multiplier }),

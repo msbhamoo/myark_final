@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Plus, Edit2, Trash2, Search, Eye, Share2, Calendar, Tag, FileText } from 'lucide-react'
+import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 
 function slugify(v: string) {
   return v
@@ -38,7 +39,7 @@ export default function BlogsManager() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch('/api/admin/blogs', { cache: 'no-store' })
+        const res = await fetch(API_ENDPOINTS.admin.blogs, { cache: 'no-store' })
         const data = await res.json()
         setPosts(data.posts || [])
       } finally {
@@ -93,7 +94,7 @@ export default function BlogsManager() {
         .filter(Boolean),
     }
     const method = editing ? 'PATCH' : 'POST'
-    const url = editing ? `/api/admin/blogs/${editing.id}` : '/api/admin/blogs'
+    const url = editing ? API_ENDPOINTS.admin.blogById(editing.id) : API_ENDPOINTS.admin.blogs
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     if (!res.ok) {
       alert('Failed to save')
@@ -111,7 +112,7 @@ export default function BlogsManager() {
 
   const remove = async (id: string) => {
     if (!confirm('Delete this post?')) return
-    const res = await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' })
+    const res = await fetch(API_ENDPOINTS.admin.blogById(id), { method: 'DELETE' })
     if (!res.ok) {
       alert('Failed to delete')
       return
@@ -130,7 +131,7 @@ export default function BlogsManager() {
           <h1 className="text-3xl font-bold text-foreground dark:text-white">Blog Management</h1>
           <p className="text-sm text-muted-foreground mt-1">Manage all blog posts and content</p>
         </div>
-        <Button 
+        <Button
           onClick={openCreate}
           className="gap-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white"
         >
@@ -158,10 +159,10 @@ export default function BlogsManager() {
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input 
-          placeholder="Search by title or slug..." 
-          value={query} 
-          onChange={(e) => setQuery(e.target.value)} 
+        <Input
+          placeholder="Search by title or slug..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           className="pl-10 bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
         />
       </div>
@@ -181,8 +182,8 @@ export default function BlogsManager() {
           {filtered.map((p) => {
             const totalShares = Object.values(p.shares || {}).reduce((a, b) => a + (b as number), 0)
             return (
-              <Card 
-                key={p.id} 
+              <Card
+                key={p.id}
                 className="overflow-hidden border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 hover:shadow-lg transition-shadow flex flex-col backdrop-blur"
               >
                 {/* Image */}
@@ -190,11 +191,10 @@ export default function BlogsManager() {
                   <div className="relative h-40 overflow-hidden bg-secondary dark:bg-slate-700">
                     <img src={p.coverImage} alt={p.title} className="h-full w-full object-cover" />
                     <div className="absolute top-3 right-3">
-                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${
-                        p.status === 'published' 
-                          ? 'bg-green-500/90 text-white' 
+                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${p.status === 'published'
+                          ? 'bg-green-500/90 text-white'
                           : 'bg-yellow-500/90 text-white'
-                      }`}>
+                        }`}>
                         {p.status === 'published' ? 'âœ“ Published' : 'â—¯ Draft'}
                       </span>
                     </div>
@@ -206,7 +206,7 @@ export default function BlogsManager() {
                   <h3 className="font-bold text-lg text-foreground dark:text-white line-clamp-2 mb-2">
                     {p.title}
                   </h3>
-                  
+
                   <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
                     {p.excerpt}
                   </p>
@@ -246,8 +246,8 @@ export default function BlogsManager() {
 
                   {/* Actions */}
                   <div className="flex gap-2 mt-auto">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => openEdit(p)}
                       className="flex-1 gap-2 border-border/60 dark:border-white/10 text-foreground dark:text-muted-foreground hover:bg-card/80 dark:hover:bg-white/10"
@@ -255,8 +255,8 @@ export default function BlogsManager() {
                       <Edit2 className="h-4 w-4" />
                       Edit
                     </Button>
-                    <Button 
-                      variant="destructive" 
+                    <Button
+                      variant="destructive"
                       size="sm"
                       onClick={() => remove(p.id)}
                       className="flex-1 gap-2"
@@ -280,14 +280,14 @@ export default function BlogsManager() {
               {editing ? 'Edit Post' : 'Create New Post'}
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-6 py-4">
             {/* Title & Slug */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Title</Label>
-                <Input 
-                  value={form.title} 
+                <Input
+                  value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                   placeholder="Post title"
                   className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -295,8 +295,8 @@ export default function BlogsManager() {
               </div>
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Slug</Label>
-                <Input 
-                  value={form.slug} 
+                <Input
+                  value={form.slug}
                   onChange={(e) => setForm({ ...form, slug: slugify(e.target.value) })}
                   placeholder="post-slug"
                   className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -307,8 +307,8 @@ export default function BlogsManager() {
             {/* Excerpt */}
             <div className="space-y-2">
               <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Excerpt</Label>
-              <Input 
-                value={form.excerpt} 
+              <Input
+                value={form.excerpt}
                 onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
                 placeholder="Short description for preview"
                 className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -318,8 +318,8 @@ export default function BlogsManager() {
             {/* Cover Image */}
             <div className="space-y-2">
               <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Cover Image URL</Label>
-              <Input 
-                value={form.coverImage} 
+              <Input
+                value={form.coverImage}
                 onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
                 placeholder="https://example.com/image.jpg"
                 className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -330,8 +330,8 @@ export default function BlogsManager() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Author</Label>
-                <Input 
-                  value={form.author} 
+                <Input
+                  value={form.author}
                   onChange={(e) => setForm({ ...form, author: e.target.value })}
                   placeholder="Author name"
                   className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -339,8 +339,8 @@ export default function BlogsManager() {
               </div>
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Tags (comma separated)</Label>
-                <Input 
-                  value={form.tags} 
+                <Input
+                  value={form.tags}
                   onChange={(e) => setForm({ ...form, tags: e.target.value })}
                   placeholder="tag1, tag2, tag3"
                   className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
@@ -352,8 +352,8 @@ export default function BlogsManager() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Status</Label>
-                <select 
-                  value={form.status} 
+                <select
+                  value={form.status}
                   onChange={(e) => setForm({ ...form, status: e.target.value as BlogStatus })}
                   className="w-full rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 py-2 text-foreground dark:text-white"
                 >
@@ -363,9 +363,9 @@ export default function BlogsManager() {
               </div>
               <div className="space-y-2">
                 <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Publish Date (optional)</Label>
-                <Input 
-                  type="datetime-local" 
-                  value={form.publishedAt} 
+                <Input
+                  type="datetime-local"
+                  value={form.publishedAt}
                   onChange={(e) => setForm({ ...form, publishedAt: e.target.value })}
                   className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white"
                 />
@@ -375,8 +375,8 @@ export default function BlogsManager() {
             {/* Content */}
             <div className="space-y-2">
               <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Content (Markdown)</Label>
-              <Textarea 
-                value={form.content} 
+              <Textarea
+                value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 placeholder="Write your content in Markdown..."
                 className="min-h-80 bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground  font-mono text-sm"
@@ -385,14 +385,14 @@ export default function BlogsManager() {
 
             {/* Actions */}
             <div className="flex justify-end gap-2 pt-4 border-t border-border/60 dark:border-white/10">
-              <Button 
+              <Button
                 variant="outline"
                 onClick={() => setShowForm(false)}
                 className="border-border/60 dark:border-white/10 text-foreground dark:text-muted-foreground hover:bg-card/80 dark:hover:bg-white/10"
               >
                 Cancel
               </Button>
-              <Button 
+              <Button
                 onClick={save}
                 className="gap-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white"
               >

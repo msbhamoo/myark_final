@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { Organizer, OpportunityCategory } from '@/types/masters';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 const defaultForm = {
   name: '',
@@ -46,7 +47,7 @@ export function OrganizersManager() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/admin/organizers');
+      const response = await fetch(API_ENDPOINTS.admin.organizers);
       if (!response.ok) {
         throw new Error('Failed to load organizers');
       }
@@ -108,7 +109,7 @@ export function OrganizersManager() {
 
   const loadCategories = async () => {
     try {
-      const response = await fetch('/api/admin/opportunity-categories');
+      const response = await fetch(API_ENDPOINTS.admin.opportunityCategories);
       if (response.ok) {
         const payload = await response.json();
         setCategories(payload.items ?? []);
@@ -138,7 +139,11 @@ export function OrganizersManager() {
         isVerified: Boolean(formState.isVerified),
         visibility: formState.visibility,
       };
-      const response = await fetch(editingId ? `/api/admin/organizers/${editingId}` : '/api/admin/organizers', {
+      const endpoint = editingId
+        ? API_ENDPOINTS.admin.organizerById(editingId)
+        : API_ENDPOINTS.admin.organizers;
+
+      const response = await fetch(endpoint, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -183,7 +188,7 @@ export function OrganizersManager() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/organizers/${id}`, { method: 'DELETE' });
+      const response = await fetch(API_ENDPOINTS.admin.organizerById(id), { method: 'DELETE' });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error ?? 'Failed to delete');
@@ -307,7 +312,7 @@ export function OrganizersManager() {
                   formData.append('file', file);
 
                   try {
-                    const res = await fetch('/api/admin/upload', {
+                    const res = await fetch(API_ENDPOINTS.admin.upload, {
                       method: 'POST',
                       body: formData,
                     });

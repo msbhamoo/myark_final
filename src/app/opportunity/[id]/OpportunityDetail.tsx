@@ -9,7 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import OpportunityCard from '@/components/OpportunityCard';
+import OpportunityCard, { getEligibilityDisplay } from '@/components/OpportunityCard';
 import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
 import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
 import { CustomTab, CustomTabContent } from '@/types/customTab';
@@ -1283,6 +1283,16 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                   <span className="text-slate-700 dark:text-slate-200">{dateDisplay}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
+                  <Trophy className="h-4 w-4 text-sky-500 dark:text-sky-300" />
+                  <p className="text-sm text-slate-500 dark:text-slate-300">Eligibility</p>
+                  <p className="font-semibold text-foreground dark:text-white">{getEligibilityDisplay({
+                    gradeEligibility: opportunity.gradeEligibility || '',
+                    eligibilityType: opportunity.eligibilityType,
+                    ageEligibility: opportunity.ageEligibility,
+                    registrationDeadline: opportunity.registrationDeadline || ''
+                  } as any)}</p>
+                </div>
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
                   <Globe className="h-4 w-4 text-sky-500 dark:text-sky-300" />
                   <span className="text-slate-700 dark:text-slate-200">{modeLabel}</span>
                 </div>
@@ -1292,6 +1302,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                     <span className="text-slate-700 dark:text-slate-200">{opportunity.state}</span>
                   </div>
                 )}
+
                 <div className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm">
                   <Clock className="h-4 w-4 text-primary dark:text-accent" />
                   <span className="text-slate-700 dark:text-slate-200">Updated: {formatDate((opportunity as any).updatedAt || (opportunity as any).createdAt)}</span>
@@ -2177,8 +2188,13 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                   <div className="flex items-start gap-3 p-3 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
                     <Trophy className="h-5 w-5 text-orange-400 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-sm text-slate-500 dark:text-slate-300">Grade Eligibility</p>
-                      <p className="font-semibold text-foreground dark:text-white">{opportunity.gradeEligibility || 'All Grades'}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-300">Eligibility</p>
+                      <p className="font-semibold text-foreground dark:text-white">{getEligibilityDisplay({
+                        gradeEligibility: opportunity.gradeEligibility || '',
+                        eligibilityType: opportunity.eligibilityType,
+                        ageEligibility: opportunity.ageEligibility,
+                        registrationDeadline: opportunity.registrationDeadline || ''
+                      } as any)}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-3 rounded-xl bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
