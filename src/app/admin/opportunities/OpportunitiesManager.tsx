@@ -210,6 +210,13 @@ export function OpportunitiesManager() {
         >
           Resources
         </button>
+        <button
+          type="button"
+          onClick={() => window.location.href = '/admin/opportunities/bulk-upload'}
+          className="rounded-full px-4 py-2 text-sm font-medium transition bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-500/30"
+        >
+          📤 Bulk Upload
+        </button>
       </div>
 
       {error && (
