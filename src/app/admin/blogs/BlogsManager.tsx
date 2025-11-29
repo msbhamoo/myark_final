@@ -6,10 +6,29 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Plus, Edit2, Trash2, Search, Eye, Share2, Calendar, Tag, FileText } from 'lucide-react'
+import { Plus, Edit2, Trash2, Search, Eye, Share2, Calendar, Tag, FileText, Image as ImageIcon, Loader2 } from 'lucide-react'
 import { API_ENDPOINTS } from '@/constants/apiEndpoints'
+import dynamic from 'next/dynamic'
+import { IKContext, IKUpload } from 'imagekitio-react'
+import 'react-quill-new/dist/quill.snow.css'
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false })
+
+const authenticator = async () => {
+  try {
+    const response = await fetch('/api/auth/imagekit');
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+    }
+    const data = await response.json();
+    const { signature, expire, token } = data;
+    return { signature, expire, token };
+  } catch (error) {
+    throw new Error(`Authentication request failed: ${error}`);
+  }
+};
 
 function slugify(v: string) {
   return v
@@ -24,6 +43,7 @@ export default function BlogsManager() {
   const [query, setQuery] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<BlogPost | null>(null)
+  const [imageUploading, setImageUploading] = useState(false)
   const [form, setForm] = useState({
     title: '',
     slug: '',
@@ -83,6 +103,17 @@ export default function BlogsManager() {
       publishedAt: p.publishedAt || ''
     })
     setShowForm(true)
+  }
+
+  const onUploadSuccess = (res: any) => {
+    setImageUploading(false)
+    setForm((prev) => ({ ...prev, coverImage: res.url }))
+  }
+
+  const onUploadError = (err: any) => {
+    setImageUploading(false)
+    console.error('Upload error', err)
+    alert('Upload failed')
   }
 
   const save = async () => {
@@ -192,8 +223,8 @@ export default function BlogsManager() {
                     <img src={p.coverImage} alt={p.title} className="h-full w-full object-cover" />
                     <div className="absolute top-3 right-3">
                       <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${p.status === 'published'
-                          ? 'bg-green-500/90 text-white'
-                          : 'bg-yellow-500/90 text-white'
+                        ? 'bg-green-500/90 text-white'
+                        : 'bg-yellow-500/90 text-white'
                         }`}>
                         {p.status === 'published' ? 'âœ“ Published' : 'â—¯ Draft'}
                       </span>
@@ -317,13 +348,56 @@ export default function BlogsManager() {
 
             {/* Cover Image */}
             <div className="space-y-2">
-              <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Cover Image URL</Label>
-              <Input
-                value={form.coverImage}
-                onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
-                placeholder="https://example.com/image.jpg"
-                className="bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground "
-              />
+              <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Cover Image</Label>
+              <div className="flex flex-col gap-4">
+                {form.coverImage && (
+                  <div className="relative h-40 w-full overflow-hidden rounded-md border border-border/60 dark:border-white/10">
+                    <img src={form.coverImage} alt="Cover" className="h-full w-full object-cover" />
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-2 right-2 h-8 w-8"
+                      onClick={() => setForm({ ...form, coverImage: '' })}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+                <div className="flex items-center gap-4">
+                  <IKContext
+                    publicKey={process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY}
+                    urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}
+                    authenticator={authenticator}
+                  >
+                    <IKUpload
+                      fileName="blog-cover.jpg"
+                      onUploadStart={() => setImageUploading(true)}
+                      onSuccess={onUploadSuccess}
+                      onError={onUploadError}
+                      className="hidden"
+                      id="cover-upload"
+                    />
+                    <label
+                      htmlFor="cover-upload"
+                      className={`flex items-center gap-2 px-4 py-2 rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 hover:bg-card/90 dark:hover:bg-white/10 cursor-pointer transition-colors ${imageUploading ? 'opacity-50 pointer-events-none' : ''}`}
+                    >
+                      {imageUploading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <ImageIcon className="h-4 w-4" />
+                      )}
+                      {imageUploading ? 'Uploading...' : 'Upload Image'}
+                    </label>
+                  </IKContext>
+                  <span className="text-xs text-muted-foreground">or</span>
+                  <Input
+                    value={form.coverImage}
+                    onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
+                    placeholder="Enter image URL directly"
+                    className="flex-1 bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Author & Tags */}
@@ -374,13 +448,15 @@ export default function BlogsManager() {
 
             {/* Content */}
             <div className="space-y-2">
-              <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Content (Markdown)</Label>
-              <Textarea
-                value={form.content}
-                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                placeholder="Write your content in Markdown..."
-                className="min-h-80 bg-card/80 dark:bg-white/5 border-border/60 dark:border-white/10 text-foreground dark:text-white placeholder:text-muted-foreground  font-mono text-sm"
-              />
+              <Label className="text-foreground dark:text-foreground dark:text-white font-semibold">Content</Label>
+              <div className="bg-white dark:bg-slate-900 rounded-md overflow-hidden text-slate-900 dark:text-white border border-border/60 dark:border-white/10">
+                <ReactQuill
+                  theme="snow"
+                  value={form.content}
+                  onChange={(value) => setForm({ ...form, content: value })}
+                  className="min-h-[300px]"
+                />
+              </div>
             </div>
 
             {/* Actions */}

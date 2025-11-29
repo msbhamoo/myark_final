@@ -14,6 +14,7 @@ export interface OpportunityCardProps {
   eligibilityType?: 'grade' | 'age' | 'both';
   ageEligibility?: string;
   organizer: string;
+  organizerLogo?: string;
   startDate?: string;
   startDateTBD?: boolean;
   endDate?: string;
@@ -26,6 +27,10 @@ export interface OpportunityCardProps {
   className?: string;
   status?: 'active' | 'closed' | 'pending';
 }
+
+// ... (keep existing code)
+
+
 
 const MODE_STYLES: Record<
   OpportunityCardProps['mode'],
@@ -106,6 +111,7 @@ export default function OpportunityCard({
   className,
   status = 'active',
   image,
+  organizerLogo,
 }: OpportunityCardProps) {
   const normalizedCategory = category?.trim() || 'Opportunity';
   const normalizedMode = MODE_STYLES[mode] ? mode : 'online';
@@ -202,11 +208,24 @@ export default function OpportunityCard({
         <div className="flex flex-1 flex-col p-4">
           {/* Title & Organizer */}
           <div className="mb-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-primary transition-colors min-h-[2.5rem]">
               {title}
             </h3>
             <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-              <Users className="w-3.5 h-3.5" />
+              {organizerLogo ? (
+                <img
+                  src={organizerLogo}
+                  alt={organizer}
+                  className="w-4 h-4 object-contain rounded-full flex-shrink-0 bg-white"
+                  onError={(e) => {
+                    // Fallback to icon if logo fails to load
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+              ) : null}
+              {/* Fallback Icon - Hidden if logo is present and loads successfully */}
+              <Users className={cn("w-3.5 h-3.5 flex-shrink-0 opacity-70", organizerLogo ? "hidden" : "")} />
               <span className="truncate">{organizer}</span>
             </div>
           </div>
@@ -226,20 +245,20 @@ export default function OpportunityCard({
 
           {/* Footer: Fee & Deadline */}
           <div className="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex flex-col">
+            <div className="flex flex-col overflow-hidden">
               <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Entry Fee</span>
               <span className={cn(
-                "text-sm font-bold",
+                "text-sm font-bold truncate max-w-[120px]",
                 isFree ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-slate-200"
-              )}>
+              )} title={feeDisplay}>
                 {feeDisplay}
               </span>
             </div>
 
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col items-end flex-shrink-0">
               <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Deadline</span>
               <div className={cn(
-                "flex items-center gap-1 text-sm font-medium",
+                "flex items-center gap-1 text-sm font-medium whitespace-nowrap",
                 isUrgent ? "text-rose-600 dark:text-rose-400" : "text-slate-600 dark:text-slate-300"
               )}>
                 <span>{daysLabel}</span>

@@ -171,6 +171,7 @@ function OpportunitiesListContent({ opportunities }: OpportunitiesListProps) {
               fee={formatFee(opportunity)}
               image={opportunity.image}
               status={isClosed ? 'closed' : 'active'}
+              organizerLogo={opportunity.organizerLogo}
             />
           );
         })}

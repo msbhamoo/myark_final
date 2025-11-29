@@ -44,6 +44,7 @@ export default function CompetitionsPage() {
       registrationDeadline: 'Feb 28, 2024',
       mode: 'online' as const,
       image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500&q=80',
+      organizerLogo: 'https://ui-avatars.com/api/?name=Science+Foundation&background=random',
     },
     {
       id: '2',
@@ -57,6 +58,7 @@ export default function CompetitionsPage() {
       mode: 'hybrid' as const,
       fee: '$25',
       image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&q=80',
+      organizerLogo: 'https://ui-avatars.com/api/?name=Math+Academy&background=random',
     },
     {
       id: '5',

@@ -687,6 +687,7 @@ export default function HomePageClient() {
                               image={item.image}
                               status={'active'}
                               className="w-[280px] flex-shrink-0"
+                              organizerLogo={item.organizerLogo}
                             />
                           );
                         })}
@@ -798,6 +799,7 @@ export default function HomePageClient() {
                           image={opportunity.image}
                           status={'active'}
                           className="h-full"
+                          organizerLogo={opportunity.organizerLogo}
                         />
                       );
                     })}

@@ -4,9 +4,22 @@ import Link from 'next/link'
 import React from 'react'
 import { ShareButtons } from '@/components/BlogShareButtons'
 import { ArrowLeft, Eye, Share2, Calendar, User } from 'lucide-react'
+import { ViewCounter } from '@/components/ViewCounter'
 
 function Markdown({ content }: { content: string }) {
-  // Convert markdown to HTML with proper Tailwind styling
+  // Check if content looks like HTML (from rich editor)
+  const isHtml = /<[a-z][\s\S]*>/i.test(content)
+
+  if (isHtml) {
+    return (
+      <div
+        className="prose prose-slate dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    )
+  }
+
+  // Fallback: Convert simple markdown to HTML with proper Tailwind styling
   let html = content
     .split('\n')
     .map((line) => {
@@ -30,7 +43,7 @@ function Markdown({ content }: { content: string }) {
       return ''
     })
     .join('')
-  
+
   return <div className="prose-content max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
 }
 
@@ -49,6 +62,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
+      <ViewCounter slug={post.slug} />
       {/* Header */}
       <div className="border-b border-slate-200/60 dark:border-slate-700/60 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
         <div className="container mx-auto max-w-4xl px-4 md:px-6 py-6 md:py-8">
@@ -76,7 +90,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight">
               {post.title}
             </h1>
-            
+
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-4 md:gap-6 pt-6 border-t border-slate-200/60 dark:border-slate-700/60">
               {post.author && (
@@ -90,20 +104,20 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   </div>
                 </div>
               )}
-              
+
               {post.publishedAt && (
                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                   <Calendar className="h-4 w-4" />
                   <span className="text-sm">
-                    {new Date(post.publishedAt).toLocaleDateString('en-IN', { 
-                      month: 'long', 
-                      day: 'numeric', 
-                      year: 'numeric' 
+                    {new Date(post.publishedAt).toLocaleDateString('en-IN', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
                     })}
                   </span>
                 </div>
               )}
-              
+
               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                 <Eye className="h-4 w-4" />
                 <span className="text-sm">{post.viewCount || 0} views</span>

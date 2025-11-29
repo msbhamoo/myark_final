@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
+import {
   Award,
   Search,
   Filter,
@@ -43,6 +43,7 @@ export default function ScholarshipsPage() {
       registrationDeadline: 'May 15, 2024',
       mode: 'online' as const,
       image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&q=80',
+      organizerLogo: 'https://ui-avatars.com/api/?name=University+Foundation&background=random',
     },
     {
       id: '9',
@@ -55,6 +56,7 @@ export default function ScholarshipsPage() {
       registrationDeadline: 'Jun 20, 2024',
       mode: 'online' as const,
       image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=500&q=80',
+      organizerLogo: 'https://ui-avatars.com/api/?name=Innovation+Fund&background=random',
     },
     {
       id: '19',
@@ -108,31 +110,31 @@ export default function ScholarshipsPage() {
   ];
 
   const scholarshipTypes = [
-    { 
-      name: 'Merit-Based', 
-      count: 45, 
-      icon: Award, 
+    {
+      name: 'Merit-Based',
+      count: 45,
+      icon: Award,
       color: 'from-green-400 to-green-600',
       description: 'Based on academic performance'
     },
-    { 
-      name: 'Need-Based', 
-      count: 32, 
-      icon: DollarSign, 
+    {
+      name: 'Need-Based',
+      count: 32,
+      icon: DollarSign,
       color: 'from-blue-400 to-blue-600',
       description: 'Financial assistance for students'
     },
-    { 
-      name: 'Talent-Based', 
-      count: 28, 
-      icon: Sparkles, 
+    {
+      name: 'Talent-Based',
+      count: 28,
+      icon: Sparkles,
       color: 'from-purple-400 to-purple-600',
       description: 'For specific talents & skills'
     },
-    { 
-      name: 'Research Grants', 
-      count: 18, 
-      icon: GraduationCap, 
+    {
+      name: 'Research Grants',
+      count: 18,
+      icon: GraduationCap,
       color: 'from-orange-400 to-orange-600',
       description: 'For research projects'
     },
