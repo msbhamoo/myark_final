@@ -183,12 +183,13 @@ export default function Header() {
             </Sheet>
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-2xl border border-accent/50 bg-white/90 px-3 py-2 shadow-sm transition hover:-translate-y-[1px] hover:shadow-md dark:border-primary/20 dark:bg-slate-900/80"
+              className="flex items-center gap-2 rounded-2xl bg-white/90 px-3 py-2 transition hover:-translate-y-[1px] hover:shadow-md dark:bg-slate-900/80"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 text-lg font-bold text-white shadow-md shadow-primary/30">
-                M
-              </div>
-              <span className="text-lg font-semibold text-slate-900 dark:text-white">Myark</span>
+              <img
+                src="/myark-logo.png"
+                alt="Myark Logo"
+                className="h-10 w-auto object-contain"
+              />
             </Link>
             {/* <div className="hidden flex-col leading-tight lg:flex">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-500">Trusted Families</span>

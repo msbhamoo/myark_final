@@ -185,6 +185,46 @@
   }
 }
 
+/* Blog content dark mode fixes */
+@layer components {
+  .dark .prose-content p,
+  .dark .prose-content li,
+  .dark .prose-content span {
+    color: #e2e8f0 !important;
+  }
+
+  .dark .prose-content h1,
+  .dark .prose-content h2,
+  .dark .prose-content h3,
+  .dark .prose-content h4,
+  .dark .prose-content h5,
+  .dark .prose-content h6 {
+    color: #ffffff !important;
+  }
+
+  .dark .prose-content strong {
+    color: #ffffff !important;
+  }
+
+  .dark .prose p,
+  .dark .prose li {
+    color: #e2e8f0 !important;
+  }
+
+  .dark .prose h1,
+  .dark .prose h2,
+  .dark .prose h3,
+  .dark .prose h4,
+  .dark .prose h5,
+  .dark .prose h6 {
+    color: #ffffff !important;
+  }
+
+  .dark .prose strong {
+    color: #ffffff !important;
+  }
+}
+
 /* Hide Next.js error overlay portal */
 nextjs-portal {
   display: none !important;

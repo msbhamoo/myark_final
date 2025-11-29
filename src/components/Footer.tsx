@@ -49,12 +49,13 @@ export default function Footer() {
             <div className="space-y-6">
               <Link
                 href="/"
-                className="inline-flex items-center gap-3 rounded-2xl border border-accent/20 bg-white/10 px-3 py-2 text-white shadow-sm shadow-primary/20 transition hover:-translate-y-[1px] hover:shadow-md"
+                className="inline-flex items-center gap-3 rounded-2xl bg-white/10 px-3 py-2 text-white shadow-primary/20 transition hover:-translate-y-[1px] hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 text-lg font-semibold text-white shadow-inner shadow-primary/40">
-                  M
-                </div>
-                <span className="text-xl font-semibold">Myark</span>
+                <img
+                  src="/myark-logo.png"
+                  alt="Myark Logo"
+                  className="h-10 w-auto object-contain"
+                />
               </Link>
               <p className="max-w-md text-sm leading-relaxed text-slate-300">
                 Helping Grade 4-12 learners across India discover competitions, scholarships, and

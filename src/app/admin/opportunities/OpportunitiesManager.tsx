@@ -230,6 +230,8 @@ export function OpportunitiesManager() {
           {viewMode === 'list' ? (
             <OpportunityListView
               items={items}
+              categories={categories}
+              organizers={organizers}
               isLoading={isLoading}
               isSubmitting={isSubmitting}
               actioningId={actioningId}

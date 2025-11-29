@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     Table,
@@ -12,6 +12,14 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -29,12 +37,15 @@ import {
 } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
 import { CustomTabsManager } from '@/components/CustomTabsManager';
-import { MoreVertical, Eye, Edit, Trash, CheckCircle, Upload, ExternalLink, Plus } from 'lucide-react';
+import { MoreVertical, Eye, Edit, Trash, CheckCircle, Upload, ExternalLink, Plus, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { OpportunityItem } from './types';
+import { OpportunityCategory, Organizer } from '@/types/masters';
 import { formatDate, sectionsToText } from './utils';
 
 interface OpportunityListViewProps {
     items: OpportunityItem[];
+    categories: OpportunityCategory[];
+    organizers: Organizer[];
     isLoading: boolean;
     isSubmitting: boolean;
     actioningId: string | null;
@@ -48,6 +59,8 @@ interface OpportunityListViewProps {
 
 export function OpportunityListView({
     items,
+    categories,
+    organizers,
     isLoading,
     isSubmitting,
     actioningId,
@@ -60,6 +73,79 @@ export function OpportunityListView({
 }: OpportunityListViewProps) {
     const router = useRouter();
     const [viewingOpportunity, setViewingOpportunity] = useState<OpportunityItem | null>(null);
+
+    // Filter states
+    const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [categoryFilter, setCategoryFilter] = useState<string>('all');
+    const [organizerFilter, setOrganizerFilter] = useState<string>('all');
+
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Filtered items based on search and filters
+    const filteredItems = useMemo(() => {
+        let result = [...items];
+
+        // Search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            result = result.filter(item =>
+                item.title.toLowerCase().includes(query) ||
+                item.id.toLowerCase().includes(query) ||
+                (item.organizerName && item.organizerName.toLowerCase().includes(query)) ||
+                (item.categoryName && item.categoryName.toLowerCase().includes(query))
+            );
+        }
+
+        // Status filter
+        if (statusFilter !== 'all') {
+            result = result.filter(item => item.status === statusFilter);
+        }
+
+        // Category filter
+        if (categoryFilter !== 'all') {
+            result = result.filter(item =>
+                item.category?.id === categoryFilter ||
+                item.categoryName === categories.find(c => c.id === categoryFilter)?.name
+            );
+        }
+
+        // Organizer filter
+        if (organizerFilter !== 'all') {
+            result = result.filter(item =>
+                item.organizer?.id === organizerFilter ||
+                item.organizerName === organizers.find(o => o.id === organizerFilter)?.name
+            );
+        }
+
+        return result;
+    }, [items, searchQuery, statusFilter, categoryFilter, organizerFilter, categories, organizers]);
+
+    // Paginated items
+    const paginatedItems = useMemo(() => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return filteredItems.slice(startIndex, startIndex + itemsPerPage);
+    }, [filteredItems, currentPage, itemsPerPage]);
+
+    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+
+    // Reset to page 1 when filters change
+    const handleFilterChange = () => {
+        setCurrentPage(1);
+    };
+
+    // Clear all filters
+    const clearFilters = () => {
+        setSearchQuery('');
+        setStatusFilter('all');
+        setCategoryFilter('all');
+        setOrganizerFilter('all');
+        setCurrentPage(1);
+    };
+
+    const hasActiveFilters = searchQuery || statusFilter !== 'all' || categoryFilter !== 'all' || organizerFilter !== 'all';
 
     return (
         <section className='rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur'>
@@ -81,6 +167,81 @@ export function OpportunityListView({
                 </div>
             </div>
 
+            {/* Filter Bar */}
+            <div className="mb-6 space-y-4 rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+                    {/* Search */}
+                    <div className="lg:col-span-2">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="Search by title, ID, category, or organizer..."
+                                value={searchQuery}
+                                onChange={(e) => { setSearchQuery(e.target.value); handleFilterChange(); }}
+                                className="pl-9"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Status Filter */}
+                    <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); handleFilterChange(); }}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Status</SelectItem>
+                            <SelectItem value="published">Published</SelectItem>
+                            <SelectItem value="approved">Approved</SelectItem>
+                            <SelectItem value="draft">Draft</SelectItem>
+                            <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    {/* Category Filter */}
+                    <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); handleFilterChange(); }}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Categories</SelectItem>
+                            {categories.map(cat => (
+                                <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
+                    {/* Organizer Filter */}
+                    <Select value={organizerFilter} onValueChange={(v) => { setOrganizerFilter(v); handleFilterChange(); }}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Organizer" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Organizers</SelectItem>
+                            {organizers.map(org => (
+                                <SelectItem key={org.id} value={org.id}>{org.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* Filter Summary and Clear */}
+                <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                        <Filter className="h-4 w-4" />
+                        <span>
+                            {filteredItems.length} of {items.length} opportunities
+                            {hasActiveFilters && ' (filtered)'}
+                        </span>
+                    </div>
+                    {hasActiveFilters && (
+                        <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8">
+                            <X className="h-3 w-3 mr-1" />
+                            Clear Filters
+                        </Button>
+                    )}
+                </div>
+            </div>
+
             <div className="mt-4">
                 <div className="grid gap-4">
                     {/* Desktop Table View */}
@@ -97,7 +258,7 @@ export function OpportunityListView({
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {items.length === 0 && !isLoading && (
+                                    {filteredItems.length === 0 && !isLoading && (
                                         <TableRow>
                                             <TableCell colSpan={5} className="h-32 text-center">
                                                 <div className="flex flex-col items-center justify-center space-y-2 text-muted-foreground">
@@ -106,12 +267,17 @@ export function OpportunityListView({
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                                         </svg>
                                                     </div>
-                                                    <p>No opportunities available</p>
+                                                    <p>{hasActiveFilters ? 'No opportunities match your filters' : 'No opportunities available'}</p>
+                                                    {hasActiveFilters && (
+                                                        <Button variant="outline" size="sm" onClick={clearFilters}>
+                                                            Clear Filters
+                                                        </Button>
+                                                    )}
                                                 </div>
                                             </TableCell>
                                         </TableRow>
                                     )}
-                                    {items.map((item) => (
+                                    {paginatedItems.map((item) => (
                                         <TableRow key={item.id} className="group border-b border-border/70 dark:border-white/5 hover:bg-card/80 dark:bg-white/5">
                                             <TableCell className="align-top py-4">
                                                 <div className="space-y-1">
@@ -236,11 +402,40 @@ export function OpportunityListView({
                                 </TableBody>
                             </Table>
                         </div>
+
+                        {/* Pagination Controls */}
+                        {filteredItems.length > 0 && totalPages > 1 && (
+                            <div className="flex items-center justify-between px-4 py-3 border-t border-border/60 dark:border-white/10">
+                                <div className="text-sm text-muted-foreground">
+                                    Page {currentPage} of {totalPages}
+                                </div>
+                                <div className="flex gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1}
+                                    >
+                                        <ChevronLeft className="h-4 w-4 mr-1" />
+                                        Previous
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                    >
+                                        Next
+                                        <ChevronRight className="h-4 w-4 ml-1" />
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Mobile/Tablet Card View */}
                     <div className="lg:hidden grid gap-4 sm:grid-cols-2">
-                        {items.map((item) => (
+                        {paginatedItems.map((item) => (
                             <div
                                 key={item.id}
                                 className="rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-4 hover:border-orange-500/20 transition-colors"
@@ -384,7 +579,7 @@ export function OpportunityListView({
                             </div>
                         ))}
 
-                        {items.length === 0 && !isLoading && (
+                        {filteredItems.length === 0 && !isLoading && (
                             <div className="col-span-full rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm p-8 text-center">
                                 <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground">
                                     <div className="h-12 w-12 rounded-xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 flex items-center justify-center">
@@ -392,8 +587,14 @@ export function OpportunityListView({
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                         </svg>
                                     </div>
-                                    <p className="text-lg font-medium">No opportunities available</p>
-                                    <p className="text-sm text-slate-500">Create your first opportunity to get started</p>
+                                    <p className="text-lg font-medium">{hasActiveFilters ? 'No opportunities match your filters' : 'No opportunities available'}</p>
+                                    {hasActiveFilters ? (
+                                        <Button variant="outline" size="sm" onClick={clearFilters}>
+                                            Clear Filters
+                                        </Button>
+                                    ) : (
+                                        <p className="text-sm text-slate-500">Create your first opportunity to get started</p>
+                                    )}
                                 </div>
                             </div>
                         )}
