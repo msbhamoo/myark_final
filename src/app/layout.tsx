@@ -98,6 +98,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
+        {/* Preconnect to external domains for faster resource loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+        {/* Preload critical font */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          as="style"
+        />
+
+        {/* Inline theme script - must be first to prevent FOUC */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -116,16 +129,16 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground antialiased transition-colors duration-300">
         <ThemeClient />
         <ErrorReporter />
-        {/* Google Analytics */}
+        {/* Google Analytics - loaded lazily to not block initial render */}
         {GA_MEASUREMENT_ID && (
           <>
             <Script
-              strategy="afterInteractive"
+              strategy="lazyOnload"
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
             />
             <Script
               id="google-analytics"
-              strategy="afterInteractive"
+              strategy="lazyOnload"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -143,9 +156,10 @@ export default function RootLayout({
             </Suspense>
           </>
         )}
+        {/* Route messenger - non-critical, load lazily */}
         <Script
           src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           data-target-origin="*"
           data-message-type="ROUTE_CHANGE"
           data-include-search-params="true"

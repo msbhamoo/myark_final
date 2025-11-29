@@ -187,6 +187,7 @@
 
 /* Blog content dark mode fixes */
 @layer components {
+
   .dark .prose-content p,
   .dark .prose-content li,
   .dark .prose-content span {

@@ -398,7 +398,7 @@ export default async function OpportunityDetailPage(props: any) {
 
   return (
     <>
-      <Script id={`opportunity-${opportunity.id}-schema`} type="application/ld+json" strategy="beforeInteractive">
+      <Script id={`opportunity-${opportunity.id}-schema`} type="application/ld+json" strategy="afterInteractive">
         {JSON.stringify(structuredData)}
       </Script>
       <OpportunityDetail opportunity={opportunity} />
