@@ -3,10 +3,10 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, HelpCircle, Globe, Download, BookOpen, Timer } from 'lucide-react';
+import { CheckCircle2, HelpCircle, Globe, Download, BookOpen, Timer, Calendar } from 'lucide-react';
 import { Opportunity, OpportunityTimelineEvent } from '@/types/opportunity';
 import { CustomTabContent } from '@/types/customTab';
-import { ResourceDisplayItem } from '@/lib/opportunity-utils';
+import { ResourceDisplayItem, formatDate } from '@/lib/opportunity-utils';
 
 interface OpportunityTabsProps {
     opportunity: Opportunity;
@@ -195,46 +195,82 @@ export function OpportunityTabs({
             label: 'Timeline',
             content: (
                 <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
-                    <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-chart-4 animate-pulse"></span>
+                    <h2 className="text-lg md:text-2xl font-bold mb-8 text-foreground dark:text-white flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/20 to-chart-4/20 flex items-center justify-center">
+                            <Calendar className="h-5 w-5 text-primary" />
+                        </div>
                         Important Dates
                     </h2>
-                    <div className="relative border-l-2 border-slate-200 dark:border-slate-700 ml-3 space-y-8">
-                        {timelineEntries.map((event, index) => (
-                            <div key={index} className="relative pl-8">
-                                <div
-                                    className={`absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 ${event.status === 'completed'
-                                        ? 'border-slate-400 bg-slate-200 dark:border-slate-600 dark:bg-slate-800'
-                                        : event.status === 'active'
-                                            ? 'border-primary bg-primary animate-pulse'
-                                            : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-950'
-                                        }`}
-                                />
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                    <div>
-                                        <h4
-                                            className={`font-semibold ${event.status === 'active'
-                                                ? 'text-primary'
-                                                : 'text-foreground dark:text-white'
-                                                }`}
-                                        >
-                                            {event.title}
-                                        </h4>
-                                        <p className="text-sm text-slate-500 dark:text-slate-400">{event.date}</p>
+                    <div className="relative border-l-2 border-slate-200 dark:border-slate-700 ml-6 space-y-10">
+                        {timelineEntries.map((event, index) => {
+                            // Extract day number from date
+                            const eventDate = new Date(event.date);
+                            const dayNumber = !isNaN(eventDate.getTime()) ? eventDate.getDate() : '';
+
+                            return (
+                                <div key={index} className="relative pl-10">
+                                    {/* Timeline Marker - Calendar Badge */}
+                                    <div
+                                        className={`absolute -left-[29px] top-0 h-12 w-12 rounded-lg flex flex-col items-center justify-center font-bold transition-all shadow-md ${event.status === 'completed'
+                                            ? 'bg-emerald-500 text-white border-2 border-emerald-600 dark:bg-emerald-600 dark:border-emerald-500'
+                                            : event.status === 'active'
+                                                ? 'bg-primary text-white border-2 border-primary animate-pulse shadow-lg shadow-primary/50'
+                                                : 'bg-white text-slate-700 border-2 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-600'
+                                            }`}
+                                    >
+                                        <span className="text-xs leading-none opacity-90">
+                                            {eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
+                                        </span>
+                                        <span className="text-lg leading-none mt-0.5">
+                                            {dayNumber}
+                                        </span>
                                     </div>
-                                    {event.status === 'active' && (
-                                        <Badge className="w-fit bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
-                                            Active Now
-                                        </Badge>
-                                    )}
+
+                                    {/* Event Content Card */}
+                                    <div className={`rounded-xl border p-5 transition-all ${event.status === 'active'
+                                        ? 'border-primary/30 bg-primary/5 dark:bg-primary/10'
+                                        : 'border-slate-200 bg-white/50 dark:border-slate-700 dark:bg-slate-800/30'
+                                        }`}>
+                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                                            <div className="flex-1">
+                                                <h4 className={`text-lg font-bold mb-2 ${event.status === 'active'
+                                                    ? 'text-primary'
+                                                    : event.status === 'completed'
+                                                        ? 'text-emerald-600 dark:text-emerald-400'
+                                                        : 'text-foreground dark:text-white'
+                                                    }`}>
+                                                    {event.title}
+                                                </h4>
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <Calendar className="h-4 w-4 text-slate-400" />
+                                                    <span className={`font-medium ${event.status === 'active'
+                                                        ? 'text-primary'
+                                                        : 'text-slate-600 dark:text-slate-300'
+                                                        }`}>
+                                                        {formatDate(event.date)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            {event.status === 'active' && (
+                                                <Badge className="w-fit bg-primary text-white hover:bg-primary/90 shadow-md">
+                                                    Active Now
+                                                </Badge>
+                                            )}
+                                            {event.status === 'completed' && (
+                                                <Badge className="w-fit bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700">
+                                                    Completed
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        {event.description && (
+                                            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-6 border-l-2 border-slate-200 dark:border-slate-700">
+                                                {event.description}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
-                                {event.description && (
-                                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                                        {event.description}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </Card>
             ),
