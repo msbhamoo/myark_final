@@ -1,0 +1,8 @@
+# Modern browser support - eliminates legacy polyfills
+# Targets browsers with >0.2% market share from last 2 years
+# and actively maintained browsers
+
+last 2 years
+> 0.2%
+not dead
+not op_mini all

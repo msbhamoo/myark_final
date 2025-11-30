@@ -6,6 +6,18 @@ const LOADER = path.resolve(__dirname, 'src/visual-edits/component-tagger-loader
 const nextConfig: NextConfig = {
   compress: true, // Enable gzip compression
 
+  // Compiler optimizations for modern browsers
+  compiler: {
+    // Remove console.log in production
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+
+  // Production optimizations
+  productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+
   images: {
     remotePatterns: [
       {
@@ -44,6 +56,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: '/_next/static/chunks/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/images/:path*',
         headers: [
           {
@@ -63,6 +84,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/:path*.{woff,woff2,ttf,otf,eot}',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*.{js,css}',
         headers: [
           {
             key: 'Cache-Control',

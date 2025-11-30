@@ -103,6 +103,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
+        {/* Preconnect to Firebase and Google APIs for improved LCP */}
+        <link rel="preconnect" href="https://myark-dbbee.firebaseapp.com" />
+        <link rel="preconnect" href="https://apis.google.com" />
+        <link rel="dns-prefetch" href="https://www.googleapis.com" />
+
         {/* Preload critical font */}
         <link
           rel="preload"
