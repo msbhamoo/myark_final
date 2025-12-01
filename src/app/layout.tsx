@@ -120,11 +120,43 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const theme = localStorage.getItem('theme-preference') || 'light';
-                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                // Apply dark/light mode
+                const themeMode = localStorage.getItem('theme-preference') || 'light';
+                const isDark = themeMode === 'dark' || (!themeMode && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (isDark) {
                   document.documentElement.classList.add('dark');
                 } else {
                   document.documentElement.classList.remove('dark');
+                }
+                
+                // Apply cached custom theme colors immediately to prevent FOUC
+                const THEME_CACHE_KEY = 'myark_theme';
+                const THEME_CACHE_DURATION = 1000 * 60 * 60; // 1 hour
+                const cached = localStorage.getItem(THEME_CACHE_KEY);
+                
+                if (cached) {
+                  try {
+                    const { theme, timestamp } = JSON.parse(cached);
+                    
+                    // Check if cache is still valid
+                    if (Date.now() - timestamp <= THEME_CACHE_DURATION && theme && theme.colors) {
+                      const root = document.documentElement;
+                      
+                      // Apply light mode colors
+                      if (theme.colors.primary) root.style.setProperty('--color-primary', theme.colors.primary);
+                      if (theme.colors.primaryDark) root.style.setProperty('--color-primary-dark', theme.colors.primaryDark);
+                      if (theme.colors.primaryDarker) root.style.setProperty('--color-primary-darker', theme.colors.primaryDarker);
+                      if (theme.colors.accent) root.style.setProperty('--color-accent', theme.colors.accent);
+                      if (theme.colors.secondary) root.style.setProperty('--color-secondary', theme.colors.secondary);
+                      
+                      // Apply chart colors for gradients
+                      if (theme.colors.primary) root.style.setProperty('--chart-1', theme.colors.primary);
+                      if (theme.colors.primaryDark) root.style.setProperty('--chart-2', theme.colors.primaryDark);
+                      if (theme.colors.primaryDarker) root.style.setProperty('--chart-3', theme.colors.primaryDarker);
+                    }
+                  } catch (e) {
+                    console.warn('Failed to apply cached theme:', e);
+                  }
                 }
               } catch (e) {}
             `,

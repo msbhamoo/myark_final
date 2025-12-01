@@ -15,7 +15,7 @@ const defaultOgImage = `${metadataBase.origin}${DEFAULT_OG_IMAGE_PATH}`;
 
 export const metadata: Metadata = {
   metadataBase,
-  title: "Discover scholarships, olympiads, and entrance exams across India",
+  title: "Myark | Scholarships, Olympiads & Exams for Indian Students",
   description:
     "Myark curates verified opportunities for students, including scholarships, olympiads, entrance exams, and workshops with detailed timelines and preparation resources.",
   keywords: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: metadataBase.href,
-    title: "Discover scholarships, olympiads, and entrance exams across India",
+    title: "Scholarships, Olympiads, AI, Robotics & Workshops for Indian Students",
     description:
       "Explore Myark to find scholarships, olympiads, entrance exams, and workshops curated for ambitious students across India.",
     siteName: "Myark",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Discover scholarships, olympiads, and entrance exams across India",
+    title: "Myark | Scholarships, Olympiads & Exams for Indian Students",
     description:
       "Use Myark to stay ahead of scholarships, olympiads, and entrance exams tailored to Indian students.",
     images: [defaultOgImage],

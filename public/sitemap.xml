@@ -5,7 +5,7 @@
   <!-- Home Page -->
   <url>
     <loc>https://myark.in/</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,21 +13,21 @@
   <!-- Browse Pages -->
   <url>
     <loc>https://myark.in/opportunities</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://myark.in/categories</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://myark.in/schools</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,21 +35,21 @@
   <!-- Learning Pages -->
   <url>
     <loc>https://myark.in/parent-guide</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://myark.in/resources</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://myark.in/faq</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -57,21 +57,21 @@
   <!-- Information Pages -->
   <url>
     <loc>https://myark.in/about</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://myark.in/mission</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://myark.in/contact</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -79,14 +79,14 @@
   <!-- Community Pages -->
   <url>
     <loc>https://myark.in/community</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://myark.in/competitions</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -94,21 +94,56 @@
   <!-- Additional Pages -->
   <url>
     <loc>https://myark.in/scholarships</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://myark.in/host</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://myark.in/practice</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://myark.in/for-schools</loc>
+    <lastmod>2024-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://myark.in/innovation-labs</loc>
+    <lastmod>2024-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://myark.in/ai-in-schools</loc>
+    <lastmod>2024-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://myark.in/career-toolkit</loc>
+    <lastmod>2024-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://myark.in/success-stories</loc>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -116,14 +151,14 @@
   <!-- Legal Pages -->
   <url>
     <loc>https://myark.in/privacy</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://myark.in/terms</loc>
-    <lastmod>2024-11-16</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
