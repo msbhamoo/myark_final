@@ -55,22 +55,59 @@ export async function GET() {
       return Promise.resolve(segmentCache.get(cacheKey)!);
     };
 
-const loadOpportunitiesForSegment = async (
-  segmentKey: string,
-  limit: number,
-): Promise<Opportunity[]> => {
-  const key = segmentKey || '';
-  try {
-    const result = await ensureOpportunities(key, limit);
-    const opportunities = result.opportunities.slice(0, limit);
-    return opportunities;
-  } catch (error) {
-    console.error(`Failed to load opportunities for home segment "${segmentKey || 'default'}"`, error);
-    const cacheKey = `${key || 'default'}::${limit}`;
-    segmentCache.delete(cacheKey);
-    return [];
-  }
-};
+    const loadOpportunitiesForSegment = async (
+      segmentKey: string,
+      limit: number,
+    ): Promise<Opportunity[]> => {
+      const key = segmentKey || '';
+      try {
+        const result = await ensureOpportunities(key, limit);
+        const opportunities = result.opportunities.slice(0, limit);
+        return opportunities;
+      } catch (error) {
+        console.error(`Failed to load opportunities for home segment "${segmentKey || 'default'}"`, error);
+        const cacheKey = `${key || 'default'}::${limit}`;
+        segmentCache.delete(cacheKey);
+        return [];
+      }
+    };
+
+    const loadQuizzesForSegment = async (
+      segmentKey: string,
+      limit: number,
+    ): Promise<any[]> => {
+      if (!segmentKey) return [];
+
+      try {
+        const db = getDb();
+        const snapshot = await db
+          .collection('quizzes')
+          .where('homeSegmentId', '==', segmentKey)
+          .where('visibility', '==', 'published')
+          .limit(limit * 2) // Fetch more to sort client-side
+          .get();
+
+        const quizzes = snapshot.docs
+          .map(doc => ({
+            id: doc.id,
+            type: 'quiz',
+            ...doc.data(),
+          }))
+          // Sort by createdAt client-side
+          .sort((a: any, b: any) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA; // Newest first
+          })
+          .slice(0, limit);
+
+        console.log(`[DEBUG] Found ${quizzes.length} quizzes for segment "${segmentKey}"`);
+        return quizzes;
+      } catch (error) {
+        console.error(`Failed to load quizzes for segment "${segmentKey}"`, error);
+        return [];
+      }
+    };
 
     const segmentsMap = new Map<string, HomeSegmentMeta>();
     const hiddenKeys = new Set<string>();
@@ -129,10 +166,18 @@ const loadOpportunitiesForSegment = async (
 
     const segmentsWithOpportunities = await Promise.all(
       segmentsList.map(async (segment) => {
-        const opportunities = await loadOpportunitiesForSegment(segment.segmentKey, segment.limit);
+        const [opportunities, quizzes] = await Promise.all([
+          loadOpportunitiesForSegment(segment.segmentKey, segment.limit),
+          loadQuizzesForSegment(segment.segmentKey, Math.ceil(segment.limit / 2)),
+        ]);
+
+        // Combine opportunities and quizzes, limited to segment.limit total
+        const combined = [...opportunities, ...quizzes]
+          .slice(0, segment.limit);
+
         return {
           ...segment,
-          opportunities,
+          opportunities: combined, // Contains both opportunities and quizzes
         };
       }),
     );

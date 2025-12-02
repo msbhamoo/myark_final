@@ -148,10 +148,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     try {
         const db = getDb();
 
-        // Fetch all opportunities
+        // Fetch all approved AND published opportunities
         const opportunitiesSnapshot = await db
             .collection('opportunities')
-            .where('status', '==', 'active')
+            .where('approved', '==', true)
+            .where('published', '==', true)
             .orderBy('createdAt', 'desc')
             .limit(1000) // Limit to prevent timeout
             .get();
@@ -168,7 +169,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             };
         });
 
-        // Fetch all blog posts
+        // Fetch all published blog posts
         const blogsSnapshot = await db
             .collection('blogs')
             .where('published', '==', true)

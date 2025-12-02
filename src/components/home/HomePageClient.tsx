@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 import AllCategoriesSection from '@/components/AllCategoriesSection';
 import OpportunityCard from '@/components/OpportunityCard';
+import QuizCard from '@/components/QuizCard';
 import { Button } from '@/components/ui/button';
 import { Sparkles, BookOpen, GraduationCap, Target, ChevronRight, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
@@ -665,7 +666,30 @@ export default function HomePageClient() {
                       </div>
                     ) : hasItems ? (
                       <div className="flex gap-4 overflow-x-auto px-2 pb-4">
-                        {items.map((item) => {
+                        {items.map((item: any) => {
+                          // Check if it's a quiz or opportunity
+                          const isQuiz = item.type === 'quiz' || item.quizConfig;
+
+                          if (isQuiz) {
+                            return (
+                              <QuizCard
+                                key={`${segment.id}-${item.id}`}
+                                id={item.id}
+                                title={item.title}
+                                description={item.description}
+                                categoryName={item.categoryName}
+                                thumbnailUrl={item.thumbnailUrl}
+                                totalQuestions={item.quizConfig?.totalQuestions || 0}
+                                totalMarks={item.quizConfig?.totalMarks || 0}
+                                duration={item.quizConfig?.settings?.totalDuration || 0}
+                                startDate={item.startDate || ''}
+                                endDate={item.endDate || ''}
+                                submissionCount={item.submissionCount || 0}
+                                className="w-[280px] flex-shrink-0"
+                              />
+                            );
+                          }
+
                           return (
                             <OpportunityCard
                               key={`${segment.id}-${item.id}`}

@@ -11,6 +11,7 @@ import { LogoutButton } from './_components/LogoutButton';
 const navLinks = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/opportunities', label: 'Opportunities' },
+  { href: '/admin/opportunities/quizzes', label: 'Quizzes' },
   { href: '/admin/hosts', label: 'Hosts' },
   { href: '/admin/home', label: 'Home Layout' },
   { href: '/admin/blogs', label: 'Blogs' },
