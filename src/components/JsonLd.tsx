@@ -17,15 +17,22 @@ export default function JsonLd() {
                     "https://www.facebook.com/getmyark",
                     "https://www.instagram.com/getmyark/",
                     "https://www.linkedin.com/company/getmyark",
-                    "https://whatsapp.com/channel/0029VbBdZ5O545uvzvZf5V1A"
+                    "https://whatsapp.com/channel/0029VbBdZ5O545uvzvZf5V1A",
+                    "https://twitter.com/myark_in"
                 ],
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "",
-                    "contactType": "customer service",
-                    "email": "support@myark.in",
-                    "areaServed": "IN",
-                    "availableLanguage": "en"
+                "contactPoint": [
+                    {
+                        "@type": "ContactPoint",
+                        "telephone": "+91-9876543210",
+                        "contactType": "customer service",
+                        "email": "support@myark.in",
+                        "areaServed": "IN",
+                        "availableLanguage": ["en", "hi"]
+                    }
+                ],
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "IN"
                 }
             },
             {

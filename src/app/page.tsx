@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/home/HomePageClient";
+import { getHomeSegments, getHomeStats, getHomeStates } from "@/lib/homeService";
+import Script from "next/script";
 
 const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://myark.in";
 const metadataBase = (() => {
@@ -58,6 +60,38 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
-  return <HomePageClient />;
+export default async function HomePage() {
+  const [segments, statsData, states] = await Promise.all([
+    getHomeSegments(),
+    getHomeStats(),
+    getHomeStates(),
+  ]);
+
+  // Generate ItemList Schema for top opportunities
+  const topOpportunities = segments.flatMap(s => s.opportunities).slice(0, 10);
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": topOpportunities.map((opp, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `${metadataBase.origin}/opportunity/${opp.slug || opp.id}`,
+      "name": opp.title
+    }))
+  };
+
+  return (
+    <>
+      <Script
+        id="home-item-list-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <HomePageClient
+        initialSegments={segments}
+        initialStats={statsData.stats}
+        initialStates={states}
+      />
+    </>
+  );
 }

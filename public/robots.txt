@@ -2,6 +2,16 @@
 User-agent: *
 Allow: /
 
+# Explicitly allow AI bots
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # Disallow admin panel
 Disallow: /admin/
 

@@ -42,6 +42,12 @@ type StateOpportunityGroup = {
   opportunities: Opportunity[];
 };
 
+type HomePageClientProps = {
+  initialSegments?: HomeSegment[];
+  initialStats?: HomeStats;
+  initialStates?: any[]; // Using any[] to match the shape from getHomeStates
+};
+
 const FALLBACK_HOME_SEGMENTS: HomeSegment[] = HOME_SEGMENT_DEFINITIONS.map((segment) => ({
   ...segment,
   opportunities: [],
@@ -214,17 +220,17 @@ const HERO_SPOTLIGHTS = [
   },
 ] as const;
 
-export default function HomePageClient() {
-  const [homeSegments, setHomeSegments] = useState<HomeSegment[]>(FALLBACK_HOME_SEGMENTS);
-  const [segmentsLoading, setSegmentsLoading] = useState(true);
+export default function HomePageClient({ initialSegments, initialStats, initialStates }: HomePageClientProps) {
+  const [homeSegments, setHomeSegments] = useState<HomeSegment[]>(initialSegments || FALLBACK_HOME_SEGMENTS);
+  const [segmentsLoading, setSegmentsLoading] = useState(!initialSegments);
   const [segmentsError, setSegmentsError] = useState<string | null>(null);
-  const [stats, setStats] = useState<HomeStats>(FALLBACK_HOME_STATS);
-  const [statsLoading, setStatsLoading] = useState(true);
+  const [stats, setStats] = useState<HomeStats>(initialStats || FALLBACK_HOME_STATS);
+  const [statsLoading, setStatsLoading] = useState(!initialStats);
   const [statsError, setStatsError] = useState<string | null>(null);
-  const [stateGroups, setStateGroups] = useState<StateOpportunityGroup[]>([]);
-  const [stateLoading, setStateLoading] = useState(true);
+  const [stateGroups, setStateGroups] = useState<StateOpportunityGroup[]>(initialStates || []);
+  const [stateLoading, setStateLoading] = useState(!initialStates);
   const [stateError, setStateError] = useState<string | null>(null);
-  const [selectedState, setSelectedState] = useState<string>('');
+  const [selectedState, setSelectedState] = useState<string>(initialStates?.[0]?.state || '');
   const [blogs, setBlogs] = useState<any[]>([]);
 
   useEffect(() => {
