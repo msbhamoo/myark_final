@@ -17,12 +17,26 @@ export function InstallPrompt() {
             return;
         }
 
+        // Check if recently dismissed (e.g., within 24 hours)
+        const dismissedAt = localStorage.getItem('pwa_prompt_dismissed');
+        if (dismissedAt) {
+            const hoursSinceDismissal = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60);
+            if (hoursSinceDismissal < 24) {
+                return;
+            }
+        }
+
         // Show if not installed AND (is installable via event OR is iOS)
         if (isInstallable || isIOS) {
             const timer = setTimeout(() => setIsVisible(true), 3000);
             return () => clearTimeout(timer);
         }
     }, [isInstallable, isIOS, isStandalone]);
+
+    const handleDismiss = () => {
+        setIsVisible(false);
+        localStorage.setItem('pwa_prompt_dismissed', Date.now().toString());
+    };
 
     if (!isVisible) return null;
 
@@ -53,10 +67,10 @@ export function InstallPrompt() {
                             </Button>
                         )}
                         <button
-                            onClick={() => setIsVisible(false)}
+                            onClick={handleDismiss}
                             className="text-xs text-slate-400 hover:text-slate-500"
                         >
-                            Maybe later
+                            {isIOS ? "Close" : "Maybe later"}
                         </button>
                     </div>
                 </div>
