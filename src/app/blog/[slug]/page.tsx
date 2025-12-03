@@ -22,29 +22,76 @@ function Markdown({ content }: { content: string }) {
   }
 
   // Fallback: Convert simple markdown to HTML with proper Tailwind styling
-  let html = content
-    .split('\n')
-    .map((line) => {
-      // Headers
-      if (line.startsWith('### ')) {
-        return `<h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-4">${line.substring(4)}</h3>`
+  const lines = content.split('\n');
+  let html = '';
+  let inList = false;
+  let listType = ''; // 'ul' or 'ol'
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+
+    // Handle Lists
+    const isBullet = line.trim().match(/^[-*]\s+(.*)/);
+    const isNumber = line.trim().match(/^(\d+)\.\s+(.*)/);
+
+    if (isBullet || isNumber) {
+      const newListType = isBullet ? 'ul' : 'ol';
+
+      if (!inList || listType !== newListType) {
+        if (inList) html += listType === 'ul' ? '</ul>' : '</ol>'; // Close previous list if different
+        html += newListType === 'ul'
+          ? '<ul class="list-disc pl-6 mb-4 text-slate-700 dark:text-slate-200 space-y-2">'
+          : '<ol class="list-decimal pl-6 mb-4 text-slate-700 dark:text-slate-200 space-y-2">';
+        inList = true;
+        listType = newListType;
       }
-      if (line.startsWith('## ')) {
-        return `<h2 class="text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-5">${line.substring(3)}</h2>`
-      }
-      if (line.startsWith('# ')) {
-        return `<h1 class="text-4xl font-bold text-slate-900 dark:text-white mt-12 mb-6">${line.substring(2)}</h1>`
-      }
-      // Bold and italic
-      line = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>')
-      line = line.replace(/\*(.*?)\*/g, '<em class="italic text-slate-700 dark:text-slate-200">$1</em>')
-      // Line breaks for non-empty lines
-      if (line.trim()) {
-        return `<p class="text-slate-700 dark:text-slate-200 leading-relaxed mb-4">${line}</p>`
-      }
-      return ''
-    })
-    .join('')
+
+      const text = isBullet ? isBullet[1] : isNumber![2];
+      // Process inline formatting in list items
+      const formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700 dark:text-slate-200">$1</em>');
+
+      html += `<li class="leading-relaxed">${formattedText}</li>`;
+      continue;
+    }
+
+    // If we were in a list but this line isn't a list item, close the list
+    if (inList && line.trim()) {
+      html += listType === 'ul' ? '</ul>' : '</ol>';
+      inList = false;
+      listType = '';
+    }
+
+    // Headers
+    if (line.startsWith('### ')) {
+      html += `<h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-4">${line.substring(4)}</h3>`;
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      html += `<h2 class="text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-5">${line.substring(3)}</h2>`;
+      continue;
+    }
+    if (line.startsWith('# ')) {
+      html += `<h1 class="text-4xl font-bold text-slate-900 dark:text-white mt-12 mb-6">${line.substring(2)}</h1>`;
+      continue;
+    }
+
+    // Paragraphs (only if not empty)
+    if (line.trim()) {
+      // Process inline formatting
+      line = line
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700 dark:text-slate-200">$1</em>');
+
+      html += `<p class="text-slate-700 dark:text-slate-200 leading-relaxed mb-4">${line}</p>`;
+    }
+  }
+
+  // Close any remaining open list
+  if (inList) {
+    html += listType === 'ul' ? '</ul>' : '</ol>';
+  }
 
   return <div className="prose-content max-w-none text-slate-700 dark:text-slate-200" dangerouslySetInnerHTML={{ __html: html }} />
 }

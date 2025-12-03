@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { MascotBurst } from '@/components/MascotBurst';
 import { SchoolLeaderboardModal } from '@/components/gamification/SchoolLeaderboardModal';
+import { InstallPrompt } from '@/components/InstallPrompt';
 
 const STUDENT_LINKS = [
   { label: 'Explore Opportunities', href: '/opportunities' },
@@ -209,6 +210,9 @@ export default function Footer() {
         open={showLeaderboardModal}
         onOpenChange={setShowLeaderboardModal}
       />
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </>
   );
 }
