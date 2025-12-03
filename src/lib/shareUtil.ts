@@ -90,7 +90,7 @@ export const shareOpportunity = async (options: ShareOptions): Promise<boolean> 
       return true;
     } else {
       // Fallback to copy full message to clipboard
-      const fullMessage = options.text;
+      const fullMessage = options.text ?? options.url;
       const success = await copyToClipboard(fullMessage);
       return success;
     }
