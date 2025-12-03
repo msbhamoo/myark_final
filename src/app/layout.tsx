@@ -9,6 +9,7 @@ import { GA_MEASUREMENT_ID } from "@/lib/gtag";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
+import JsonLd from "@/components/JsonLd";
 
 const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://myark.in";
 const metadataBase = (() => {
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase,
   applicationName: "Myark",
   title: {
-    default: "Myark | Scholarships, Olympiads & Exams for Indian Students",
+    default: "Myark: Scholarships, Olympiads & Competitions for School Students!",
     template: "%s | Myark",
   },
   description:
@@ -44,10 +45,15 @@ export const metadata: Metadata = {
   creator: "Myark",
   publisher: "Myark",
   category: "education",
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/myark-logo.png',
+  },
   openGraph: {
     type: "website",
     siteName: "Myark",
-    title: "Myark | Scholarships, Olympiads & Exams for Indian Students",
+    title: "Myark: Scholarships, Olympiads & Competitions for School Students!",
     description:
       "Browse curated competitions, scholarships, and exams tailored for learners across India. Stay ahead with deadlines, eligibility, and preparation tips on Myark.",
     url: metadataBase.href,
@@ -65,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@myark_in",
     creator: "@myark_in",
-    title: "Myark | Scholarships, Olympiads & Exams for Indian Students",
+    title: "Myark: Scholarships, Olympiads & Competitions for School Students!",
     description:
       "Find the best scholarships, competitions, and entrance exams for students across India on Myark.",
     images: [`${metadataBase.origin}${DEFAULT_OG_IMAGE_PATH}`],
@@ -225,6 +231,7 @@ export default function RootLayout({
         />
         <AppProviders>{children}</AppProviders>
         <VisualEditsMessenger />
+        <JsonLd />
       </body>
     </html>
   );

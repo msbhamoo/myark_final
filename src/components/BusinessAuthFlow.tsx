@@ -318,7 +318,7 @@ export default function BusinessAuthFlow() {
                     >
                         <img
                             src="/myark-logo.png"
-                            alt="Myark Logo"
+                            alt="Myark"
                             className="h-10 w-auto object-contain"
                         />
                     </Link>
