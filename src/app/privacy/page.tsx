@@ -160,9 +160,8 @@ export default function PrivacyPage() {
                       {section.title}
                     </h2>
                     <ChevronDown
-                      className={`h-5 w-5 text-slate-600 dark:text-slate-400 transition ${
-                        expandedSections[section.id] ? 'rotate-180' : ''
-                      }`}
+                      className={`h-5 w-5 text-slate-600 dark:text-slate-400 transition ${expandedSections[section.id] ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
 
@@ -191,7 +190,7 @@ export default function PrivacyPage() {
                     If you have any questions about this privacy policy or our privacy practices, please contact us at:
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                    privacy@myark.com
+                    support@myark.in
                   </p>
                 </div>
               </div>

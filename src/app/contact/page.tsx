@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
+import {
   Mail,
   Phone,
   MapPin,
@@ -50,28 +50,28 @@ export default function ContactPage() {
       icon: Mail,
       title: 'Email Us',
       description: 'Send us your queries',
-      contact: 'support@myark.com',
+      contact: 'support@myark.in',
       color: 'from-blue-400 to-blue-600',
     },
     {
       icon: Phone,
       title: 'Call Us',
       description: 'Mon-Fri, 9AM-6PM',
-      contact: '+1 (555) 123-4567',
+      contact: 'Chat on WhatsApp',
       color: 'from-green-400 to-green-600',
     },
     {
       icon: MapPin,
       title: 'Visit Us',
       description: 'Our office location',
-      contact: '123 Education St, San Francisco, CA',
+      contact: 'Jaipur, Rajasthan, India',
       color: 'from-purple-400 to-purple-600',
     },
     {
       icon: Clock,
       title: 'Business Hours',
       description: 'Available to help',
-      contact: 'Mon-Fri: 9AM-6PM PST',
+      contact: 'Mon-Fri: 9AM-6PM IST',
       color: 'from-orange-400 to-orange-600',
     },
   ];
@@ -123,7 +123,7 @@ export default function ContactPage() {
                     id="name"
                     placeholder="John Doe"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                   />
                 </div>
@@ -135,14 +135,14 @@ export default function ContactPage() {
                     type="email"
                     placeholder="john@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="category">Category *</Label>
-                  <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+                  <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                     <SelectTrigger id="category">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
@@ -163,7 +163,7 @@ export default function ContactPage() {
                     id="subject"
                     placeholder="Brief description of your inquiry"
                     value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     required
                   />
                 </div>
@@ -175,7 +175,7 @@ export default function ContactPage() {
                     placeholder="Please provide details about your inquiry..."
                     rows={6}
                     value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     required
                   />
                 </div>
@@ -251,7 +251,7 @@ export default function ContactPage() {
               <div className="text-center">
                 <MapPin className="h-16 w-16 mx-auto mb-3 text-primary" />
                 <p className="text-muted-foreground">Map placeholder</p>
-                <p className="text-sm text-muted-foreground">123 Education Street, San Francisco, CA 94102</p>
+                <p className="text-sm text-muted-foreground">Jaipur, Rajasthan, India</p>
               </div>
             </div>
           </Card>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Trophy } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Mail, MapPin, MessageCircle, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -32,10 +32,10 @@ const COMPANY_LINKS = [
 ] as const;
 
 const SOCIAL_BUTTONS = [
-  { icon: Facebook, label: 'Facebook' },
-  { icon: Twitter, label: 'X' },
-  { icon: Instagram, label: 'Instagram' },
-  { icon: Youtube, label: 'YouTube' },
+  { icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/getmyark' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/getmyark' },
+  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/getmyark/' },
+  { icon: MessageCircle, label: 'WhatsApp Channel', href: 'https://whatsapp.com/channel/0029VbBdZ5O545uvzvZf5V1A' },
 ] as const;
 
 export default function Footer() {
@@ -71,19 +71,19 @@ export default function Footer() {
               </p>
               <div className="flex flex-wrap gap-3">
                 {SOCIAL_BUTTONS.map((item) => (
-                  <Button
+                  <a
                     key={item.label}
-                    type="button"
-                    variant="ghost"
-                    size="icon"
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={cn(
-                      'h-10 w-10 rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:-translate-y-[1px] hover:border-accent hover:text-accent',
+                      'inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 transition hover:-translate-y-[1px] hover:border-accent hover:text-accent',
                       'focus-visible:ring-2 focus-visible:ring-primary/50',
                     )}
                     aria-label={item.label}
                   >
                     <item.icon className="h-4 w-4" />
-                  </Button>
+                  </a>
                 ))}
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -186,11 +186,7 @@ export default function Footer() {
             <div className="flex flex-wrap gap-3">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
                 <Mail className="h-4 w-4 text-accent" aria-hidden="true" />
-                <span>support@myark.com</span>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
-                <span>+91 (555) 123-4567</span>
+                <span>support@myark.in</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
                 <MapPin className="h-4 w-4 text-accent" aria-hidden="true" />

@@ -21,6 +21,7 @@ const MOTIVATIONAL_QUOTES = [
   "🔥 Success doesn't come from what you do occasionally. It comes from what you do consistently.",
   "⭐ The future belongs to those who believe in the beauty of their dreams.",
   "🎓 Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
+
 ];
 
 /**
@@ -266,10 +267,10 @@ export const generateEngagingShareMessage = (
 
   // Social Media Links
   lines.push('🌐 *Connect with us:*');
-  lines.push('Instagram: https://instagram.com/myark.in');
-  lines.push('LinkedIn: https://linkedin.com/company/myark-in');
-  lines.push('Facebook: https://facebook.com/myark.in');
-  lines.push('Twitter: https://twitter.com/myark_in');
+  lines.push('Instagram: https://www.instagram.com/getmyark/');
+  lines.push('LinkedIn: https://www.linkedin.com/company/getmyark');
+  lines.push('Facebook: https://www.facebook.com/getmyark');
+  lines.push('WhatsApp Channel: https://whatsapp.com/channel/0029VbBdZ5O545uvzvZf5V1A');
   lines.push('');
 
   // Motivational Quote

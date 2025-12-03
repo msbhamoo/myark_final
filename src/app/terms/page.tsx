@@ -73,7 +73,7 @@ export default function TermsPage() {
       content: [
         'Myark has not reviewed all of the sites linked to its Internet web site and is not responsible for the contents of any such linked site.',
         'The inclusion of any link does not imply endorsement by Myark of the site. Use of any such linked web site is at the user\'s own risk.',
-        'If you discover a broken link or inappropriate content, please report it to support@myark.com.',
+        'If you discover a broken link or inappropriate content, please report it to support@myark.in.',
       ],
     },
     {
@@ -181,9 +181,8 @@ export default function TermsPage() {
                       {section.title}
                     </h2>
                     <ChevronDown
-                      className={`h-5 w-5 text-slate-600 dark:text-slate-400 transition ${
-                        expandedSections[section.id] ? 'rotate-180' : ''
-                      }`}
+                      className={`h-5 w-5 text-slate-600 dark:text-slate-400 transition ${expandedSections[section.id] ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
 
@@ -209,7 +208,7 @@ export default function TermsPage() {
                 If you have any questions about these terms and conditions, please contact us at:
               </p>
               <p className="mt-3 text-sm font-semibold text-blue-600 dark:text-blue-400">
-                legal@myark.com
+                support@myark.in
               </p>
             </div>
           </div>

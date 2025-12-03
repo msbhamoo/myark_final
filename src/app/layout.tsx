@@ -84,10 +84,29 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  manifest: "/manifest.json",
+  themeColor: "#0f172a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Myark",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   other: {
     "geo.region": "IN",
     "referrer": "strict-origin-when-cross-origin",
+    "mobile-web-app-capable": "yes",
   },
+};
+
+export const viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Prevent zooming on mobile for app-like feel
 };
 
 export default function RootLayout({

@@ -1,0 +1,16 @@
+{
+    "name": "Myark",
+    "short_name": "Myark",
+    "description": "Discover verified scholarships, olympiads, entrance exams, and student workshops across India.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0f172a",
+    "icons": [
+        {
+            "src": "/myark-logo.png",
+            "sizes": "any",
+            "type": "image/png"
+        }
+    ]
+}
