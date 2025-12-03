@@ -7,16 +7,22 @@ import { Download, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export function InstallPrompt() {
-    const { isInstallable, installApp } = usePWAInstall();
+    const { isInstallable, isIOS, isStandalone, installApp } = usePWAInstall();
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        if (isInstallable) {
-            // Small delay to not overwhelm user immediately
+        // If installed, ensure it's hidden
+        if (isStandalone) {
+            setIsVisible(false);
+            return;
+        }
+
+        // Show if not installed AND (is installable via event OR is iOS)
+        if (isInstallable || isIOS) {
             const timer = setTimeout(() => setIsVisible(true), 3000);
             return () => clearTimeout(timer);
         }
-    }, [isInstallable]);
+    }, [isInstallable, isIOS, isStandalone]);
 
     if (!isVisible) return null;
 
@@ -35,13 +41,17 @@ export function InstallPrompt() {
                     <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 dark:text-white">Install Myark App</h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Add to home screen for faster access and offline mode.
+                            {isIOS
+                                ? "Tap the Share button and select 'Add to Home Screen'"
+                                : "Add to home screen for faster access and offline mode."}
                         </p>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <Button size="sm" onClick={installApp} className="h-8 px-3 text-xs">
-                            Install
-                        </Button>
+                        {!isIOS && (
+                            <Button size="sm" onClick={installApp} className="h-8 px-3 text-xs">
+                                Install
+                            </Button>
+                        )}
                         <button
                             onClick={() => setIsVisible(false)}
                             className="text-xs text-slate-400 hover:text-slate-500"

@@ -8,12 +8,37 @@ interface BeforeInstallPromptEvent extends Event {
 export function usePWAInstall() {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
     const [isInstallable, setIsInstallable] = useState(false);
+    const [isIOS, setIsIOS] = useState(false);
+    const [isStandalone, setIsStandalone] = useState(false);
 
     useEffect(() => {
+        // Initial check
+        const checkStandalone = () => {
+            const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches ||
+                (window.navigator as any).standalone ||
+                document.referrer.includes('android-app://');
+            setIsStandalone(!!isStandaloneMode);
+        };
+
+        checkStandalone();
+
+        // Listen for changes (rare but possible)
+        const mediaQuery = window.matchMedia('(display-mode: standalone)');
+        try {
+            mediaQuery.addEventListener('change', checkStandalone);
+        } catch (e) {
+            // Fallback for older browsers
+            mediaQuery.addListener(checkStandalone);
+        }
+
+        // Check if device is iOS
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+        setIsIOS(isIosDevice);
+
+        // Handle Android/Desktop install prompt
         const handler = (e: Event) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             setDeferredPrompt(e as BeforeInstallPromptEvent);
             setIsInstallable(true);
         };
@@ -22,28 +47,25 @@ export function usePWAInstall() {
 
         return () => {
             window.removeEventListener('beforeinstallprompt', handler);
+            try {
+                mediaQuery.removeEventListener('change', checkStandalone);
+            } catch (e) {
+                mediaQuery.removeListener(checkStandalone);
+            }
         };
     }, []);
 
     const installApp = async () => {
         if (!deferredPrompt) return;
 
-        // Show the install prompt
         await deferredPrompt.prompt();
-
-        // Wait for the user to respond to the prompt
         const { outcome } = await deferredPrompt.userChoice;
 
         if (outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-        } else {
-            console.log('User dismissed the install prompt');
+            setDeferredPrompt(null);
+            setIsInstallable(false);
         }
-
-        // We've used the prompt, and can't use it again, throw it away
-        setDeferredPrompt(null);
-        setIsInstallable(false);
     };
 
-    return { isInstallable, installApp };
+    return { isInstallable, isIOS, isStandalone, installApp };
 }
