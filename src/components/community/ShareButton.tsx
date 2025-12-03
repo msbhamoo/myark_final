@@ -13,12 +13,14 @@ import {
   shareOpportunityWithMetadata,
   getShareMethod,
 } from '@/lib/shareUtil';
+import type { Opportunity } from '@/types/opportunity';
 
 interface ShareButtonProps {
   opportunityId: string;
   opportunityTitle: string;
   opportunitySlug?: string;
   description?: string;
+  opportunity?: Opportunity;
   baseUrl?: string;
   showLabel?: boolean;
   className?: string;
@@ -30,6 +32,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   opportunityTitle,
   opportunitySlug,
   description,
+  opportunity,
   baseUrl = typeof window !== 'undefined' ? window.location.origin : '',
   showLabel = true,
   className = '',
@@ -47,6 +50,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         opportunityTitle,
         opportunitySlug,
         description,
+        opportunity,
         baseUrl,
         analyticsCallback: onShare,
       });

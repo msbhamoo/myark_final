@@ -820,7 +820,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 <Bookmark className={`mr-2 h-4 w-4 ${isBookmarked ? 'fill-current text-primary' : ''}`} />
                 {isBookmarked ? 'Saved' : 'Save'}
               </Button>
-              <ShareButton opportunityId={opportunityId} opportunityTitle={title} />
+              <ShareButton opportunityId={opportunityId} opportunityTitle={title} opportunity={opportunity} />
             </div>
           </Card>
         </div>
@@ -942,7 +942,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                       {bookmarkLoading ? 'Saving...' : isBookmarked ? 'Saved' : 'Save'}
                     </Button>
                     <UpvoteButton opportunityId={opportunityId} />
-                    <ShareButton opportunityId={opportunityId} opportunityTitle={title} />
+                    <ShareButton opportunityId={opportunityId} opportunityTitle={title} opportunity={opportunity} />
                     <Button variant="outline" className="text-foreground border-border/50 dark:border-white/20 hover:bg-white/90 dark:bg-slate-800/50 shadow-sm">
                       <Download className="h-4 w-4" />
                     </Button>
