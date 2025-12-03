@@ -6,14 +6,18 @@ import { useParams, useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import type { Opportunity, OpportunityResource, OpportunityTimelineEvent, OpportunityTimelineStatus } from '@/types/opportunity';
 import { useAuth } from '@/context/AuthContext';
+import { useShareClickTracking } from '@/hooks/useShareClickTracking';
 import { useAuthModal } from '@/hooks/use-auth-modal';
+import { useViewConversionTracking } from '@/hooks/useViewConversionTracking';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { trackRegistrationConversion } from '@/lib/conversionTracking';
 import OpportunityCard, { getEligibilityDisplay } from '@/components/OpportunityCard';
 import { OpportunityHero } from './components/OpportunityHero';
 import { OpportunityTabs } from './components/OpportunityTabs';
 import { SimilarOpportunities } from './components/SimilarOpportunities';
 import { MobileFloatingCTA } from '@/components/MobileFloatingCTA';
+import { trackBookmarkConversion } from '@/lib/conversionTracking';
 import { StickyTabBar, type TabItem } from '@/components/StickyTabBar';
 import { CustomTab, CustomTabContent } from '@/types/customTab';
 import { CommentSection, UpvoteButton, ShareButton } from '@/components/community';
@@ -81,10 +85,16 @@ import {
 export default function OpportunityDetail({ opportunity }: { opportunity: Opportunity }) {
   const router = useRouter();
   const { user, loading: authLoading, getIdToken } = useAuth();
+  
   const { openAuthModal } = useAuthModal();
+  
   const params = useParams();
   const rawId = params?.['id'];
   const opportunityId = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
+  
+  // Share and conversion tracking - must be after opportunityId is defined
+  useShareClickTracking(opportunityId);
+  useViewConversionTracking(opportunityId, user?.uid);
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);

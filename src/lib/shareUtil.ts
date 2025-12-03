@@ -106,21 +106,88 @@ export const shareOpportunity = async (options: ShareOptions): Promise<boolean> 
 };
 
 /**
- * Generate a share URL for an opportunity
+ * Generate a unique share tracking code
+ * Format: usr_{userId}_{timestamp} for authenticated users
+ *         anon_{timestamp}_{random} for anonymous users
+ */
+export const generateShareCode = (userId?: string): string => {
+  const timestamp = Date.now().toString(36); // Base36 for shorter string
+  const random = Math.random().toString(36).substring(2, 8); // Random string
+
+  if (userId) {
+    // Authenticated: usr_abc123_xyz789
+    const userHash = userId.substring(0, 8);
+    return `usr_${userHash}_${timestamp}${random}`;
+  } else {
+    // Anonymous: anon_xyz789_abc123
+    return `anon_${timestamp}${random}`;
+  }
+};
+
+/**
+ * Generate a share URL for an opportunity with optional tracking code
  */
 export const generateShareUrl = (
   baseUrl: string,
   opportunityId: string,
   opportunitySlug?: string,
+  shareCode?: string,
 ): string => {
   const pathname = opportunitySlug
     ? `/opportunity/${opportunitySlug}`
     : `/opportunity/${opportunityId}`;
 
   const url = new URL(pathname, baseUrl);
-  url.searchParams.set('shared', 'true');
+
+  // Add tracking code if provided, otherwise use legacy parameter
+  if (shareCode) {
+    url.searchParams.set('ref', shareCode);
+  } else {
+    url.searchParams.set('shared', 'true');
+  }
 
   return url.toString();
+};
+
+/**
+ * Record a share event via API and get tracking code
+ */
+export const recordShare = async (params: {
+  opportunityId: string;
+  opportunityTitle: string;
+  opportunitySlug?: string;
+  shareMethod: 'native' | 'clipboard';
+  userId?: string;
+  userEmail?: string;
+  userName?: string;
+}): Promise<string | null> => {
+  try {
+    const platform = typeof window !== 'undefined' && window.innerWidth < 768
+      ? 'mobile'
+      : 'desktop';
+
+    const response = await fetch('/api/shares/record', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...params,
+        platform,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to record share');
+      return null;
+    }
+
+    const data = await response.json();
+    return data.shareCode;
+  } catch (error) {
+    console.error('Error recording share:', error);
+    return null;
+  }
 };
 
 /**
@@ -138,9 +205,14 @@ export const generateEngagingShareMessage = (
 
   // Short Description
   if (opportunity.description) {
-    const shortDesc = opportunity.description.length > 150
-      ? opportunity.description.substring(0, 150) + '...'
-      : opportunity.description;
+    // Strip HTML tags and normalize whitespace
+    const cleanDesc = opportunity.description
+      .replace(/<[^>]*>/g, '')  // Remove HTML tags
+      .replace(/\s+/g, ' ')      // Normalize whitespace
+      .trim();
+    const shortDesc = cleanDesc.length > 150
+      ? cleanDesc.substring(0, 150) + '...'
+      : cleanDesc;
     lines.push(`📝 ${shortDesc}`);
     lines.push('');
   }
@@ -235,6 +307,9 @@ export const shareOpportunityWithMetadata = async (options: {
   description?: string;
   baseUrl: string;
   opportunity?: Opportunity;
+  userId?: string;
+  userEmail?: string;
+  userName?: string;
   analyticsCallback?: (method: 'native' | 'clipboard') => void;
 }): Promise<boolean> => {
   const {
@@ -244,10 +319,27 @@ export const shareOpportunityWithMetadata = async (options: {
     description,
     baseUrl,
     opportunity,
+    userId,
+    userEmail,
+    userName,
     analyticsCallback,
   } = options;
 
-  const url = generateShareUrl(baseUrl, opportunityId, opportunitySlug);
+  const shareMethod = isShareAPIAvailable() ? 'native' : 'clipboard';
+
+  // Record the share event and get tracking code
+  const shareCode = await recordShare({
+    opportunityId,
+    opportunityTitle,
+    opportunitySlug,
+    shareMethod,
+    userId,
+    userEmail,
+    userName,
+  });
+
+  // Generate URL with tracking code
+  const url = generateShareUrl(baseUrl, opportunityId, opportunitySlug, shareCode || undefined);
 
   // Use engaging message if full opportunity data is available
   const text = opportunity
@@ -255,7 +347,6 @@ export const shareOpportunityWithMetadata = async (options: {
     : generateShareMessage(opportunityTitle, description);
   const title = opportunityTitle;
 
-  const shareMethod = isShareAPIAvailable() ? 'native' : 'clipboard';
   analyticsCallback?.(shareMethod);
 
   // Pass the formatted text which already includes the URL

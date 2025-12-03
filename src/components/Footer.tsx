@@ -43,8 +43,15 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-slate-900 text-slate-100">
-        <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:px-8 lg:py-16">
+      <footer className="relative bg-slate-900 text-slate-100 overflow-hidden">
+        {/* MYARK Watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          <div className="text-[12rem] md:text-[18rem] lg:text-[24rem] font-black text-white/[0.03] select-none whitespace-nowrap tracking-tighter">
+            MYARK
+          </div>
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-12 sm:px-8 lg:py-16">
           <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
             <div className="space-y-6">
               <Link

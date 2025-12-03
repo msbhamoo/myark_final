@@ -14,6 +14,7 @@ import {
   getShareMethod,
 } from '@/lib/shareUtil';
 import type { Opportunity } from '@/types/opportunity';
+import { useAuth } from '@/context/AuthContext';
 
 interface ShareButtonProps {
   opportunityId: string;
@@ -40,6 +41,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 }) => {
   const [isSharing, setIsSharing] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const { user } = useAuth(); // Get authenticated user info
 
   const handleShare = async () => {
     setIsSharing(true);
@@ -52,6 +54,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         description,
         opportunity,
         baseUrl,
+        userId: user?.uid,
+        userEmail: user?.email || undefined,
+        userName: user?.displayName || undefined,
         analyticsCallback: onShare,
       });
 

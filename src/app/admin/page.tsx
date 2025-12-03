@@ -55,6 +55,26 @@ export default async function AdminDashboardPage() {
             </Button>
           </Link>
         </Card>
+
+        <Card className="bg-card/80 dark:bg-white/5 p-6 backdrop-blur border-border/60 dark:border-white/10">
+          <p className="text-sm text-muted-foreground">📊 Share Analytics</p>
+          <p className="mt-2 text-3xl font-semibold text-foreground dark:text-white">New</p>
+          <Link href="/admin/analytics/shares" className="mt-4 inline-flex">
+            <Button variant="outline" size="sm">
+              View analytics
+            </Button>
+          </Link>
+        </Card>
+
+        <Card className="bg-card/80 dark:bg-white/5 p-6 backdrop-blur border-border/60 dark:border-white/10">
+          <p className="text-sm text-muted-foreground">⚙️ Reward Settings</p>
+          <p className="mt-2 text-3xl font-semibold text-foreground dark:text-white">Configure</p>
+          <Link href="/admin/settings/rewards" className="mt-4 inline-flex">
+            <Button variant="outline" size="sm">
+              Manage rewards
+            </Button>
+          </Link>
+        </Card>
       </div>
 
       <Card className="bg-card/80 dark:bg-white/5 p-6 backdrop-blur border-border/60 dark:border-white/10">
