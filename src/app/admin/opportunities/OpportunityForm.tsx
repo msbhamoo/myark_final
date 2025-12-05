@@ -21,6 +21,7 @@ import {
 import { INDIAN_STATES, INDIAN_STATES_SET } from '@/constants/india';
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
+import imageCompression from 'browser-image-compression';
 import { OpportunityFormState, OpportunityItem, HomeSegmentOption } from './types';
 import {
     defaultForm,
@@ -66,6 +67,7 @@ export function OpportunityForm({
     const [formState, setFormState] = useState<OpportunityFormState>(defaultForm);
     const [error, setError] = useState<string | null>(null);
     const [segmentsLoading, setSegmentsLoading] = useState(false);
+    const [imageUploading, setImageUploading] = useState(false);
 
     useEffect(() => {
         if (opportunity && editingId) {
@@ -313,6 +315,41 @@ export function OpportunityForm({
     const selectedSegmentOptions = useMemo(() => {
         return availableSegments.filter(segment => formState.selectedSegments.includes(segment.segmentKey));
     }, [availableSegments, formState.selectedSegments]);
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setImageUploading(true);
+        try {
+            // Compression settings
+            const options = {
+                maxSizeMB: 2.5,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true,
+            };
+
+            const compressedFile = await imageCompression(file, options);
+
+            const formData = new FormData();
+            formData.append('file', compressedFile);
+
+            const response = await fetch('/api/admin/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error('Upload failed');
+
+            const data = await response.json();
+            setFormState((prev) => ({ ...prev, image: data.url }));
+        } catch (error) {
+            console.error('Upload error:', error);
+            setError('Failed to upload image');
+        } finally {
+            setImageUploading(false);
+        }
+    };
 
 
 
@@ -798,30 +835,17 @@ export function OpportunityForm({
                                         placeholder='https://...'
                                         className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white'
                                     />
-                                    <Input
-                                        type="file"
-                                        onChange={async (e) => {
-                                            const file = e.target.files?.[0];
-                                            if (!file) return;
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            disabled={imageUploading}
+                                            className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+                                        />
+                                        {imageUploading && <span className="text-sm text-muted-foreground animate-pulse">Uploading...</span>}
+                                    </div>
 
-                                            const formData = new FormData();
-                                            formData.append('file', file);
-
-                                            try {
-                                                const res = await fetch('/api/admin/upload', {
-                                                    method: 'POST',
-                                                    body: formData,
-                                                });
-                                                if (!res.ok) throw new Error('Upload failed');
-                                                const data = await res.json();
-                                                setFormState(prev => ({ ...prev, image: data.url }));
-                                            } catch (err) {
-                                                console.error(err);
-                                                setError('Failed to upload image');
-                                            }
-                                        }}
-                                        className='bg-card/80 dark:bg-white/5 text-foreground dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90'
-                                    />
                                 </div>
                             </div>
 

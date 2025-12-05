@@ -30,6 +30,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { fetchStudentProfile, updateStudentProfile } from '@/lib/studentProfileClient';
+import imageCompression from 'browser-image-compression';
 
 import {
   ModernAcademicCard,
@@ -354,8 +355,19 @@ export default function StudentPortfolioDashboard({
       const token = await getIdToken();
       if (!token) throw new Error('Missing auth token');
 
+      // Compression settings
+      const options = {
+        maxSizeMB: 2.5, // Increased to 2.5MB for better quality (limit is ~4.5MB)
+        maxWidthOrHeight: 1920, // Max width/height
+        useWebWorker: true,
+      };
+
+      console.log(`Original size: ${file.size / 1024 / 1024} MB`);
+      const compressedFile = await imageCompression(file, options);
+      console.log(`Compressed size: ${compressedFile.size / 1024 / 1024} MB`);
+
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressedFile);
       formData.append('type', type);
 
       const response = await fetch('/api/student/upload', {
