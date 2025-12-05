@@ -8,21 +8,43 @@ import { cookies } from 'next/headers';
 import { ADMIN_COOKIE, verifyAdminSession } from '@/lib/adminSession';
 import { LogoutButton } from './_components/LogoutButton';
 
-const navLinks = [
-  { href: '/admin', label: 'Dashboard' },
-  { href: '/admin/opportunities', label: 'Opportunities' },
-  { href: '/admin/opportunities/quizzes', label: 'Quizzes' },
-  { href: '/admin/hosts', label: 'Hosts' },
-  { href: '/admin/home', label: 'Home Layout' },
-  { href: '/admin/blogs', label: 'Blogs' },
-  { href: '/admin/bulk', label: 'Bulk Uploads' },
-  { href: '/admin/schools', label: 'Schools' },
-  { href: '/admin/users', label: 'Users' },
-  { href: '/admin/theme', label: 'Theme' },
-  { href: '/admin/settings', label: 'Settings' },
+// Navigation configuration with icon names (resolved in client component)
+const navSections = [
+  {
+    title: 'Main',
+    items: [
+      { href: '/admin', label: 'Dashboard', iconName: 'LayoutDashboard' },
+      { href: '/admin/opportunities', label: 'Opportunities', iconName: 'FileText' },
+      { href: '/admin/opportunities/quizzes', label: 'Quizzes', iconName: 'HelpCircle' },
+    ],
+  },
+  {
+    title: 'Content',
+    items: [
+      { href: '/admin/hosts', label: 'Hosts', iconName: 'Building2' },
+      { href: '/admin/home', label: 'Home Layout', iconName: 'Home' },
+      { href: '/admin/blogs', label: 'Blogs', iconName: 'BookOpen' },
+      { href: '/admin/bulk', label: 'Bulk Uploads', iconName: 'Upload' },
+    ],
+  },
+  {
+    title: 'Management',
+    items: [
+      { href: '/admin/schools', label: 'Schools', iconName: 'School' },
+      { href: '/admin/users', label: 'Users', iconName: 'Users' },
+    ],
+  },
+  {
+    title: 'System',
+    items: [
+      { href: '/admin/theme', label: 'Theme', iconName: 'Palette' },
+      { href: '/admin/settings', label: 'Settings', iconName: 'Settings' },
+    ],
+  },
 ];
 
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { AdminSidebar } from './_components/AdminSidebar';
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const cookieStore = await cookies();
@@ -37,33 +59,43 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Show admin layout only for authenticated users
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background text-foreground">
-        <header className="border-b border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/40">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link href="/admin" className="text-lg font-semibold tracking-tight">
-              MyArk Admin
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-foreground">
+        {/* Enhanced Header */}
+        <header className="sticky top-0 z-50 border-b border-border/60 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-slate-900/60">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+            <Link href="/admin" className="flex items-center gap-3 group">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 text-white font-bold text-lg shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-shadow">
+                M
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  MyArk
+                </span>
+                <span className="text-[10px] font-medium text-muted-foreground -mt-1">
+                  Admin Panel
+                </span>
+              </div>
             </Link>
-            <LogoutButton />
+            <div className="flex items-center gap-4">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white text-sm font-semibold shadow-md">
+                A
+              </div>
+              <LogoutButton />
+            </div>
           </div>
         </header>
 
-        <div className="mx-auto flex max-w-6xl gap-6 px-6 py-10">
-          <aside className="w-60 shrink-0 space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition hover:bg-card hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </aside>
-          <main className="flex-1">{children}</main>
+        <div className="mx-auto flex max-w-7xl gap-8 px-6 py-8">
+          {/* Collapsible Sidebar */}
+          <AdminSidebar navSections={navSections} />
+
+          {/* Main Content */}
+          <main className="flex-1 min-w-0">{children}</main>
         </div>
       </div>
     </ThemeProvider>
   );
 }
+
 
 

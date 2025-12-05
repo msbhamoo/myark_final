@@ -64,6 +64,7 @@ export function SimilarOpportunities({
                                     fee={item.fee}
                                     className="border-slate-200 bg-white/95 dark:border-slate-700 dark:bg-slate-800/50"
                                     organizerLogo={item.organizerLogo}
+                                    image={item.image}
                                 />
                             );
                         })}

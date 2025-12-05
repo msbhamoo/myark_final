@@ -16,7 +16,8 @@ import {
     ImageIcon,
     FileText,
     GraduationCap,
-    CheckCircle2
+    CheckCircle2,
+    Sparkles
 } from 'lucide-react';
 import { INDIAN_STATES, INDIAN_STATES_SET } from '@/constants/india';
 import dynamic from 'next/dynamic';
@@ -89,11 +90,11 @@ export function OpportunityForm({
                 status: opportunity.status,
                 fee: opportunity.fee ?? '',
                 currency: 'INR',
-                registrationDeadline: opportunity.registrationDeadline ?? '',
+                registrationDeadline: opportunity.registrationDeadline?.split('T')[0] ?? '',
                 registrationDeadlineTBD: opportunity.registrationDeadlineTBD ?? false,
-                startDate: opportunity.startDate ?? '',
+                startDate: opportunity.startDate?.split('T')[0] ?? '',
                 startDateTBD: opportunity.startDateTBD ?? false,
-                endDate: opportunity.endDate ?? '',
+                endDate: opportunity.endDate?.split('T')[0] ?? '',
                 endDateTBD: opportunity.endDateTBD ?? false,
                 selectedSegments: opportunity.segments,
                 image: opportunity.image ?? '',
@@ -351,47 +352,209 @@ export function OpportunityForm({
         }
     };
 
+    // Category to keyword mapping for better stock photo matching
+    const categoryKeywords: Record<string, string[]> = {
+        'olympiad': ['education', 'science', 'mathematics', 'trophy', 'competition'],
+        'scholarship': ['graduation', 'university', 'education', 'books', 'success'],
+        'competition': ['trophy', 'awards', 'victory', 'celebration', 'achievement'],
+        'hackathon': ['technology', 'coding', 'laptop', 'innovation', 'programming'],
+        'quiz': ['quiz', 'knowledge', 'brain', 'learning', 'questions'],
+        'workshop': ['workshop', 'learning', 'classroom', 'training', 'skills'],
+        'internship': ['office', 'business', 'career', 'professional', 'work'],
+        'fellowship': ['research', 'academics', 'study', 'university', 'library'],
+        'default': ['education', 'success', 'achievement', 'inspiration', 'learning']
+    };
+
+    const generateCoverImage = async () => {
+        if (!formState.title) {
+            setError('Please enter a title first');
+            return;
+        }
+
+        setImageUploading(true);
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = 630;
+            const ctx = canvas.getContext('2d')!;
+
+            // Gradient palettes for beautiful backgrounds
+            const gradientPalettes = [
+                ['#667eea', '#764ba2'], // Purple-violet
+                ['#f093fb', '#f5576c'], // Pink-red
+                ['#4facfe', '#00f2fe'], // Blue-cyan
+                ['#43e97b', '#38f9d7'], // Green-teal
+                ['#fa709a', '#fee140'], // Pink-yellow
+                ['#ff9a9e', '#fecfef'], // Soft pink
+                ['#a8edea', '#fed6e3'], // Soft teal-pink
+                ['#667eea', '#f093fb'], // Purple-pink
+                ['#11998e', '#38ef7d'], // Teal-green
+                ['#ee0979', '#ff6a00'], // Red-orange
+                ['#6a11cb', '#2575fc'], // Deep purple-blue
+                ['#f12711', '#f5af19'], // Orange-yellow
+            ];
+
+            // Pick a random gradient
+            const palette = gradientPalettes[Math.floor(Math.random() * gradientPalettes.length)];
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, palette[0]);
+            gradient.addColorStop(1, palette[1]);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add decorative geometric shapes
+            ctx.globalAlpha = 0.15;
+            for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const radius = 50 + Math.random() * 200;
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+
+            // Add diagonal lines pattern
+            ctx.globalAlpha = 0.08;
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            for (let i = -canvas.height; i < canvas.width + canvas.height; i += 60) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i + canvas.height, canvas.height);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+
+            // Add accent bar at bottom
+            const accentColor = palette[0];
+            ctx.fillStyle = accentColor;
+            ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
+
+            // Add title text with professional styling
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const title = formState.title;
+            let fontSize = 68;
+            ctx.font = `bold ${fontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+
+            // Auto-size text to fit
+            while (ctx.measureText(title).width > canvas.width - 140 && fontSize > 28) {
+                fontSize -= 4;
+                ctx.font = `bold ${fontSize}px system-ui, -apple-system, BlinkMacSystemFont, sans-serif`;
+            }
+
+            // Text shadow for depth
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = 30;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 6;
+            ctx.fillText(title, canvas.width / 2, canvas.height / 2 - 15);
+
+            // Add category badge
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetY = 0;
+            const category = categories.find(c => c.id === formState.categoryId)?.name;
+            if (category) {
+                ctx.font = 'bold 24px system-ui, -apple-system, sans-serif';
+                const badgeText = category.toUpperCase();
+                const badgeWidth = ctx.measureText(badgeText).width + 50;
+
+                // Badge background with rounded corners
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.beginPath();
+                ctx.roundRect(canvas.width / 2 - badgeWidth / 2, canvas.height / 2 + fontSize / 2 + 15, badgeWidth, 44, 22);
+                ctx.fill();
+
+                // Badge border
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Badge text
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(badgeText, canvas.width / 2, canvas.height / 2 + fontSize / 2 + 37);
+            }
+
+            // Add MyArk branding watermark
+            ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.textAlign = 'right';
+            ctx.fillText('myark.in', canvas.width - 35, canvas.height - 35);
+
+            // Convert to blob and upload
+            const blob = await new Promise<Blob>((resolve) => {
+                canvas.toBlob((b) => resolve(b!), 'image/jpeg', 0.92);
+            });
+
+            const formData = new FormData();
+            formData.append('file', blob, `cover-${Date.now()}.jpg`);
+
+            const response = await fetch('/api/admin/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error('Upload failed');
+
+            const data = await response.json();
+            setFormState((prev) => ({ ...prev, image: data.url }));
+        } catch (error) {
+            console.error('Generate cover error:', error);
+            setError('Failed to generate cover image');
+        } finally {
+            setImageUploading(false);
+        }
+    };
+
 
 
     return (
-        <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                    <Button variant="ghost" size="icon" onClick={onCancel}>
-                        <X className="h-5 w-5" />
-                    </Button>
-                    <div>
-                        <h2 className="text-lg font-semibold text-foreground dark:text-white">
-                            {editingId ? 'Edit Opportunity' : 'Create New Opportunity'}
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                            Fill in the sections below to create or edit an opportunity
-                        </p>
+        <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/80 dark:to-slate-800/50 p-6 backdrop-blur shadow-xl">
+            {/* Modern Header */}
+            <div className="relative mb-8 -mx-6 -mt-6 px-6 py-6 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-t-2xl">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <Button variant="ghost" size="icon" onClick={onCancel} className="text-white/80 hover:text-white hover:bg-white/10">
+                            <X className="h-5 w-5" />
+                        </Button>
+                        <div>
+                            <h2 className="text-xl font-bold text-white">
+                                {editingId ? '✏️ Edit Opportunity' : '✨ Create New Opportunity'}
+                            </h2>
+                            <p className="text-sm text-white/70">
+                                Fill in the sections below to {editingId ? 'update' : 'create'} your opportunity
+                            </p>
+                        </div>
                     </div>
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className="bg-white text-purple-700 hover:bg-white/90 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+                    >
+                        <Save className="mr-2 h-4 w-4" />
+                        {isSubmitting ? 'Saving...' : 'Save Opportunity'}
+                    </Button>
                 </div>
-                <Button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="bg-orange-500 hover:bg-orange-600 text-white"
-                >
-                    <Save className="mr-2 h-4 w-4" />
-                    {isSubmitting ? 'Saving...' : 'Save Opportunity'}
-                </Button>
             </div>
 
-            <Accordion type="multiple" defaultValue={['essentials', 'audience', 'schedule']} className="w-full">
-                {/* Section 1: Essentials */}
-                <AccordionItem value="essentials">
-                    <AccordionTrigger>
+            <Accordion type="multiple" defaultValue={['essentials', 'audience', 'schedule']} className="w-full space-y-4">
+                {/* Section 1: Essentials - Emerald Theme */}
+                <AccordionItem value="essentials" className="border-l-4 border-l-emerald-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 [&[data-state=open]]:bg-emerald-50/50 dark:[&[data-state=open]]:bg-emerald-900/10">
                         <div className="flex items-center gap-3">
-                            <LayoutList className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                                <LayoutList className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Essential Information</p>
-                                <p className="text-xs text-muted-foreground">Basic details about the opportunity</p>
+                                <p className="font-semibold text-emerald-700 dark:text-emerald-300">Essential Information</p>
+                                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">Title, category, organizer & status</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-emerald-50/30 to-transparent dark:from-emerald-900/10">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className='md:col-span-2 space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-title'>
@@ -539,18 +702,20 @@ export function OpportunityForm({
                     </AccordionContent>
                 </AccordionItem>
 
-                {/* Section 2: Audience */}
-                <AccordionItem value="audience">
-                    <AccordionTrigger>
+                {/* Section 2: Audience - Violet Theme */}
+                <AccordionItem value="audience" className="border-l-4 border-l-violet-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-violet-50/50 dark:hover:bg-violet-900/10 [&[data-state=open]]:bg-violet-50/50 dark:[&[data-state=open]]:bg-violet-900/10">
                         <div className="flex items-center gap-3">
-                            <Users className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30">
+                                <Users className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Target Audience</p>
-                                <p className="text-xs text-muted-foreground">Define who can participate</p>
+                                <p className="font-semibold text-violet-700 dark:text-violet-300">Target Audience</p>
+                                <p className="text-xs text-violet-600/70 dark:text-violet-400/70">Who can participate & eligibility</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-violet-50/30 to-transparent dark:from-violet-900/10">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className='space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white'>
@@ -657,18 +822,20 @@ export function OpportunityForm({
                     </AccordionContent>
                 </AccordionItem>
 
-                {/* Section 3: Schedule */}
-                <AccordionItem value="schedule">
-                    <AccordionTrigger>
+                {/* Section 3: Schedule - Blue Theme */}
+                <AccordionItem value="schedule" className="border-l-4 border-l-blue-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 [&[data-state=open]]:bg-blue-50/50 dark:[&[data-state=open]]:bg-blue-900/10">
                         <div className="flex items-center gap-3">
-                            <Calendar className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                                <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Schedule & Registration</p>
-                                <p className="text-xs text-muted-foreground">Dates, fees, and registration details</p>
+                                <p className="font-semibold text-blue-700 dark:text-blue-300">Schedule & Registration</p>
+                                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Dates, fees, and registration mode</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-blue-50/30 to-transparent dark:from-blue-900/10">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className='space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-start'>
@@ -810,24 +977,49 @@ export function OpportunityForm({
                     </AccordionContent>
                 </AccordionItem>
 
-                {/* Section 4: Media & Content */}
-                <AccordionItem value="media">
-                    <AccordionTrigger>
+                {/* Section 4: Media & Content - Rose Theme */}
+                <AccordionItem value="media" className="border-l-4 border-l-rose-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-rose-50/50 dark:hover:bg-rose-900/10 [&[data-state=open]]:bg-rose-50/50 dark:[&[data-state=open]]:bg-rose-900/10">
                         <div className="flex items-center gap-3">
-                            <ImageIcon className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-rose-100 dark:bg-rose-900/30">
+                                <ImageIcon className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Media & Description</p>
-                                <p className="text-xs text-muted-foreground">Images, description, and segments</p>
+                                <p className="font-semibold text-rose-700 dark:text-rose-300">Media & Description</p>
+                                <p className="text-xs text-rose-600/70 dark:text-rose-400/70">Cover image, description & segments</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-rose-50/30 to-transparent dark:from-rose-900/10">
                         <div className="grid grid-cols-1 gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className='space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-image'>
                                     Cover image URL
                                 </label>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
+                                    {/* Image Preview */}
+                                    {formState.image && (
+                                        <div className="relative group rounded-xl overflow-hidden border-2 border-rose-200 dark:border-rose-800/50 shadow-md">
+                                            <img
+                                                src={formState.image}
+                                                alt="Cover preview"
+                                                className="w-full h-48 object-cover"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).style.display = 'none';
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <Button
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    onClick={() => setFormState((prev) => ({ ...prev, image: '' }))}
+                                                    className="shadow-lg"
+                                                >
+                                                    <X className="h-4 w-4 mr-1" /> Remove
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )}
                                     <Input
                                         id='op-image'
                                         value={formState.image}
@@ -841,9 +1033,19 @@ export function OpportunityForm({
                                             accept="image/*"
                                             onChange={handleImageUpload}
                                             disabled={imageUploading}
-                                            className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
+                                            className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white flex-1"
                                         />
-                                        {imageUploading && <span className="text-sm text-muted-foreground animate-pulse">Uploading...</span>}
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={generateCoverImage}
+                                            disabled={imageUploading || !formState.title}
+                                            className="bg-gradient-to-r from-rose-500 to-pink-500 text-white border-0 hover:from-rose-600 hover:to-pink-600 shadow-md hover:shadow-lg transition-all"
+                                        >
+                                            <Sparkles className="h-4 w-4 mr-2" />
+                                            Auto Generate
+                                        </Button>
+                                        {imageUploading && <span className="text-sm text-muted-foreground animate-pulse">Processing...</span>}
                                     </div>
 
                                 </div>
@@ -954,18 +1156,20 @@ export function OpportunityForm({
                     </AccordionContent>
                 </AccordionItem>
 
-                {/* Section 5: Additional Details */}
-                <AccordionItem value="details">
-                    <AccordionTrigger>
+                {/* Section 5: Additional Details - Amber Theme */}
+                <AccordionItem value="details" className="border-l-4 border-l-amber-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-amber-50/50 dark:hover:bg-amber-900/10 [&[data-state=open]]:bg-amber-50/50 dark:[&[data-state=open]]:bg-amber-900/10">
                         <div className="flex items-center gap-3">
-                            <FileText className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                                <FileText className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Additional Details</p>
-                                <p className="text-xs text-muted-foreground">Eligibility, benefits, timeline, and custom tabs</p>
+                                <p className="font-semibold text-amber-700 dark:text-amber-300">Additional Details</p>
+                                <p className="text-xs text-amber-600/70 dark:text-amber-400/70">Eligibility, benefits, timeline & custom tabs</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-amber-50/30 to-transparent dark:from-amber-900/10">
                         <div className="grid grid-cols-1 gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                             <div className='space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white'>
@@ -1064,18 +1268,20 @@ export function OpportunityForm({
                     </AccordionContent>
                 </AccordionItem>
 
-                {/* Section 6: Exam Pattern */}
-                <AccordionItem value="exam">
-                    <AccordionTrigger>
+                {/* Section 6: Exam Pattern - Cyan Theme */}
+                <AccordionItem value="exam" className="border-l-4 border-l-cyan-500 rounded-xl border border-border/40 dark:border-white/10 bg-white/50 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <AccordionTrigger className="px-4 hover:bg-cyan-50/50 dark:hover:bg-cyan-900/10 [&[data-state=open]]:bg-cyan-50/50 dark:[&[data-state=open]]:bg-cyan-900/10">
                         <div className="flex items-center gap-3">
-                            <GraduationCap className="h-5 w-5 text-orange-500" />
+                            <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30">
+                                <GraduationCap className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+                            </div>
                             <div className="text-left">
-                                <p className="font-semibold">Exam Pattern</p>
-                                <p className="text-xs text-muted-foreground">Define exam structure and patterns</p>
+                                <p className="font-semibold text-cyan-700 dark:text-cyan-300">Exam Pattern</p>
+                                <p className="text-xs text-cyan-600/70 dark:text-cyan-400/70">Define exam structure & patterns</p>
                             </div>
                         </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-4 pb-4 pt-2 bg-gradient-to-b from-cyan-50/30 to-transparent dark:from-cyan-900/10">
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                             {formState.examPatterns.map((pattern, index) => (
                                 <Card key={pattern.id} className="p-4 border-border/60 dark:border-white/10 bg-card/60 dark:bg-white/5">
