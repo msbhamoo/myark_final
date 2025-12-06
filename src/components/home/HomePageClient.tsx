@@ -651,7 +651,7 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
 
                   <div className="relative -mx-2">
                     {segmentsLoading ? (
-                      <div className="flex gap-4 overflow-x-auto px-2 pb-4 scroll-fade-right">
+                      <div className="flex gap-4 overflow-x-auto px-2 pb-4">
                         {Array.from({ length: 3 }).map((_, idx) => (
                           <div
                             key={idx}
@@ -671,7 +671,7 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
                         ))}
                       </div>
                     ) : hasItems ? (
-                      <div className="flex gap-4 overflow-x-auto px-2 pb-4 scroll-fade-right">
+                      <div className="flex gap-4 overflow-x-auto px-2 pb-4">
                         {items.map((item: any) => {
                           // Check if it's a quiz or opportunity
                           const isQuiz = item.type === 'quiz' || item.quizConfig;

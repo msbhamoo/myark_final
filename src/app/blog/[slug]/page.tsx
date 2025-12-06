@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { getBlogBySlug, listPublishedBlogs } from '@/lib/blogService'
 import Link from 'next/link'
 import React from 'react'
-import { ShareButtons } from '@/components/BlogShareButtons'
-import { ArrowLeft, Eye, Share2, Calendar, User } from 'lucide-react'
+import { ShareButtons, TranslateToHindiButton } from '@/components/BlogShareButtons'
+import { ArrowLeft, Eye, Calendar, User } from 'lucide-react'
 import { ViewCounter } from '@/components/ViewCounter'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -174,6 +174,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   <span className="text-sm">{post.viewCount || 0} views</span>
                 </div>
               </div>
+
+              {/* Translation Option */}
+              <div className="flex items-center gap-3 pt-4">
+                <TranslateToHindiButton />
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  Read this article in Hindi using Google Translate
+                </span>
+              </div>
             </div>
 
             {/* Cover Image */}
@@ -200,7 +208,18 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   <p className="text-sm text-slate-600 dark:text-slate-400">Share this post with others</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <ShareButtons slug={post.slug} title={post.title} />
+                  <ShareButtons
+                    slug={post.slug}
+                    title={post.title}
+                    blog={{
+                      title: post.title,
+                      excerpt: post.excerpt,
+                      author: post.author,
+                      publishedAt: post.publishedAt,
+                      tags: post.tags,
+                      coverImage: post.coverImage,
+                    }}
+                  />
                   <span className="text-sm text-slate-600 dark:text-slate-400 pl-3 border-l border-slate-200 dark:border-slate-700">
                     {totalShares} shares
                   </span>
