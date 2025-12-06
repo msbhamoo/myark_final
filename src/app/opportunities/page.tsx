@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { Suspense } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
@@ -61,27 +62,48 @@ const normalizeMode = (mode?: Opportunity['mode']): Opportunity['mode'] => {
   return 'online';
 };
 
+// Loading fallback for search
+function SearchFallback() {
+  return <div className="h-10 w-64 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700" />;
+}
+
+// Loading fallback for filters
+function FiltersFallback() {
+  return <div className="h-10 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700" />;
+}
+
 export default async function OpportunitiesPage(props: any) {
   const searchParams = props?.searchParams ?? {};
   const category = typeof searchParams.category === 'string' ? searchParams.category : '';
   const segment = typeof searchParams.segment === 'string' ? searchParams.segment : '';
   const search = typeof searchParams.search === 'string' ? searchParams.search : '';
 
-  const { opportunities, segments } = await getOpportunities({
-    category,
-    segment,
-    search,
-    limit: 60,
-  });
+  let opportunities: Opportunity[] = [];
+  let segments: Record<string, Opportunity[]> = {};
+  let availableCategories: string[] = [];
 
-  // Extract unique categories for filter dropdown
-  const availableCategories = Array.from(
-    new Set(
-      opportunities
-        .map(opp => opp.category)
-        .filter((cat): cat is string => Boolean(cat))
-    )
-  ).sort();
+  try {
+    const result = await getOpportunities({
+      category,
+      segment,
+      search,
+      limit: 60,
+    });
+    opportunities = result.opportunities;
+    segments = result.segments ?? {};
+
+    // Extract unique categories for filter dropdown
+    availableCategories = Array.from(
+      new Set(
+        opportunities
+          .map(opp => opp.category)
+          .filter((cat): cat is string => Boolean(cat))
+      )
+    ).sort();
+  } catch (error) {
+    console.error('Failed to fetch opportunities:', error);
+    // Continue with empty results - allows build to proceed
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-[#DFF7C8]/30 via-white to-[#DFF7C8]/10 dark:bg-[#050b3a]">
@@ -100,14 +122,18 @@ export default async function OpportunitiesPage(props: any) {
                   Use search or choose a category from the homepage to find programs that match your goals. Results update with live data from the platform.
                 </p>
               </div>
-              <OpportunitiesSearch />
+              <Suspense fallback={<SearchFallback />}>
+                <OpportunitiesSearch />
+              </Suspense>
             </div>
           </div>
         </section>
 
         <section className="pb-20">
           <div className="container mx-auto max-w-[1200px] px-4 md:px-6">
-            <OpportunitiesFilters availableCategories={availableCategories} />
+            <Suspense fallback={<FiltersFallback />}>
+              <OpportunitiesFilters availableCategories={availableCategories} />
+            </Suspense>
             <OpportunitiesList opportunities={opportunities} />
           </div>
         </section>

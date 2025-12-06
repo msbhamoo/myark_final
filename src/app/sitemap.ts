@@ -147,47 +147,59 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     try {
         const db = getDb();
+        let opportunityPages: MetadataRoute.Sitemap = [];
+        let blogPages: MetadataRoute.Sitemap = [];
 
-        // Fetch all approved AND published opportunities
-        const opportunitiesSnapshot = await db
-            .collection('opportunities')
-            .where('approved', '==', true)
-            .where('published', '==', true)
-            .orderBy('createdAt', 'desc')
-            .limit(1000) // Limit to prevent timeout
-            .get();
+        // Fetch opportunities - simpler query to avoid index requirements
+        try {
+            const opportunitiesSnapshot = await db
+                .collection('opportunities')
+                .where('published', '==', true)
+                .limit(1000)
+                .get();
 
-        const opportunityPages: MetadataRoute.Sitemap = opportunitiesSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
-            const data = doc.data();
-            const updatedAt = data.updatedAt?.toDate() || data.createdAt?.toDate() || now;
+            opportunityPages = opportunitiesSnapshot.docs
+                .filter((doc) => {
+                    const data = doc.data();
+                    return data.approved === true;
+                })
+                .map((doc) => {
+                    const data = doc.data();
+                    const updatedAt = data.updatedAt?.toDate() || data.createdAt?.toDate() || now;
+                    return {
+                        url: `${SITE_URL}/opportunity/${doc.id}`,
+                        lastModified: updatedAt,
+                        changeFrequency: 'weekly' as const,
+                        priority: 0.7,
+                    };
+                });
+        } catch (oppError) {
+            console.error('Error fetching opportunities for sitemap:', oppError);
+            // Continue with empty opportunities
+        }
 
-            return {
-                url: `${SITE_URL}/opportunity/${doc.id}`,
-                lastModified: updatedAt,
-                changeFrequency: 'weekly' as const,
-                priority: 0.7,
-            };
-        });
+        // Fetch blog posts - simpler query to avoid index requirements
+        try {
+            const blogsSnapshot = await db
+                .collection('blogs')
+                .where('published', '==', true)
+                .limit(500)
+                .get();
 
-        // Fetch all published blog posts
-        const blogsSnapshot = await db
-            .collection('blogs')
-            .where('published', '==', true)
-            .orderBy('publishedAt', 'desc')
-            .limit(500)
-            .get();
-
-        const blogPages: MetadataRoute.Sitemap = blogsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
-            const data = doc.data();
-            const publishedAt = data.publishedAt?.toDate() || now;
-
-            return {
-                url: `${SITE_URL}/blog/${doc.id}`,
-                lastModified: publishedAt,
-                changeFrequency: 'monthly' as const,
-                priority: 0.6,
-            };
-        });
+            blogPages = blogsSnapshot.docs.map((doc) => {
+                const data = doc.data();
+                const publishedAt = data.publishedAt?.toDate() || now;
+                return {
+                    url: `${SITE_URL}/blog/${doc.id}`,
+                    lastModified: publishedAt,
+                    changeFrequency: 'monthly' as const,
+                    priority: 0.6,
+                };
+            });
+        } catch (blogError) {
+            console.error('Error fetching blogs for sitemap:', blogError);
+            // Continue with empty blogs
+        }
 
         // Combine all pages
         return [...staticPages, ...opportunityPages, ...blogPages];
