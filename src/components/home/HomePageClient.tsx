@@ -463,9 +463,9 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
 
           <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/5 to-accent/10 px-6 py-2.5 text-base font-bold text-primary shadow-sm ring-1 ring-accent/50 backdrop-blur-md transition-all hover:scale-105 hover:shadow-md dark:from-primary/20 dark:to-accent/10 dark:text-accent dark:ring-primary/40">
-                <Sparkles className="h-5 w-5 animate-pulse text-accent dark:text-primary" />
-                <span className="tracking-wide">
+              <div className="animate-shimmer animate-glow inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/20 px-6 py-2.5 text-base font-bold text-primary shadow-lg ring-2 ring-accent/60 backdrop-blur-md transition-all hover:scale-110 hover:shadow-xl dark:from-primary/20 dark:to-accent/10 dark:text-accent dark:ring-primary/40">
+                <Sparkles className="h-5 w-5 animate-bounce text-accent dark:text-primary" />
+                <span className="tracking-wide animate-gradient-text">
                   Be Remyarkable
                 </span>
               </div>
@@ -488,38 +488,38 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
                 ))}
               </div> */}
 
-              <div className="hidden md:flex mt-8 w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start">
+              <div className="hidden md:flex mt-8 w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-start animate-stagger">
                 <Button
                   asChild
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-b from-chart-1 to-chart-2 px-8 py-6 text-lg font-semibold text-white shadow-lg shadow-primary/30 transition-all hover:scale-105 hover:brightness-110 hover:shadow-primary/50"
+                  className="btn-ripple inline-flex items-center justify-center rounded-full bg-gradient-to-b from-chart-1 to-chart-2 px-8 py-6 text-lg font-semibold text-white shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105 hover:brightness-110 hover:shadow-primary/50 hover:shadow-xl group"
                 >
                   <Link href="/opportunities">
                     Explore Opportunities
-                    <ChevronRight className="ml-2 h-5 w-5" />
+                    <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
                 <Button
                   variant="outline"
                   asChild
-                  className="inline-flex items-center justify-center rounded-full border-2 border-accent bg-white/50 px-8 py-6 text-lg font-semibold text-primary backdrop-blur-sm transition-all hover:border-primary hover:bg-white hover:scale-105 dark:border-primary/50 dark:bg-slate-900/50 dark:text-accent dark:hover:bg-slate-900"
+                  className="btn-ripple inline-flex items-center justify-center rounded-full border-2 border-accent bg-white/50 px-8 py-6 text-lg font-semibold text-primary backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-white hover:scale-105 group dark:border-primary/50 dark:bg-slate-900/50 dark:text-accent dark:hover:bg-slate-900"
                 >
                   <Link href="/parent-guide">
                     Guide Your Child
-                    <Sparkles className="ml-2 h-5 w-5" />
+                    <Sparkles className="ml-2 h-5 w-5 transition-transform group-hover:rotate-12" />
                   </Link>
                 </Button>
               </div>
 
               {/* Stats Section - Integrated into Hero (Desktop Only) */}
-              <div className="hidden md:grid mt-10 grid-cols-4 gap-8 border-t border-slate-200/60 pt-8 dark:border-slate-800/60">
+              <div className="hidden md:grid mt-10 grid-cols-4 gap-8 border-t border-slate-200/60 pt-8 dark:border-slate-800/60 animate-stagger">
                 {STAT_CONFIG.map(({ key, label }) => {
                   const value = formatStatValue(stats[key]);
                   return (
-                    <div key={key} className="flex flex-col gap-1">
-                      <p className={`text-2xl font-bold text-slate-900 dark:text-white ${statsLoading ? 'animate-pulse' : ''}`}>
+                    <div key={key} className="flex flex-col gap-1 group cursor-default">
+                      <p className={`text-2xl font-bold text-slate-900 dark:text-white transition-all duration-300 group-hover:text-primary group-hover:scale-110 ${statsLoading ? 'animate-pulse' : 'animate-count-up'}`}>
                         {value}
                       </p>
-                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider dark:text-slate-400 leading-tight">
+                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider dark:text-slate-400 leading-tight transition-colors group-hover:text-primary/70">
                         {label.replace('Students discovering opportunities', 'Students').replace('Organizations on the platform', 'Organizations').replace('Verified schools & colleges', 'Schools').replace('Total active opportunities', 'Opportunities')}
                       </p>
                     </div>
@@ -532,24 +532,24 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
               <div className="flex justify-end pr-2">
                 <MascotBurst size="sm" className="hidden lg:inline-flex" />
               </div>
-              <div className="relative overflow-hidden rounded-3xl border border-accent/60 bg-white/80 p-4 sm:p-6 shadow-lg shadow-primary/20 dark:border-primary/20 dark:bg-slate-900/80">
-                <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-[#1A2A33] dark:bg-primary/20 dark:text-accent">
-                  Weekly spotlight
+              <div className="relative overflow-hidden rounded-3xl border border-accent/60 bg-white/90 p-4 sm:p-6 shadow-xl shadow-primary/10 backdrop-blur-sm dark:border-primary/20 dark:bg-slate-900/80">
+                <span className="animate-shimmer inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-[#1A2A33] dark:bg-primary/20 dark:text-accent">
+                  ✨ Weekly spotlight
                 </span>
                 <h3 className="mt-4 text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">Jump in this week</h3>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                   Handpicked programs to help you explore, compete, and grow.
                 </p>
-                <div className="mt-5 grid gap-3 sm:gap-3 grid-cols-2 sm:grid-cols-3">
+                <div className="mt-5 grid gap-3 sm:gap-3 grid-cols-2 sm:grid-cols-3 animate-stagger">
                   {HERO_SPOTLIGHTS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`group relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-gradient-to-br ${item.bgGradient} p-4 sm:p-5 text-center shadow-lg transition hover:-translate-y-1 hover:shadow-xl overflow-hidden`}
+                      className={`group relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-gradient-to-br ${item.bgGradient} p-4 sm:p-5 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:scale-105 overflow-hidden`}
                     >
-                      <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition" />
+                      <div className="absolute inset-0 bg-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
                       <div className="relative z-10 flex flex-col items-center gap-1.5">
-                        <span className="text-3xl sm:text-4xl">{item.emoji}</span>
+                        <span className="text-3xl sm:text-4xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">{item.emoji}</span>
                         <span className="text-xs sm:text-sm font-bold text-white line-clamp-2">{item.label}</span>
                         <span className="text-xs text-white/90 line-clamp-1">{item.caption}</span>
                       </div>
@@ -651,7 +651,7 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
 
                   <div className="relative -mx-2">
                     {segmentsLoading ? (
-                      <div className="flex gap-4 overflow-x-auto px-2 pb-4">
+                      <div className="flex gap-4 overflow-x-auto px-2 pb-4 scroll-fade-right">
                         {Array.from({ length: 3 }).map((_, idx) => (
                           <div
                             key={idx}
@@ -671,7 +671,7 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
                         ))}
                       </div>
                     ) : hasItems ? (
-                      <div className="flex gap-4 overflow-x-auto px-2 pb-4">
+                      <div className="flex gap-4 overflow-x-auto px-2 pb-4 scroll-fade-right">
                         {items.map((item: any) => {
                           // Check if it's a quiz or opportunity
                           const isQuiz = item.type === 'quiz' || item.quizConfig;
@@ -958,17 +958,18 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
         )}
 
         {/* Mobile Stats Section (Bottom) */}
-        <section className="md:hidden border-t border-slate-200 bg-slate-50 py-12 dark:border-slate-800 dark:bg-slate-900/50">
+        <section className="md:hidden border-t border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 dark:border-slate-800 dark:from-slate-900/50 dark:to-slate-950">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 gap-6">
+            <h3 className="text-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-6">Our Impact</h3>
+            <div className="grid grid-cols-2 gap-6 animate-stagger">
               {STAT_CONFIG.map(({ key, label }) => {
                 const value = formatStatValue(stats[key]);
                 return (
-                  <div key={key} className="flex flex-col items-center text-center gap-1">
-                    <p className={`text-3xl font-bold text-primary dark:text-accent ${statsLoading ? 'animate-pulse' : ''}`}>
+                  <div key={key} className="flex flex-col items-center text-center gap-1 group">
+                    <p className={`text-3xl font-bold text-primary dark:text-accent transition-all duration-300 group-hover:scale-110 ${statsLoading ? 'animate-pulse' : 'animate-count-up'}`}>
                       {value}
                     </p>
-                    <p className="text-xs font-medium text-slate-600 uppercase tracking-wider dark:text-slate-400">
+                    <p className="text-xs font-medium text-slate-600 uppercase tracking-wider dark:text-slate-400 transition-colors group-hover:text-primary">
                       {label.replace('Students discovering opportunities', 'Students').replace('Organizations on the platform', 'Organizations').replace('Verified schools & colleges', 'Schools').replace('Total active opportunities', 'Opportunities')}
                     </p>
                   </div>

@@ -166,7 +166,8 @@ export default function OpportunityCard({
     <Link href={`/opportunity/${id}`} className="block h-full">
       <Card
         className={cn(
-          'group relative h-full flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-1 dark:bg-slate-900 dark:border-slate-800 p-0 gap-0',
+          'group relative h-full flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 dark:bg-slate-900 dark:border-slate-800 p-0 gap-0',
+          isUrgent && 'urgency-glow border-rose-200 dark:border-rose-500/30',
           className
         )}
       >
@@ -196,9 +197,9 @@ export default function OpportunityCard({
           {/* Urgent Badge */}
           {isUrgent && (
             <div className="absolute top-3 right-3">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-rose-500 text-white text-xs font-bold shadow-sm animate-pulse">
-                <Clock className="w-3 h-3" />
-                <span>Urgent</span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-rose-500 to-red-500 text-white text-xs font-bold shadow-lg shadow-rose-500/30">
+                <Clock className="w-3 h-3 animate-pulse" />
+                <span>{daysLabel}</span>
               </span>
             </div>
           )}
@@ -208,7 +209,7 @@ export default function OpportunityCard({
         <div className="flex flex-1 flex-col p-4">
           {/* Title & Organizer */}
           <div className="mb-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-primary transition-colors min-h-[2.5rem]">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-300 min-h-[2.5rem]">
               {title}
             </h3>
             <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">

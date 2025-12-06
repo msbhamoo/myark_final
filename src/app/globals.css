@@ -231,3 +231,303 @@
 nextjs-portal {
   display: none !important;
 }
+
+/* ========================================
+   UI/UX ENHANCEMENT ANIMATIONS
+   ======================================== */
+
+/* Shimmer animation for premium badges */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Subtle glow animation for premium elements */
+@keyframes subtle-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(88, 204, 2, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(88, 204, 2, 0.4);
+  }
+}
+
+.animate-glow {
+  animation: subtle-glow 3s ease-in-out infinite;
+}
+
+/* Urgency glow for deadline warnings */
+@keyframes urgency-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+.urgency-glow {
+  animation: urgency-pulse 2s ease-in-out infinite;
+}
+
+/* Counter animation for stats */
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: count-up 0.6s ease-out forwards;
+}
+
+/* Staggered entrance animation */
+.animate-stagger>* {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: count-up 0.5s ease-out forwards;
+}
+
+.animate-stagger>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.animate-stagger>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.animate-stagger>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.animate-stagger>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.animate-stagger>*:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.animate-stagger>*:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* Horizontal scroll fade indicators */
+.scroll-fade-right {
+  position: relative;
+}
+
+.scroll-fade-right::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: linear-gradient(to right, transparent, var(--background));
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scroll-fade-left::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: linear-gradient(to left, transparent, var(--background));
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Smooth link underline animation */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Card hover enhancement */
+.card-hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Active indicator for bottom nav */
+.nav-active-indicator {
+  position: relative;
+}
+
+.nav-active-indicator::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: var(--primary);
+  opacity: 0.1;
+  border-radius: 12px;
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+.nav-active-indicator.active::before {
+  transform: scale(1);
+}
+
+/* Button ripple effect */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.btn-ripple:active::after {
+  animation: ripple 0.6s linear;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Section fade-in on scroll */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Premium badge border animation */
+@keyframes border-dance {
+
+  0%,
+  100% {
+    border-color: rgba(88, 204, 2, 0.5);
+  }
+
+  50% {
+    border-color: rgba(88, 204, 2, 1);
+  }
+}
+
+.animate-border {
+  animation: border-dance 2s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-text {
+  background: linear-gradient(90deg,
+      var(--primary) 0%,
+      #4ade80 50%,
+      var(--primary) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
+}

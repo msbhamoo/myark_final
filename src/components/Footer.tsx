@@ -44,10 +44,10 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="relative bg-slate-900 text-slate-100 overflow-hidden">
+      <footer className="relative bg-gradient-to-b from-slate-900 to-slate-950 text-slate-100 overflow-hidden">
         {/* MYARK Watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-          <div className="text-[12rem] md:text-[18rem] lg:text-[24rem] font-black text-white/[0.03] select-none whitespace-nowrap tracking-tighter">
+          <div className="text-[12rem] md:text-[18rem] lg:text-[24rem] font-black text-white/[0.02] select-none whitespace-nowrap tracking-tighter animate-float">
             MYARK
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function Footer() {
                       ) : (
                         <Link
                           href={link.href}
-                          className="transition hover:text-white hover:underline hover:underline-offset-4"
+                          className="link-underline transition-all duration-300 hover:text-white hover:translate-x-1 inline-flex"
                         >
                           {link.label}
                         </Link>
@@ -156,7 +156,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="transition hover:text-white hover:underline hover:underline-offset-4"
+                      className="link-underline transition-all duration-300 hover:text-white hover:translate-x-1 inline-flex"
                     >
                       {link.label}
                     </Link>
@@ -172,7 +172,7 @@ export default function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="transition hover:text-white hover:underline hover:underline-offset-4"
+                        className="link-underline transition-all duration-300 hover:text-white hover:translate-x-1 inline-flex"
                       >
                         {link.label}
                       </Link>

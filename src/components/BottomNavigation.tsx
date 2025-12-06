@@ -8,7 +8,7 @@ import { Home, Briefcase, BookOpen, User } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: Home },
-  { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
+  { href: '/opportunities', label: 'Explore', icon: Briefcase },
   { href: '/categories', label: 'Categories', icon: BookOpen },
   { href: '/parent-guide', label: 'Career', icon: Briefcase },
   { href: null, label: 'Profile', icon: User, requiresAuth: true }, // Profile needs special handling
@@ -40,8 +40,8 @@ export default function BottomNavigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white shadow-lg shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950 dark:shadow-slate-950/50 md:hidden">
-      <div className="flex items-center justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200/80 bg-white/95 backdrop-blur-lg shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-slate-950/50 md:hidden">
+      <div className="flex items-center justify-around px-2 py-1">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           let isActive = false;
@@ -61,15 +61,34 @@ export default function BottomNavigation() {
                 onClick={handleProfileClick}
                 disabled={loading}
                 className={cn(
-                  'flex flex-1 flex-col items-center justify-center gap-1 px-2 py-3 transition-colors',
+                  'relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2 transition-all duration-300',
                   loading
                     ? 'text-slate-400 cursor-not-allowed'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100',
-                  isProfileActive ? 'text-primary dark:text-primary' : ''
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100',
+                  isProfileActive && 'text-primary dark:text-primary'
                 )}
               >
-                <Icon className="h-5 w-5" />
-                <span className="text-xs font-semibold">{item.label}</span>
+                {/* Active pill indicator */}
+                <span
+                  className={cn(
+                    'absolute inset-x-2 top-0 h-0.5 rounded-full bg-primary transition-all duration-300',
+                    isProfileActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                  )}
+                />
+                <span
+                  className={cn(
+                    'absolute inset-2 rounded-xl bg-primary/10 transition-all duration-300',
+                    isProfileActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                  )}
+                />
+                <Icon className={cn(
+                  'relative h-5 w-5 transition-transform duration-300',
+                  isProfileActive && 'scale-110'
+                )} />
+                <span className={cn(
+                  'relative text-[10px] font-semibold transition-all duration-300',
+                  isProfileActive && 'text-primary font-bold'
+                )}>{item.label}</span>
               </button>
             );
           }
@@ -80,14 +99,33 @@ export default function BottomNavigation() {
               key={item.href}
               href={item.href || '#'}
               className={cn(
-                'flex flex-1 flex-col items-center justify-center gap-1 px-2 py-3 transition-colors',
+                'relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2 transition-all duration-300',
                 isActive
                   ? 'text-primary dark:text-primary'
-                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+                  : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
               )}
             >
-              <Icon className="h-5 w-5" />
-              <span className="text-xs font-semibold">{item.label}</span>
+              {/* Active pill indicator */}
+              <span
+                className={cn(
+                  'absolute inset-x-2 top-0 h-0.5 rounded-full bg-primary transition-all duration-300',
+                  isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                )}
+              />
+              <span
+                className={cn(
+                  'absolute inset-2 rounded-xl bg-primary/10 transition-all duration-300',
+                  isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                )}
+              />
+              <Icon className={cn(
+                'relative h-5 w-5 transition-transform duration-300',
+                isActive && 'scale-110'
+              )} />
+              <span className={cn(
+                'relative text-[10px] font-semibold transition-all duration-300',
+                isActive && 'text-primary font-bold'
+              )}>{item.label}</span>
             </a>
           );
         })}
@@ -95,3 +133,4 @@ export default function BottomNavigation() {
     </nav>
   );
 }
+
