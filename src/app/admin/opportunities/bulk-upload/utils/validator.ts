@@ -4,6 +4,8 @@ import { OpportunityCategory, Organizer } from '@/types/masters';
 interface ValidationContext {
     categories: OpportunityCategory[];
     organizers: Organizer[];
+    existingTitles: Set<string>; // For duplicate detection
+    uploadTitles: Map<string, number>; // title -> first row number, for within-file duplicates
 }
 
 /**
@@ -23,6 +25,34 @@ export async function validateOpportunity(
     validateRequiredField('organizer', opportunity.organizer, errors);
     validateRequiredField('gradeEligibility', opportunity.gradeEligibility, errors);
     validateRequiredField('mode', opportunity.mode, errors);
+
+    // Duplicate detection - check against existing opportunities in database
+    if (opportunity.title) {
+        const normalizedTitle = opportunity.title.toLowerCase().trim();
+
+        // Check against existing database opportunities
+        if (context.existingTitles.has(normalizedTitle)) {
+            errors.push({
+                field: 'title',
+                message: `Duplicate: "${opportunity.title}" already exists in the database`,
+                severity: 'error',
+                value: opportunity.title,
+            });
+        }
+
+        // Check for duplicates within the same upload file
+        const existingRow = context.uploadTitles.get(normalizedTitle);
+        if (existingRow !== undefined && existingRow !== opportunity.rowNumber) {
+            errors.push({
+                field: 'title',
+                message: `Duplicate in file: Same title as row ${existingRow}`,
+                severity: 'error',
+                value: opportunity.title,
+            });
+        } else {
+            context.uploadTitles.set(normalizedTitle, opportunity.rowNumber);
+        }
+    }
 
     // Category validation (warning only - can be fixed during manual approval)
     if (opportunity.category) {
@@ -254,7 +284,20 @@ function isValidUrl(url: string): boolean {
  */
 export async function validateOpportunities(
     opportunities: ParsedOpportunity[],
-    context: ValidationContext
+    context: Omit<ValidationContext, 'uploadTitles'>
 ): Promise<ValidationResult[]> {
-    return Promise.all(opportunities.map(opp => validateOpportunity(opp, context)));
+    // Create a map to track titles within this upload for duplicate detection
+    const uploadTitles = new Map<string, number>();
+    const fullContext: ValidationContext = {
+        ...context,
+        uploadTitles,
+    };
+
+    // Process sequentially to properly track within-file duplicates
+    const results: ValidationResult[] = [];
+    for (const opp of opportunities) {
+        const result = await validateOpportunity(opp, fullContext);
+        results.push(result);
+    }
+    return results;
 }

@@ -3,11 +3,9 @@ import { getDb } from '@/lib/firebaseAdmin';
 
 export async function GET(
   request: Request,
-  context: any
+  context: { params: Promise<{ id: string }> }
 ) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   try {
     const db = getDb();
     const doc = await db.collection('opportunityCategories').doc(id).get();
@@ -25,11 +23,9 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  context: any
+  context: { params: Promise<{ id: string }> }
 ) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   try {
     const body = await request.json();
     const { name, description } = body;
@@ -63,11 +59,9 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  context: any
+  context: { params: Promise<{ id: string }> }
 ) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   try {
     const db = getDb();
     const docRef = db.collection('opportunityCategories').doc(id);

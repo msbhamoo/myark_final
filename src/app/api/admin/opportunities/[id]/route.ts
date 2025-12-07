@@ -409,13 +409,11 @@ const sanitizeResourcesForResponse = (value: unknown) => {
     );
 };
 
-export async function PUT(request: Request, context: any) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid opportunity id' }, { status: 400 });
   }
@@ -515,7 +513,7 @@ export async function PUT(request: Request, context: any) {
     }
 
     const data = updatedSnapshot.data() ?? {};
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
     return NextResponse.json({
       item: {
         id: updatedSnapshot.id,
@@ -564,13 +562,11 @@ export async function PUT(request: Request, context: any) {
   }
 }
 
-export async function DELETE(request: Request, context: any) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid opportunity id' }, { status: 400 });
   }
@@ -578,7 +574,7 @@ export async function DELETE(request: Request, context: any) {
   try {
     const db = getDb();
     await db.collection(COLLECTION).doc(id).delete();
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to delete opportunity', error);

@@ -87,13 +87,11 @@ const normalizeSegmentPayload = (
   };
 };
 
-export async function PUT(request: NextRequest, context: any) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid segment id' }, { status: 400 });
   }
@@ -110,8 +108,8 @@ export async function PUT(request: NextRequest, context: any) {
     const existingKey = toTrimmedString(data.segmentKey);
     const fallback = existingKey
       ? FALLBACK_HOME_SEGMENTS.find(
-          (segment) => segment.segmentKey.toLowerCase() === existingKey.toLowerCase(),
-        )
+        (segment) => segment.segmentKey.toLowerCase() === existingKey.toLowerCase(),
+      )
       : undefined;
 
     const defaults = {
@@ -136,7 +134,7 @@ export async function PUT(request: NextRequest, context: any) {
       { merge: true },
     );
 
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
 
     const isDefault = FALLBACK_HOME_SEGMENTS.some(
       (segment) => segment.segmentKey.toLowerCase() === normalized.segmentKey.toLowerCase(),
@@ -163,13 +161,11 @@ export async function PUT(request: NextRequest, context: any) {
   }
 }
 
-export async function DELETE(request: NextRequest, context: any) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid segment id' }, { status: 400 });
   }
@@ -183,7 +179,7 @@ export async function DELETE(request: NextRequest, context: any) {
     }
 
     await docRef.delete();
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -42,6 +42,7 @@ export default function BulkUploadPage() {
     const [categories, setCategories] = useState<OpportunityCategory[]>([]);
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
     const [availableSegments, setAvailableSegments] = useState<HomeSegmentOption[]>([]);
+    const [existingTitles, setExistingTitles] = useState<Set<string>>(new Set());
     const [editingItem, setEditingItem] = useState<OpportunityWithValidation | null>(null);
     const [uploadResult, setUploadResult] = useState<BulkUploadResult | null>(null);
 
@@ -73,6 +74,18 @@ export default function BulkUploadPage() {
                         isVisible: seg.isVisible,
                     }));
                     setAvailableSegments(segments);
+                }
+
+                // Load existing opportunity titles for duplicate detection
+                const oppRes = await fetch(API_ENDPOINTS.admin.opportunities);
+                if (oppRes.ok) {
+                    const data = await oppRes.json();
+                    const titles = new Set<string>(
+                        (data.items || []).map((opp: any) =>
+                            (opp.title || '').toLowerCase().trim()
+                        ).filter((t: string) => t.length > 0)
+                    );
+                    setExistingTitles(titles);
                 }
             } catch (err) {
                 console.error('Failed to load master data', err);
@@ -125,7 +138,8 @@ export default function BulkUploadPage() {
         try {
             const validationResults = await validateOpportunities(parsedData, {
                 categories,
-                organizers
+                organizers,
+                existingTitles,
             });
 
             const validatedData: OpportunityWithValidation[] = parsedData.map((opp, index) => ({
@@ -218,6 +232,26 @@ export default function BulkUploadPage() {
                 totalRows: updatedData.length,
                 validRows: updatedData.filter(d => d.validation.isValid && d.validation.warnings.length === 0).length,
                 invalidRows: updatedData.filter(d => !d.validation.isValid).length,
+                warningRows: updatedData.filter(d => d.validation.isValid && d.validation.warnings.length > 0).length,
+            },
+        }));
+    };
+
+    const handleDeleteAllInvalid = () => {
+        if (!confirm(`Delete all ${uploadState.uploadStats.invalidRows} invalid rows?`)) {
+            return;
+        }
+        const updatedData = uploadState.validatedData.filter(
+            item => item.validation.isValid
+        );
+
+        setUploadState(prev => ({
+            ...prev,
+            validatedData: updatedData,
+            uploadStats: {
+                totalRows: updatedData.length,
+                validRows: updatedData.filter(d => d.validation.isValid && d.validation.warnings.length === 0).length,
+                invalidRows: 0,
                 warningRows: updatedData.filter(d => d.validation.isValid && d.validation.warnings.length > 0).length,
             },
         }));
@@ -358,9 +392,18 @@ export default function BulkUploadPage() {
 
                                 <div className="flex items-center gap-4">
                                     {uploadState.uploadStats.invalidRows > 0 && (
-                                        <p className="text-sm text-red-600 dark:text-red-400">
-                                            Please fix {uploadState.uploadStats.invalidRows} error{uploadState.uploadStats.invalidRows !== 1 ? 's' : ''} before  submitting
-                                        </p>
+                                        <>
+                                            <button
+                                                onClick={handleDeleteAllInvalid}
+                                                disabled={uploadState.isProcessing}
+                                                className="px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition disabled:opacity-50"
+                                            >
+                                                Delete All Invalid ({uploadState.uploadStats.invalidRows})
+                                            </button>
+                                            <p className="text-sm text-red-600 dark:text-red-400">
+                                                Please fix or delete {uploadState.uploadStats.invalidRows} error{uploadState.uploadStats.invalidRows !== 1 ? 's' : ''} before submitting
+                                            </p>
+                                        </>
                                     )}
 
                                     <button

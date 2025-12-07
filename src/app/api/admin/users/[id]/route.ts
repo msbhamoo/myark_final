@@ -15,13 +15,11 @@ const normaliseRole = (role: unknown) => {
   return value || undefined;
 };
 
-export async function PUT(request: Request, context: any) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid user id' }, { status: 400 });
   }
@@ -69,13 +67,11 @@ export async function PUT(request: Request, context: any) {
   }
 }
 
-export async function DELETE(request: Request, context: any) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   if (!hasAdminSessionFromRequest(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: 'Invalid user id' }, { status: 400 });
   }

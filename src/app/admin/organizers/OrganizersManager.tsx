@@ -29,7 +29,6 @@ const defaultForm = {
   contactUrl: '',
   contactEmail: '',
   contactPhone: '',
-  contactWebsite: '',
   description: '',
   opportunityTypeIds: [] as string[],
 };
@@ -177,7 +176,6 @@ export function OrganizersManager() {
       contactUrl: item.contactUrl ?? '',
       contactEmail: item.contactEmail ?? '',
       contactPhone: item.contactPhone ?? '',
-      contactWebsite: item.contactWebsite ?? '',
       description: item.description ?? '',
       opportunityTypeIds: item.opportunityTypeIds ?? [],
     });
@@ -379,18 +377,6 @@ export function OrganizersManager() {
               className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
             />
           </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground dark:text-white" htmlFor="org-contact-website">
-              Contact Website
-            </label>
-            <Input
-              id="org-contact-website"
-              value={formState.contactWebsite}
-              onChange={(event) => setFormState((prev) => ({ ...prev, contactWebsite: event.target.value }))}
-              placeholder="https://example.com/support"
-              className="bg-card/80 dark:bg-white/5 text-foreground dark:text-white"
-            />
-          </div>
           <div className="md:col-span-2 space-y-2">
             <label className="text-sm font-medium text-foreground dark:text-white">
               Opportunity Types They Conduct (Multi-select)
@@ -474,9 +460,14 @@ export function OrganizersManager() {
       <section className="rounded-2xl border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-6 backdrop-blur">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-foreground dark:text-white">Existing Organizers</h2>
-          <Button variant="outline" size="sm" onClick={loadItems} disabled={isLoading}>
-            Refresh
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => window.location.href = '/admin/organizers/bulk-upload'}>
+              Bulk Upload
+            </Button>
+            <Button variant="outline" size="sm" onClick={loadItems} disabled={isLoading}>
+              Refresh
+            </Button>
+          </div>
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
           {isLoading ? 'Loading organizers...' : `Showing ${items.length} record(s).`}
@@ -535,7 +526,7 @@ export function OrganizersManager() {
           </Table>
         </div>
       </section>
-    </div>
+    </div >
   );
 }
 

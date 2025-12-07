@@ -210,7 +210,7 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
     });
 
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
 
     return NextResponse.json(
       {

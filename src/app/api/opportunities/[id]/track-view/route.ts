@@ -9,11 +9,9 @@ import { revalidateTag } from 'next/cache';
  */
 export async function POST(
     req: NextRequest,
-    ctx: any,
+    ctx: { params: Promise<{ id: string }> },
 ) {
-    const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
-    const idParam = params?.id;
-    const opportunityId = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+    const { id: opportunityId } = await ctx.params;
 
     if (!opportunityId) {
         return NextResponse.json({ error: 'Opportunity ID is required' }, { status: 400 });
@@ -98,7 +96,7 @@ export async function POST(
         });
 
         // Revalidate the opportunities cache
-        revalidateTag('opportunities');
+        revalidateTag('opportunities', 'max');
     }
 
     return response;

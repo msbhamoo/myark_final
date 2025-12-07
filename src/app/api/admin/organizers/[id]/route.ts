@@ -39,10 +39,8 @@ const parseFoundationYear = (value: unknown): number | null => {
   return null;
 };
 
-export async function GET(_request: Request, context: any) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   try {
     const db = getDb();
     const doc = await db.collection('organizers').doc(id).get();
@@ -82,10 +80,8 @@ export async function GET(_request: Request, context: any) {
   }
 }
 
-export async function PUT(request: Request, context: any) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   try {
     const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
     if (!body) {
@@ -133,10 +129,8 @@ export async function PUT(request: Request, context: any) {
   }
 }
 
-export async function DELETE(_request: Request, context: any) {
-  const params = (context && context.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   try {
     const db = getDb();
     const docRef = db.collection('organizers').doc(id);

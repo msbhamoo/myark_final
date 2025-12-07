@@ -478,7 +478,7 @@ export async function GET(request: Request) {
 
   try {
     const db = getDb();
-    const snapshot = await db.collection(COLLECTION).orderBy('updatedAt', 'desc').limit(200).get();
+    const snapshot = await db.collection(COLLECTION).orderBy('updatedAt', 'desc').limit(2000).get();
     const items = snapshot.docs.map((doc) => serializeDoc(doc as QueryDocumentSnapshot));
     return NextResponse.json({ items });
   } catch (error) {
@@ -556,7 +556,7 @@ export async function POST(request: Request) {
     const db = getDb();
     const docRef = await db.collection(COLLECTION).add(docData);
     const docSnapshot = await docRef.get();
-    revalidateTag('opportunities');
+    revalidateTag('opportunities', 'max');
     return NextResponse.json({ item: serializeDoc(docSnapshot as QueryDocumentSnapshot) }, { status: 201 });
   } catch (error) {
     console.error('Failed to create opportunity', error);
