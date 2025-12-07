@@ -302,9 +302,8 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
   return [mainEntity, faqSchema];
 };
 
-export async function generateMetadata(ctx: any): Promise<Metadata> {
-  const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id: idParam } = await params;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   const opportunity = await getOpportunityByIdOrSlug(id);
 
@@ -374,9 +373,8 @@ export async function generateMetadata(ctx: any): Promise<Metadata> {
   };
 }
 
-export default async function OpportunityDetailPage(props: any) {
-  const params = props?.params ?? {};
-  const idParam = params.id;
+export default async function OpportunityDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idParam } = await params;
   const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
   const opportunity = await getOpportunityByIdOrSlug(id);
 
