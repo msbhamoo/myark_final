@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import QuizAttemptInterface from '@/components/quiz/QuizAttemptInterface';
 import { QuizOpportunity } from '@/types/quiz';
 import { useAuth } from '@/context/AuthContext';
 
-export default function QuizAttemptPage({ params }: { params: { id: string } }) {
+export default function QuizAttemptPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const router = useRouter();
     const { user, loading: authLoading, getIdToken } = useAuth();
     const [quiz, setQuiz] = useState<QuizOpportunity | null>(null);
@@ -18,9 +19,9 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
     useEffect(() => {
         if (!authLoading && !user) {
             // Redirect to home with login prompt
-            router.push(`/?login=true&redirect=/quiz/${params.id}/attempt`);
+            router.push(`/?login=true&redirect=/quiz/${id}/attempt`);
         }
-    }, [user, authLoading, router, params.id]);
+    }, [user, authLoading, router, id]);
 
     useEffect(() => {
         if (user) {
@@ -30,7 +31,7 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
 
     const fetchQuiz = async () => {
         try {
-            const response = await fetch(`/api/quiz/${params.id}`);
+            const response = await fetch(`/api/quiz/${id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch quiz');
             }
@@ -40,7 +41,7 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
             // Check user's previous attempts
             if (user) {
                 const token = await getIdToken();
-                const attemptsResponse = await fetch(`/api/quiz/${params.id}/my-attempts`, {
+                const attemptsResponse = await fetch(`/api/quiz/${id}/my-attempts`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -75,7 +76,7 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
         }
 
         try {
-            const response = await fetch(`/api/quiz/${params.id}/submit`, {
+            const response = await fetch(`/api/quiz/${id}/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
                 // Redirect to result page with attemptId
                 const attemptId = result.result?.attempt?.id;
                 if (attemptId) {
-                    router.push(`/quiz/${params.id}/result?attemptId=${attemptId}`);
+                    router.push(`/quiz/${id}/result?attemptId=${attemptId}`);
                 } else {
                     router.push(`/quizzes`);
                 }
@@ -140,14 +141,14 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
                         <div className="flex flex-col gap-3">
                             {error?.includes('attempted') && (
                                 <button
-                                    onClick={() => router.push(`/quiz/${params.id}/result`)}
+                                    onClick={() => router.push(`/quiz/${id}/result`)}
                                     className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                                 >
                                     View My Results
                                 </button>
                             )}
                             <button
-                                onClick={() => router.push(`/quiz/${params.id}`)}
+                                onClick={() => router.push(`/quiz/${id}`)}
                                 className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                             >
                                 Back to Quiz
@@ -161,7 +162,7 @@ export default function QuizAttemptPage({ params }: { params: { id: string } }) 
 
     return (
         <QuizAttemptInterface
-            quizId={params.id}
+            quizId={id}
             questions={quiz.quizConfig.questions}
             settings={quiz.quizConfig.settings}
             onSubmit={handleSubmit}

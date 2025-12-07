@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Users, FileCheck, Calendar, Award } from 'lucide-react';
 
-export default function QuizSubmissionsPage({ params }: { params: { id: string } }) {
+export default function QuizSubmissionsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const router = useRouter();
     const [quiz, setQuiz] = useState<any>(null);
     const [submissions, setSubmissions] = useState<any[]>([]);
@@ -21,12 +22,12 @@ export default function QuizSubmissionsPage({ params }: { params: { id: string }
     const fetchData = async () => {
         try {
             // Fetch quiz
-            const quizRes = await fetch(`/api/quiz/${params.id}`);
+            const quizRes = await fetch(`/api/quiz/${id}`);
             const quizData = await quizRes.json();
             setQuiz(quizData.quiz);
 
             // Fetch submissions
-            const submissionsRes = await fetch(`/api/quiz/${params.id}/submissions`);
+            const submissionsRes = await fetch(`/api/quiz/${id}/submissions`);
             const submissionsData = await submissionsRes.json();
             setSubmissions(submissionsData.submissions || []);
         } catch (error) {
@@ -63,7 +64,7 @@ export default function QuizSubmissionsPage({ params }: { params: { id: string }
                 {/* Header */}
                 <div className="mb-8">
                     <Link
-                        href={`/admin/opportunities/quizzes/${params.id}/edit`}
+                        href={`/admin/opportunities/quizzes/${id}/edit`}
                         className="inline-flex items-center text-sm text-slate-600 dark:text-slate-400 hover:text-primary mb-4"
                     >
                         <ArrowLeft className="h-4 w-4 mr-1" />
@@ -213,7 +214,7 @@ export default function QuizSubmissionsPage({ params }: { params: { id: string }
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => router.push(`/quiz/${params.id}/result?attemptId=${submission.id}`)}
+                                                    onClick={() => router.push(`/quiz/${id}/result?attemptId=${submission.id}`)}
                                                 >
                                                     View Details
                                                 </Button>

@@ -72,11 +72,11 @@ function FiltersFallback() {
   return <div className="h-10 w-full animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700" />;
 }
 
-export default async function OpportunitiesPage(props: any) {
-  const searchParams = props?.searchParams ?? {};
-  const category = typeof searchParams.category === 'string' ? searchParams.category : '';
-  const segment = typeof searchParams.segment === 'string' ? searchParams.segment : '';
-  const search = typeof searchParams.search === 'string' ? searchParams.search : '';
+export default async function OpportunitiesPage({ searchParams }: { searchParams: Promise<{ category?: string; segment?: string; search?: string }> }) {
+  const params = await searchParams;
+  const category = params.category ?? '';
+  const segment = params.segment ?? '';
+  const search = params.search ?? '';
 
   let opportunities: Opportunity[] = [];
   let segments: Record<string, Opportunity[]> = {};

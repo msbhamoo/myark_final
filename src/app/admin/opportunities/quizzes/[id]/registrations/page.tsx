@@ -5,9 +5,9 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Users, Calendar, Mail } from 'lucide-react';
 
-export default async function QuizRegistrationsPage({ params }: { params: { id: string } }) {
+export default async function QuizRegistrationsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id: quizId } = await params;
     const db = getDb();
-    const quizId = params.id;
 
     // Fetch quiz details
     const quizDoc = await db.collection('quizzes').doc(quizId).get();

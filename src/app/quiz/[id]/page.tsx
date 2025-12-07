@@ -3,9 +3,10 @@ import { getDb } from '@/lib/firebaseAdmin';
 import { redirect } from 'next/navigation';
 import QuizDetail from '@/components/quiz/QuizDetail';
 
-export default async function QuizDetailPage({ params }: { params: { id: string } }) {
+export default async function QuizDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const db = getDb();
-    const quizDoc = await db.collection('quizzes').doc(params.id).get();
+    const quizDoc = await db.collection('quizzes').doc(id).get();
 
     if (!quizDoc.exists) {
         redirect('/quizzes');
@@ -15,3 +16,4 @@ export default async function QuizDetailPage({ params }: { params: { id: string 
 
     return <QuizDetail quiz={quizData} />;
 }
+

@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import QuizLeaderboard from '@/components/quiz/QuizLeaderboard';
 import { QuizOpportunity } from '@/types/quiz';
 import { useAuth } from '@/context/AuthContext';
 
-export default function QuizLeaderboardPage({ params }: { params: { id: string } }) {
+export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const [quiz, setQuiz] = useState<QuizOpportunity | null>(null);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
@@ -16,7 +17,7 @@ export default function QuizLeaderboardPage({ params }: { params: { id: string }
 
     const fetchQuiz = async () => {
         try {
-            const response = await fetch(`/api/quiz/${params.id}`);
+            const response = await fetch(`/api/quiz/${id}`);
             if (response.ok) {
                 const data = await response.json();
                 setQuiz(data.quiz);
@@ -56,7 +57,7 @@ export default function QuizLeaderboardPage({ params }: { params: { id: string }
 
     return (
         <QuizLeaderboard
-            quizId={params.id}
+            quizId={id}
             quizTitle={quiz.title}
             visibilitySettings={quiz.quizConfig.leaderboardSettings}
             quizEndDate={quiz.endDate}

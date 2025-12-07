@@ -6,11 +6,11 @@ export default async function QuizResultPageWrapper({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { attemptId?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ attemptId?: string }>;
 }) {
-  const quizId = params.id;
-  const attemptId = searchParams.attemptId;
+  const { id: quizId } = await params;
+  const { attemptId } = await searchParams;
 
   if (!attemptId) {
     return (

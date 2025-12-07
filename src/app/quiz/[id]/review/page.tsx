@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { QuizOpportunity } from '@/types/quiz';
 import { useAuth } from '@/context/AuthContext';
@@ -10,7 +10,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, XCircle, Circle } from 'lucide-react';
 
-export default function QuizReviewPage({ params }: { params: { id: string } }) {
+export default function QuizReviewPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     const router = useRouter();
     const { user } = useAuth();
     const [quiz, setQuiz] = useState<QuizOpportunity | null>(null);
@@ -19,22 +20,22 @@ export default function QuizReviewPage({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         if (!user) {
-            router.push(`/quiz/${params.id}`);
+            router.push(`/quiz/${id}`);
             return;
         }
         fetchQuizAndAttempt();
-    }, [user, params.id]);
+    }, [user, id]);
 
     const fetchQuizAndAttempt = async () => {
         try {
             // Fetch quiz
-            const quizRes = await fetch(`/api/quiz/${params.id}`);
+            const quizRes = await fetch(`/api/quiz/${id}`);
             if (!quizRes.ok) throw new Error('Quiz not found');
             const quizData = await quizRes.json();
             setQuiz(quizData.quiz);
 
             // Fetch latest attempt
-            const attemptRes = await fetch(`/api/quiz/${params.id}/my-attempts`);
+            const attemptRes = await fetch(`/api/quiz/${id}/my-attempts`);
             if (attemptRes.ok) {
                 const attempts = await attemptRes.json();
                 if (attempts.length > 0) {
@@ -64,7 +65,7 @@ export default function QuizReviewPage({ params }: { params: { id: string } }) {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold mb-4">No attempt found</h1>
-                    <button onClick={() => router.push(`/quiz/${params.id}`)} className="text-primary hover:underline">
+                    <button onClick={() => router.push(`/quiz/${id}`)} className="text-primary hover:underline">
                         Back to Quiz
                     </button>
                 </div>
@@ -164,10 +165,10 @@ export default function QuizReviewPage({ params }: { params: { id: string } }) {
                                                         <div
                                                             key={optIdx}
                                                             className={`p-3 rounded-lg border-2 ${isCorrectOption
-                                                                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                                                                    : isSelected
-                                                                        ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                                                                        : 'border-slate-200 dark:border-slate-700'
+                                                                ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                                                                : isSelected
+                                                                    ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                                                                    : 'border-slate-200 dark:border-slate-700'
                                                                 }`}
                                                         >
                                                             <div className="flex items-center gap-2">
@@ -208,13 +209,13 @@ export default function QuizReviewPage({ params }: { params: { id: string } }) {
                     {/* Actions */}
                     <div className="mt-8 flex gap-4">
                         <button
-                            onClick={() => router.push(`/quiz/${params.id}/leaderboard`)}
+                            onClick={() => router.push(`/quiz/${id}/leaderboard`)}
                             className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
                         >
                             View Leaderboard
                         </button>
                         <button
-                            onClick={() => router.push(`/quiz/${params.id}`)}
+                            onClick={() => router.push(`/quiz/${id}`)}
                             className="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white rounded-lg hover:opacity-90 transition-opacity"
                         >
                             Back to Quiz
