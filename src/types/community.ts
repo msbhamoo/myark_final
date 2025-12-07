@@ -36,7 +36,8 @@ export interface UpvoteResponse {
  */
 export interface Comment {
   id: string;
-  opportunityId: string;
+  opportunityId: string; // entityId stored as opportunityId for backward compatibility
+  entityType?: 'opportunity' | 'blog'; // Type of entity this comment belongs to
   userId: string;
   userEmail: string;
   userName: string;

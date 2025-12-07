@@ -164,14 +164,15 @@ export const removeUpvote = async (
 };
 
 /**
- * Create a new comment on an opportunity
+ * Create a new comment on an opportunity or blog
  */
 export const createComment = async (
   userId: string,
   userEmail: string,
   userName: string,
-  opportunityId: string,
+  entityId: string,
   content: string,
+  entityType: 'opportunity' | 'blog' = 'opportunity',
 ): Promise<Comment> => {
   const db = getDb();
 
@@ -192,7 +193,8 @@ export const createComment = async (
     userId,
     userEmail,
     userName,
-    opportunityId,
+    opportunityId: entityId, // Keep field name for backward compatibility
+    entityType, // New field to distinguish between opportunities and blogs
     content: sanitizedContent,
     createdAt: now,
     isOfficial: false,
@@ -205,13 +207,14 @@ export const createComment = async (
 };
 
 /**
- * Get comments for an opportunity with pagination
+ * Get comments for an opportunity or blog with pagination
  */
 export const getComments = async (
-  opportunityId: string,
+  entityId: string,
   limit: number = 20,
   offset: number = 0,
   sortBy: 'recent' | 'oldest' = 'recent',
+  entityType: 'opportunity' | 'blog' = 'opportunity',
 ): Promise<CommentListResponse> => {
   const db = getDb();
 
@@ -226,21 +229,24 @@ export const getComments = async (
   try {
     // First, try with composite index (if available)
     try {
-      // Get total count
-      const countQuery = await db
+      // Build query based on entity type
+      // For opportunities, also match comments without entityType (backward compatibility)
+      let baseQuery = db
         .collection(COMMENTS_COLLECTION)
-        .where('opportunityId', '==', opportunityId)
-        .where('isDeleted', '==', false)
-        .count()
-        .get();
+        .where('opportunityId', '==', entityId)
+        .where('isDeleted', '==', false);
 
+      // For blogs, filter only blog comments
+      if (entityType === 'blog') {
+        baseQuery = baseQuery.where('entityType', '==', 'blog');
+      }
+
+      // Get total count
+      const countQuery = await baseQuery.count().get();
       const total = countQuery.data().count;
 
       // Get paginated results with composite index
-      let query = db
-        .collection(COMMENTS_COLLECTION)
-        .where('opportunityId', '==', opportunityId)
-        .where('isDeleted', '==', false);
+      let query = baseQuery;
 
       // Sort
       const orderBy = sortBy === 'recent' ? 'desc' : 'asc';
@@ -263,13 +269,18 @@ export const getComments = async (
       const errorMessage = indexError instanceof Error ? indexError.message : String(indexError);
       if (errorMessage.includes('index') || errorMessage.includes('FAILED_PRECONDITION')) {
         console.warn('Composite index not available. Using fallback query.', indexError);
-        
+
         // Fallback: Get all active comments and filter/sort in-memory
-        const allDocs = await db
+        let fallbackQuery = db
           .collection(COMMENTS_COLLECTION)
-          .where('opportunityId', '==', opportunityId)
-          .where('isDeleted', '==', false)
-          .get();
+          .where('opportunityId', '==', entityId)
+          .where('isDeleted', '==', false);
+
+        if (entityType === 'blog') {
+          fallbackQuery = fallbackQuery.where('entityType', '==', 'blog');
+        }
+
+        const allDocs = await fallbackQuery.get();
 
         const allComments = allDocs.docs
           .map((doc) => ({

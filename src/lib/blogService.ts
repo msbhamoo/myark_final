@@ -16,8 +16,12 @@ export async function listPublishedBlogs(limit?: number): Promise<BlogPost[]> {
   const snap = await q.get()
   const blogs = snap.docs
     .map((d) => ({ id: d.id, ...(d.data() as any) })) as BlogPost[]
-  // Filter to only published blogs
-  return blogs.filter((blog) => blog.status === 'published').slice(0, limit)
+  // Filter to only published blogs where publishedAt is not in the future (scheduled publishing)
+  const now = new Date().toISOString()
+  return blogs.filter((blog) =>
+    blog.status === 'published' &&
+    (!blog.publishedAt || blog.publishedAt <= now)
+  ).slice(0, limit)
 }
 
 export async function listBlogsByTag(tag: string, limit?: number): Promise<BlogPost[]> {
@@ -54,7 +58,12 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   const snap = await db.collection(COLLECTION).where('slug', '==', slug).limit(1).get()
   if (snap.empty) return null
   const doc = snap.docs[0]
-  return { id: doc.id, ...(doc.data() as any) } as BlogPost
+  const blog = { id: doc.id, ...(doc.data() as any) } as BlogPost
+  // For scheduled posts, only return if publishedAt is not in the future
+  if (blog.status === 'published' && blog.publishedAt && blog.publishedAt > new Date().toISOString()) {
+    return null
+  }
+  return blog
 }
 
 export async function getBlogById(id: string): Promise<BlogPost | null> {

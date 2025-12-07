@@ -1,6 +1,6 @@
 /**
  * Hook: useComments
- * Manages comment state and mutations for an opportunity
+ * Manages comment state and mutations for an opportunity or blog
  * Handles loading, error states, pagination, and sorting
  */
 
@@ -18,8 +18,9 @@ export interface UseCommentsOptions {
 }
 
 export const useComments = (
-  opportunityId: string,
+  entityId: string,
   options: UseCommentsOptions = {},
+  entityType: 'opportunity' | 'blog' = 'opportunity',
 ) => {
   const { user, getIdToken } = useAuth();
   const {
@@ -44,7 +45,8 @@ export const useComments = (
         setLoading(true);
 
         const params = new URLSearchParams({
-          opportunityId,
+          entityId,
+          entityType,
           limit: Math.min(limit, 100).toString(),
           offset: Math.max(pageOffset, 0).toString(),
           sortBy,
@@ -68,7 +70,7 @@ export const useComments = (
         setLoading(false);
       }
     },
-    [opportunityId, limit, sortBy, initialOffset],
+    [entityId, entityType, limit, sortBy, initialOffset],
   );
 
   // Initial fetch
@@ -102,7 +104,8 @@ export const useComments = (
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            opportunityId,
+            entityId,
+            entityType,
             content,
             userName: userName || user.displayName || 'Anonymous',
           }),
@@ -141,7 +144,7 @@ export const useComments = (
         setIsSubmitting(false);
       }
     },
-    [opportunityId, user, getIdToken, offset, sortBy],
+    [entityId, entityType, user, getIdToken, offset, sortBy],
   );
 
   // Update comment

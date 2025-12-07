@@ -11,7 +11,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useAuthModal } from '@/hooks/use-auth-modal';
 
 interface CommentFormProps {
-  opportunityId: string;
+  entityId: string;
+  entityType?: 'opportunity' | 'blog';
   onCommentPosted?: () => void;
   placeholder?: string;
   className?: string;
@@ -21,7 +22,8 @@ interface CommentFormProps {
 }
 
 export const CommentForm: React.FC<CommentFormProps> = ({
-  opportunityId,
+  entityId,
+  entityType = 'opportunity',
   onCommentPosted,
   placeholder = 'Ask a question or share your thoughts...',
   className = '',

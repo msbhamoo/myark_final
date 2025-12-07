@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Plus, Edit2, Trash2, Search, Eye, Share2, Calendar, Tag, FileText, Image as ImageIcon, Loader2 } from 'lucide-react'
+import { Plus, Edit2, Trash2, Search, Eye, Share2, Calendar, Tag, FileText, Image as ImageIcon, Loader2, Clock } from 'lucide-react'
 import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 import dynamic from 'next/dynamic'
 import { IKContext, IKUpload } from 'imagekitio-react'
@@ -151,7 +151,14 @@ export default function BlogsManager() {
     setPosts((prev) => prev.filter((p) => p.id !== id))
   }
 
-  const publishedCount = posts.filter(p => p.status === 'published').length
+  // Helper to check if a blog is scheduled (published with future publishedAt)
+  const isScheduled = (p: BlogPost) => {
+    if (p.status !== 'published' || !p.publishedAt) return false
+    return new Date(p.publishedAt) > new Date()
+  }
+
+  const publishedCount = posts.filter(p => p.status === 'published' && !isScheduled(p)).length
+  const scheduledCount = posts.filter(p => isScheduled(p)).length
   const draftCount = posts.filter(p => p.status === 'draft').length
 
   return (
@@ -172,7 +179,7 @@ export default function BlogsManager() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="rounded-lg border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 p-4 backdrop-blur">
           <div className="text-sm font-medium text-muted-foreground">Total Posts</div>
           <div className="text-3xl font-bold text-foreground dark:text-white mt-2">{posts.length}</div>
@@ -180,6 +187,12 @@ export default function BlogsManager() {
         <div className="rounded-lg border border-green-500/40 dark:border-green-500/30 bg-green-500/10 dark:bg-green-500/5 p-4 backdrop-blur">
           <div className="text-sm font-medium text-green-700 dark:text-green-400">Published</div>
           <div className="text-3xl font-bold text-green-700 dark:text-green-400 mt-2">{publishedCount}</div>
+        </div>
+        <div className="rounded-lg border border-blue-500/40 dark:border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/5 p-4 backdrop-blur">
+          <div className="text-sm font-medium text-blue-700 dark:text-blue-400 flex items-center gap-1">
+            <Clock className="h-3 w-3" /> Scheduled
+          </div>
+          <div className="text-3xl font-bold text-blue-700 dark:text-blue-400 mt-2">{scheduledCount}</div>
         </div>
         <div className="rounded-lg border border-yellow-500/40 dark:border-yellow-500/30 bg-yellow-500/10 dark:bg-yellow-500/5 p-4 backdrop-blur">
           <div className="text-sm font-medium text-yellow-700 dark:text-yellow-400">Drafts</div>
@@ -267,7 +280,12 @@ export default function BlogsManager() {
                       <Share2 className="h-3 w-3" />
                       <span>{totalShares} shares</span>
                     </div>
-                    {p.publishedAt && (
+                    {isScheduled(p) ? (
+                      <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                        <Clock className="h-3 w-3" />
+                        <span>Publishing on {new Date(p.publishedAt!).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      </div>
+                    ) : p.publishedAt && (
                       <div className="flex items-center gap-2">
                         <Calendar className="h-3 w-3" />
                         <span>{new Date(p.publishedAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}</span>

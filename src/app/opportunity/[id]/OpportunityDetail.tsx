@@ -85,13 +85,13 @@ import {
 export default function OpportunityDetail({ opportunity }: { opportunity: Opportunity }) {
   const router = useRouter();
   const { user, loading: authLoading, getIdToken } = useAuth();
-  
+
   const { openAuthModal } = useAuthModal();
-  
+
   const params = useParams();
   const rawId = params?.['id'];
   const opportunityId = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
-  
+
   // Share and conversion tracking - must be after opportunityId is defined
   useShareClickTracking(opportunityId);
   useViewConversionTracking(opportunityId, user?.uid);
@@ -1080,7 +1080,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               Join the conversation with other students interested in this opportunity.
             </p>
             <div className="mt-8">
-              <CommentSection opportunityId={opportunityId} />
+              <CommentSection entityId={opportunityId} entityType="opportunity" />
             </div>
           </div>
         </section>

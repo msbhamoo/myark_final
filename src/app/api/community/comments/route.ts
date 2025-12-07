@@ -1,9 +1,10 @@
 /**
  * API Route: POST/GET /api/community/comments
- * GET: Fetch comments for an opportunity with pagination
- * POST: Create a new comment on an opportunity
+ * GET: Fetch comments for an opportunity or blog with pagination
+ * POST: Create a new comment on an opportunity or blog
  * Query params (GET):
- *   - opportunityId: ID of the opportunity (required)
+ *   - opportunityId OR entityId: ID of the entity (required)
+ *   - entityType: 'opportunity' or 'blog' (default: 'opportunity')
  *   - limit: Number of comments to fetch (default: 20, max: 100)
  *   - offset: Pagination offset (default: 0)
  *   - sortBy: Sort order 'recent' or 'oldest' (default: 'recent')
@@ -19,11 +20,13 @@ import {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const opportunityId = searchParams.get('opportunityId');
+    // Support both opportunityId (legacy) and entityId (new)
+    const entityId = searchParams.get('entityId') || searchParams.get('opportunityId');
+    const entityType = (searchParams.get('entityType') || 'opportunity') as 'opportunity' | 'blog';
 
-    if (!opportunityId || opportunityId.trim().length === 0) {
+    if (!entityId || entityId.trim().length === 0) {
       return NextResponse.json(
-        { error: 'opportunityId query parameter is required' },
+        { error: 'entityId or opportunityId query parameter is required' },
         { status: 400 },
       );
     }
@@ -35,7 +38,7 @@ export async function GET(request: NextRequest) {
     const offset = Math.max(parseInt(searchParams.get('offset') ?? '0', 10) || 0, 0);
     const sortBy = (searchParams.get('sortBy') ?? 'recent') as 'recent' | 'oldest';
 
-    const result = await getComments(opportunityId, limit, offset, sortBy);
+    const result = await getComments(entityId, limit, offset, sortBy, entityType);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -85,11 +88,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { opportunityId, content, userName } = body;
+    const { opportunityId, entityId, entityType, content, userName } = body;
+    const finalEntityId = entityId || opportunityId;
+    const finalEntityType = (entityType || 'opportunity') as 'opportunity' | 'blog';
 
-    if (!opportunityId || typeof opportunityId !== 'string' || opportunityId.trim().length === 0) {
+    if (!finalEntityId || typeof finalEntityId !== 'string' || finalEntityId.trim().length === 0) {
       return NextResponse.json(
-        { error: 'opportunityId is required and must be a non-empty string' },
+        { error: 'entityId or opportunityId is required and must be a non-empty string' },
         { status: 400 },
       );
     }
@@ -117,8 +122,9 @@ export async function POST(request: NextRequest) {
       userId,
       userEmail ?? 'anonymous@example.com',
       displayName,
-      opportunityId,
+      finalEntityId,
       content,
+      finalEntityType,
     );
 
     return NextResponse.json({

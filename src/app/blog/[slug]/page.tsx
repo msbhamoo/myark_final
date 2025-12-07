@@ -3,10 +3,14 @@ import { getBlogBySlug, listPublishedBlogs } from '@/lib/blogService'
 import Link from 'next/link'
 import React from 'react'
 import { ShareButtons, TranslateToHindiButton } from '@/components/BlogShareButtons'
-import { ArrowLeft, Eye, Calendar, User } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Eye, Calendar, User, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/ViewCounter'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { BlogCommentSection } from '@/components/BlogCommentSection'
+import { TableOfContents } from '@/components/blog/TableOfContents'
+import { AuthorBioCard } from '@/components/blog/AuthorBioCard'
+import { calculateReadingTime, formatReadingTime, addHeadingIds } from '@/lib/blogUtils'
 
 function Markdown({ content }: { content: string }) {
   // Check if content looks like HTML (from rich editor)
@@ -109,6 +113,17 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   const totalShares = Object.values(post.shares || {}).reduce((a, b) => a + (b as number), 0)
 
+  // Calculate reading time
+  const readingTime = calculateReadingTime(post.content)
+
+  // Find prev/next posts
+  const currentIndex = allPosts.findIndex(p => p.id === post.id)
+  const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
+  const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
+
+  // Add IDs to headings for TOC navigation
+  const contentWithIds = addHeadingIds(post.content)
+
   return (
     <>
       <Header />
@@ -173,6 +188,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   <Eye className="h-4 w-4" />
                   <span className="text-sm">{post.viewCount || 0} views</span>
                 </div>
+
+                <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">{formatReadingTime(readingTime)}</span>
+                </div>
               </div>
 
               {/* Translation Option */}
@@ -195,9 +215,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               </div>
             )}
 
+            {/* Table of Contents */}
+            <TableOfContents content={post.content} className="mb-8" />
+
             {/* Content */}
             <div className="prose-content max-w-none">
-              <Markdown content={post.content} />
+              <Markdown content={contentWithIds} />
             </div>
 
             {/* Share Section */}
@@ -224,6 +247,47 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                     {totalShares} shares
                   </span>
                 </div>
+              </div>
+            </div>
+
+            {/* Author Bio */}
+            {post.author && (
+              <AuthorBioCard name={post.author} className="mt-8" />
+            )}
+
+            {/* Previous/Next Navigation */}
+            <div className="border-t border-slate-200/60 dark:border-slate-700/60 pt-8 mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {prevPost ? (
+                  <Link
+                    href={`/blog/${prevPost.slug}`}
+                    className="group flex items-center gap-3 p-4 rounded-xl border border-slate-200/60 bg-slate-50/50 hover:border-orange-300 hover:bg-orange-50/50 dark:border-slate-700/60 dark:bg-slate-900/50 dark:hover:border-orange-500/40 dark:hover:bg-orange-500/10 transition"
+                  >
+                    <ArrowLeft className="h-5 w-5 text-slate-400 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Previous</p>
+                      <p className="text-sm font-medium text-slate-900 dark:text-white line-clamp-1 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                        {prevPost.title}
+                      </p>
+                    </div>
+                  </Link>
+                ) : (
+                  <div />
+                )}
+                {nextPost && (
+                  <Link
+                    href={`/blog/${nextPost.slug}`}
+                    className="group flex items-center gap-3 p-4 rounded-xl border border-slate-200/60 bg-slate-50/50 hover:border-orange-300 hover:bg-orange-50/50 dark:border-slate-700/60 dark:bg-slate-900/50 dark:hover:border-orange-500/40 dark:hover:bg-orange-500/10 transition md:text-right"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Next</p>
+                      <p className="text-sm font-medium text-slate-900 dark:text-white line-clamp-1 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">
+                        {nextPost.title}
+                      </p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-slate-400 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition" />
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -256,6 +320,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 </div>
               </div>
             )}
+            {/* Community Discussion */}
+            <section className="border-t border-slate-200/60 dark:border-slate-700/60 pt-12 mt-8">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Community Discussion</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                Join the conversation and share your thoughts on this article.
+              </p>
+              <BlogCommentSection blogId={post.id} />
+            </section>
           </article>
         </div>
       </div>

@@ -12,14 +12,16 @@ import { CommentItem } from './CommentItem';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 interface CommentSectionProps {
-  opportunityId: string;
+  entityId: string;
+  entityType?: 'opportunity' | 'blog';
   limit?: number;
   showForm?: boolean;
   className?: string;
 }
 
 export const CommentSection: React.FC<CommentSectionProps> = ({
-  opportunityId,
+  entityId,
+  entityType = 'opportunity',
   limit = 10,
   showForm = true,
   className = '',
@@ -39,7 +41,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
     totalPages,
     isSubmitting,
     refetch,
-  } = useComments(opportunityId, { limit });
+  } = useComments(entityId, { limit }, entityType);
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -73,7 +75,8 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
       {/* Form */}
       {showForm && (
         <CommentForm
-          opportunityId={opportunityId}
+          entityId={entityId}
+          entityType={entityType}
           onCommentPosted={refetch}
           postComment={postComment}
           isSubmitting={isSubmitting}
