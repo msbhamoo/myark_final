@@ -3,8 +3,51 @@ import { Sparkles } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { BlogListClient } from '@/components/blog/BlogListClient'
+import type { Metadata } from 'next'
 
-export const metadata = { title: 'Blog - Myark' }
+const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://myark.in';
+const metadataBase = (() => {
+  try {
+    return new URL(RAW_SITE_URL);
+  } catch {
+    return new URL('https://myark.in');
+  }
+})();
+
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Blog | Tips, Success Stories & Guides for Students - Myark',
+  description: 'Expert tips for scholarships, olympiad preparation, competition strategies, and inspiring success stories from students across India. Your guide to academic excellence.',
+  keywords: [
+    'student blog',
+    'scholarship tips',
+    'olympiad preparation',
+    'competition guide',
+    'student success stories',
+    'exam preparation tips',
+    'education blog India',
+    'academic excellence',
+    'school competition tips',
+  ],
+  alternates: {
+    canonical: `${metadataBase.href}blog`,
+  },
+  openGraph: {
+    type: 'website',
+    url: `${metadataBase.href}blog`,
+    title: 'Blog | Tips, Success Stories & Guides - Myark',
+    description: 'Expert tips for scholarships, olympiad preparation, and inspiring success stories from students across India.',
+    siteName: 'Myark',
+    locale: 'en_IN',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog | Tips & Success Stories - Myark',
+    description: 'Expert tips for scholarships, olympiad preparation, and inspiring student success stories.',
+    site: '@myark_in',
+  },
+}
+
 export const dynamic = 'force-dynamic'
 
 export default async function BlogListPage() {

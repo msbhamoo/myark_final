@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { CustomTabsManager } from '@/components/CustomTabsManager';
 import { Card } from '@/components/ui/card';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { OpportunityCategory, Organizer } from '@/types/masters';
 import {
     X,
@@ -574,56 +575,58 @@ export function OpportunityForm({
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-category'>
                                     Category *
                                 </label>
-                                <select
+                                <SearchableSelect
                                     id='op-category'
                                     value={formState.categoryId}
-                                    onChange={(event) => setFormState((prev) => ({ ...prev, categoryId: event.target.value }))}
+                                    onChange={(value) => setFormState((prev) => ({ ...prev, categoryId: value }))}
+                                    placeholder='Search and select category...'
+                                    searchPlaceholder='Type to search categories...'
                                     required
-                                    className='h-10 w-full rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                                >
-                                    <option value=''>Select a category</option>
-                                    {formState.categoryId &&
-                                        !categories.some((category) => category.id === formState.categoryId) && (
-                                            <option value={formState.categoryId}>
-                                                {existingOpportunities.find((item) => item.categoryId === formState.categoryId)?.categoryName ??
-                                                    'Current category'}
-                                            </option>
-                                        )}
-                                    {categories.map((category) => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                    options={[
+                                        // Include current category if not in list
+                                        ...(formState.categoryId && !categories.some((c) => c.id === formState.categoryId)
+                                            ? [{
+                                                value: formState.categoryId,
+                                                label: existingOpportunities.find((item) => item.categoryId === formState.categoryId)?.categoryName ?? 'Current category'
+                                            }]
+                                            : []),
+                                        ...categories.map((category) => ({
+                                            value: category.id,
+                                            label: category.name,
+                                        }))
+                                    ]}
+                                />
                             </div>
 
                             <div className='space-y-2'>
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-organizer'>
                                     Organizer *
                                 </label>
-                                <select
+                                <SearchableSelect
                                     id='op-organizer'
                                     value={formState.organizerId}
-                                    onChange={(event) => handleOrganizerChange(event.target.value)}
+                                    onChange={handleOrganizerChange}
+                                    placeholder='Search and select organizer...'
+                                    searchPlaceholder='Type to search organizers...'
                                     required
-                                    className='h-10 w-full rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                                >
-                                    <option value=''>Select an organizer</option>
-                                    {formState.organizerId &&
-                                        !organizers.some((organizer) => organizer.id === formState.organizerId) && (
-                                            <option value={formState.organizerId}>
-                                                {existingOpportunities.find((item) => item.organizerId === formState.organizerId)?.organizerName ??
-                                                    'Current organizer (private)'}
-                                            </option>
-                                        )}
-                                    {organizers.map((organizer) => (
-                                        <option key={organizer.id} value={organizer.id}>
-                                            {organizer.name}
-                                            {organizer.visibility === 'private' ? ' (Private)' : ''}
-                                            {organizer.isVerified ? '' : ' (Unverified)'}
-                                        </option>
-                                    ))}
-                                </select>
+                                    options={[
+                                        // Include current organizer if not in list
+                                        ...(formState.organizerId && !organizers.some((o) => o.id === formState.organizerId)
+                                            ? [{
+                                                value: formState.organizerId,
+                                                label: existingOpportunities.find((item) => item.organizerId === formState.organizerId)?.organizerName ?? 'Current organizer (private)'
+                                            }]
+                                            : []),
+                                        ...organizers.map((organizer) => ({
+                                            value: organizer.id,
+                                            label: organizer.name,
+                                            sublabel: [
+                                                organizer.visibility === 'private' ? 'Private' : null,
+                                                !organizer.isVerified ? 'Unverified' : null
+                                            ].filter(Boolean).join(' • ') || undefined
+                                        }))
+                                    ]}
+                                />
                             </div>
 
                             <div className='space-y-2'>
@@ -679,24 +682,21 @@ export function OpportunityForm({
                                 <label className='text-sm font-medium text-foreground dark:text-white' htmlFor='op-state'>
                                     State
                                 </label>
-                                <select
+                                <SearchableSelect
                                     id='op-state'
                                     value={formState.state}
-                                    onChange={(event) => {
-                                        const value = event.target.value;
-                                        if (isValidState(value)) {
-                                            setFormState((prev) => ({ ...prev, state: value }));
+                                    onChange={(value) => {
+                                        if (isValidState(value) || value === '') {
+                                            setFormState((prev) => ({ ...prev, state: value as any }));
                                         }
                                     }}
-                                    className='h-10 w-full rounded-md border border-border/60 dark:border-white/10 bg-card/80 dark:bg-white/5 px-3 text-sm text-foreground dark:text-white'
-                                >
-                                    <option value=''>Select state</option>
-                                    {INDIAN_STATES.map((state) => (
-                                        <option key={state} value={state}>
-                                            {state}
-                                        </option>
-                                    ))}
-                                </select>
+                                    placeholder='Search and select state...'
+                                    searchPlaceholder='Type to search states...'
+                                    options={INDIAN_STATES.map((state) => ({
+                                        value: state,
+                                        label: state
+                                    }))}
+                                />
                             </div>
                         </div>
                     </AccordionContent>

@@ -4,10 +4,55 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 import type { Opportunity } from '@/types/opportunity';
+import type { Metadata } from 'next';
 import { getOpportunities } from '@/lib/opportunityService';
 import OpportunitiesSearch from './OpportunitiesSearch';
 import OpportunitiesFilters from './OpportunitiesFilters';
 import { OpportunitiesList } from '@/components/OpportunitiesList';
+
+const RAW_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://myark.in';
+const metadataBase = (() => {
+  try {
+    return new URL(RAW_SITE_URL);
+  } catch {
+    return new URL('https://myark.in');
+  }
+})();
+
+export const metadata: Metadata = {
+  metadataBase,
+  title: 'Scholarships, Olympiads & Competitions for Students | Browse All - Myark',
+  description: 'Browse 100+ verified scholarships, olympiads, entrance exams, and competitions for school students in India. Filter by category, grade, and deadline. Apply before deadlines!',
+  keywords: [
+    'scholarships for students',
+    'olympiad exams India',
+    'student competitions',
+    'entrance exams for schools',
+    'scholarship opportunities',
+    'NTSE scholarship',
+    'science olympiad',
+    'math olympiad India',
+    'talent search exams',
+    'school competitions 2025',
+  ],
+  alternates: {
+    canonical: `${metadataBase.href}opportunities`,
+  },
+  openGraph: {
+    type: 'website',
+    url: `${metadataBase.href}opportunities`,
+    title: 'Browse Scholarships, Olympiads & Competitions - Myark',
+    description: 'Discover 100+ verified opportunities for students. Scholarships, olympiads, entrance exams with deadlines and eligibility details.',
+    siteName: 'Myark',
+    locale: 'en_IN',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Browse Opportunities for Students - Myark',
+    description: 'Find scholarships, olympiads & competitions for school students across India.',
+    site: '@myark_in',
+  },
+};
 
 const formatDate = (value?: string) => {
   if (!value) {

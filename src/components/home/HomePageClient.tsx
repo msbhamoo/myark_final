@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { MascotBurst, MascotOrb } from '@/components/MascotBurst';
 import { LoadingSpinner, LoadingGrid } from '@/components/LoadingSpinner';
 import { FloatingMotivation } from '@/components/home/FloatingMotivation';
+import DeadlineApproachingSection from '@/components/home/DeadlineApproachingSection';
 
 type HomeSegment = {
   id: string;
@@ -587,6 +588,8 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
           </div>
         </section>
 
+        {/* Deadline Approaching Section - High visibility placement */}
+        <DeadlineApproachingSection />
 
         {segmentsError && (
           <div className="mx-auto mt-4 max-w-4xl rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-center text-red-600 shadow-sm dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
