@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { ChevronDown, Search, Check, X } from 'lucide-react';
+import { ChevronDown, Search, Check, X, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface SearchableSelectOption {
@@ -20,6 +20,8 @@ interface SearchableSelectProps {
     required?: boolean;
     className?: string;
     id?: string;
+    onAddNew?: () => void;
+    addNewLabel?: string;
 }
 
 export function SearchableSelect({
@@ -32,6 +34,8 @@ export function SearchableSelect({
     required = false,
     className = '',
     id,
+    onAddNew,
+    addNewLabel = 'Add New',
 }: SearchableSelectProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -135,6 +139,26 @@ export function SearchableSelect({
                             />
                         </div>
                     </div>
+
+                    {/* Add New Button */}
+                    {onAddNew && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsOpen(false);
+                                setSearchQuery('');
+                                onAddNew();
+                            }}
+                            className="w-full flex items-center gap-2 px-3 py-2.5 text-left text-sm border-b border-border/40 dark:border-white/10 bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 hover:from-violet-100 hover:to-purple-100 dark:hover:from-violet-900/30 dark:hover:to-purple-900/30 transition-colors"
+                        >
+                            <div className="p-1 rounded-md bg-violet-500 text-white">
+                                <Plus className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="font-medium text-violet-700 dark:text-violet-300">
+                                {addNewLabel}
+                            </span>
+                        </button>
+                    )}
 
                     {/* Options List */}
                     <div className="max-h-60 overflow-y-auto">

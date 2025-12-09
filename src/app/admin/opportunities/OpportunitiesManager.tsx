@@ -253,6 +253,7 @@ export function OpportunitiesManager() {
               onSubmit={handleFormSubmit}
               onCancel={handleCancelForm}
               isSubmitting={isSubmitting}
+              onRefreshMasters={loadMasters}
             />
           )}
         </>
