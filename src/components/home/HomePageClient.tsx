@@ -18,6 +18,10 @@ import { MascotBurst, MascotOrb } from '@/components/MascotBurst';
 import { LoadingSpinner, LoadingGrid } from '@/components/LoadingSpinner';
 import { FloatingMotivation } from '@/components/home/FloatingMotivation';
 import DeadlineApproachingSection from '@/components/home/DeadlineApproachingSection';
+import ForYouSection from '@/components/home/ForYouSection';
+import QuickWinsSection from '@/components/home/QuickWinsSection';
+import PopularInSchoolSection from '@/components/home/PopularInSchoolSection';
+import StudentsLikeYouSection from '@/components/home/StudentsLikeYouSection';
 
 type HomeSegment = {
   id: string;
@@ -590,6 +594,18 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
 
         {/* Deadline Approaching Section - High visibility placement */}
         <DeadlineApproachingSection />
+
+        {/* Personalized "For You" Section */}
+        <ForYouSection />
+
+        {/* Quick Wins - Free & Easy to Apply */}
+        <QuickWinsSection />
+
+        {/* Popular at Your School */}
+        <PopularInSchoolSection />
+
+        {/* Students Like You Applied To */}
+        <StudentsLikeYouSection />
 
         {segmentsError && (
           <div className="mx-auto mt-4 max-w-4xl rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-center text-red-600 shadow-sm dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">

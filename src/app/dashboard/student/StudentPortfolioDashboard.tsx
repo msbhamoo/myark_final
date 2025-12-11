@@ -31,6 +31,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { fetchStudentProfile, updateStudentProfile } from '@/lib/studentProfileClient';
 import imageCompression from 'browser-image-compression';
+import SchoolSelect from '@/components/ui/SchoolSelect';
 
 import {
   ModernAcademicCard,
@@ -40,6 +41,7 @@ import {
   SubjectPerformanceCard,
 } from '@/components/profile/ModernSectionComponents';
 import AppliedOpportunityCard from '@/components/AppliedOpportunityCard';
+import NotificationSettings from '@/components/notifications/NotificationSettings';
 import type { AppUserProfile } from '@/context/AuthContext';
 import type {
   StudentProfile,
@@ -1099,7 +1101,18 @@ export default function StudentPortfolioDashboard({
             <div className="space-y-4 py-4">
               <div className="grid gap-2">
                 <Label>School Name</Label>
-                <Input value={schoolDraft.schoolName} onChange={e => setSchoolDraft({ ...schoolDraft, schoolName: e.target.value })} />
+                <SchoolSelect
+                  value={schoolDraft.schoolName}
+                  onValueChange={(value, schoolData) => {
+                    setSchoolDraft({
+                      ...schoolDraft,
+                      schoolName: value,
+                      board: schoolData?.board || schoolDraft.board,
+                    });
+                  }}
+                  placeholder="Select or type your school"
+                  allowCustom
+                />
               </div>
               <div className="grid gap-2">
                 <Label>Board</Label>
@@ -1131,7 +1144,12 @@ export default function StudentPortfolioDashboard({
               </div>
               <div className="grid gap-2">
                 <Label>School</Label>
-                <Input value={academicDraft.schoolName} onChange={e => setAcademicDraft({ ...academicDraft, schoolName: e.target.value })} />
+                <SchoolSelect
+                  value={academicDraft.schoolName}
+                  onValueChange={(value) => setAcademicDraft({ ...academicDraft, schoolName: value })}
+                  placeholder="Select school for this year"
+                  allowCustom
+                />
               </div>
 
               <div className="space-y-2">
@@ -1264,6 +1282,18 @@ export default function StudentPortfolioDashboard({
           <DialogFooter>
             <Button onClick={handleSubmitExtracurricular}>Save Activity</Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Settings Dialog */}
+      <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Settings</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <NotificationSettings />
+          </div>
         </DialogContent>
       </Dialog>
 
