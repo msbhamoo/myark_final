@@ -6,6 +6,7 @@ import { Sparkles, ChevronRight, Loader2, TrendingUp } from 'lucide-react';
 import OpportunityCard from '@/components/OpportunityCard';
 import type { ScoredOpportunity, RecommendationsResponse } from '@/types/recommendation';
 import { useAuth } from '@/context/AuthContext';
+import { useAuthModal } from '@/hooks/use-auth-modal';
 import { format } from 'date-fns';
 
 interface ForYouSectionProps {
@@ -42,6 +43,7 @@ const formatFee = (fee?: string) => {
 
 export default function ForYouSection({ className = '' }: ForYouSectionProps) {
     const { user, loading: authLoading, getIdToken } = useAuth();
+    const { openAuthModal } = useAuthModal();
     const [recommendations, setRecommendations] = useState<ScoredOpportunity[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -189,13 +191,14 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
                 {/* Personalization hint for non-logged-in users */}
                 {!user && recommendations.length > 0 && (
                     <div className="mt-6 text-center">
-                        <Link
-                            href="/auth/login"
-                            className="inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 dark:text-violet-300 dark:hover:text-violet-200 transition-colors"
+                        <button
+                            type="button"
+                            onClick={() => openAuthModal({ mode: 'login' })}
+                            className="inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 dark:text-violet-300 dark:hover:text-violet-200 transition-colors cursor-pointer"
                         >
                             <Sparkles className="h-4 w-4" />
                             Sign in to get personalized recommendations
-                        </Link>
+                        </button>
                     </div>
                 )}
             </div>
