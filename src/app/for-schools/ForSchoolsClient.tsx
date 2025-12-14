@@ -201,6 +201,8 @@ export default function ForSchoolsClient() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState('');
 
     // Open auth modal if openAuth parameter is present
     useEffect(() => {
@@ -211,10 +213,29 @@ export default function ForSchoolsClient() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement actual form submission
-        console.log('Form submitted:', formData);
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 5000);
+        setSubmitting(true);
+        setError('');
+
+        try {
+            const response = await fetch('/api/school-leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to submit');
+            }
+
+            setSubmitted(true);
+            setFormData({ schoolName: '', contactName: '', email: '', phone: '', city: '' });
+            setTimeout(() => setSubmitted(false), 5000);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Something went wrong');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -649,13 +670,20 @@ export default function ForSchoolsClient() {
                                 </div>
                             )}
 
+                            {error && (
+                                <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-700 dark:bg-red-500/10 dark:text-red-300">
+                                    <p>{error}</p>
+                                </div>
+                            )}
+
                             <Button
                                 type="submit"
                                 size="lg"
-                                className="w-full rounded-full bg-gradient-to-r from-primary to-primaryDark py-6 text-base font-semibold text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
+                                disabled={submitting}
+                                className="w-full rounded-full bg-gradient-to-r from-primary to-primaryDark py-6 text-base font-semibold text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 disabled:opacity-50"
                             >
-                                Submit Request
-                                <ArrowRight className="ml-2 h-5 w-5" />
+                                {submitting ? 'Submitting...' : 'Submit Request'}
+                                {!submitting && <ArrowRight className="ml-2 h-5 w-5" />}
                             </Button>
 
                             <p className="text-center text-xs text-slate-500 dark:text-slate-400">

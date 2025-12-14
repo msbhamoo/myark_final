@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 
 const NAV_LINKS = [
   { href: '/for-schools', label: 'For Schools' },
-  { href: '/faq', label: 'Support' },
+  { href: '/career-finder', label: 'Career Finder' },
 ];
 
 const formatDate = (value?: string) => {

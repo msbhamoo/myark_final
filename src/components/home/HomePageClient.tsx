@@ -9,7 +9,7 @@ import AllCategoriesSection from '@/components/AllCategoriesSection';
 import OpportunityCard from '@/components/OpportunityCard';
 import QuizCard from '@/components/QuizCard';
 import { Button } from '@/components/ui/button';
-import { Sparkles, BookOpen, GraduationCap, Target, ChevronRight, MapPin } from 'lucide-react';
+import { Sparkles, BookOpen, GraduationCap, Target, ChevronRight, MapPin, Shield, Users, Heart, CheckCircle, Search, Compass, ArrowRight } from 'lucide-react';
 import { format } from 'date-fns';
 import type { Opportunity } from '@/types/opportunity';
 import { FALLBACK_HOME_SEGMENTS as HOME_SEGMENT_DEFINITIONS } from '@/constants/homeSegments';
@@ -459,26 +459,24 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
       <main className="flex-1 pb-20 md:pb-0">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-accent/70 via-white to-accent/30 px-4 pt-8 pb-16 text-slate-900 sm:px-6 md:pt-24 lg:pb-24 dark:from-slate-950 dark:via-slate-900/90 dark:to-slate-950">
-          <div className="absolute inset-0">
+          {/* <div className="absolute inset-0">
             <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.08] mix-blend-soft-light dark:opacity-[0.04]" />
             <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
             <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 translate-x-1/3 translate-y-1/3 rounded-full bg-sky-300/30 blur-3xl" />
             <FloatingMotivation />
-          </div>
+          </div> */}
 
           <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl text-center lg:text-left">
-              <div className="animate-shimmer animate-glow inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/20 px-6 py-2.5 text-base font-bold text-primary shadow-lg ring-2 ring-accent/60 backdrop-blur-md transition-all hover:scale-110 hover:shadow-xl dark:from-primary/20 dark:to-accent/10 dark:text-accent dark:ring-primary/40">
-                <Sparkles className="h-5 w-5 animate-bounce text-accent dark:text-primary" />
-                <span className="tracking-wide animate-gradient-text">
-                  Be Remyarkable
-                </span>
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-slate-200/80 backdrop-blur-sm dark:bg-slate-800/90 dark:text-slate-200 dark:ring-slate-700">
+                <Shield className="h-4 w-4 text-primary" />
+                <span>Trusted by Parents Across India</span>
               </div>
               <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
-                Discover Your Next Big Moment
+                Help Your Child Grow Beyond the Classroom
               </h1>
-              <p className="hidden md:block mt-4 text-lg leading-relaxed text-slate-700 md:text-xl dark:text-slate-100/80">
-                Curated opportunities for Grades 4-12 students and the parents who cheer them on.
+              <p className="hidden md:block mt-4 text-lg leading-relaxed text-slate-600 md:text-xl dark:text-slate-300">
+                Discover verified competitions, scholarships, and learning programs trusted by 50,000+ Indian parents.
               </p>
               {/* <div className="hidden md:flex mt-6 flex-wrap items-center justify-center gap-3 text-sm font-medium lg:justify-start">
                 {HERO_GRADE_SEGMENTS.map((segment) => (
@@ -509,8 +507,8 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
                   className="btn-ripple inline-flex items-center justify-center rounded-full border-2 border-accent bg-white/50 px-8 py-6 text-lg font-semibold text-primary backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-white hover:scale-105 group dark:border-primary/50 dark:bg-slate-900/50 dark:text-accent dark:hover:bg-slate-900"
                 >
                   <Link href="/parent-guide">
-                    Guide Your Child
-                    <Sparkles className="ml-2 h-5 w-5 transition-transform group-hover:rotate-12" />
+                    How It Works for Parents
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </div>
@@ -587,6 +585,127 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
                     <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1">AI & ML</p>
                   </div>
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Signal Strip */}
+        <section className="border-y border-slate-100 bg-slate-50/80 py-4 sm:py-6 dark:border-slate-800 dark:bg-slate-900/50">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-xs sm:text-sm">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
+                <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
+                <span className="whitespace-nowrap">Verified</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
+                <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
+                <span className="whitespace-nowrap">Class 1-12</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
+                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
+                <span className="whitespace-nowrap">Parent-Friendly</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
+                <Shield className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
+                <span className="whitespace-nowrap">No Spam</span>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Why Myark Section - Compact */}
+        <section className="bg-white py-10 md:py-12 dark:bg-slate-950">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="text-center mb-6">
+              <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white">
+                Why parents & students choose Myark
+              </h2>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Card 1 */}
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-600 flex-shrink-0 dark:bg-sky-500/20 dark:text-sky-300">
+                  <Compass className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Guidance Over Noise</h3>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Find what's right for your child's age and goals.</p>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 flex-shrink-0 dark:bg-emerald-500/20 dark:text-emerald-300">
+                  <CheckCircle className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Every Opportunity Verified</h3>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Reviewed for credibility and student-friendliness.</p>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 flex-shrink-0 dark:bg-purple-500/20 dark:text-purple-300">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Age-Appropriate Growth</h3>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Programs tagged by grade level.</p>
+                </div>
+              </div>
+
+              {/* Card 4 */}
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-100 text-rose-600 flex-shrink-0 dark:bg-rose-500/20 dark:text-rose-300">
+                  <Heart className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Parents in the Loop</h3>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Clear deadlines and eligibility info.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works - Compact Inline */}
+        <section className="border-y border-slate-100 bg-slate-50/50 py-8 dark:border-slate-800 dark:bg-slate-900/30">
+          <div className="container mx-auto max-w-5xl px-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white whitespace-nowrap">
+                How it works
+              </h2>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 md:gap-8">
+                {/* Step 1 */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">1</div>
+                  <div className="flex items-center gap-2">
+                    <Search className="h-4 w-4 text-slate-400" />
+                    <span className="text-sm text-slate-700 dark:text-slate-300">Discover by age & interest</span>
+                  </div>
+                </div>
+                <ArrowRight className="hidden sm:block h-4 w-4 text-slate-300 dark:text-slate-600" />
+                {/* Step 2 */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">2</div>
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-slate-400" />
+                    <span className="text-sm text-slate-700 dark:text-slate-300">Understand what you gain</span>
+                  </div>
+                </div>
+                <ArrowRight className="hidden sm:block h-4 w-4 text-slate-300 dark:text-slate-600" />
+                {/* Step 3 */}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">3</div>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-slate-400" />
+                    <span className="text-sm text-slate-700 dark:text-slate-300">Apply with confidence</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -975,6 +1094,38 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
             </div>
           </section>
         )}
+
+        {/* Parent-Focused CTA Section */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-white to-accent/20 py-20 md:py-24 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="pointer-events-none absolute -top-20 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 right-0 h-60 w-60 rounded-full bg-accent/30 blur-3xl" />
+          </div>
+          <div className="container relative mx-auto max-w-3xl px-4 text-center">
+            <Heart className="mx-auto h-10 w-10 text-primary/60 mb-6" />
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-900 dark:text-white leading-snug">
+              Your child gets only one school journey.
+            </h2>
+            <p className="mt-3 text-xl sm:text-2xl text-slate-600 dark:text-slate-300">
+              Let's help them make the most of it.
+            </p>
+            <div className="mt-8">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full bg-primary px-10 py-6 text-lg font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30"
+              >
+                <Link href="/opportunities">
+                  Start Exploring Today
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+            <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
+              No sign-up required. Browse freely.
+            </p>
+          </div>
+        </section>
 
         {/* Mobile Stats Section (Bottom) */}
         <section className="md:hidden border-t border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 dark:border-slate-800 dark:from-slate-900/50 dark:to-slate-950">

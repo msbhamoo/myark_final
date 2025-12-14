@@ -15,6 +15,7 @@ import {
     Palette,
     Settings,
     HelpCircle,
+    UserPlus,
     LucideIcon,
 } from 'lucide-react';
 
@@ -31,6 +32,7 @@ const iconMap: Record<string, LucideIcon> = {
     Palette,
     Settings,
     HelpCircle,
+    UserPlus,
 };
 
 interface AdminNavLinkProps {

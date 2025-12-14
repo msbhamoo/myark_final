@@ -27,7 +27,7 @@ export function OpportunityHero({
         <>
             {/* Cover Image Section */}
             <div className="relative w-full bg-slate-100 dark:bg-slate-800">
-                <div className="container mx-auto px-0 md:px-6 lg:px-8 xl:px-16 max-w-[1920px]">
+                <div className="container mx-auto px-0 md:px-4 lg:px-6 xl:px-8 max-w-7xl">
                     <div className="relative w-full aspect-[21/9] md:aspect-[21/7] lg:rounded-2xl overflow-hidden">
                         <img
                             src={heroImage}
@@ -40,7 +40,7 @@ export function OpportunityHero({
             </div>
 
             {/* Primary Information Card */}
-            <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 max-w-[1920px] -mt-8 md:-mt-12 relative z-10">
+            <div className="container mx-auto px-4 md:px-4 lg:px-6 xl:px-8 max-w-7xl -mt-8 md:-mt-12 relative z-10">
                 <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 md:p-8">
                     <div className="flex flex-col gap-4">
                         {/* Category Badge */}

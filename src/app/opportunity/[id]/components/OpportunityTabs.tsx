@@ -388,7 +388,13 @@ export function OpportunityTabs({
                                                 </div>
                                                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Marks</span>
                                             </div>
-                                            <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{pattern.totalMarks ?? '—'}</p>
+                                            <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">
+                                                {pattern.totalMarks ?? (
+                                                    pattern.sections && pattern.sections.length > 0
+                                                        ? pattern.sections.reduce((sum, s) => sum + (s.marks ?? 0), 0) || '—'
+                                                        : '—'
+                                                )}
+                                            </p>
                                         </div>
 
                                         <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
@@ -408,30 +414,33 @@ export function OpportunityTabs({
                                         </div>
                                     </div>
 
-                                    {pattern.sections && pattern.sections.length > 0 && (
-                                        <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
-                                            <table className="w-full text-sm text-left">
-                                                <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
-                                                    <tr>
-                                                        <th className="px-4 py-3 font-medium">Section</th>
-                                                        <th className="px-4 py-3 font-medium">Questions</th>
-                                                        <th className="px-4 py-3 font-medium">Marks</th>
-                                                        <th className="px-4 py-3 font-medium">Duration</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800/50">
-                                                    {pattern.sections.map((section, idx) => (
-                                                        <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                                                            <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
-                                                            <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.questions ?? '—'}</td>
-                                                            <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.marks ?? '—'}</td>
-                                                            <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.durationMinutes ? `${section.durationMinutes}m` : '—'}</td>
+                                    {pattern.sections && pattern.sections.length > 0 && (() => {
+                                        const hasSectionDuration = pattern.sections.some(s => s.durationMinutes);
+                                        return (
+                                            <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                                                <table className="w-full text-sm text-left">
+                                                    <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                                                        <tr>
+                                                            <th className="px-4 py-3 font-medium">Section</th>
+                                                            <th className="px-4 py-3 font-medium">Questions</th>
+                                                            <th className="px-4 py-3 font-medium">Marks</th>
+                                                            {hasSectionDuration && <th className="px-4 py-3 font-medium">Duration</th>}
                                                         </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    )}
+                                                    </thead>
+                                                    <tbody className="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800/50">
+                                                        {pattern.sections.map((section, idx) => (
+                                                            <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                                                                <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
+                                                                <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.questions ?? '—'}</td>
+                                                                <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.marks ?? '—'}</td>
+                                                                {hasSectionDuration && <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.durationMinutes ? `${section.durationMinutes}m` : '—'}</td>}
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
                             ))}
                         </div>
@@ -470,7 +479,13 @@ export function OpportunityTabs({
                                         </div>
                                         <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Marks</span>
                                     </div>
-                                    <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">{examPattern.totalMarks ?? '—'}</p>
+                                    <p className="text-xl md:text-2xl font-bold text-foreground dark:text-white">
+                                        {examPattern.totalMarks ?? (
+                                            examSections.length > 0
+                                                ? examSections.reduce((sum, s) => sum + (s.marks ?? 0), 0) || '—'
+                                                : '—'
+                                        )}
+                                    </p>
                                 </div>
 
                                 <div className="p-4 bg-white/85 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl">
@@ -490,30 +505,33 @@ export function OpportunityTabs({
                                 </div>
                             </div>
 
-                            {examSections.length > 0 && (
-                                <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
-                                    <table className="w-full text-sm text-left">
-                                        <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
-                                            <tr>
-                                                <th className="px-4 py-3 font-medium">Section</th>
-                                                <th className="px-4 py-3 font-medium">Questions</th>
-                                                <th className="px-4 py-3 font-medium">Marks</th>
-                                                <th className="px-4 py-3 font-medium">Duration</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800/50">
-                                            {examSections.map((section, idx) => (
-                                                <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                                                    <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
-                                                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.questions ?? '—'}</td>
-                                                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.marks ?? '—'}</td>
-                                                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.durationMinutes ? `${section.durationMinutes}m` : '—'}</td>
+                            {examSections.length > 0 && (() => {
+                                const hasSectionDuration = examSections.some(s => s.durationMinutes);
+                                return (
+                                    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                                        <table className="w-full text-sm text-left">
+                                            <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                                                <tr>
+                                                    <th className="px-4 py-3 font-medium">Section</th>
+                                                    <th className="px-4 py-3 font-medium">Questions</th>
+                                                    <th className="px-4 py-3 font-medium">Marks</th>
+                                                    {hasSectionDuration && <th className="px-4 py-3 font-medium">Duration</th>}
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800/50">
+                                                {examSections.map((section, idx) => (
+                                                    <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                                                        <td className="px-4 py-3 font-medium text-foreground dark:text-white">{section.name}</td>
+                                                        <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.questions ?? '—'}</td>
+                                                        <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.marks ?? '—'}</td>
+                                                        {hasSectionDuration && <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{section.durationMinutes ? `${section.durationMinutes}m` : '—'}</td>}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     )}
                 </Card>

@@ -31,6 +31,7 @@ const navSections = [
     title: 'Management',
     items: [
       { href: '/admin/schools', label: 'Schools', iconName: 'School' },
+      { href: '/admin/school-leads', label: 'School Leads', iconName: 'UserPlus' },
       { href: '/admin/users', label: 'Users', iconName: 'Users' },
     ],
   },
