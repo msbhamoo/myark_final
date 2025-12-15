@@ -6,10 +6,10 @@ const db = getDb();
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const quizId = params.id;
+        const { id: quizId } = await context.params;
 
         // Fetch quiz data
         const quizDoc = await db.collection('quizzes').doc(quizId).get();
@@ -59,10 +59,10 @@ export async function GET(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const quizId = params.id;
+        const { id: quizId } = await context.params;
 
         // Check if quiz exists
         const quizDoc = await db.collection('quizzes').doc(quizId).get();
@@ -107,10 +107,10 @@ export async function DELETE(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const quizId = params.id;
+        const { id: quizId } = await context.params;
         const body = await request.json();
 
         // Check if quiz exists
@@ -124,7 +124,7 @@ export async function PUT(
         const totalQuestions = body.questions?.length || 0;
 
         // Update quiz data
-        const updateData = {
+        const updateData: Record<string, unknown> = {
             title: body.title,
             description: body.description,
             categoryId: body.categoryId,
@@ -141,6 +141,12 @@ export async function PUT(
             'quizConfig.totalMarks': totalMarks,
             'quizConfig.totalQuestions': totalQuestions,
         };
+
+        // Include opportunity link fields if provided
+        if (body.opportunityId !== undefined) {
+            updateData.opportunityId = body.opportunityId || null;
+            updateData.opportunityTitle = body.opportunityTitle || null;
+        }
 
         await db.collection('quizzes').doc(quizId).update(updateData);
 

@@ -6,10 +6,10 @@ const db = getDb();
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const quizId = params.id;
+        const { id: quizId } = await context.params;
 
         // Fetch all leaderboard entries without ordering (to avoid composite index)
         const leaderboardSnapshot = await db
@@ -62,4 +62,3 @@ export async function GET(
         );
     }
 }
-

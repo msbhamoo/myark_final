@@ -590,27 +590,38 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
           </div>
         </section>
 
-        {/* Trust Signal Strip */}
-        <section className="border-y border-slate-100 bg-slate-50/80 py-4 sm:py-6 dark:border-slate-800 dark:bg-slate-900/50">
+        {/* Trust Strip - Clean & Meaningful */}
+        <section className="border-y border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 py-5 sm:py-6 dark:border-slate-800 dark:from-slate-900/80 dark:via-slate-900 dark:to-slate-900/80">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-xs sm:text-sm">
-              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
-                <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                <span className="whitespace-nowrap">Verified</span>
-              </div>
-              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
-                <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                <span className="whitespace-nowrap">Class 1-12</span>
-              </div>
-              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
-                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                <span className="whitespace-nowrap">Parent-Friendly</span>
-              </div>
-              <div className="flex items-center gap-1.5 sm:gap-2 text-slate-600 dark:text-slate-300 justify-center">
-                <Shield className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                <span className="whitespace-nowrap">No Spam</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 md:gap-12 text-center sm:text-left">
+              {/* Trust Statement */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Shield className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">50,000+ Parents Trust Us</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">All opportunities verified by our team</p>
+                </div>
               </div>
 
+              <div className="hidden sm:block h-10 w-px bg-slate-200 dark:bg-slate-700" />
+
+              {/* Stats Row */}
+              <div className="flex items-center gap-6 sm:gap-8">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-primary">250+</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Organizations</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-primary">Class 1-12</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">All Grades</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-primary">120+</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Active Programs</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -673,43 +684,7 @@ export default function HomePageClient({ initialSegments, initialStats, initialS
         </section>
 
         {/* How It Works - Compact Inline */}
-        <section className="border-y border-slate-100 bg-slate-50/50 py-8 dark:border-slate-800 dark:bg-slate-900/30">
-          <div className="container mx-auto max-w-5xl px-4">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white whitespace-nowrap">
-                How it works
-              </h2>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 md:gap-8">
-                {/* Step 1 */}
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">1</div>
-                  <div className="flex items-center gap-2">
-                    <Search className="h-4 w-4 text-slate-400" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">Discover by age & interest</span>
-                  </div>
-                </div>
-                <ArrowRight className="hidden sm:block h-4 w-4 text-slate-300 dark:text-slate-600" />
-                {/* Step 2 */}
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">2</div>
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-slate-400" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">Understand what you gain</span>
-                  </div>
-                </div>
-                <ArrowRight className="hidden sm:block h-4 w-4 text-slate-300 dark:text-slate-600" />
-                {/* Step 3 */}
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">3</div>
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-slate-400" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">Apply with confidence</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+
 
         {/* Deadline Approaching Section - High visibility placement */}
         <DeadlineApproachingSection />

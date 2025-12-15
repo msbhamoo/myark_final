@@ -127,6 +127,10 @@ export interface QuizOpportunity {
     organizerName?: string;
     thumbnailUrl?: string;
 
+    // Link to parent opportunity (optional - null means standalone quiz)
+    opportunityId?: string;
+    opportunityTitle?: string;
+
     // Dates
     createdAt: string;
     updatedAt: string;
@@ -177,6 +181,10 @@ export interface QuizCreatorFormState {
     registrationDeadline: string;
     attemptLimit: number;
     homeSegmentId?: string;
+
+    // Link to parent opportunity (optional)
+    opportunityId?: string;
+    opportunityTitle?: string;
 
     // Step 2: Quiz Builder
     questions: QuizQuestion[];

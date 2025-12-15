@@ -5,10 +5,10 @@ const db = getDb();
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const quizId = params.id;
+        const { id: quizId } = await context.params;
 
         // Fetch all submissions/attempts
         const submissionsSnapshot = await db

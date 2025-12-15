@@ -13,6 +13,9 @@ export default function BasicInfoStep({ formState, updateFormState }: BasicInfoS
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [homeSegments, setHomeSegments] = useState<Array<{ id: string; title: string }>>([]);
     const [loadingSegments, setLoadingSegments] = useState(true);
+    const [opportunities, setOpportunities] = useState<Array<{ id: string; title: string }>>([]);
+    const [loadingOpportunities, setLoadingOpportunities] = useState(true);
+    const [opportunitySearch, setOpportunitySearch] = useState('');
 
     useEffect(() => {
         // Fetch categories from API
@@ -32,7 +35,25 @@ export default function BasicInfoStep({ formState, updateFormState }: BasicInfoS
             })
             .catch((err) => console.error('Failed to fetch home segments', err))
             .finally(() => setLoadingSegments(false));
+
+        // Fetch opportunities from API
+        fetch('/api/admin/opportunities')
+            .then((res) => res.json())
+            .then((data) => {
+                const items = (data.items || []).map((opp: any) => ({
+                    id: opp.id,
+                    title: opp.title,
+                }));
+                setOpportunities(items);
+            })
+            .catch((err) => console.error('Failed to fetch opportunities', err))
+            .finally(() => setLoadingOpportunities(false));
     }, []);
+
+    // Filter opportunities based on search
+    const filteredOpportunities = opportunities.filter((opp) =>
+        opp.title.toLowerCase().includes(opportunitySearch.toLowerCase())
+    );
 
     const handleChange = (field: keyof QuizCreatorFormState, value: any) => {
         updateFormState({ [field]: value });
@@ -94,6 +115,54 @@ export default function BasicInfoStep({ formState, updateFormState }: BasicInfoS
                             </option>
                         ))}
                     </select>
+                )}
+            </div>
+
+            {/* Link to Opportunity (Optional) */}
+            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Link to Opportunity (Optional)
+                </label>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    Link this quiz to an existing opportunity. The quiz will appear in the opportunity's Quiz tab.
+                </p>
+                {loadingOpportunities ? (
+                    <div className="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-500">
+                        Loading opportunities...
+                    </div>
+                ) : (
+                    <div className="space-y-2">
+                        <input
+                            type="text"
+                            placeholder="Search opportunities..."
+                            value={opportunitySearch}
+                            onChange={(e) => setOpportunitySearch(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        />
+                        <select
+                            value={formState.opportunityId || ''}
+                            onChange={(e) => {
+                                const selectedOpp = opportunities.find(o => o.id === e.target.value);
+                                updateFormState({
+                                    opportunityId: e.target.value || undefined,
+                                    opportunityTitle: selectedOpp?.title || undefined,
+                                });
+                            }}
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        >
+                            <option value="">Standalone quiz (no link)</option>
+                            {filteredOpportunities.slice(0, 50).map((opp) => (
+                                <option key={opp.id} value={opp.id}>
+                                    {opp.title}
+                                </option>
+                            ))}
+                        </select>
+                        {formState.opportunityId && (
+                            <p className="text-xs text-purple-600 dark:text-purple-400">
+                                ✓ Linked to: {formState.opportunityTitle}
+                            </p>
+                        )}
+                    </div>
                 )}
             </div>
 

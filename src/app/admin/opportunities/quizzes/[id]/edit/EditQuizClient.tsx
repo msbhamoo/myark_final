@@ -33,6 +33,8 @@ export default function EditQuizClient({ quizId, initialData }: EditQuizClientPr
         registrationDeadline: initialData.registrationDeadline || '',
         attemptLimit: initialData.attemptLimit,
         homeSegmentId: initialData.homeSegmentId || '',
+        opportunityId: initialData.opportunityId || '',
+        opportunityTitle: initialData.opportunityTitle || '',
         questions: initialData.quizConfig.questions || [],
         settings: initialData.quizConfig.settings || {
             totalDuration: 60,
@@ -95,6 +97,8 @@ export default function EditQuizClient({ quizId, initialData }: EditQuizClientPr
                     registrationDeadline: formState.registrationDeadline,
                     attemptLimit: formState.attemptLimit,
                     homeSegmentId: formState.homeSegmentId,
+                    opportunityId: formState.opportunityId,
+                    opportunityTitle: formState.opportunityTitle,
                     questions: formState.questions,
                     settings: formState.settings,
                     leaderboardSettings: formState.leaderboardSettings,

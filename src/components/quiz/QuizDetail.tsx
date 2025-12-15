@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { QuizOpportunity } from '@/types/quiz';
+import { QuizOpportunity, QuizAttempt } from '@/types/quiz';
 import { useAuth } from '@/context/AuthContext';
 import { useAuthModal } from '@/hooks/use-auth-modal';
 import Header from '@/components/Header';
@@ -23,6 +23,8 @@ import {
     Target,
     Award,
     Timer,
+    History,
+    ChevronRight,
 } from 'lucide-react';
 
 interface QuizDetailProps {
@@ -45,6 +47,13 @@ function calculateCountdown(endDate: string | null) {
     };
 }
 
+function formatDuration(seconds: number): string {
+    if (seconds < 60) return `${seconds}s`;
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
+}
+
 export default function QuizDetail({ quiz }: QuizDetailProps) {
     const router = useRouter();
     const { user, loading: authLoading, getIdToken } = useAuth();
@@ -57,6 +66,8 @@ export default function QuizDetail({ quiz }: QuizDetailProps) {
     const [actionMessage, setActionMessage] = useState<string | null>(null);
     const [countdown, setCountdown] = useState(calculateCountdown(quiz.endDate));
     const [leaderboardOpen, setLeaderboardOpen] = useState(false);
+    const [userAttempts, setUserAttempts] = useState<QuizAttempt[]>([]);
+    const [attemptsLoading, setAttemptsLoading] = useState(false);
 
     // Update countdown every minute
     useEffect(() => {
@@ -67,15 +78,16 @@ export default function QuizDetail({ quiz }: QuizDetailProps) {
         return () => clearInterval(timer);
     }, [quiz.endDate]);
 
-    // Check registration status
+    // Check registration status and fetch user attempts
     useEffect(() => {
-        const checkRegistration = async () => {
+        const checkRegistrationAndAttempts = async () => {
             if (!user || !quiz.id) return;
 
             try {
                 const token = await getIdToken();
                 if (!token) return;
 
+                // Check registration
                 const response = await fetch(`/api/quiz/${quiz.id}/register`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
@@ -85,12 +97,25 @@ export default function QuizDetail({ quiz }: QuizDetailProps) {
                     setIsRegistered(data.isRegistered);
                     setRegisteredAt(data.registeredAt);
                 }
+
+                // Fetch user attempts
+                setAttemptsLoading(true);
+                const attemptsResponse = await fetch(`/api/quiz/${quiz.id}/my-attempts`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (attemptsResponse.ok) {
+                    const attemptsData = await attemptsResponse.json();
+                    setUserAttempts(attemptsData.attempts || []);
+                }
             } catch (error) {
-                console.error('Error checking registration:', error);
+                console.error('Error checking registration/attempts:', error);
+            } finally {
+                setAttemptsLoading(false);
             }
         };
 
-        checkRegistration();
+        checkRegistrationAndAttempts();
     }, [user, quiz.id, getIdToken]);
 
     const now = new Date();
@@ -364,6 +389,59 @@ export default function QuizDetail({ quiz }: QuizDetailProps) {
                                         <Trophy className="h-4 w-4 mr-2" />
                                         View Leaderboard
                                     </Button>
+
+                                    {/* My Attempts Section */}
+                                    {user && userAttempts.length > 0 && (
+                                        <div className="border-t border-slate-200 dark:border-slate-700 pt-4 mt-2">
+                                            <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                                                <History className="h-4 w-4 text-primary" />
+                                                My Attempts ({userAttempts.length})
+                                            </h3>
+                                            <div className="space-y-2 max-h-64 overflow-y-auto">
+                                                {userAttempts.map((attempt, index) => (
+                                                    <div
+                                                        key={attempt.id}
+                                                        className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer group"
+                                                        onClick={() => router.push(`/quiz/${quiz.id}/result?attemptId=${attempt.id}`)}
+                                                    >
+                                                        <div className="flex-1 min-w-0">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                                                                    Attempt #{userAttempts.length - index}
+                                                                </span>
+                                                                {index === 0 && (
+                                                                    <Badge variant="secondary" className="text-xs">Latest</Badge>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex items-center gap-3 mt-1">
+                                                                <span className="text-sm font-bold text-primary">
+                                                                    {attempt.score}/{attempt.totalMarks}
+                                                                </span>
+                                                                <span className="text-xs text-slate-500 dark:text-slate-400">
+                                                                    ({Math.round((attempt.score / attempt.totalMarks) * 100)}%)
+                                                                </span>
+                                                                <span className="text-xs text-slate-400 dark:text-slate-500">
+                                                                    • {formatDuration(attempt.timeSpent)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                                                                {new Date(attempt.submittedAt).toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                        <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors flex-shrink-0" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Loading state for attempts */}
+                                    {user && attemptsLoading && (
+                                        <div className="flex items-center justify-center py-3 text-sm text-slate-500">
+                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2" />
+                                            Loading attempts...
+                                        </div>
+                                    )}
                                 </div>
                             </Card>
                         </div>

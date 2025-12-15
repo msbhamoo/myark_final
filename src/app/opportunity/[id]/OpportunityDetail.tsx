@@ -848,6 +848,7 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
                 formattedStartDate={formattedStartDate}
                 resourceItems={resourceItems}
                 onResourcePreview={handleResourcePreview}
+                hasQuizzes={true}
               />
             </div>
 

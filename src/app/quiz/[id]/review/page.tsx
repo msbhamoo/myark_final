@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, use } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { QuizOpportunity } from '@/types/quiz';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/Header';
@@ -13,10 +13,13 @@ import { CheckCircle2, XCircle, Circle } from 'lucide-react';
 export default function QuizReviewPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const router = useRouter();
-    const { user } = useAuth();
+    const searchParams = useSearchParams();
+    const attemptId = searchParams.get('attemptId');
+    const { user, getIdToken } = useAuth();
     const [quiz, setQuiz] = useState<QuizOpportunity | null>(null);
     const [attempt, setAttempt] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!user) {
@@ -24,26 +27,53 @@ export default function QuizReviewPage({ params }: { params: Promise<{ id: strin
             return;
         }
         fetchQuizAndAttempt();
-    }, [user, id]);
+    }, [user, id, attemptId]);
 
     const fetchQuizAndAttempt = async () => {
         try {
+            setLoading(true);
+            setError(null);
+
+            // Get auth token
+            const token = await getIdToken();
+            if (!token) {
+                setError('Authentication required');
+                return;
+            }
+
             // Fetch quiz
             const quizRes = await fetch(`/api/quiz/${id}`);
             if (!quizRes.ok) throw new Error('Quiz not found');
             const quizData = await quizRes.json();
             setQuiz(quizData.quiz);
 
-            // Fetch latest attempt
-            const attemptRes = await fetch(`/api/quiz/${id}/my-attempts`);
+            // Fetch user attempts with authorization
+            const attemptRes = await fetch(`/api/quiz/${id}/my-attempts`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
             if (attemptRes.ok) {
-                const attempts = await attemptRes.json();
+                const attemptsData = await attemptRes.json();
+                const attempts = attemptsData.attempts || [];
+
                 if (attempts.length > 0) {
-                    setAttempt(attempts[0]);  // Latest attempt
+                    // If attemptId is provided, find that specific attempt
+                    if (attemptId) {
+                        const specificAttempt = attempts.find((a: any) => a.id === attemptId);
+                        setAttempt(specificAttempt || attempts[0]);
+                    } else {
+                        setAttempt(attempts[0]);  // Latest attempt
+                    }
+                } else {
+                    setError('No attempts found');
                 }
+            } else {
+                const errorData = await attemptRes.json();
+                setError(errorData.error || 'Failed to fetch attempts');
             }
         } catch (error) {
             console.error('Error:', error);
+            setError('Failed to load review data');
         } finally {
             setLoading(false);
         }
@@ -60,11 +90,11 @@ export default function QuizReviewPage({ params }: { params: Promise<{ id: strin
         );
     }
 
-    if (!quiz || !attempt) {
+    if (!quiz || !attempt || error) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold mb-4">No attempt found</h1>
+                    <h1 className="text-2xl font-bold mb-4">{error || 'No attempt found'}</h1>
                     <button onClick={() => router.push(`/quiz/${id}`)} className="text-primary hover:underline">
                         Back to Quiz
                     </button>

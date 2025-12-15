@@ -7,10 +7,10 @@ const db = getDb();
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const quizId = params.id;
+    const { id: quizId } = await context.params;
     const body = await request.json();
     const { userId, userName, userEmail, responses, timeSpent } = body;
 

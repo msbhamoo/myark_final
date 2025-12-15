@@ -3,10 +3,11 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, HelpCircle, Globe, Download, BookOpen, Timer, Calendar } from 'lucide-react';
+import { CheckCircle2, HelpCircle, Globe, Download, BookOpen, Timer, Calendar, FileQuestion } from 'lucide-react';
 import { Opportunity, OpportunityTimelineEvent } from '@/types/opportunity';
 import { CustomTabContent } from '@/types/customTab';
 import { ResourceDisplayItem, formatDate } from '@/lib/opportunity-utils';
+import QuizTabContent from './QuizTabContent';
 
 interface OpportunityTabsProps {
     opportunity: Opportunity;
@@ -16,6 +17,7 @@ interface OpportunityTabsProps {
     formattedStartDate: string;
     resourceItems: ResourceDisplayItem[];
     onResourcePreview: (resource: ResourceDisplayItem) => void;
+    hasQuizzes?: boolean;
 }
 
 const renderCustomTabContent = (content: CustomTabContent) => {
@@ -71,6 +73,7 @@ export function OpportunityTabs({
     formattedStartDate,
     resourceItems,
     onResourcePreview,
+    hasQuizzes = false,
 }: OpportunityTabsProps) {
     const contactInfo = opportunity.contactInfo ?? {};
     const examPattern = opportunity.examPattern ?? {};
@@ -612,6 +615,19 @@ export function OpportunityTabs({
             ),
         },
         {
+            value: 'quiz',
+            label: 'Quiz',
+            content: (
+                <Card className="p-8 bg-white/90 dark:bg-slate-800/50 shadow-sm backdrop-blur-sm border-slate-200 dark:border-slate-700">
+                    <h2 className="text-lg md:text-2xl font-bold mb-6 text-foreground dark:text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                        Practice Quizzes
+                    </h2>
+                    <QuizTabContent opportunityId={opportunity.id} />
+                </Card>
+            ),
+        },
+        {
             value: 'faq',
             label: 'FAQ',
             content: (
@@ -675,6 +691,7 @@ export function OpportunityTabs({
         if (tab.value === 'registration') return hasRegistration;
         if (tab.value === 'exam-pattern') return hasExamPattern;
         if (tab.value === 'resources') return hasResources;
+        if (tab.value === 'quiz') return hasQuizzes;
         if (tab.value === 'faq') return true; // FAQ is always visible
         return true;
     });

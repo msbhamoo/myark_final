@@ -4,9 +4,11 @@ import { FieldValue } from 'firebase-admin/firestore';
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id: quizId } = await context.params;
+
         // Get auth token from header
         const authHeader = request.headers.get('authorization');
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -35,7 +37,7 @@ export async function POST(
         const userEmail = decodedToken.email || null;
 
         const db = getDb();
-        const quizRef = db.collection('quizzes').doc(params.id);
+        const quizRef = db.collection('quizzes').doc(quizId);
         const quizDoc = await quizRef.get();
 
         if (!quizDoc.exists) {
@@ -73,7 +75,7 @@ export async function POST(
         });
 
         // Create a registration document for tracking
-        await db.collection('quizzes').doc(params.id).collection('registrations').add({
+        await db.collection('quizzes').doc(quizId).collection('registrations').add({
             userId,
             userName,
             userEmail,
@@ -99,9 +101,11 @@ export async function POST(
 // Check registration status
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id: quizId } = await context.params;
+
         // Get auth token from header
         const authHeader = request.headers.get('authorization');
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -128,7 +132,7 @@ export async function GET(
         const userId = decodedToken.uid;
 
         const db = getDb();
-        const quizDoc = await db.collection('quizzes').doc(params.id).get();
+        const quizDoc = await db.collection('quizzes').doc(quizId).get();
 
         if (!quizDoc.exists) {
             return NextResponse.json(
@@ -146,7 +150,7 @@ export async function GET(
         if (isRegistered) {
             const regSnapshot = await db
                 .collection('quizzes')
-                .doc(params.id)
+                .doc(quizId)
                 .collection('registrations')
                 .where('userId', '==', userId)
                 .limit(1)
@@ -171,4 +175,3 @@ export async function GET(
         );
     }
 }
-

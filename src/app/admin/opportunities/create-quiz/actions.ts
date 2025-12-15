@@ -41,6 +41,10 @@ export async function createQuiz(formState: QuizCreatorFormState): Promise<strin
             // CRITICAL: Add homeSegmentId for homepage display
             homeSegmentId: formState.homeSegmentId || '',
 
+            // Link to parent opportunity (optional)
+            opportunityId: formState.opportunityId || undefined,
+            opportunityTitle: formState.opportunityTitle || undefined,
+
             quizConfig: {
                 questions: formState.questions,
                 settings: formState.settings,

@@ -67,9 +67,15 @@ export default async function QuizzesPage() {
                                     <h3 className="text-lg font-semibold text-foreground dark:text-white mb-2">
                                         {quiz.title}
                                     </h3>
-                                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                                    <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
                                         {quiz.description}
                                     </p>
+                                    {quiz.opportunityTitle && (
+                                        <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-4 flex items-center gap-1">
+                                            <span>🔗</span>
+                                            Linked to: {quiz.opportunityTitle}
+                                        </p>
+                                    )}
 
                                     <div className="flex flex-wrap gap-4 text-sm">
                                         <div className="flex items-center gap-2">
