@@ -1326,6 +1326,7 @@ export const CAREERS: Career[] = [
         goodStuff: ['Core engineering', 'PSU opportunities', 'Green energy growth'],
         challenges: ['Core jobs competitive', 'Many switch to IT', 'Site work required']
     },
+    
     {
         slug: 'occupational-therapist',
         title: 'Occupational Therapist',
@@ -1349,6 +1350,7 @@ export const CAREERS: Career[] = [
         goodStuff: ['Help people live better', 'Growing awareness', 'Less stressful than physio'],
         challenges: ['Lesser known field', 'Initial pay modest', 'Emotional demands']
     },
+        
     {
         slug: 'tax-consultant',
         title: 'Tax Consultant',
@@ -1510,6 +1512,7 @@ export const CAREERS: Career[] = [
         goodStuff: ['Contribute to new medicines', 'Travel opportunities', 'Growing field'],
         challenges: ['Regulatory complexity', 'Documentation heavy', 'Site visits frequent']
     },
+
     {
         slug: 'sports-manager',
         title: 'Sports Manager',
@@ -1694,6 +1697,7 @@ export const CAREERS: Career[] = [
         goodStuff: ['Core business function', 'Clear growth path', 'Diverse industries'],
         challenges: ['24/7 responsibility', 'Cost pressures', 'Team management challenges']
     },
+
     {
         slug: 'translator-interpreter',
         title: 'Translator/Interpreter',
@@ -1785,6 +1789,75 @@ export const CAREERS: Career[] = [
         didYouKnow: ['Category Manager', 'D2C Brand Founder', 'Marketplace Consultant'],
         goodStuff: ['Fast-growing industry', 'High demand', 'Entrepreneurship opportunities'],
         challenges: ['Competitive market', 'Price pressures', 'Logistics challenges']
+    },
+    {
+        slug: 'environmental-scientist',
+        title: 'Environmental Scientist',
+        category: 'Science & Research',
+        categoryColor: 'bg-blue-100 text-blue-700',
+        shortDescription: "You'd study and protect the environment, from pollution to conservation.",
+        fullDescription: "Environmental Scientists study and protect the environment. They analyze pollutants, develop conservation strategies, and work to preserve natural habitats.",
+        keywords: ['environmental', 'science', 'research', 'pollution', 'conservation', 'nature'],
+        roadmap: [
+            { title: 'Graduation', subtitle: 'Any/Science', description: 'Any degree. Science/Biology helpful.' },
+            { title: 'Research Skills', subtitle: 'Learn Tools', description: 'Learn GIS, remote sensing, data analysis.' },
+            { title: 'Environmental Roles', subtitle: 'Start Career', description: 'Join conservation organizations. Work on projects.' }
+        ],
+        salary: { entry: '5-12 LPA', mid: '15-35 LPA', senior: '50-80+ LPA' },
+        exams: ['No formal exams'],
+        collegesIndia: ['Any graduation + research skills'],
+        collegesGlobal: ['Coursera/edX certifications'],
+        degrees: ['MSc', 'PhD Environmental Science'],
+        relatedCareers: ['environmental-engineer', 'conservationist'],
+        didYouKnow: ['Conservation Scientist', 'Wildlife Biologist', 'Environmental Consultant'],
+        goodStuff: ['High earning potential', 'Regular hours', 'Protecting nature'],
+        challenges: ['Long training', 'High competition', 'Fieldwork challenges']
+    },
+    {
+        slug: 'environmental-engineer',
+        title: 'Environmental Engineer',
+        category: 'Engineering',
+        categoryColor: 'bg-orange-100 text-orange-700',
+        shortDescription: "You'd design and implement solutions to protect the environment, from pollution to conservation.",
+        fullDescription: "Environmental Engineers design and implement solutions to protect the environment. They work on pollution control, waste management, and sustainable infrastructure to combat climate change.",
+        keywords: ['environmental', 'engineering', 'pollution', 'conservation', 'nature', 'sustainability'],
+        roadmap: [
+            { title: 'High School', subtitle: 'PCM', description: 'Strong Physics and Math foundation.' },
+            { title: 'B.Tech', subtitle: 'Engineering', description: 'Civil, Chemical, or Environmental Engineering.' },
+            { title: 'Environmental Focus', subtitle: 'Specialization', description: 'M.Tech in Environmental Engineering or join environmental consulting firms.' }
+        ],
+        salary: { entry: '5-12 LPA', mid: '15-35 LPA', senior: '50-80+ LPA' },
+        exams: ['JEE', 'GATE'],
+        collegesIndia: ['IIT Bombay', 'IIT Madras', 'IIT Kanpur'],
+        collegesGlobal: ['MIT', 'ETH Zurich', 'TU Delft'],
+        degrees: ['B.Tech', 'M.Tech Environmental Engineering'],
+        relatedCareers: ['environmental-scientist', 'conservationist'],
+        didYouKnow: ['Pollution Control Engineer', 'Waste Management Specialist', 'Sustainable Infrastructure Designer'],
+        goodStuff: ['High earning potential', 'Regular hours', 'Protecting nature'],
+        challenges: ['Long training', 'High competition', 'Fieldwork challenges']
+    },
+    {
+        slug: 'environmental-scientist',
+        title: 'Environmental Scientist',
+        category: 'Science & Research',
+        categoryColor: 'bg-blue-100 text-blue-700',
+        shortDescription: "You'd study and protect the environment, from pollution to conservation.",
+        fullDescription: "Environmental Scientists study and protect the environment. They analyze pollutants, develop conservation strategies, and work to preserve natural habitats.",
+        keywords: ['environmental', 'science', 'research', 'pollution', 'conservation', 'nature'],
+        roadmap: [
+            { title: 'Graduation', subtitle: 'Any/Science', description: 'Any degree. Science/Biology helpful.' },
+            { title: 'Research Skills', subtitle: 'Learn Tools', description: 'Learn GIS, remote sensing, data analysis.' },
+            { title: 'Environmental Roles', subtitle: 'Start Career', description: 'Join conservation organizations. Work on projects.' }
+        ],
+        salary: { entry: '5-12 LPA', mid: '15-35 LPA', senior: '50-80+ LPA' },
+        exams: ['No formal exams'],
+        collegesIndia: ['Any graduation + research skills'],
+        collegesGlobal: ['Coursera/edX certifications'],
+        degrees: ['MSc', 'PhD Environmental Science'],
+        relatedCareers: ['environmental-engineer', 'conservationist'],
+        didYouKnow: ['Conservation Scientist', 'Wildlife Biologist', 'Environmental Consultant'],
+        goodStuff: ['High earning potential', 'Regular hours', 'Protecting nature'],
+        challenges: ['Long training', 'High competition', 'Fieldwork challenges']
     },
     {
         slug: 'renewable-energy-engineer',

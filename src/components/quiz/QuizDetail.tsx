@@ -415,17 +415,20 @@ export default function QuizDetail({ quiz }: QuizDetailProps) {
                                                             </div>
                                                             <div className="flex items-center gap-3 mt-1">
                                                                 <span className="text-sm font-bold text-primary">
-                                                                    {attempt.score}/{attempt.totalMarks}
+                                                                    {attempt.score}/{attempt.maxScore || quiz.quizConfig.totalMarks}
                                                                 </span>
                                                                 <span className="text-xs text-slate-500 dark:text-slate-400">
-                                                                    ({Math.round((attempt.score / attempt.totalMarks) * 100)}%)
+                                                                    ({(() => {
+                                                                        const total = attempt.maxScore || quiz.quizConfig.totalMarks;
+                                                                        return total > 0 ? Math.round(((attempt.score || 0) / total) * 100) : 0;
+                                                                    })()}%)
                                                                 </span>
                                                                 <span className="text-xs text-slate-400 dark:text-slate-500">
                                                                     • {formatDuration(attempt.timeSpent)}
                                                                 </span>
                                                             </div>
                                                             <div className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                                                                {new Date(attempt.submittedAt).toLocaleString()}
+                                                                {attempt.submittedAt ? new Date(attempt.submittedAt).toLocaleString() : 'In Progress'}
                                                             </div>
                                                         </div>
                                                         <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors flex-shrink-0" />
