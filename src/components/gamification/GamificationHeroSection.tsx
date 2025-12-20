@@ -104,7 +104,7 @@ export function GamificationHeroSection({
                 <div className="relative flex-shrink-0">
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-1 opacity-75 blur-lg" />
                   <Avatar className="relative h-20 w-20 rounded-3xl border-4 border-white shadow-xl dark:border-slate-900 sm:h-24 sm:w-24">
-                    <AvatarImage src={photoUrl} alt={displayName} />
+                    {photoUrl && photoUrl.trim() !== '' && <AvatarImage src={photoUrl} alt={displayName} />}
                     <AvatarFallback className="rounded-3xl bg-gradient-to-br from-indigo-400 to-purple-400 text-lg font-bold text-white sm:text-xl">
                       {buildAvatarFallback(displayName)}
                     </AvatarFallback>

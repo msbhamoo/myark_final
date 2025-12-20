@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -22,24 +23,62 @@ import {
     TrendingUp,
     Target,
     Sparkles,
-    Share2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getCareerBySlug, getRelatedCareers } from '@/lib/careerService';
+import { getCareerBySlugAsync, getRelatedCareers } from '@/lib/careerService';
+import { CareerCarousel } from '@/components/CareerCarousel';
+import { CareerShareButton } from '@/components/career/CareerShareButton';
+
+const SITE_HOST = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://myark.in';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const career = await getCareerBySlugAsync(slug);
+
+    if (!career) {
+        return {
+            title: 'Career Not Found | Myark',
+            description: 'The requested career path could not be found.'
+        };
+    }
+
+    const title = `${career.title} | Career Path, Roadmap & Salary in India | Myark`;
+    const description = career.shortDescription || `${career.title} career roadmap, top colleges, entrance exams, and salary insights for students in India.`;
+    const image = career.images?.[0] || 'https://myark.in/og-career.png';
+
+    return {
+        title,
+        description,
+        keywords: [career.title, career.category, 'career roadmap', 'salary in india', ...career.keywords],
+        openGraph: {
+            title,
+            description,
+            type: 'article',
+            url: `${SITE_HOST}/career-finder/${slug}`,
+            images: [{ url: image, width: 1200, height: 630, alt: career.title }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [image],
+        }
+    };
+}
+
 export default async function CareerDetailPage({ params }: PageProps) {
     const { slug } = await params;
-    const career = getCareerBySlug(slug);
+    const career = await getCareerBySlugAsync(slug);
 
     if (!career) {
         notFound();
     }
 
-    const relatedCareers = getRelatedCareers(career.relatedCareers);
+    const relatedCareers = await getRelatedCareers(career.relatedCareers);
 
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
@@ -64,10 +103,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                 <ArrowLeft className="h-4 w-4" />
                                 Back to Careers
                             </Link>
-                            <button className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary transition">
-                                <Share2 className="h-4 w-4" />
-                                Share
-                            </button>
+                            <CareerShareButton career={career} />
                         </div>
 
                         {/* Category Badge */}
@@ -88,9 +124,16 @@ export default async function CareerDetailPage({ params }: PageProps) {
                             {career.title}
                         </h1>
 
+                        {/* Carousel / Image Section */}
+                        {career.images && career.images.length > 0 && (
+                            <div className="mt-8">
+                                <CareerCarousel images={career.images} />
+                            </div>
+                        )}
+
                         {/* Short Description */}
-                        <p className="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-                            {career.fullDescription}
+                        <p className="mt-8 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+                            {career.shortDescription}
                         </p>
 
                         {/* Quick Stats Strip */}
@@ -100,28 +143,32 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                     <Banknote className="h-4 w-4" />
                                     <span className="text-xs font-medium uppercase tracking-wider">Starting</span>
                                 </div>
-                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.salary.entry}</p>
+                                <p className="text-lg font-bold text-slate-900 dark:text-white">
+                                    {career.salary?.entry || 'Variable'}
+                                </p>
                             </div>
                             <div className="rounded-xl bg-white/80 backdrop-blur border border-slate-200/60 p-4 shadow-sm dark:bg-slate-800/50 dark:border-slate-700">
                                 <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
                                     <TrendingUp className="h-4 w-4" />
                                     <span className="text-xs font-medium uppercase tracking-wider">Senior</span>
                                 </div>
-                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.salary.senior}</p>
+                                <p className="text-lg font-bold text-slate-900 dark:text-white">
+                                    {career.salary?.senior || 'Variable'}
+                                </p>
                             </div>
                             <div className="rounded-xl bg-white/80 backdrop-blur border border-slate-200/60 p-4 shadow-sm dark:bg-slate-800/50 dark:border-slate-700">
                                 <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
                                     <Clock className="h-4 w-4" />
                                     <span className="text-xs font-medium uppercase tracking-wider">Roadmap</span>
                                 </div>
-                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.roadmap.length} Steps</p>
+                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.roadmap?.length || 0} Steps</p>
                             </div>
                             <div className="rounded-xl bg-white/80 backdrop-blur border border-slate-200/60 p-4 shadow-sm dark:bg-slate-800/50 dark:border-slate-700">
                                 <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-1">
                                     <Target className="h-4 w-4" />
                                     <span className="text-xs font-medium uppercase tracking-wider">Exams</span>
                                 </div>
-                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.exams.length}+</p>
+                                <p className="text-lg font-bold text-slate-900 dark:text-white">{career.exams?.length || 0}+</p>
                             </div>
                         </div>
                     </div>
@@ -131,8 +178,17 @@ export default async function CareerDetailPage({ params }: PageProps) {
                 <section className="py-10 px-4">
                     <div className="mx-auto max-w-6xl">
                         <div className="grid gap-8 lg:grid-cols-3">
-                            {/* Left Column - Roadmap */}
+                            {/* Left Column - Roadmap & Description */}
                             <div className="lg:col-span-2 space-y-8">
+                                {/* Career Overview */}
+                                <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
+                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">About this career</h2>
+                                    <div
+                                        className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300"
+                                        dangerouslySetInnerHTML={{ __html: career.fullDescription }}
+                                    />
+                                </div>
+
                                 {/* The Path (Roadmap) */}
                                 <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
                                     <div className="flex items-center gap-3 mb-8">
@@ -148,10 +204,10 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                     </div>
 
                                     <div className="space-y-0">
-                                        {career.roadmap.map((step, index) => (
+                                        {career.roadmap?.map((step: { title: string; description: string }, index: number) => (
                                             <div key={index} className="relative pl-10 pb-8 last:pb-0">
                                                 {/* Timeline line */}
-                                                {index < career.roadmap.length - 1 && (
+                                                {index < (career.roadmap?.length || 0) - 1 && (
                                                     <div className="absolute left-[15px] top-10 h-full w-0.5 bg-gradient-to-b from-primary/50 to-slate-200 dark:to-slate-700" />
                                                 )}
                                                 {/* Timeline dot */}
@@ -163,11 +219,6 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                                     <h3 className="font-bold text-slate-900 dark:text-white text-lg">
                                                         {step.title}
                                                     </h3>
-                                                    {step.subtitle && (
-                                                        <p className="text-sm font-medium text-primary mt-0.5">
-                                                            {step.subtitle}
-                                                        </p>
-                                                    )}
                                                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                                                         {step.description}
                                                     </p>
@@ -192,14 +243,14 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                     </div>
 
                                     {/* Key Exams */}
-                                    {career.exams.length > 0 && (
+                                    {career.exams && career.exams.length > 0 && (
                                         <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200/50 dark:bg-amber-500/10 dark:border-amber-500/20">
                                             <h3 className="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
                                                 <Award className="h-5 w-5 text-amber-600" />
                                                 Key Entrance Exams
                                             </h3>
                                             <div className="flex flex-wrap gap-2">
-                                                {career.exams.map((exam, i) => (
+                                                {career.exams.map((exam: string, i: number) => (
                                                     <span
                                                         key={i}
                                                         className="inline-block rounded-full bg-white px-3 py-1.5 text-sm font-medium text-amber-800 shadow-sm dark:bg-amber-900/50 dark:text-amber-200"
@@ -220,7 +271,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                                 Top Colleges (India)
                                             </h3>
                                             <ul className="space-y-2">
-                                                {career.collegesIndia.slice(0, 5).map((college, i) => (
+                                                {(career.collegesIndia || []).slice(0, 5).map((college: string, i: number) => (
                                                     <li
                                                         key={i}
                                                         className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2"
@@ -239,7 +290,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                                 Top Colleges (Global)
                                             </h3>
                                             <ul className="space-y-2">
-                                                {career.collegesGlobal.slice(0, 5).map((college, i) => (
+                                                {(career.collegesGlobal || []).slice(0, 5).map((college: string, i: number) => (
                                                     <li
                                                         key={i}
                                                         className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2"
@@ -259,7 +310,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                             Degrees & Qualifications
                                         </h3>
                                         <div className="flex flex-wrap gap-2">
-                                            {career.degrees.map((degree, i) => (
+                                            {career.degrees?.map((degree: string, i: number) => (
                                                 <span
                                                     key={i}
                                                     className="inline-block rounded-lg bg-slate-100 px-3 py-1.5 text-sm text-slate-700 dark:bg-slate-700 dark:text-slate-300"
@@ -274,7 +325,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
 
                             {/* Right Column - Sidebar */}
                             <div className="space-y-6">
-                                {/* Money Talk - Enhanced */}
+                                {/* Money Talk */}
                                 <div className="rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 shadow-sm dark:border-amber-500/30 dark:from-amber-900/20 dark:to-slate-900">
                                     <div className="flex items-center gap-3 mb-5">
                                         <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/25">
@@ -289,19 +340,13 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                         <div className="p-3 rounded-lg bg-white/80 dark:bg-slate-800/50">
                                             <p className="text-xs text-slate-500 uppercase tracking-wider font-medium">Entry Level</p>
                                             <p className="text-2xl font-extrabold text-slate-900 dark:text-white">
-                                                ₹{career.salary.entry}
-                                            </p>
-                                        </div>
-                                        <div className="p-3 rounded-lg bg-white/80 dark:bg-slate-800/50">
-                                            <p className="text-xs text-slate-500 uppercase tracking-wider font-medium">Mid Level (5-8 yrs)</p>
-                                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">
-                                                ₹{career.salary.mid}
+                                                {career.salary?.entry || 'Variable'}
                                             </p>
                                         </div>
                                         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 dark:border-primary/30">
                                             <p className="text-xs text-primary uppercase tracking-wider font-medium">Senior/Expert</p>
                                             <p className="text-2xl font-extrabold text-primary">
-                                                ₹{career.salary.senior}
+                                                {career.salary?.senior || 'Variable'}
                                             </p>
                                         </div>
                                     </div>
@@ -313,31 +358,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                     )}
                                 </div>
 
-                                {/* Did You Know - Enhanced */}
-                                <div className="rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-50 to-white p-6 shadow-sm dark:border-purple-500/30 dark:from-purple-900/20 dark:to-slate-900">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="p-2.5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/25">
-                                            <Lightbulb className="h-5 w-5 text-white" />
-                                        </div>
-                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                                            ✨ You Could Also Be
-                                        </h2>
-                                    </div>
-
-                                    <ul className="space-y-2">
-                                        {career.didYouKnow.map((item, i) => (
-                                            <li
-                                                key={i}
-                                                className="p-2.5 rounded-lg bg-white/80 text-sm text-slate-800 dark:bg-slate-800/50 dark:text-slate-200 flex items-center gap-2 font-medium"
-                                            >
-                                                <Heart className="h-4 w-4 text-rose-400 flex-shrink-0" />
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                {/* Reality Check - Enhanced */}
+                                {/* Reality Check */}
                                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
                                     <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5 flex items-center gap-2">
                                         ⚖️ Reality Check
@@ -350,7 +371,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                             The Good Stuff
                                         </h3>
                                         <ul className="space-y-2">
-                                            {career.goodStuff.map((item, i) => (
+                                            {career.goodStuff?.map((item: string, i: number) => (
                                                 <li
                                                     key={i}
                                                     className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2"
@@ -369,7 +390,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                             The Challenges
                                         </h3>
                                         <ul className="space-y-2">
-                                            {career.challenges.map((item, i) => (
+                                            {career.challenges?.map((item: string, i: number) => (
                                                 <li
                                                     key={i}
                                                     className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2"
@@ -380,6 +401,30 @@ export default async function CareerDetailPage({ params }: PageProps) {
                                             ))}
                                         </ul>
                                     </div>
+                                </div>
+
+                                {/* Interests / Tags */}
+                                <div className="rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-50 to-white p-6 shadow-sm dark:border-purple-500/30 dark:from-purple-900/20 dark:to-slate-900">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="p-2.5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/25">
+                                            <Lightbulb className="h-5 w-5 text-white" />
+                                        </div>
+                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                                            💡 Fun Facts
+                                        </h2>
+                                    </div>
+
+                                    <ul className="space-y-2">
+                                        {career.didYouKnow?.map((item: string, i: number) => (
+                                            <li
+                                                key={i}
+                                                className="p-2.5 rounded-lg bg-white/80 text-sm text-slate-800 dark:bg-slate-800/50 dark:text-slate-200 flex items-center gap-2 font-medium"
+                                            >
+                                                <Heart className="h-4 w-4 text-rose-400 flex-shrink-0" />
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -395,7 +440,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                             </h2>
 
                             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {relatedCareers.map((related) => (
+                                {relatedCareers.map((related: any) => (
                                     <Link
                                         key={related.slug}
                                         href={`/career-finder/${related.slug}`}
@@ -432,7 +477,7 @@ export default async function CareerDetailPage({ params }: PageProps) {
                             Ready to explore more careers?
                         </h2>
                         <p className="mt-2 text-slate-600 dark:text-slate-400">
-                            Discover 30+ career paths tailored for students like you
+                            Discover 150+ career paths tailored for students like you
                         </p>
                         <div className="mt-6">
                             <Button asChild size="lg" className="rounded-full px-8 py-6 shadow-lg shadow-primary/30">

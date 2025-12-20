@@ -49,6 +49,10 @@ export const API_ENDPOINTS = {
         // Hosts
         hosts: '/api/admin/hosts',
 
+        // Careers
+        careers: '/api/admin/careers',
+        careerBySlug: (slug: string) => `/api/admin/careers/${slug}`,
+
         // Uploads
         upload: '/api/admin/upload',
         uploads: '/api/admin/uploads',

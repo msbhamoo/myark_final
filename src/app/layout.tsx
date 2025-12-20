@@ -104,7 +104,6 @@ export const metadata: Metadata = {
     },
   },
   manifest: "/manifest.json",
-  themeColor: "#0f172a",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -180,14 +179,13 @@ export default function RootLayout({
                     if (Date.now() - timestamp <= THEME_CACHE_DURATION && theme && theme.colors) {
                       const root = document.documentElement;
                       
-                      // Apply light mode colors
-                      if (theme.colors.primary) root.style.setProperty('--color-primary', theme.colors.primary);
-                      if (theme.colors.primaryDark) root.style.setProperty('--color-primary-dark', theme.colors.primaryDark);
-                      if (theme.colors.primaryDarker) root.style.setProperty('--color-primary-darker', theme.colors.primaryDarker);
-                      if (theme.colors.accent) root.style.setProperty('--color-accent', theme.colors.accent);
-                      if (theme.colors.secondary) root.style.setProperty('--color-secondary', theme.colors.secondary);
+                      // Apply brand colors (source of truth for theme)
+                      if (theme.colors.primary) root.style.setProperty('--brand-primary', theme.colors.primary);
+                      if (theme.colors.primaryDark) root.style.setProperty('--brand-primary-dark', theme.colors.primaryDark);
+                      if (theme.colors.primaryDarker) root.style.setProperty('--brand-primary-darker', theme.colors.primaryDarker);
+                      if (theme.colors.accent) root.style.setProperty('--brand-accent', theme.colors.accent);
                       
-                      // Apply chart colors for gradients
+                      // Also set chart colors for gradients
                       if (theme.colors.primary) root.style.setProperty('--chart-1', theme.colors.primary);
                       if (theme.colors.primaryDark) root.style.setProperty('--chart-2', theme.colors.primaryDark);
                       if (theme.colors.primaryDarker) root.style.setProperty('--chart-3', theme.colors.primaryDarker);
