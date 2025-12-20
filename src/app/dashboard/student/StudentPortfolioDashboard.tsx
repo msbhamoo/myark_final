@@ -165,6 +165,7 @@ type StatsDraft = {
 };
 
 type SchoolInfoDraft = {
+  schoolId: string;
   schoolName: string;
   board: string;
   className: string;
@@ -429,6 +430,7 @@ export default function StudentPortfolioDashboard({
   const openSchoolDialog = () => {
     if (!profile) return;
     setSchoolDraft({
+      schoolId: profile.schoolId ?? '',
       schoolName: profile.schoolInfo.schoolName ?? '',
       board: profile.schoolInfo.board ?? '',
       className: profile.schoolInfo.className ?? '',
@@ -531,6 +533,7 @@ export default function StudentPortfolioDashboard({
   const handleSubmitSchool = async () => {
     if (!schoolDraft) return;
     const updated = await handleUpdate({
+      schoolId: schoolDraft.schoolId || null,
       schoolInfo: {
         schoolName: schoolDraft.schoolName,
         board: schoolDraft.board || null,
@@ -1106,6 +1109,7 @@ export default function StudentPortfolioDashboard({
                   onValueChange={(value, schoolData) => {
                     setSchoolDraft({
                       ...schoolDraft,
+                      schoolId: schoolData?.id || '',
                       schoolName: value,
                       board: schoolData?.board || schoolDraft.board,
                     });

@@ -26,6 +26,15 @@ const serializeDoc = (doc: QueryDocumentSnapshot) => {
     isVerified: Boolean(data.is_verified ?? data.isVerified ?? false),
     createdAt: data.createdAt ?? null,
     updatedAt: data.updatedAt ?? null,
+    // New fields
+    numberOfStudents: data.numberOfStudents ?? null,
+    facilities: Array.isArray(data.facilities) ? data.facilities : [],
+    type: data.type ?? '',
+    principalName: data.principalName ?? '',
+    principalContact: data.principalContact ?? '',
+    affiliationNumber: data.affiliationNumber ?? '',
+    loginEnabled: Boolean(data.loginEnabled ?? false),
+    linkedUserId: data.linkedUserId ?? null,
   };
 };
 
@@ -77,6 +86,15 @@ export async function POST(request: Request) {
       isVerified: Boolean(payload.isVerified ?? payload.is_verified ?? false),
       createdAt: now,
       updatedAt: now,
+      // New fields
+      numberOfStudents: typeof payload.numberOfStudents === 'number' ? payload.numberOfStudents : null,
+      facilities: Array.isArray(payload.facilities) ? payload.facilities : [],
+      type: typeof payload.type === 'string' ? payload.type.trim() : '',
+      principalName: typeof payload.principalName === 'string' ? payload.principalName.trim() : '',
+      principalContact: typeof payload.principalContact === 'string' ? payload.principalContact.trim() : '',
+      affiliationNumber: typeof payload.affiliationNumber === 'string' ? payload.affiliationNumber.trim() : '',
+      loginEnabled: false,
+      linkedUserId: null,
     };
 
     const db = getDb();

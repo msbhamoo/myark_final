@@ -102,6 +102,7 @@ export interface StudentProfile {
   slug?: string | null;
   shareablePath?: string | null;
   stats: StudentProfileStats;
+  schoolId?: string | null;
   schoolInfo: {
     schoolName?: string | null;
     board?: string | null;

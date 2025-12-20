@@ -37,6 +37,13 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     if (payload.foundationYear !== undefined) updates.foundationYear = typeof payload.foundationYear === 'number' ? payload.foundationYear : null;
     if (payload.isVerified !== undefined) updates.isVerified = Boolean(payload.isVerified);
     if (payload.is_verified !== undefined) updates.isVerified = Boolean(payload.is_verified);
+    // New fields
+    if (payload.numberOfStudents !== undefined) updates.numberOfStudents = typeof payload.numberOfStudents === 'number' ? payload.numberOfStudents : null;
+    if (payload.facilities !== undefined) updates.facilities = Array.isArray(payload.facilities) ? payload.facilities : [];
+    if (payload.type !== undefined) updates.type = String(payload.type ?? '');
+    if (payload.principalName !== undefined) updates.principalName = String(payload.principalName ?? '');
+    if (payload.principalContact !== undefined) updates.principalContact = String(payload.principalContact ?? '');
+    if (payload.affiliationNumber !== undefined) updates.affiliationNumber = String(payload.affiliationNumber ?? '');
 
     const db = getDb();
     await db.collection(COLLECTION).doc(id).set(updates, { merge: true });

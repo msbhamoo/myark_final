@@ -142,8 +142,8 @@ export default function HostOpportunityForm() {
       return;
     }
 
-    if (user.accountType !== 'organization') {
-      setError('Only organization accounts can submit new opportunities.');
+    if (user.accountType !== 'organization' && user.accountType !== 'school') {
+      setError('Only organization and school accounts can submit new opportunities.');
       return;
     }
 
@@ -237,12 +237,12 @@ export default function HostOpportunityForm() {
     );
   }
 
-  if (user.accountType !== 'organization') {
+  if (user.accountType !== 'organization' && user.accountType !== 'school') {
     return (
       <div className="rounded-3xl border border-amber-200 bg-white/95 px-8 py-12 text-center shadow-lg shadow-primary/20 dark:border-amber-600/40 dark:bg-slate-800/50">
-        <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Organization account required</h1>
+        <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Organization or School account required</h1>
         <p className="mt-4 text-sm text-slate-600 dark:text-slate-100">
-          Hosting opportunities is limited to organization accounts. Switch to the organizer profile linked to your email or reach out to support for help.
+          Hosting opportunities is limited to organization and school accounts. Switch to the appropriate account type or contact support for help.
         </p>
         <Button
           className="mt-8 bg-gradient-to-r from-primary to-primaryDark hover:from-primaryDark hover:to-primaryDarker"

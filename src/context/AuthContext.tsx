@@ -14,7 +14,7 @@ import type { User } from 'firebase/auth';
 import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
 import { getFirebaseAuth } from '@/lib/firebaseClient';
 
-type AccountType = 'organization' | 'user';
+type AccountType = 'organization' | 'user' | 'school';
 
 export interface AppUserProfile {
   uid: string;
@@ -22,6 +22,7 @@ export interface AppUserProfile {
   displayName: string | null;
   accountType: AccountType;
   organizationName?: string | null;
+  linkedSchoolId?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -43,6 +44,7 @@ const buildProfile = (firebaseUser: User, data: Partial<AppUserProfile>): AppUse
   displayName: data.displayName ?? firebaseUser.displayName,
   accountType: data.accountType ?? 'user',
   organizationName: data.organizationName ?? null,
+  linkedSchoolId: data.linkedSchoolId ?? null,
   createdAt: data.createdAt ?? null,
   updatedAt: data.updatedAt ?? null,
 });

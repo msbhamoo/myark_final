@@ -21,8 +21,11 @@ const buildProfileResponse = (data: FirebaseFirestore.DocumentData | undefined, 
   email: string | null | undefined;
   displayName: string | null | undefined;
 }) => {
-  const accountType =
-    data?.accountType === 'organization' || data?.accountType === 'user' ? data.accountType : 'user';
+  // Recognize 'school' as valid account type along with 'organization' and 'user'
+  const validAccountTypes = ['organization', 'user', 'school'];
+  const accountType = validAccountTypes.includes(data?.accountType)
+    ? data.accountType
+    : 'user';
 
   return {
     uid: fallback.uid,
@@ -30,6 +33,7 @@ const buildProfileResponse = (data: FirebaseFirestore.DocumentData | undefined, 
     displayName: data?.displayName ?? fallback.displayName ?? null,
     accountType,
     organizationName: data?.organizationName ?? null,
+    linkedSchoolId: data?.linkedSchoolId ?? null,
     createdAt: data?.createdAt ? data.createdAt.toISOString?.() ?? null : null,
     updatedAt: data?.updatedAt ? data.updatedAt.toISOString?.() ?? null : null,
   };
@@ -55,6 +59,25 @@ export async function GET(request: NextRequest) {
       console.error('Failed to update lastActiveAt:', err);
     });
 
+    let userData = doc.exists ? doc.data() : undefined;
+
+    // If user is a school account but doesn't have linkedSchoolId, look it up from schools collection
+    if (userData?.accountType === 'school' && !userData?.linkedSchoolId) {
+      const schoolsSnapshot = await db.collection('schools')
+        .where('linkedUserId', '==', decoded.uid)
+        .limit(1)
+        .get();
+
+      if (!schoolsSnapshot.empty) {
+        const schoolId = schoolsSnapshot.docs[0].id;
+        // Update the user document with the linkedSchoolId
+        await docRef.set({ linkedSchoolId: schoolId }, { merge: true }).catch(err => {
+          console.error('Failed to update linkedSchoolId:', err);
+        });
+        userData = { ...userData, linkedSchoolId: schoolId };
+      }
+    }
+
     if (!doc.exists) {
       return NextResponse.json(
         buildProfileResponse(undefined, {
@@ -66,7 +89,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      buildProfileResponse(doc.data(), {
+      buildProfileResponse(userData, {
         uid: decoded.uid,
         email: decoded.email ?? null,
         displayName: decoded.name ?? null,
@@ -74,6 +97,7 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error('Failed to fetch auth profile', error);
+
     return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
   }
 }

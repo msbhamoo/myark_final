@@ -91,6 +91,7 @@ const updateSchema = z
         }
         return value;
       }),
+    schoolId: z.string().trim().max(200).nullable().optional(),
     stats: statsSchema.optional(),
     schoolInfo: schoolInfoSchema.optional(),
     academicHistory: z.array(academicYearSchema).max(MAX_HISTORY_ITEMS).optional(),
@@ -235,6 +236,10 @@ const applyUpdate = async (
           : null,
     };
     updates.stats = nextStats;
+  }
+
+  if (payload.schoolId !== undefined) {
+    updates.schoolId = payload.schoolId || null;
   }
 
   if (payload.schoolInfo !== undefined) {

@@ -7,6 +7,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import StudentPortfolioDashboard from './student/StudentPortfolioDashboard';
 import OrganizationDashboard from './OrganizationDashboard';
+import dynamic from 'next/dynamic';
+
+const SchoolDashboard = dynamic(() => import('./SchoolDashboard'), { ssr: false });
 
 export default function DashboardPage() {
   const { user, loading, getIdToken, signOut } = useAuth();
@@ -34,6 +37,10 @@ export default function DashboardPage() {
           Go to login
         </Button>
       </div>
+    );
+  } else if (user.accountType === 'school') {
+    content = (
+      <SchoolDashboard user={user} getIdToken={getIdToken} signOut={signOut} />
     );
   } else if (user.accountType === 'organization') {
     content = (
