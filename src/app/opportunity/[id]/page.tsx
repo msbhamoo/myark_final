@@ -70,8 +70,25 @@ const buildMetaDescription = (opportunity: Opportunity) => {
   return description.length > 320 ? `${description.slice(0, 317)}...` : description;
 };
 
+// Get current academic year for SEO year modifiers
+const getAcademicYearModifiers = () => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const month = now.getMonth();
+  // Academic year in India runs April to March
+  const academicYearStart = month >= 3 ? currentYear : currentYear - 1;
+  const academicYearEnd = academicYearStart + 1;
+  return {
+    currentYear: currentYear.toString(),
+    nextYear: (currentYear + 1).toString(),
+    academicYear: `${academicYearStart}-${String(academicYearEnd).slice(-2)}`,
+    fullAcademicYear: `${academicYearStart}-${academicYearEnd}`,
+  };
+};
+
 const collectKeywords = (opportunity: Opportunity) => {
   const keywordSet = new Set<string>();
+  const yearMods = getAcademicYearModifiers();
 
   const push = (keyword?: string) => {
     const trimmed = keyword?.trim();
@@ -90,6 +107,15 @@ const collectKeywords = (opportunity: Opportunity) => {
   push(opportunity.gradeEligibility ? `${opportunity.gradeEligibility} students` : '');
   (opportunity.segments ?? []).forEach((segment) => push(`${segment} opportunities`));
   (opportunity.searchKeywords ?? []).forEach((keyword) => push(keyword));
+
+  // Add year modifiers for long-tail SEO (2025, 2025-26)
+  push(`${opportunity.title} ${yearMods.currentYear}`);
+  push(`${opportunity.title} ${yearMods.academicYear}`);
+  push(`${opportunity.category ?? ''} ${yearMods.currentYear}`);
+  push(`${opportunity.category ?? ''} ${yearMods.academicYear}`);
+  push(`scholarships ${yearMods.currentYear}`);
+  push(`olympiads ${yearMods.currentYear}`);
+
   [
     'scholarships in india',
     'student competitions india',
@@ -97,6 +123,9 @@ const collectKeywords = (opportunity: Opportunity) => {
     'school entrance exams india',
     'student workshops india',
     'myark opportunities',
+    `scholarships in india ${yearMods.currentYear}`,
+    `student competitions ${yearMods.academicYear}`,
+    `olympiads ${yearMods.academicYear}`,
   ].forEach((keyword) => push(keyword));
 
   return Array.from(keywordSet);
@@ -233,6 +262,63 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
     }))
   };
 
+  // Determine if the opportunity is free for AI engines
+  const isFree = !hasNumericPrice || priceValue <= 0;
+
+  // Build AI-readable fact sheet as PropertyValue array
+  const factSheet = [
+    {
+      '@type': 'PropertyValue',
+      name: 'Registration Deadline',
+      value: opportunity.registrationDeadline
+        ? formatDateForDescription(opportunity.registrationDeadline)
+        : 'To Be Announced'
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Application Fee',
+      value: isFree ? 'Free' : `₹${priceValue}`
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Eligibility',
+      value: opportunity.gradeEligibility || 'All students'
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Mode',
+      value: opportunity.mode === 'online' ? 'Online' : opportunity.mode === 'offline' ? 'Offline' : 'Hybrid'
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Organizer',
+      value: organizerName
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Category',
+      value: opportunity.categoryName || opportunity.category || 'Student Opportunity'
+    }
+  ];
+
+  // Add exam pattern facts if available
+  if (opportunity.examPattern?.totalMarks) {
+    factSheet.push({
+      '@type': 'PropertyValue',
+      name: 'Total Marks',
+      value: opportunity.examPattern.totalMarks.toString()
+    });
+  }
+  if (opportunity.examPattern?.durationMinutes) {
+    const hours = Math.floor(opportunity.examPattern.durationMinutes / 60);
+    const mins = opportunity.examPattern.durationMinutes % 60;
+    factSheet.push({
+      '@type': 'PropertyValue',
+      name: 'Duration',
+      value: hours > 0 ? `${hours}h ${mins}m` : `${mins} minutes`
+    });
+  }
+
   const mainEntity = {
     '@context': 'https://schema.org',
     '@type': schemaType,
@@ -247,6 +333,10 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
     eventAttendanceMode: attendanceMode,
     eventStatus,
     image: [image],
+    // AI engine friendly: explicit accessibility flag
+    isAccessibleForFree: isFree,
+    // Typical age range for student opportunities (10-18 years)
+    typicalAgeRange: '10-18',
     organizer: {
       '@type': 'Organization',
       name: organizerName,
@@ -296,10 +386,61 @@ const buildStructuredData = (opportunity: Opportunity, canonicalUrl: string) => 
     performer: {
       '@type': 'Organization',
       name: organizerName
-    }
+    },
+    // AI-readable structured facts for Gemini/Perplexity/ChatGPT
+    additionalProperty: factSheet
   };
 
-  return [mainEntity, faqSchema];
+  // BreadcrumbList schema for navigation hierarchy
+  const breadcrumbSchema = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://myark.in'
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Opportunities',
+        item: 'https://myark.in/opportunities'
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: opportunity.categoryName || opportunity.category || 'Category',
+        item: `https://myark.in/opportunities?category=${encodeURIComponent(opportunity.category || '')}`
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: opportunity.title
+      }
+    ]
+  };
+
+  // HowTo schema for application process (if registration steps exist)
+  const howToSchema = (opportunity.registrationProcess && opportunity.registrationProcess.length > 0)
+    ? {
+      '@type': 'HowTo',
+      name: `How to Apply for ${opportunity.title}`,
+      description: `Step-by-step guide to register for ${opportunity.title}`,
+      step: opportunity.registrationProcess.map((step, index) => ({
+        '@type': 'HowToStep',
+        position: index + 1,
+        text: step
+      }))
+    }
+    : null;
+
+  // Return all schemas
+  const schemas = [mainEntity, faqSchema, breadcrumbSchema];
+  if (howToSchema) {
+    schemas.push(howToSchema);
+  }
+  return schemas;
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {

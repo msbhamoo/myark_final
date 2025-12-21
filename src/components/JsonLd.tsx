@@ -1,4 +1,8 @@
 export default function JsonLd() {
+    // Dynamic year for SEO
+    const currentYear = new Date().getFullYear();
+    const academicYear = `${currentYear}-${String(currentYear + 1).slice(-2)}`;
+
     const jsonLd = {
         "@context": "https://schema.org",
         "@graph": [
@@ -40,7 +44,7 @@ export default function JsonLd() {
                 "@id": "https://myark.in/#website",
                 "url": "https://myark.in",
                 "name": "Myark",
-                "description": "Scholarships, Olympiads & Competitions for School Students",
+                "description": `Scholarships, Olympiads & Competitions for School Students ${academicYear}`,
                 "publisher": {
                     "@id": "https://myark.in/#organization"
                 },
@@ -64,6 +68,14 @@ export default function JsonLd() {
                     },
                     {
                         "@type": "Question",
+                        "name": `What are the best scholarships for students in ${currentYear}?`,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": `In ${academicYear}, popular scholarships include NTSE, KVPY, SOF scholarships, and various state-level merit scholarships. Visit Myark to find updated deadlines and eligibility criteria.`
+                        }
+                    },
+                    {
+                        "@type": "Question",
                         "name": "How do I find scholarships for my child?",
                         "acceptedAnswer": {
                             "@type": "Answer",
@@ -76,6 +88,14 @@ export default function JsonLd() {
                         "acceptedAnswer": {
                             "@type": "Answer",
                             "text": "Yes, all opportunities on Myark are verified by our team. We ensure accurate information about eligibility, deadlines, and application processes."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": `When are the olympiad deadlines for ${academicYear}?`,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": `Olympiad deadlines for ${academicYear} vary by exam. SOF olympiads typically have deadlines in September-October, while IMO and NSO have multiple rounds. Check Myark for exact dates.`
                         }
                     },
                     {

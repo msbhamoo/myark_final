@@ -19,21 +19,30 @@ const metadataBase = (() => {
   }
 })();
 
+// Get current year for SEO
+const currentYear = new Date().getFullYear();
+const academicYear = `${currentYear}-${String(currentYear + 1).slice(-2)}`;
+
 export const metadata: Metadata = {
   metadataBase,
-  title: 'Scholarships, Olympiads & Competitions for Students | Browse All - Myark',
-  description: 'Browse 100+ verified scholarships, olympiads, entrance exams, and competitions for school students in India. Filter by category, grade, and deadline. Apply before deadlines!',
+  title: `Scholarships, Olympiads & Competitions for Students ${currentYear} | Browse All - Myark`,
+  description: `Browse 100+ verified scholarships, olympiads, entrance exams, and competitions for school students in India ${academicYear}. Filter by category, grade, and deadline. Apply before deadlines!`,
   keywords: [
     'scholarships for students',
-    'olympiad exams India',
+    `scholarships ${currentYear}`,
+    `olympiad exams India ${currentYear}`,
     'student competitions',
     'entrance exams for schools',
     'scholarship opportunities',
     'NTSE scholarship',
+    `NTSE ${currentYear}`,
     'science olympiad',
+    `science olympiad ${academicYear}`,
     'math olympiad India',
+    `math olympiad ${currentYear}`,
     'talent search exams',
-    'school competitions 2025',
+    `school competitions ${academicYear}`,
+    `olympiads for students ${currentYear}`,
   ],
   alternates: {
     canonical: `${metadataBase.href}opportunities`,
@@ -41,15 +50,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: `${metadataBase.href}opportunities`,
-    title: 'Browse Scholarships, Olympiads & Competitions - Myark',
-    description: 'Discover 100+ verified opportunities for students. Scholarships, olympiads, entrance exams with deadlines and eligibility details.',
+    title: `Browse Scholarships, Olympiads & Competitions ${academicYear} - Myark`,
+    description: `Discover 100+ verified opportunities for students ${currentYear}. Scholarships, olympiads, entrance exams with deadlines and eligibility details.`,
     siteName: 'Myark',
     locale: 'en_IN',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Browse Opportunities for Students - Myark',
-    description: 'Find scholarships, olympiads & competitions for school students across India.',
+    title: `Browse Opportunities for Students ${currentYear} - Myark`,
+    description: `Find scholarships, olympiads & competitions for school students across India ${academicYear}.`,
     site: '@myark_in',
   },
 };

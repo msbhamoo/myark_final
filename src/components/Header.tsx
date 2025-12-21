@@ -15,6 +15,7 @@ import type { Opportunity } from '@/types/opportunity';
 import { format } from 'date-fns';
 
 const NAV_LINKS = [
+  { href: '/calendar', label: 'Calendar' },
   { href: '/for-schools', label: 'For Schools' },
   { href: '/career-finder', label: 'Career Finder' },
 ];

@@ -12,6 +12,7 @@ import { InstallPrompt } from '@/components/InstallPrompt';
 
 const STUDENT_LINKS = [
   { label: 'Explore Opportunities', href: '/opportunities' },
+  { label: 'Opportunity Calendar', href: '/calendar' },
   { label: 'Scholarships & Grants', href: '/opportunities?category=scholarships' },
   { label: 'Olympiads & Exams', href: '/opportunities?category=olympiad' },
   { label: 'Skill Labs & Clubs', href: '/opportunities?mode=online' },
@@ -28,8 +29,10 @@ const PARENT_LINKS = [
 const COMPANY_LINKS = [
   { label: 'About Myark', href: '/about' },
   { label: 'Our Mission', href: '/mission' },
+  { label: 'FAQs', href: '/faqs' },
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms of Service', href: '/terms' },
+
 ] as const;
 
 const SOCIAL_BUTTONS = [
