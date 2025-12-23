@@ -1,0 +1,73 @@
+# Myark
+
+> Myark is India's leading education discovery platform that curates verified scholarships, olympiads, competitions, entrance exams, and workshops for school students (classes 1-12).
+
+Myark helps Indian students and parents discover educational opportunities with detailed eligibility criteria, important dates, preparation resources, and application guidance.
+
+## Core Features
+
+- **Opportunity Discovery**: Browse 500+ curated scholarships, olympiads, competitions, and entrance exams
+- **Smart Search & Filters**: Find opportunities by class, category, deadline, and eligibility
+- **Personalized Recommendations**: AI-powered opportunity suggestions based on student profile
+- **Calendar Integration**: Track deadlines with an interactive opportunity calendar
+- **Practice Quizzes**: Prepare for exams with topic-wise practice tests
+- **Career Finder**: Explore career paths with an interactive career exploration tool
+
+## Content Categories
+
+- Scholarships (merit-based, need-based, government, private)
+- Olympiads (science, mathematics, coding, language)
+- Entrance Exams (NTSE, KVPY, JEE, NEET preparation)
+- Competitions (essay writing, art, innovation challenges)
+- Workshops & Programs (summer camps, bootcamps, skill development)
+- AI & Robotics programs for students
+
+## Target Audience
+
+- Indian school students (Classes 1-12)
+- Parents and guardians
+- Teachers and school counselors
+- Educational institutions
+
+## Available for Schools
+
+Myark offers dedicated solutions for schools including bulk student onboarding, custom opportunity curation, and administrative dashboards.
+
+## Documentation & Resources
+
+- [Home](https://myark.in/)
+- [All Opportunities](https://myark.in/opportunities)
+- [Scholarships](https://myark.in/scholarships)
+- [Competitions](https://myark.in/competitions)
+- [Opportunity Calendar](https://myark.in/calendar)
+- [Practice Quizzes](https://myark.in/quizzes)
+- [Career Finder](https://myark.in/career-finder)
+- [Career Toolkit](https://myark.in/career-toolkit)
+- [Innovation Labs](https://myark.in/innovation-labs)
+- [AI in Schools](https://myark.in/ai-in-schools)
+- [For Schools](https://myark.in/for-schools)
+- [Parent Guide](https://myark.in/parent-guide)
+- [FAQ](https://myark.in/faqs)
+- [About Us](https://myark.in/about)
+- [Our Mission](https://myark.in/mission)
+- [Success Stories](https://myark.in/success-stories)
+- [Blog](https://myark.in/blog)
+- [Contact](https://myark.in/contact)
+- [Privacy Policy](https://myark.in/privacy)
+- [Terms of Service](https://myark.in/terms)
+
+## Technical Information
+
+- **Tech Stack**: Next.js, React, TypeScript, Firebase, TailwindCSS
+- **Sitemap**: https://myark.in/sitemap.xml
+- **API**: RESTful API (not for public consumption)
+
+## Contact
+
+- Website: https://myark.in
+- Twitter: @getmyark
+- Category: Education
+
+---
+
+*Last updated: December 2025*

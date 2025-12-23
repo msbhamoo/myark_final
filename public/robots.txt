@@ -24,6 +24,9 @@ Disallow: /dashboard/
 # Specify sitemap location
 Sitemap: https://myark.in/sitemap.xml
 
+# LLMs.txt for AI crawlers
+LLMs-txt: https://myark.in/llms.txt
+
 # Crawl delay (optional - helps reduce server load)
 Crawl-delay: 1
 
