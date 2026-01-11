@@ -42,8 +42,10 @@ const parseFoundationYear = (value: unknown): number | null => {
 export async function GET() {
   try {
     const db = getDb();
-    const snapshot = await db.collection('organizers').orderBy('updatedAt', 'desc').limit(500).get();
-    const items = snapshot.docs.map((doc) => {
+
+    // Fetch organizers
+    const organizersSnapshot = await db.collection('organizers').orderBy('updatedAt', 'desc').limit(500).get();
+    const organizers = organizersSnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         id: doc.id,
@@ -68,8 +70,46 @@ export async function GET() {
         schoolLogoUrl: data.schoolLogoUrl ?? '',
         createdAt: data.createdAt ?? null,
         updatedAt: data.updatedAt ?? null,
+        source: 'organizers' as const,
       };
     });
+
+    // Fetch schools and map to organizer format
+    const schoolsSnapshot = await db.collection('schools').orderBy('updatedAt', 'desc').limit(200).get();
+    const schoolsAsOrganizers = schoolsSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        name: data.name ?? '',
+        shortName: '',
+        address: data.address ?? '',
+        website: data.website ?? '',
+        foundationYear: parseFoundationYear(data.foundationYear),
+        type: 'school' as const,
+        visibility: 'public' as const,
+        isVerified: Boolean(data.isVerified ?? data.is_verified),
+        logoUrl: data.schoolLogoUrl ?? '',
+        contactUrl: '',
+        contactEmail: data.email ?? '',
+        contactPhone: data.phone ?? '',
+        contactWebsite: data.website ?? '',
+        description: '',
+        opportunityTypeIds: [],
+        country: data.countryId ?? '',
+        state: data.stateId ?? '',
+        city: data.cityId ?? '',
+        schoolLogoUrl: data.schoolLogoUrl ?? '',
+        createdAt: data.createdAt ?? null,
+        updatedAt: data.updatedAt ?? null,
+        source: 'schools' as const,
+      };
+    });
+
+    // Merge and dedupe (schools take precedence if same id exists in both)
+    const schoolIds = new Set(schoolsAsOrganizers.map(s => s.id));
+    const filteredOrganizers = organizers.filter(o => !schoolIds.has(o.id));
+    const items = [...schoolsAsOrganizers, ...filteredOrganizers];
+
     return NextResponse.json({ items });
   } catch (error) {
     console.error('Failed to fetch organizers:', error);
@@ -90,13 +130,15 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
+    const organizerType = typeof body.type === 'string' ? body.type : 'other';
+
     const payload = {
       name,
       shortName: typeof body.shortName === 'string' ? body.shortName.trim() : '',
       address: typeof body.address === 'string' ? body.address.trim() : '',
       website: typeof body.website === 'string' ? body.website.trim() : '',
       foundationYear: parseFoundationYear(body.foundationYear),
-      type: typeof body.type === 'string' ? body.type : 'other',
+      type: organizerType,
       visibility: normalizeVisibility(body.visibility),
       isVerified: normalizeBoolean(body.isVerified),
       logoUrl: typeof body.logoUrl === 'string' ? body.logoUrl.trim() : '',
@@ -112,6 +154,37 @@ export async function POST(request: Request) {
 
     const db = getDb();
     const docRef = await db.collection('organizers').add(payload);
+
+    // If type is 'school', also add to schools collection for sync with /admin/schools
+    if (organizerType === 'school') {
+      const schoolPayload = {
+        name,
+        address: payload.address,
+        website: payload.website,
+        foundationYear: payload.foundationYear,
+        isVerified: payload.isVerified,
+        schoolLogoUrl: payload.logoUrl,
+        email: payload.contactEmail,
+        phone: payload.contactPhone,
+        cityId: '',
+        stateId: '',
+        countryId: '',
+        pincode: '',
+        numberOfStudents: null,
+        facilities: [],
+        type: 'school',
+        principalName: '',
+        principalContact: '',
+        affiliationNumber: '',
+        loginEnabled: false,
+        linkedUserId: null,
+        createdAt: now,
+        updatedAt: now,
+        linkedOrganizerId: docRef.id, // Link back to organizer
+      };
+      // Use same ID for consistency
+      await db.collection('schools').doc(docRef.id).set(schoolPayload);
+    }
 
     return NextResponse.json({ id: docRef.id, ...payload }, { status: 201 });
   } catch (error) {

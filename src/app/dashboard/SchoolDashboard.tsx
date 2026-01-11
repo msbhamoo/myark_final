@@ -18,7 +18,8 @@ import {
     Square,
     Loader2,
     ExternalLink,
-    Send
+    Send,
+    ClipboardList
 } from 'lucide-react';
 
 interface Student {
@@ -67,7 +68,20 @@ interface SchoolInfo {
     schoolLogoUrl?: string;
 }
 
-type Tab = 'students' | 'opportunities' | 'my-opportunities';
+type Tab = 'students' | 'opportunities' | 'my-opportunities' | 'registrations';
+
+interface Registration {
+    id: string;
+    studentUid: string;
+    studentName: string;
+    studentEmail?: string;
+    className?: string;
+    schoolName?: string;
+    opportunityId: string;
+    opportunityTitle: string;
+    registeredAt: string;
+    registrationType?: string;
+}
 
 type SchoolDashboardProps = {
     user: AppUserProfile;
@@ -97,6 +111,8 @@ export default function SchoolDashboard({
     const [students, setStudents] = useState<Student[]>([]);
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
     const [myOpportunities, setMyOpportunities] = useState<Opportunity[]>([]);
+    const [registrations, setRegistrations] = useState<Registration[]>([]);
+    const [registrationsLoading, setRegistrationsLoading] = useState(false);
     const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set());
     const [selectedOpportunity, setSelectedOpportunity] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -171,12 +187,33 @@ export default function SchoolDashboard({
         }
     }, [getIdToken]);
 
+    // Load registrations for school's opportunities
+    const loadRegistrations = useCallback(async () => {
+        try {
+            setRegistrationsLoading(true);
+            const token = await getIdToken();
+            if (!token) return;
+            const response = await fetch('/api/schools/registrations', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setRegistrations(data.items ?? []);
+            }
+        } catch (err) {
+            console.error('Failed to load registrations', err);
+        } finally {
+            setRegistrationsLoading(false);
+        }
+    }, [getIdToken]);
+
     useEffect(() => {
         loadSchoolInfo();
         loadStudents();
         loadOpportunities();
         loadMyOpportunities();
-    }, [loadSchoolInfo, loadStudents, loadOpportunities, loadMyOpportunities]);
+        loadRegistrations();
+    }, [loadSchoolInfo, loadStudents, loadOpportunities, loadMyOpportunities, loadRegistrations]);
 
     // Filter students by search
     const filteredStudents = useMemo(() => {
@@ -412,6 +449,16 @@ export default function SchoolDashboard({
                 >
                     <Trophy className="h-4 w-4" />
                     My Opportunities ({myOpportunities.length})
+                </button>
+                <button
+                    className={`px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'registrations'
+                        ? 'border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                        : 'text-slate-600 dark:text-white/60 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                    onClick={() => setActiveTab('registrations')}
+                >
+                    <ClipboardList className="h-4 w-4" />
+                    Registrations ({registrations.length})
                 </button>
             </div>
 
@@ -750,6 +797,71 @@ export default function SchoolDashboard({
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    )}
+                </section>
+            )}
+
+            {/* Registrations Tab */}
+            {activeTab === 'registrations' && (
+                <section className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-6">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">All Registrations</h2>
+                        <Button
+                            onClick={loadRegistrations}
+                            variant="outline"
+                            size="sm"
+                            disabled={registrationsLoading}
+                        >
+                            {registrationsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Refresh'}
+                        </Button>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-white/50">
+                        View all student registrations for your opportunities
+                    </p>
+
+                    {registrationsLoading ? (
+                        <div className="mt-6 flex items-center justify-center py-12">
+                            <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
+                        </div>
+                    ) : registrations.length === 0 ? (
+                        <div className="mt-6 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-8 text-center">
+                            <ClipboardList className="h-12 w-12 mx-auto text-slate-300 dark:text-white/20" />
+                            <p className="mt-4 text-slate-600 dark:text-white/60">
+                                No registrations yet for your opportunities.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="mt-6 overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-slate-200 dark:border-white/10">
+                                        <th className="text-left py-3 px-4 font-medium text-slate-600 dark:text-white/70">Student</th>
+                                        <th className="text-left py-3 px-4 font-medium text-slate-600 dark:text-white/70">Email</th>
+                                        <th className="text-left py-3 px-4 font-medium text-slate-600 dark:text-white/70">Class</th>
+                                        <th className="text-left py-3 px-4 font-medium text-slate-600 dark:text-white/70">Opportunity</th>
+                                        <th className="text-left py-3 px-4 font-medium text-slate-600 dark:text-white/70">Registered At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {registrations.map((reg) => (
+                                        <tr key={reg.id} className="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
+                                            <td className="py-3 px-4 text-slate-900 dark:text-white font-medium">{reg.studentName}</td>
+                                            <td className="py-3 px-4 text-slate-600 dark:text-white/70">{reg.studentEmail || '—'}</td>
+                                            <td className="py-3 px-4 text-slate-600 dark:text-white/70">{reg.className || '—'}</td>
+                                            <td className="py-3 px-4">
+                                                <Link
+                                                    href={`/opportunity/${reg.opportunityId}`}
+                                                    className="text-emerald-600 dark:text-emerald-400 hover:underline"
+                                                >
+                                                    {reg.opportunityTitle}
+                                                </Link>
+                                            </td>
+                                            <td className="py-3 px-4 text-slate-500 dark:text-white/50">{formatDate(reg.registeredAt)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     )}
                 </section>

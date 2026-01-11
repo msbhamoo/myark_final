@@ -64,15 +64,14 @@ const ensureOpportunityExists = async (db: Firestore, opportunityId: string) => 
   return snapshot.exists ? snapshot : null;
 };
 
-export async function GET(request: NextRequest, context: any) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ isSaved: false });
     }
-    const params = (context && context.params) as { id?: string | string[] } | undefined;
-    const idParam = params?.id;
-    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+    const params = await context.params;
+    const id = params?.id ?? '';
 
     const db = getDb();
     const doc = await getSavedDocRef(db, authContext.uid, id).get();
@@ -84,15 +83,14 @@ export async function GET(request: NextRequest, context: any) {
   }
 }
 
-export async function POST(request: NextRequest, context: any) {
+export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const params = (context && context.params) as { id?: string | string[] } | undefined;
-    const idParam = params?.id;
-    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+    const params = await context.params;
+    const id = params?.id ?? '';
 
     const db = getDb();
     const opportunityDoc = await ensureOpportunityExists(db, id);
@@ -117,15 +115,14 @@ export async function POST(request: NextRequest, context: any) {
   }
 }
 
-export async function DELETE(request: NextRequest, context: any) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const authContext = await authenticateRequest(request);
     if (!authContext) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const params = (context && context.params) as { id?: string | string[] } | undefined;
-    const idParam = params?.id;
-    const id = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+    const params = await context.params;
+    const id = params?.id ?? '';
 
     const db = getDb();
     await getSavedDocRef(db, authContext.uid, id).delete();

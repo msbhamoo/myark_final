@@ -6,7 +6,7 @@ export interface Organizer {
   address: string;
   website: string;
   foundationYear: number | null;
-  type: 'government' | 'private' | 'ngo' | 'international' | 'other';
+  type: 'government' | 'private' | 'ngo' | 'international' | 'school' | 'other';
   visibility?: 'public' | 'private';
   isVerified?: boolean;
   logoUrl?: string;

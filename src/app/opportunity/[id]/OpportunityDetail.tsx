@@ -113,6 +113,9 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   const [registeredAt, setRegisteredAt] = useState<string | null>(null);
   const [registrationCheckLoading, setRegistrationCheckLoading] = useState(false);
   const [showExternalConfirmation, setShowExternalConfirmation] = useState(false);
+  const [showInternalRegistrationDialog, setShowInternalRegistrationDialog] = useState(false);
+  const [internalRegistrationStatus, setInternalRegistrationStatus] = useState<'processing' | 'success' | 'error'>('processing');
+  const [internalRegistrationError, setInternalRegistrationError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkRegistrationStatus = async () => {
@@ -485,8 +488,12 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
   };
 
   const handleInternalRegistration = async () => {
+    // Show dialog immediately with processing state
+    setInternalRegistrationStatus('processing');
+    setInternalRegistrationError(null);
+    setShowInternalRegistrationDialog(true);
+
     try {
-      setActionMessage('Processing your registration...');
       const token = await getIdToken();
       if (!token) {
         throw new Error('Authentication token not available.');
@@ -503,12 +510,13 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
         throw new Error(body.error || 'Registration failed. Please try again.');
       }
 
-      setActionMessage('You have been successfully registered for this opportunity!');
+      setInternalRegistrationStatus('success');
       setIsRegistered(true);
       setRegisteredAt(new Date().toISOString());
     } catch (err) {
       console.error('Internal registration error:', err);
-      setActionMessage((err as Error).message);
+      setInternalRegistrationStatus('error');
+      setInternalRegistrationError((err as Error).message);
     }
   };
 
@@ -1243,6 +1251,64 @@ export default function OpportunityDetail({ opportunity }: { opportunity: Opport
               Yes, I registered
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Internal Registration Status Dialog */}
+      <Dialog open={showInternalRegistrationDialog} onOpenChange={setShowInternalRegistrationDialog}>
+        <DialogContent className="max-w-md border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {internalRegistrationStatus === 'processing' && (
+                <>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  Processing Registration
+                </>
+              )}
+              {internalRegistrationStatus === 'success' && (
+                <>
+                  <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                  Registration Successful!
+                </>
+              )}
+              {internalRegistrationStatus === 'error' && (
+                <>
+                  <AlertCircle className="h-5 w-5 text-red-500" />
+                  Registration Failed
+                </>
+              )}
+            </DialogTitle>
+            <DialogDescription className="pt-2">
+              {internalRegistrationStatus === 'processing' && (
+                <span className="text-slate-600 dark:text-slate-300">
+                  Please wait while we process your registration for this opportunity...
+                </span>
+              )}
+              {internalRegistrationStatus === 'success' && (
+                <span className="text-emerald-600 dark:text-emerald-400">
+                  You have been successfully registered for this opportunity! You can view this in your dashboard.
+                </span>
+              )}
+              {internalRegistrationStatus === 'error' && (
+                <span className="text-red-600 dark:text-red-400">
+                  {internalRegistrationError || 'Something went wrong. Please try again later.'}
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          {internalRegistrationStatus !== 'processing' && (
+            <div className="flex justify-end gap-3 mt-4">
+              <Button
+                onClick={() => setShowInternalRegistrationDialog(false)}
+                className={internalRegistrationStatus === 'success'
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600"
+                  : "bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600"
+                }
+              >
+                {internalRegistrationStatus === 'success' ? 'Great!' : 'Close'}
+              </Button>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 

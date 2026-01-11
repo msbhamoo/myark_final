@@ -2,25 +2,42 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { Sparkles, ChevronRight, Loader2, TrendingUp } from 'lucide-react';
+import { Sparkles, ChevronRight, Loader2 } from 'lucide-react';
 import OpportunityCard from '@/components/OpportunityCard';
 import type { ScoredOpportunity, RecommendationsResponse } from '@/types/recommendation';
 import { useAuth } from '@/context/AuthContext';
-import { useAuthModal } from '@/hooks/use-auth-modal';
 import { format } from 'date-fns';
 
 interface ForYouSectionProps {
     className?: string;
 }
 
-const formatDate = (value?: string) => {
+const formatDate = (value?: string | { _seconds?: number; seconds?: number } | Date | null) => {
     if (!value) return 'TBA';
     try {
-        const date = new Date(value);
-        if (Number.isNaN(date.getTime())) return value;
+        let date: Date;
+
+        // Handle Firestore Timestamp-like objects
+        if (typeof value === 'object' && value !== null) {
+            if (value instanceof Date) {
+                date = value;
+            } else if ('_seconds' in value && typeof value._seconds === 'number') {
+                date = new Date(value._seconds * 1000);
+            } else if ('seconds' in value && typeof value.seconds === 'number') {
+                date = new Date(value.seconds * 1000);
+            } else {
+                return 'TBA';
+            }
+        } else if (typeof value === 'string') {
+            date = new Date(value);
+        } else {
+            return 'TBA';
+        }
+
+        if (Number.isNaN(date.getTime())) return 'TBA';
         return format(date, 'MMM dd, yyyy');
     } catch {
-        return value;
+        return 'TBA';
     }
 };
 
@@ -43,25 +60,22 @@ const formatFee = (fee?: string) => {
 
 export default function ForYouSection({ className = '' }: ForYouSectionProps) {
     const { user, loading: authLoading, getIdToken } = useAuth();
-    const { openAuthModal } = useAuthModal();
     const [recommendations, setRecommendations] = useState<ScoredOpportunity[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [responseType, setResponseType] = useState<'personalized' | 'trending' | 'fallback'>('fallback');
 
     const fetchRecommendations = useCallback(async () => {
+        // Only fetch if user is logged in
+        if (!user) return;
+
         try {
             setLoading(true);
             setError(null);
 
             const headers: Record<string, string> = {};
-
-            // Add auth token if user is logged in
-            if (user) {
-                const token = await getIdToken();
-                if (token) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
+            const token = await getIdToken();
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
             }
 
             const response = await fetch('/api/recommendations?limit=8', { headers });
@@ -72,7 +86,6 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
 
             const data: RecommendationsResponse = await response.json();
             setRecommendations(data.items || []);
-            setResponseType(data.type);
         } catch (err) {
             console.error('Error fetching recommendations:', err);
             setError('Unable to load recommendations');
@@ -83,21 +96,19 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
 
     useEffect(() => {
         if (authLoading) return;
+        if (!user) {
+            setLoading(false);
+            return;
+        }
         fetchRecommendations();
-    }, [authLoading, fetchRecommendations]);
+    }, [authLoading, user, fetchRecommendations]);
 
-    // Don't show section if loading auth
+    // Don't show section if loading auth or if user is not logged in
     if (authLoading) return null;
+    if (!user) return null;
 
-    // Show nothing if no user and we're still loading
-    if (!user && loading) return null;
-
-    const sectionTitle = responseType === 'personalized' ? 'For You' : 'Trending Now';
-    const sectionIcon = responseType === 'personalized' ? Sparkles : TrendingUp;
-    const SectionIcon = sectionIcon;
-    const sectionSubtitle = responseType === 'personalized'
-        ? 'Opportunities picked just for you based on your interests'
-        : 'Popular opportunities other students are exploring';
+    const sectionTitle = 'For You';
+    const sectionSubtitle = 'Opportunities picked just for you based on your interests';
 
     return (
         <section className={`relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-violet-50 via-white to-indigo-50 dark:from-[#0c1030] dark:via-[#0c1540] dark:to-[#0b1038] ${className}`}>
@@ -108,18 +119,16 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 sm:gap-3">
                             <div className="rounded-xl border border-violet-200 bg-gradient-to-br from-violet-100 to-indigo-100 p-2 sm:p-3 shadow-sm dark:border-violet-500/30 dark:from-violet-500/20 dark:to-indigo-500/20 shrink-0">
-                                <SectionIcon className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600 dark:text-violet-300" />
+                                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600 dark:text-violet-300" />
                             </div>
                             <div>
                                 <h2 className="text-lg sm:text-2xl font-bold text-slate-900 md:text-3xl lg:text-4xl dark:text-white">
                                     {sectionTitle}
                                 </h2>
-                                {responseType === 'personalized' && (
-                                    <span className="hidden sm:inline-flex items-center gap-1 mt-1 text-xs text-violet-600 dark:text-violet-300 font-medium">
-                                        <Sparkles className="h-3 w-3" />
-                                        Personalized for you
-                                    </span>
-                                )}
+                                <span className="hidden sm:inline-flex items-center gap-1 mt-1 text-xs text-violet-600 dark:text-violet-300 font-medium">
+                                    <Sparkles className="h-3 w-3" />
+                                    Personalized for you
+                                </span>
                             </div>
                         </div>
                         <p className="mt-1 sm:mt-2 max-w-2xl text-xs sm:text-sm text-slate-600 md:text-base dark:text-slate-100 line-clamp-1 sm:line-clamp-2">
@@ -156,7 +165,7 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
                             {recommendations.map(({ opportunity, matchReasons }) => (
                                 <div key={opportunity.id} className="relative w-[280px] flex-shrink-0 group">
                                     {/* Match reason badge */}
-                                    {matchReasons.length > 0 && responseType === 'personalized' && (
+                                    {matchReasons.length > 0 && (
                                         <div className="absolute -top-2 left-3 z-10 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 px-2.5 py-1 text-[10px] font-semibold text-white shadow-lg shadow-violet-500/25">
                                             <Sparkles className="h-3 w-3" />
                                             <span className="max-w-[140px] truncate">{matchReasons[0]}</span>
@@ -169,9 +178,9 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
                                         category={opportunity.category}
                                         gradeEligibility={opportunity.gradeEligibility || 'All Grades'}
                                         organizer={opportunity.organizer || 'Unknown Organizer'}
-                                        startDate={formatDate(opportunity.startDate)}
-                                        endDate={formatDate(opportunity.endDate)}
-                                        registrationDeadline={opportunity.registrationDeadline ?? ''}
+                                        startDate={formatDate(opportunity.startDate as any)}
+                                        endDate={formatDate(opportunity.endDate as any)}
+                                        registrationDeadline={formatDate(opportunity.registrationDeadline as any)}
                                         registrationDeadlineTBD={opportunity.registrationDeadlineTBD}
                                         startDateTBD={opportunity.startDateTBD}
                                         endDateTBD={opportunity.endDateTBD}
@@ -188,19 +197,6 @@ export default function ForYouSection({ className = '' }: ForYouSectionProps) {
                     )}
                 </div>
 
-                {/* Personalization hint for non-logged-in users */}
-                {!user && recommendations.length > 0 && (
-                    <div className="mt-6 text-center">
-                        <button
-                            type="button"
-                            onClick={() => openAuthModal({ mode: 'login' })}
-                            className="inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 dark:text-violet-300 dark:hover:text-violet-200 transition-colors cursor-pointer"
-                        >
-                            <Sparkles className="h-4 w-4" />
-                            Sign in to get personalized recommendations
-                        </button>
-                    </div>
-                )}
             </div>
         </section>
     );

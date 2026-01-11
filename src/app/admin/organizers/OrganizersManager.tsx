@@ -22,7 +22,7 @@ const defaultForm = {
   address: '',
   website: '',
   foundationYear: '',
-  type: 'other' as 'government' | 'private' | 'ngo' | 'international' | 'other',
+  type: 'other' as 'government' | 'private' | 'ngo' | 'international' | 'school' | 'other',
   visibility: 'public' as 'public' | 'private',
   isVerified: true,
   logoUrl: '',
@@ -274,6 +274,7 @@ export function OrganizersManager() {
               <option value="private">Private</option>
               <option value="ngo">NGO</option>
               <option value="international">International</option>
+              <option value="school">School</option>
             </select>
           </div>
           <div className="space-y-2">

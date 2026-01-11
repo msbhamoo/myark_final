@@ -7,11 +7,10 @@ import {
 
 export async function POST(
   req: Request,
-  ctx: any,
+  ctx: { params: Promise<{ id: string }> },
 ) {
-  const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const opportunityId = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const params = await ctx.params;
+  const opportunityId = params?.id ?? '';
   if (!opportunityId) {
     return NextResponse.json({ error: 'Opportunity ID is required' }, { status: 400 });
   }
@@ -121,11 +120,10 @@ export async function POST(
 
 export async function GET(
   req: Request,
-  ctx: any,
+  ctx: { params: Promise<{ id: string }> },
 ) {
-  const params = (ctx && ctx.params) as { id?: string | string[] } | undefined;
-  const idParam = params?.id;
-  const opportunityId = Array.isArray(idParam) ? idParam[0] : idParam ?? '';
+  const params = await ctx.params;
+  const opportunityId = params?.id ?? '';
 
   if (!opportunityId) {
     return NextResponse.json({ error: 'Opportunity ID is required' }, { status: 400 });

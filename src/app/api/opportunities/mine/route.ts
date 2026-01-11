@@ -29,6 +29,24 @@ const toIsoString = (value: unknown): string | null => {
   return null;
 };
 
+const mapDocToItem = (doc: FirebaseFirestore.QueryDocumentSnapshot) => {
+  const data = doc.data();
+  return {
+    id: doc.id,
+    title: data.title ?? '',
+    status: data.status ?? 'pending',
+    mode: data.mode ?? 'online',
+    registrationDeadline: toIsoString(data.registrationDeadline),
+    createdAt: toIsoString(data.createdAt),
+    updatedAt: toIsoString(data.updatedAt),
+    approval: data.approval ?? null,
+    registrationMode: data.registrationMode ?? 'internal',
+    registrationCount: data.registrationCount ?? 0,
+    category: data.category ?? data.categoryName ?? '',
+    organizerName: data.organizerName ?? data.organizer ?? '',
+  };
+};
+
 export async function GET(request: NextRequest) {
   try {
     const token = getBearerToken(request);
@@ -45,33 +63,42 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Profile not found' }, { status: 403 });
     }
 
-    const snapshot = await db
+    const profileData = profileDoc.data();
+    const linkedSchoolId = profileData?.linkedSchoolId ?? null;
+
+    // Query 1: Opportunities submitted by this user
+    const submittedSnapshot = await db
       .collection(COLLECTION)
       .where('submittedBy', '==', decoded.uid)
       .limit(100)
       .get();
 
-    const items = snapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        title: data.title ?? '',
-        status: data.status ?? 'pending',
-        mode: data.mode ?? 'online',
-        registrationDeadline: toIsoString(data.registrationDeadline),
-        createdAt: toIsoString(data.createdAt),
-        updatedAt: toIsoString(data.updatedAt),
-        approval: data.approval ?? null,
-        registrationMode: data.registrationMode ?? 'internal',
-        registrationCount: data.registrationCount ?? 0,
-      };
-    }).sort((a, b) => {
+    const submittedItems = submittedSnapshot.docs.map(mapDocToItem);
+    const submittedIds = new Set(submittedItems.map(item => item.id));
+
+    // Query 2: Opportunities where this school is the organizer (by organizerId)
+    let organizerItems: ReturnType<typeof mapDocToItem>[] = [];
+    if (linkedSchoolId) {
+      const organizerSnapshot = await db
+        .collection(COLLECTION)
+        .where('organizerId', '==', linkedSchoolId)
+        .limit(100)
+        .get();
+
+      // Filter out duplicates (already in submittedItems)
+      organizerItems = organizerSnapshot.docs
+        .filter(doc => !submittedIds.has(doc.id))
+        .map(mapDocToItem);
+    }
+
+    // Merge and sort
+    const allItems = [...submittedItems, ...organizerItems].sort((a, b) => {
       const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
       const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
       return bTime - aTime;
     });
 
-    return NextResponse.json({ items });
+    return NextResponse.json({ items: allItems });
   } catch (error) {
     console.error('Failed to list submitted opportunities', error);
     return NextResponse.json({ error: 'Failed to list opportunities' }, { status: 500 });
