@@ -1,273 +1,276 @@
-'use client';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Clock, Users, ChevronRight, Bookmark, Eye, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, Zap } from "lucide-react";
+import { gamificationService } from "@/lib/gamificationService";
+import { useAuth } from "@/lib/auth";
+import { useStudentAuth } from "@/lib/studentAuth";
+import { useToast } from "@/hooks/use-toast";
 
-import Link from 'next/link';
-import { Calendar, Clock, Users, Zap, MapPin, Trophy, Sparkles, ArrowRight } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-
-
-export interface OpportunityCardProps {
+interface OpportunityCardProps {
   id: string;
   title: string;
-  category: string;
-  gradeEligibility: string;
-  eligibilityType?: 'grade' | 'age' | 'both';
-  ageEligibility?: string;
-  organizer: string;
-  organizerLogo?: string;
-  startDate?: string;
-  startDateTBD?: boolean;
-  endDate?: string;
-  endDateTBD?: boolean;
-  registrationDeadline: string;
-  registrationDeadlineTBD?: boolean;
-  mode: 'online' | 'offline' | 'hybrid';
-  fee?: string;
+  organization: string;
+  type: "competition" | "scholarship" | "olympiad" | "workshop";
+  deadline: string;
+  participants: number;
+  prize?: string;
   image?: string;
-  className?: string;
-  status?: 'active' | 'closed' | 'pending';
+  featured?: boolean;
+  delay?: number;
+  views?: number;
+  hypes?: number;
 }
 
-// ... (keep existing code)
-
-
-
-const MODE_STYLES: Record<
-  OpportunityCardProps['mode'],
-  { label: string; className: string; icon: any }
-> = {
-  online: {
-    label: 'Online',
-    className: 'bg-sky-50 text-sky-700 border-sky-100 dark:bg-sky-500/10 dark:text-sky-300 dark:border-sky-500/20',
-    icon: Sparkles,
+const typeConfig = {
+  competition: {
+    label: "Competition",
+    class: "bg-primary/20 text-primary border-primary/30",
   },
-  offline: {
-    label: 'On Campus',
-    className: 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20',
-    icon: MapPin,
+  scholarship: {
+    label: "Scholarship",
+    class: "bg-accent/20 text-accent border-accent/30",
   },
-  hybrid: {
-    label: 'Hybrid',
-    className: 'bg-violet-50 text-violet-700 border-violet-100 dark:bg-violet-500/10 dark:text-violet-300 dark:border-violet-500/20',
-    icon: Zap,
+  olympiad: {
+    label: "Olympiad",
+    class: "bg-success/20 text-success border-success/30",
+  },
+  workshop: {
+    label: "Workshop",
+    class: "bg-secondary/20 text-secondary border-secondary/30",
   },
 };
 
-// Simplified category styles for a cleaner look
-const CATEGORY_STYLES: Record<
-  string,
-  {
-    bg: string;
-    text: string;
-    icon: string;
-  }
-> = {
-  scholarships: { bg: 'bg-amber-100', text: 'text-amber-800', icon: '🎓' },
-  olympiad: { bg: 'bg-purple-100', text: 'text-purple-800', icon: '🧠' },
-  olympiads: { bg: 'bg-purple-100', text: 'text-purple-800', icon: '🧠' },
-  workshop: { bg: 'bg-cyan-100', text: 'text-cyan-800', icon: '🔨' },
-  workshops: { bg: 'bg-cyan-100', text: 'text-cyan-800', icon: '🔨' },
-  bootcamp: { bg: 'bg-rose-100', text: 'text-rose-800', icon: '🚀' },
-  bootcamps: { bg: 'bg-rose-100', text: 'text-rose-800', icon: '🚀' },
-  summercamp: { bg: 'bg-emerald-100', text: 'text-emerald-800', icon: '☀️' },
-  summercamps: { bg: 'bg-emerald-100', text: 'text-emerald-800', icon: '☀️' },
-  internship: { bg: 'bg-indigo-100', text: 'text-indigo-800', icon: '💼' },
-  internships: { bg: 'bg-indigo-100', text: 'text-indigo-800', icon: '💼' },
-  competition: { bg: 'bg-orange-100', text: 'text-orange-800', icon: '🏆' },
-  competitions: { bg: 'bg-orange-100', text: 'text-orange-800', icon: '🏆' },
-  default: { bg: 'bg-slate-100', text: 'text-slate-800', icon: '⭐' },
-};
-
-function getCategoryStyles(category: string) {
-  const normalized = category?.toLowerCase().trim() || 'default';
-  return CATEGORY_STYLES[normalized] || CATEGORY_STYLES['default'];
-}
-
-export function getEligibilityDisplay(props: OpportunityCardProps): string {
-  const type = props.eligibilityType || 'grade';
-  if (type === 'age' && props.ageEligibility?.trim()) return `Age ${props.ageEligibility.trim()}`;
-  if (type === 'grade' && props.gradeEligibility?.trim()) return `Grade ${props.gradeEligibility.trim()}`;
-  if (type === 'both') {
-    const parts: string[] = [];
-    if (props.ageEligibility?.trim()) parts.push(`Age ${props.ageEligibility.trim()}`);
-    if (props.gradeEligibility?.trim()) parts.push(`Grade ${props.gradeEligibility.trim()}`);
-    return parts.length > 0 ? parts.join(' • ') : 'All grades';
-  }
-  return 'All grades';
-}
-
-export default function OpportunityCard({
+const OpportunityCard = ({
   id,
   title,
-  category,
-  gradeEligibility,
-  eligibilityType,
-  ageEligibility,
-  organizer,
-  registrationDeadline,
-  registrationDeadlineTBD,
-  mode,
-  fee,
-  className,
-  status = 'active',
-  image,
-  organizerLogo,
-}: OpportunityCardProps) {
-  const normalizedCategory = category?.trim() || 'Opportunity';
-  const normalizedMode = MODE_STYLES[mode] ? mode : 'online';
-  const categoryStyle = getCategoryStyles(normalizedCategory);
+  organization,
+  type,
+  deadline,
+  participants,
+  prize,
+  featured = false,
+  delay = 0,
+  views = Math.floor(Math.random() * 10000) + 1000,
+  hypes: initialHypes = 0,
+}: OpportunityCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [hypeCount, setHypeCount] = useState(initialHypes);
+  const [floatingHearts, setFloatingHearts] = useState<{ id: number; x: number }[]>([]);
+  const { user } = useAuth();
+  const { isAuthenticated, showAuthModal, student, saveOpportunity, unsaveOpportunity, addXPWithPersist } = useStudentAuth();
+  const { toast } = useToast();
 
-  // Default cover image fallback
-  const coverImage = image || 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
+  const isBookmarked = student?.savedOpportunities?.includes(id) || false;
+  const navigate = useNavigate();
+  const config = typeConfig[type];
 
-  const trimmedFee = fee?.trim() ?? '';
-  const numericFee = trimmedFee ? Number(trimmedFee) : Number.NaN;
-  const hasNumericFee = Number.isFinite(numericFee);
-  const isFree = !trimmedFee || trimmedFee.toLowerCase() === 'free' || (hasNumericFee && numericFee <= 0);
-
-  const feeDisplay = (() => {
-    if (isFree) return 'Free';
-    if (hasNumericFee) {
-      const fractionDigits = Number.isInteger(numericFee) ? 0 : 2;
-      try {
-        return new Intl.NumberFormat('en-IN', {
-          style: 'currency',
-          currency: 'INR',
-          minimumFractionDigits: fractionDigits,
-          maximumFractionDigits: fractionDigits,
-        }).format(numericFee);
-      } catch {
-        return `₹${numericFee}`;
-      }
-    }
-    return trimmedFee;
-  })();
-
-  const computeDaysLeft = () => {
-    if (registrationDeadlineTBD || !registrationDeadline) return { label: 'TBD', days: null, isTBD: true };
-    const parsed = new Date(registrationDeadline);
-    if (Number.isNaN(parsed.getTime())) return { label: 'TBD', days: null, isTBD: true };
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const diff = Math.ceil((parsed.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (diff > 1) return { label: `${diff} days left`, days: diff, isTBD: false };
-    if (diff === 1) return { label: 'Ends tomorrow', days: 1, isTBD: false };
-    if (diff === 0) return { label: 'Ends today', days: 0, isTBD: false };
-    return { label: 'Closed', days: -1, isTBD: false };
+  const handleClick = () => {
+    navigate(`/opportunity/${id}`);
   };
 
-  const { label: daysLabel, days: daysCount, isTBD } = computeDaysLeft();
-  const isUrgent = !isTBD && daysCount !== null && daysCount <= 3 && daysCount >= 0;
-  const eligibilityLabel = getEligibilityDisplay({ gradeEligibility, eligibilityType, ageEligibility } as OpportunityCardProps);
+  const handleHype = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Gate behind student auth
+    if (!isAuthenticated) {
+      showAuthModal({
+        trigger: 'heart',
+        message: "❤️ Heart this opportunity to show your support and earn 2 XP!",
+      });
+      return;
+    }
+
+    if (isLiked) return; // Only allow one hype per session
+
+    // UI Feedback
+    setIsLiked(true);
+    setHypeCount(prev => prev + 1);
+    const newHeart = { id: Date.now(), x: Math.random() * 40 - 20 };
+    setFloatingHearts(prev => [...prev, newHeart]);
+    setTimeout(() => {
+      setFloatingHearts(prev => prev.filter(h => h.id !== newHeart.id));
+    }, 1000);
+
+    // Gamification Logic
+    try {
+      await addXPWithPersist(2);
+      toast({
+        title: "+2 XP 💜",
+        description: "Thanks for the hype!",
+        className: "bg-primary text-primary-foreground border-none"
+      });
+    } catch (error) {
+      console.error("Hype error:", error);
+    }
+  };
+
+  const handleBookmark = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Gate behind student auth
+    if (!isAuthenticated) {
+      showAuthModal({
+        trigger: 'save',
+        message: "⭐ Save this opportunity to your list and earn 5 XP!",
+      });
+      return;
+    }
+
+    try {
+      if (isBookmarked) {
+        await unsaveOpportunity(id);
+        toast({ title: "Removed", description: "Opportunity removed from saved", className: "bg-muted text-foreground border-none" });
+      } else {
+        await saveOpportunity(id);
+        toast({ title: "+5 XP ⭐", description: "Opportunity saved!", className: "bg-primary text-primary-foreground border-none" });
+      }
+    } catch (error) {
+      console.error("Bookmark toggle failed:", error);
+      toast({ title: "Error", description: "Something went wrong", variant: "destructive" });
+    }
+  };
 
   return (
-    <Link href={`/opportunity/${id}`} className="block h-full">
-      <Card
-        className={cn(
-          'group relative h-full flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 dark:bg-slate-900 dark:border-slate-800 p-0 gap-0',
-          isUrgent && 'urgency-glow border-rose-200 dark:border-rose-500/30',
-          className
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay * 0.001 }}
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      onClick={handleClick}
+      className={cn(
+        "group glass-card overflow-hidden cursor-pointer relative",
+        featured && "ring-2 ring-primary/50"
+      )}
+    >
+      {/* Animated glow on hover */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 opacity-0 pointer-events-none"
+        animate={{ opacity: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Featured badge */}
+      {featured && (
+        <div className="absolute top-4 right-4 z-20">
+          <Badge className="bg-secondary text-secondary-foreground border-none animate-pulse">
+            <TrendingUp className="w-3 h-3 mr-1" />
+            Trending
+          </Badge>
+        </div>
+      )}
+
+      {/* Card content */}
+      <div className="p-6 relative">
+        {/* Type badge & bookmark */}
+        <div className="flex items-center justify-between mb-4">
+          <Badge variant="outline" className={cn("text-xs font-medium", config.class)}>
+            {config.label}
+          </Badge>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <button
+                onClick={handleHype}
+                className={cn(
+                  "p-2 rounded-lg transition-all duration-300 hover:scale-125 bg-rose-500/10 text-rose-500 active:scale-90",
+                  "group/hype relative"
+                )}
+              >
+                <Heart className="w-4 h-4 group-hover/hype:fill-current" />
+                <AnimatePresence>
+                  {floatingHearts.map(heart => (
+                    <motion.div
+                      key={heart.id}
+                      initial={{ y: 0, opacity: 1, scale: 0.5 }}
+                      animate={{ y: -50, opacity: 0, scale: 1.5, x: heart.x }}
+                      exit={{ opacity: 0 }}
+                      className="absolute top-0 left-0 text-rose-500 pointer-events-none"
+                    >
+                      <Heart className="w-4 h-4 fill-current" />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </button>
+              {hypeCount > 0 && (
+                <span className="absolute -bottom-1 -right-1 text-[10px] font-black bg-rose-500 text-white px-1 rounded-sm">
+                  {hypeCount}
+                </span>
+              )}
+            </div>
+
+            <button
+              onClick={handleBookmark}
+              className={cn(
+                "p-2 rounded-lg transition-all duration-300 hover:scale-110",
+                isBookmarked
+                  ? "bg-secondary/20 text-secondary"
+                  : "bg-muted text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Bookmark
+                className={cn("w-4 h-4 transition-all", isBookmarked && "fill-current")}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Title & org */}
+        <h3 className="font-display text-xl font-bold mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+        <p className="text-sm text-muted-foreground mb-4">{organization}</p>
+
+        {/* Prize/Reward */}
+        {prize && (
+          <motion.div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 mb-4"
+            animate={{ scale: isHovered ? 1.05 : 1 }}
+          >
+            <span className="text-sm font-medium text-accent">{prize}</span>
+          </motion.div>
         )}
-      >
-        {/* Image Section */}
-        <div className="relative h-40 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img
-            src={coverImage}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop';
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60" />
 
-          {/* Category Badge */}
-          <div className="absolute top-3 left-3">
-            <span className={cn(
-              'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm backdrop-blur-md',
-              'bg-white/95 text-slate-800 dark:bg-slate-900/90 dark:text-slate-100'
-            )}>
-              <span>{categoryStyle.icon}</span>
-              <span>{normalizedCategory}</span>
-            </span>
+        {/* Meta info */}
+        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+          <div className="flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            <span>{deadline}</span>
           </div>
-
-          {/* Urgent Badge */}
-          {isUrgent && (
-            <div className="absolute top-3 right-3">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-rose-500 to-red-500 text-white text-xs font-bold shadow-lg shadow-rose-500/30">
-                <Clock className="w-3 h-3 animate-pulse" />
-                <span>{daysLabel}</span>
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Content Section */}
-        <div className="flex flex-1 flex-col p-4">
-          {/* Title & Organizer */}
-          <div className="mb-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-300 min-h-[2.5rem]">
-              {title}
-            </h3>
-            <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-              {organizerLogo ? (
-                <img
-                  src={organizerLogo}
-                  alt={organizer}
-                  className="w-4 h-4 object-contain rounded-full flex-shrink-0 bg-white"
-                  onError={(e) => {
-                    // Fallback to icon if logo fails to load
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                  }}
-                />
-              ) : null}
-              {/* Fallback Icon - Hidden if logo is present and loads successfully */}
-              <Users className={cn("w-3.5 h-3.5 flex-shrink-0 opacity-70", organizerLogo ? "hidden" : "")} />
-              <span className="truncate">{organizer}</span>
-            </div>
+          <div className="flex items-center gap-1">
+            <Users className="w-4 h-4" />
+            <span>{participants.toLocaleString()}</span>
           </div>
-
-          {/* Tags Row */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="inline-flex items-center px-2 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-medium dark:bg-slate-800 dark:text-slate-300">
-              {eligibilityLabel}
-            </span>
-            <span className={cn(
-              'inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border',
-              MODE_STYLES[normalizedMode].className
-            )}>
-              {MODE_STYLES[normalizedMode].label}
-            </span>
-          </div>
-
-          {/* Footer: Fee & Deadline */}
-          <div className="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Entry Fee</span>
-              <span className={cn(
-                "text-sm font-bold truncate max-w-[120px]",
-                isFree ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-slate-200"
-              )} title={feeDisplay}>
-                {feeDisplay}
-              </span>
-            </div>
-
-            <div className="flex flex-col items-end flex-shrink-0">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Deadline</span>
-              <div className={cn(
-                "flex items-center gap-1 text-sm font-medium whitespace-nowrap",
-                isUrgent ? "text-rose-600 dark:text-rose-400" : "text-slate-600 dark:text-slate-300"
-              )}>
-                <span>{daysLabel}</span>
-              </div>
-            </div>
+          <div className="flex items-center gap-1">
+            <Eye className="w-4 h-4" />
+            <span>{views.toLocaleString()}</span>
           </div>
         </div>
-      </Card>
-    </Link>
+
+        {/* Action button */}
+        <Button variant="ghost" className="w-full group/btn justify-between hover:bg-primary/10">
+          <span>Explore</span>
+          <motion.div
+            animate={{ x: isHovered ? 5 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </motion.div>
+        </Button>
+      </div>
+
+      {/* Live viewers indicator */}
+      <div className="absolute bottom-4 left-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+        <span className="text-xs text-muted-foreground">{Math.floor(Math.random() * 50) + 10} viewing</span>
+      </div>
+    </motion.div>
   );
-}
+};
+
+export default OpportunityCard;

@@ -1,0 +1,140 @@
+/* [project]/src/components/opportunities/OpportunityCarousel.module.css [app-client] (css) */
+.OpportunityCarousel-module__9JXBoG__section {
+  padding: var(--space-16) var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.OpportunityCarousel-module__9JXBoG__header {
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  display: flex;
+}
+
+.OpportunityCarousel-module__9JXBoG__headerText {
+  flex: 1;
+}
+
+.OpportunityCarousel-module__9JXBoG__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.OpportunityCarousel-module__9JXBoG__subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.OpportunityCarousel-module__9JXBoG__controls {
+  gap: var(--space-2);
+  display: flex;
+}
+
+.OpportunityCarousel-module__9JXBoG__navButton {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  width: 44px;
+  height: 44px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.OpportunityCarousel-module__9JXBoG__navButton:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+}
+
+.OpportunityCarousel-module__9JXBoG__navButton:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.OpportunityCarousel-module__9JXBoG__carouselContainer {
+  margin: 0 calc(var(--space-6) * -1);
+  padding: 0 var(--space-6);
+  position: relative;
+}
+
+.OpportunityCarousel-module__9JXBoG__carousel {
+  gap: var(--space-5);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: var(--space-4);
+  display: flex;
+  overflow-x: auto;
+}
+
+.OpportunityCarousel-module__9JXBoG__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.OpportunityCarousel-module__9JXBoG__cardWrapper {
+  scroll-snap-align: start;
+  flex: 0 0 320px;
+}
+
+.OpportunityCarousel-module__9JXBoG__dots {
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  display: flex;
+}
+
+.OpportunityCarousel-module__9JXBoG__dot {
+  background: var(--bg-dark-tertiary);
+  cursor: pointer;
+  width: 8px;
+  height: 8px;
+  transition: all var(--transition-fast);
+  border: none;
+  border-radius: 50%;
+}
+
+.OpportunityCarousel-module__9JXBoG__dot:hover {
+  background: var(--primary-600);
+}
+
+.OpportunityCarousel-module__9JXBoG__activeDot {
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--primary-600), var(--accent-pink));
+  width: 24px;
+}
+
+@media (max-width: 768px) {
+  .OpportunityCarousel-module__9JXBoG__section {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .OpportunityCarousel-module__9JXBoG__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .OpportunityCarousel-module__9JXBoG__controls {
+    display: none;
+  }
+
+  .OpportunityCarousel-module__9JXBoG__carouselContainer {
+    margin: 0 calc(var(--space-4) * -1);
+    padding: 0 var(--space-4);
+  }
+
+  .OpportunityCarousel-module__9JXBoG__cardWrapper {
+    flex: 0 0 280px;
+  }
+}
+
+/*# sourceMappingURL=src_components_opportunities_OpportunityCarousel_module_css_bad6b30c._.single.css.map*/

@@ -1,0 +1,66 @@
+/* [project]/src/components/game/Confetti.module.css [app-client] (css) */
+.Confetti-module__QhsqQW__container {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-confetti);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.Confetti-module__QhsqQW__particle {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}
+
+.Confetti-module__QhsqQW__celebrationOverlay {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: calc(var(--z-confetti)  - 1);
+  background: #0009;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: fixed;
+  inset: 0;
+}
+
+.Confetti-module__QhsqQW__celebrationCard {
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--space-12);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+  box-shadow: 0 0 80px #8b5cf666, var(--shadow-lg);
+  background: linear-gradient(135deg, #8b5cf633 0%, #ec48991a 100%);
+  border: 1px solid #8b5cf64d;
+  flex-direction: column;
+  display: flex;
+}
+
+.Confetti-module__QhsqQW__celebrationEmoji {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.Confetti-module__QhsqQW__celebrationTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  background: var(--gradient-primary);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin: 0;
+}
+
+.Confetti-module__QhsqQW__celebrationMessage {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+/*# sourceMappingURL=src_components_game_Confetti_module_css_bad6b30c._.single.css.map*/

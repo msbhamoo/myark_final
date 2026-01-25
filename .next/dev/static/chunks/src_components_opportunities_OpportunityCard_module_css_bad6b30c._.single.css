@@ -1,0 +1,159 @@
+/* [project]/src/components/opportunities/OpportunityCard.module.css [app-client] (css) */
+.OpportunityCard-module__nyrwLW__card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__card:hover {
+  background: var(--bg-card-hover);
+  border-color: #ffffff26;
+  box-shadow: 0 12px 40px #0000004d;
+}
+
+.OpportunityCard-module__nyrwLW__header {
+  margin-bottom: var(--space-4);
+  justify-content: space-between;
+  align-items: flex-start;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__badges {
+  gap: var(--space-2);
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__newBadge, .OpportunityCard-module__nyrwLW__hotBadge {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: .6875rem;
+  font-weight: 600;
+}
+
+.OpportunityCard-module__nyrwLW__newBadge {
+  color: #22c55e;
+  background: #22c55e26;
+}
+
+.OpportunityCard-module__nyrwLW__hotBadge {
+  color: #ef4444;
+  background: #ef444426;
+}
+
+.OpportunityCard-module__nyrwLW__saveButton {
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: #ffffff0d;
+  border: none;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__saveButton:hover {
+  color: var(--text-primary);
+  background: #ffffff1a;
+}
+
+.OpportunityCard-module__nyrwLW__saveButton.OpportunityCard-module__nyrwLW__saved {
+  color: #ef4444;
+  background: #ef444426;
+}
+
+.OpportunityCard-module__nyrwLW__content {
+  margin-bottom: var(--space-4);
+  flex: 1;
+}
+
+.OpportunityCard-module__nyrwLW__category {
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.OpportunityCard-module__nyrwLW__title {
+  color: var(--text-primary);
+  margin: var(--space-2) 0;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.OpportunityCard-module__nyrwLW__organizer {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: .8125rem;
+}
+
+.OpportunityCard-module__nyrwLW__tags {
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__difficultyTag, .OpportunityCard-module__nyrwLW__tag {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: .6875rem;
+  font-weight: 500;
+}
+
+.OpportunityCard-module__nyrwLW__tag {
+  color: var(--text-muted);
+  background: #ffffff0d;
+}
+
+.OpportunityCard-module__nyrwLW__footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__meta {
+  gap: var(--space-1);
+  flex-direction: column;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__prize {
+  color: var(--accent-orange);
+  font-size: .8125rem;
+  font-weight: 600;
+}
+
+.OpportunityCard-module__nyrwLW__deadline {
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: .75rem;
+  display: flex;
+}
+
+.OpportunityCard-module__nyrwLW__rating {
+  align-items: center;
+  gap: var(--space-1);
+  color: #fbbf24;
+  font-size: .875rem;
+  font-weight: 600;
+  display: flex;
+}
+
+/*# sourceMappingURL=src_components_opportunities_OpportunityCard_module_css_bad6b30c._.single.css.map*/

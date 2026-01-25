@@ -1,0 +1,49 @@
+/* [project]/src/components/home/CTASection.module.css [app-client] (css) */
+.CTASection-module__99WdbW__section {
+  padding: var(--space-16) var(--space-6);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.CTASection-module__99WdbW__card {
+  border-radius: var(--radius-2xl);
+  padding: var(--space-12);
+  text-align: center;
+  background: linear-gradient(135deg, #06b6d426 0%, #22d3ee0d 100%);
+  border: 1px solid #06b6d44d;
+}
+
+.CTASection-module__99WdbW__content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.CTASection-module__99WdbW__title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.CTASection-module__99WdbW__description {
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6) 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .CTASection-module__99WdbW__section {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .CTASection-module__99WdbW__card {
+    padding: var(--space-8) var(--space-6);
+  }
+
+  .CTASection-module__99WdbW__title {
+    font-size: 1.5rem;
+  }
+}
+
+/*# sourceMappingURL=src_components_home_CTASection_module_css_bad6b30c._.single.css.map*/

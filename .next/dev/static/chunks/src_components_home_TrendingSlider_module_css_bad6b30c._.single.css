@@ -1,0 +1,146 @@
+/* [project]/src/components/home/TrendingSlider.module.css [app-client] (css) */
+.TrendingSlider-module__LFd_oG__section {
+  padding: var(--space-8) var(--space-6);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.TrendingSlider-module__LFd_oG__header {
+  margin-bottom: var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.TrendingSlider-module__LFd_oG__titleWrapper {
+  align-items: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.TrendingSlider-module__LFd_oG__fireIcon {
+  color: #f97316;
+}
+
+.TrendingSlider-module__LFd_oG__title {
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.TrendingSlider-module__LFd_oG__controls {
+  gap: var(--space-2);
+  display: flex;
+}
+
+.TrendingSlider-module__LFd_oG__navBtn {
+  background: var(--bg-dark-tertiary);
+  border: 1px solid var(--border-subtle);
+  width: 32px;
+  height: 32px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.TrendingSlider-module__LFd_oG__navBtn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.TrendingSlider-module__LFd_oG__sliderWrapper {
+  margin: 0 calc(var(--space-6) * -1);
+  padding: 0 var(--space-6);
+  position: relative;
+}
+
+.TrendingSlider-module__LFd_oG__slider {
+  gap: var(--space-3);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: var(--space-2) 0;
+  display: flex;
+  overflow-x: auto;
+}
+
+.TrendingSlider-module__LFd_oG__slider::-webkit-scrollbar {
+  display: none;
+}
+
+.TrendingSlider-module__LFd_oG__card {
+  height: 90px;
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  text-align: left;
+  border: none;
+  flex-direction: column;
+  flex: 0 0 140px;
+  justify-content: flex-end;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.TrendingSlider-module__LFd_oG__card:before {
+  content: "";
+  background: linear-gradient(#0000 30%, #0006 100%);
+  position: absolute;
+  inset: 0;
+}
+
+.TrendingSlider-module__LFd_oG__hotBadge {
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: #0006;
+  font-size: .625rem;
+  font-weight: 600;
+  position: absolute;
+}
+
+.TrendingSlider-module__LFd_oG__cardTitle {
+  z-index: 1;
+  color: #fff;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: .8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  display: -webkit-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.TrendingSlider-module__LFd_oG__cardSubtitle {
+  z-index: 1;
+  color: #fffc;
+  margin-top: 2px;
+  font-size: .6875rem;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .TrendingSlider-module__LFd_oG__section {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .TrendingSlider-module__LFd_oG__sliderWrapper {
+    margin: 0 calc(var(--space-4) * -1);
+    padding: 0 var(--space-4);
+  }
+
+  .TrendingSlider-module__LFd_oG__card {
+    flex: 0 0 120px;
+    height: 80px;
+  }
+}
+
+/*# sourceMappingURL=src_components_home_TrendingSlider_module_css_bad6b30c._.single.css.map*/

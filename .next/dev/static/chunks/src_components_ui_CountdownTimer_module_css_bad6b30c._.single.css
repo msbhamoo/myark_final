@@ -1,0 +1,123 @@
+/* [project]/src/components/ui/CountdownTimer.module.css [app-client] (css) */
+.CountdownTimer-module__ooL_la__container {
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+}
+
+.CountdownTimer-module__ooL_la__container.CountdownTimer-module__ooL_la__urgent {
+  background: linear-gradient(135deg, #f43f5e1a 0%, #ef44440d 100%);
+  border-color: #f43f5e80;
+}
+
+.CountdownTimer-module__ooL_la__container.CountdownTimer-module__ooL_la__expired {
+  opacity: .6;
+  border-color: var(--border-subtle);
+  background: var(--bg-dark-tertiary);
+}
+
+.CountdownTimer-module__ooL_la__icon {
+  color: var(--text-muted);
+}
+
+.CountdownTimer-module__ooL_la__urgent .CountdownTimer-module__ooL_la__icon {
+  color: var(--accent-rose);
+  animation: 1.5s ease-in-out infinite CountdownTimer-module__ooL_la__pulse;
+}
+
+@keyframes CountdownTimer-module__ooL_la__pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+}
+
+.CountdownTimer-module__ooL_la__units {
+  align-items: center;
+  gap: var(--space-2);
+  display: flex;
+}
+
+.CountdownTimer-module__ooL_la__unit {
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  display: flex;
+}
+
+.CountdownTimer-module__ooL_la__unitValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.CountdownTimer-module__ooL_la__urgent .CountdownTimer-module__ooL_la__unitValue {
+  color: var(--accent-rose);
+}
+
+.CountdownTimer-module__ooL_la__unitLabel {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-size: .625rem;
+  font-weight: 500;
+}
+
+.CountdownTimer-module__ooL_la__separator {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.CountdownTimer-module__ooL_la__compact {
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  background: #ffffff0d;
+  font-size: .8125rem;
+  font-weight: 600;
+  display: inline-flex;
+}
+
+.CountdownTimer-module__ooL_la__compact.CountdownTimer-module__ooL_la__urgent {
+  color: var(--accent-rose);
+  background: #f43f5e26;
+}
+
+.CountdownTimer-module__ooL_la__deadlineBadge {
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: #ffffff14;
+  font-size: .75rem;
+  font-weight: 600;
+  display: inline-flex;
+}
+
+.CountdownTimer-module__ooL_la__deadlineBadge.CountdownTimer-module__ooL_la__urgent {
+  color: var(--accent-rose);
+  background: #f43f5e26;
+  border: 1px solid #f43f5e4d;
+}
+
+.CountdownTimer-module__ooL_la__deadlineBadge.CountdownTimer-module__ooL_la__expired {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/*# sourceMappingURL=src_components_ui_CountdownTimer_module_css_bad6b30c._.single.css.map*/

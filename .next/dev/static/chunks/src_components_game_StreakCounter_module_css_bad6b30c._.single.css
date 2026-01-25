@@ -1,0 +1,190 @@
+/* [project]/src/components/game/StreakCounter.module.css [app-client] (css) */
+.StreakCounter-module__RR9roq__container {
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  flex-direction: column;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__main {
+  align-items: center;
+  gap: var(--space-3);
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__fireContainer {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.StreakCounter-module__RR9roq__fireIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  transition: all var(--transition-normal);
+}
+
+.StreakCounter-module__RR9roq__fireIcon.StreakCounter-module__RR9roq__active {
+  color: #f59e0b;
+  filter: drop-shadow(0 0 8px #f59e0b99);
+}
+
+.StreakCounter-module__RR9roq__fireGlow {
+  background: radial-gradient(circle, #f59e0b4d 0%, #0000 70%);
+  animation: 1.5s ease-in-out infinite StreakCounter-module__RR9roq__fireGlow;
+  position: absolute;
+  inset: -8px;
+}
+
+@keyframes StreakCounter-module__RR9roq__fireGlow {
+  0%, 100% {
+    opacity: .5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.StreakCounter-module__RR9roq__streakInfo {
+  flex-direction: column;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.StreakCounter-module__RR9roq__count {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.StreakCounter-module__RR9roq__stats {
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__stat {
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: .8125rem;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__stat svg {
+  width: 14px;
+  height: 14px;
+}
+
+.StreakCounter-module__RR9roq__checkInButton {
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+  font-size: .875rem;
+  font-weight: 600;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__canCheckIn {
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 4px 14px #f59e0b66;
+}
+
+.StreakCounter-module__RR9roq__canCheckIn:hover {
+  box-shadow: 0 6px 20px #f59e0b80;
+}
+
+.StreakCounter-module__RR9roq__checkedIn {
+  color: #10b981;
+  cursor: default;
+  background: #10b98126;
+}
+
+.StreakCounter-module__RR9roq__compact {
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  background: #f59e0b26;
+  border: 1px solid #f59e0b4d;
+  display: inline-flex;
+}
+
+.StreakCounter-module__RR9roq__fireEmoji {
+  font-size: 1rem;
+}
+
+.StreakCounter-module__RR9roq__compactCount {
+  color: #f59e0b;
+  font-size: .875rem;
+  font-weight: 700;
+}
+
+.StreakCounter-module__RR9roq__weeklyStreak {
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__weekDay {
+  align-items: center;
+  gap: var(--space-2);
+  flex-direction: column;
+  flex: 1;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__weekDayLabel {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: .625rem;
+  font-weight: 600;
+}
+
+.StreakCounter-module__RR9roq__weekDayDot {
+  background: var(--bg-dark-tertiary);
+  width: 32px;
+  height: 32px;
+  transition: all var(--transition-normal);
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  font-size: .875rem;
+  display: flex;
+}
+
+.StreakCounter-module__RR9roq__weekDayDot.StreakCounter-module__RR9roq__active {
+  background: #f59e0b33;
+  border: 1px solid #f59e0b80;
+  box-shadow: 0 0 12px #f59e0b4d;
+}
+
+/*# sourceMappingURL=src_components_game_StreakCounter_module_css_bad6b30c._.single.css.map*/
