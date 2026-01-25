@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import CategoryCard from "./CategoryCard";
 import {
   Trophy, GraduationCap, BookOpen, Lightbulb, Users, Briefcase,
@@ -25,7 +27,7 @@ const ICON_MAP: Record<string, any> = {
 };
 
 const Categories = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +58,7 @@ const Categories = () => {
   }, []);
 
   const handleCategoryClick = (typeId: string) => {
-    navigate(`/explore?category=${typeId}`);
+    router.push(`/explore?category=${typeId}`);
   };
 
   return (

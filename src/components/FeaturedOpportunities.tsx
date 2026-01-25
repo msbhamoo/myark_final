@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useRouter } from "next/navigation";
 import OpportunityCard from "./OpportunityCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Loader2 } from "lucide-react";
@@ -14,9 +16,14 @@ const FeaturedOpportunities = () => {
   const [loading, setLoading] = useState(true);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [quizOpen, setQuizOpen] = useState(false);
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { student, isAuthenticated, showAuthModal } = useStudentAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isForYou = searchParams.get("filter") === "for-you";
 
@@ -24,7 +31,7 @@ const FeaturedOpportunities = () => {
     if (!isAuthenticated) {
       showAuthModal({
         trigger: "manual",
-        message: "⭐ Sign in to save your results and earn 150 XP!"
+        message: "â­ Sign in to save your results and earn 150 XP!"
       });
       return;
     }
@@ -32,7 +39,7 @@ const FeaturedOpportunities = () => {
   };
 
   const handleClearFilters = () => {
-    navigate("/explore");
+    router.push("/explore");
   };
 
   useEffect(() => {
@@ -123,7 +130,12 @@ const FeaturedOpportunities = () => {
                 title={opp.title}
                 organization={opp.organizer || "Admin"}
                 type={opp.type as any}
-                deadline={opp.dates?.registrationEnd ? `${Math.ceil((opp.dates.registrationEnd.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days left` : "Ending Soon"}
+                deadline={(() => {
+                  if (!mounted || !opp.dates?.registrationEnd) return "Ending Soon";
+                  const end = new Date(opp.dates.registrationEnd).getTime();
+                  const diff = Math.ceil((end - Date.now()) / (1000 * 60 * 60 * 24));
+                  return diff > 0 ? `${diff} days left` : "Ending Soon";
+                })()}
                 participants={opp.applicationCount || 0}
                 prize={opp.prizes?.first || "Certificate"}
                 delay={index * 100}

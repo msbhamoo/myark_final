@@ -1,6 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Calendar, Clock, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +10,7 @@ import { blogsService } from "@/lib/firestore";
 import type { BlogPost } from "@/types/admin";
 
 const BlogSection = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<BlogPost[]>([]);
 
@@ -48,7 +50,7 @@ const BlogSection = () => {
                     </div>
                     <Button
                         variant="ghost"
-                        onClick={() => navigate("/blog")}
+                        onClick={() => router.push("/blog")}
                         className="group gap-2 hover:bg-white/50"
                     >
                         View all stories
@@ -77,7 +79,7 @@ const BlogSection = () => {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
                                 className="group cursor-pointer"
-                                onClick={() => navigate(`/blog/${blog.slug}`)}
+                                onClick={() => router.push(`/blog/${blog.slug}`)}
                             >
                                 <div className="relative aspect-[16/10] rounded-[30px] overflow-hidden mb-6 shadow-lg">
                                     <img
@@ -95,7 +97,7 @@ const BlogSection = () => {
                                     <div className="flex items-center gap-4 text-[10px] font-bold uppercase text-muted-foreground tracking-widest">
                                         <div className="flex items-center gap-1">
                                             <Calendar className="w-3 h-3" />
-                                            {blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : 'Today'}
+                                            <span suppressHydrationWarning>{blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : 'Draft'}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <Clock className="w-3 h-3" />

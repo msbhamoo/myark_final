@@ -1,8 +1,10 @@
+"use client";
+
 import StreakCard from "./StreakCard";
 import { Button } from "@/components/ui/button";
 import { Trophy, Medal, Crown, Star, Gift, Rocket } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Confetti from "./Confetti";
 
@@ -16,7 +18,7 @@ const achievements = [
 ];
 
 const GameSection = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleAchievementClick = (unlocked: boolean) => {
@@ -116,7 +118,7 @@ const GameSection = () => {
             <Button
               variant="accent"
               className="w-full"
-              onClick={() => navigate("/profile")}
+              onClick={() => router.push("/profile")}
             >
               View All Achievements
             </Button>

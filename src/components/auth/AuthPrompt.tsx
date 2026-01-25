@@ -16,7 +16,7 @@ interface AuthPromptProps {
 
 const triggerMessages = {
     heart: {
-        icon: "❤️",
+        icon: "â¤ï¸",
         title: "Heart this opportunity",
         benefits: [
             { icon: Zap, text: "Earn 2 XP" },
@@ -24,7 +24,7 @@ const triggerMessages = {
         ],
     },
     save: {
-        icon: "⭐",
+        icon: "â­",
         title: "Save for later",
         benefits: [
             { icon: Bookmark, text: "Access your saved list anytime" },
@@ -102,7 +102,7 @@ const AuthPrompt = ({ trigger = 'apply', onDismiss, className = "" }: AuthPrompt
 
             {/* Sub-text */}
             <p className="text-center text-xs text-muted-foreground mt-3">
-                Takes just 30 seconds! ⚡
+                Takes just 30 seconds! âš¡
             </p>
 
             {/* Dismiss link */}

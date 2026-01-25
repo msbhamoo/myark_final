@@ -45,6 +45,13 @@ const CommunitySignals = ({ className }: { className?: string }) => {
                 ...doc.data()
             } as Signal));
             setSignals(data);
+        }, (error) => {
+            if (error.code === 'permission-denied') {
+                console.warn("Community signals access restricted by permissions.");
+                setSignals([]);
+            } else {
+                console.error("CommunitySignals listener error:", error);
+            }
         });
 
         return () => unsubscribe();

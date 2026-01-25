@@ -1,5 +1,6 @@
+"use client";
 
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 interface SEOProps {
     title?: string;
@@ -24,68 +25,40 @@ const SEO = ({
     noIndex = false,
     canonical,
 }: SEOProps) => {
-    const fullTitle = title.includes("Myark") ? title : `${title} | Myark`;
-    const finalCanonical = canonical || url;
+    useEffect(() => {
+        const fullTitle = title.includes("Myark") ? title : `${title} | Myark`;
+        document.title = fullTitle;
 
-    return (
-        <Helmet>
-            {/* Standard Meta Tags */}
-            <title>{fullTitle}</title>
-            <meta name="description" content={description} />
-            <meta name="keywords" content={keywords.join(", ")} />
-            <link rel="canonical" href={finalCanonical} />
-            {noIndex && <meta name="robots" content="noindex, nofollow" />}
-            {!noIndex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
+        const updateMeta = (name: string, content: string, attr: "name" | "property" = "name") => {
+            let el = document.querySelector(`meta[${attr}="${name}"]`);
+            if (!el) {
+                el = document.createElement("meta");
+                el.setAttribute(attr, name);
+                document.head.appendChild(el);
+            }
+            el.setAttribute("content", content);
+        };
 
-            {/* AI Search Optimization (GEO/AEO) Specifics */}
-            <meta name="author" content="Myark" />
-            <meta name="application-name" content="Myark Discovery" />
-            <meta property="article:publisher" content="https://myark.in" />
+        updateMeta("description", description);
+        updateMeta("keywords", keywords.join(", "));
+        updateMeta("og:title", fullTitle, "property");
+        updateMeta("og:description", description, "property");
+        updateMeta("og:image", image, "property");
+        updateMeta("og:url", url, "property");
+        updateMeta("og:type", type, "property");
+        updateMeta("twitter:card", "summary_large_image");
+        updateMeta("twitter:title", fullTitle);
+        updateMeta("twitter:description", description);
+        updateMeta("twitter:image", image);
 
-            {/* Open Graph / Facebook */}
-            <meta property="og:type" content={type} />
-            <meta property="og:title" content={fullTitle} />
-            <meta property="og:description" content={description} />
-            <meta property="og:image" content={image} />
-            <meta property="og:url" content={url} />
-            <meta property="og:site_name" content="Myark" />
+        if (noIndex) {
+            updateMeta("robots", "noindex, nofollow");
+        } else {
+            updateMeta("robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+        }
+    }, [title, description, image, url, type, keywords, noIndex]);
 
-            {/* Twitter */}
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:title" content={fullTitle} />
-            <meta name="twitter:description" content={description} />
-            <meta name="twitter:image" content={image} />
-            <meta name="twitter:site" content="@myark" />
-
-            {/* Structured Data (JSON-LD) - Dynamic Implementation */}
-            {schema && (
-                <script type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        ...schema
-                    })}
-                </script>
-            )}
-
-            {/* Default Organization Schema (AI Trust Anchor) */}
-            {!schema?.["@type"]?.includes("Organization") && (
-                <script type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Organization",
-                        "name": "Myark",
-                        "url": "https://myark.in",
-                        "logo": "https://myark.in/logo.png",
-                        "description": "Empowering Gen Z students to find their potential through global opportunities.",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "addressCountry": "IN"
-                        }
-                    })}
-                </script>
-            )}
-        </Helmet>
-    );
+    return null;
 };
 
 export default SEO;

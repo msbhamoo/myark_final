@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/mahendra.singh/myark/src/app/admin/layout.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport AdminLayout from \"@/components/pages-migrated/admin/AdminLayout\";\r\n\r\nexport default function AdminRootLayout({\r\n    children,\r\n}: {\r\n    children: React.ReactNode;\r\n}) {\r\n    return <AdminLayout>{children}</AdminLayout>;\r\n}\r\n"],"names":[],"mappings":";;;;;;;;;;AAAA;;;AAIe,SAAS,gBAAgB,EACpC,QAAQ,EAGX;IACG,qBAAO,6LAAC;kBAAa;;;;;;AACzB;KANwB"}}]
+}

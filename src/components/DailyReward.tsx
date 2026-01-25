@@ -103,7 +103,7 @@ const DailyReward = ({ streak, onClose }: DailyRewardProps) => {
                 animate={{ scale: 1 }}
                 className="text-xl font-bold text-success"
               >
-                ✓ Claimed!
+                âœ“ Claimed!
               </motion.div>
             )}
           </motion.div>

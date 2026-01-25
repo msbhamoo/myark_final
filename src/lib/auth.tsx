@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import {
     signInWithEmailAndPassword,
@@ -125,7 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isAdmin: !!user,
     };
 
-    return <AuthContext.Provider value={ value }> { children } </AuthContext.Provider>;
+    return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>;
 };
 
 export default AuthContext;

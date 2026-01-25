@@ -1,0 +1,63 @@
+﻿
+> vite_react_shadcn_ts@0.0.0 build
+> next build
+
+Γû▓ Next.js 16.1.4 (Turbopack)
+
+  Creating an optimized production build ...
+node.exe : Browserslist: browsers data 
+(caniuse-lite) is 7 months old. Please run:
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\mahendra.singh\AppData ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: 
+(B    rowserslist: b...ld. Please 
+run::String) [    ], RemoteException
+    + FullyQualifiedErrorId : 
+NativeCommandErr    or
+ 
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://git
+hub.com/browserslist/update-db#readme
+Γ£ô Compiled successfully in 17.0s
+  Skipping validation of types
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/19) ...
+  Generating static pages using 11 workers (4/19) 
+  Generating static pages using 11 workers (9/19) 
+  Generating static pages using 11 workers (14/19) 
+Γ£ô Generating static pages using 11 workers (19/19) in 1871.8ms
+  Finalizing page optimization ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /admin
+Γö£ Γùï /admin/blog
+Γö£ ╞Æ /admin/blog/[id]
+Γö£ Γùï /admin/blog/new
+Γö£ Γùï /admin/careers
+Γö£ ╞Æ /admin/careers/[id]
+Γö£ Γùï /admin/careers/new
+Γö£ Γùï /admin/login
+Γö£ Γùï /admin/notifications
+Γö£ Γùï /admin/opportunities
+Γö£ ╞Æ /admin/opportunities/[id]
+Γö£ Γùï /admin/opportunities/new
+Γö£ Γùï /admin/settings
+Γö£ Γùï /admin/students
+Γö£ Γùï /blog
+Γö£ ╞Æ /blog/[slug]
+Γö£ Γùï /careers
+Γö£ ╞Æ /careers/[slug]
+Γö£ Γùï /explore
+Γö£ ╞Æ /opportunity/[id]
+Γö£ Γùï /profile
+Γöö Γùï /quest-master
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

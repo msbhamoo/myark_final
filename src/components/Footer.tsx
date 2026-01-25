@@ -1,102 +1,90 @@
-import { Link } from "react-router-dom";
-import { Sparkles, Heart } from "lucide-react";
+"use client";
+
+import Link from "next/link";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
 
 const Footer = () => {
-  const links = {
-    product: [
-      { label: "Explore", href: "/" },
-      { label: "For Schools", href: "/schools" },
-      { label: "Premium", href: "/premium" },
-    ],
-    company: [
-      { label: "About Us", href: "/about" },
-      { label: "Blog", href: "/blog" },
-      { label: "Careers", href: "/careers" },
-    ],
-    support: [
-      { label: "Quest Master Guide", href: "/quest-master" },
-      { label: "Help Center", href: "/help" },
-      { label: "Contact", href: "/contact" },
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-    ],
-  };
-
   return (
-    <footer className="border-t border-border bg-card/50">
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <footer className="bg-muted/30 border-t border-white/5 pt-16 pb-8">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xl">
+          <div className="space-y-4">
+            <Link href="/" className="flex items-center gap-2 group mb-4">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg">
                 🐧
               </div>
-              <span className="font-display text-xl font-bold italic tracking-tight">Myark</span>
+              <span className="font-display text-lg font-bold italic">Myark</span>
             </Link>
-            <p className="text-sm text-muted-foreground mb-4">
-              Helping students discover their potential, one opportunity at a time.
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Empowering students to discover their potential through scholarships, competitions, and career guidance.
             </p>
+            <div className="flex gap-4">
+              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+                <Link key={i} href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300">
+                  <Icon className="w-4 h-4" />
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Links */}
+          {/* Quick Links */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Product</h4>
-            <ul className="space-y-2">
-              {links.product.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
+            <h4 className="font-bold mb-6">Quick Links</h4>
+            <ul className="space-y-3">
+              {['Explore', 'Careers', 'Blog', 'Rewards', 'For Schools'].map((item) => (
+                <li key={item}>
+                  <Link href={`/${item.toLowerCase().replace(' ', '-')}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {item}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* Opportunities */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Company</h4>
-            <ul className="space-y-2">
-              {links.company.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
+            <h4 className="font-bold mb-6">Opportunities</h4>
+            <ul className="space-y-3">
+              {['Scholarships', 'Competitions', 'Workshops', 'Olympiads', 'Internships'].map((item) => (
+                <li key={item}>
+                  <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {item}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-display font-semibold mb-4">Support</h4>
-            <ul className="space-y-2">
-              {links.support.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Contact */}
+          <div className="space-y-4">
+            <h4 className="font-bold mb-6">Support</h4>
+            <div className="flex items-start gap-3 text-sm text-muted-foreground">
+              <Mail className="w-4 h-4 mt-0.5" />
+              <span>support@myark.in</span>
+            </div>
+            <div className="flex items-start gap-3 text-sm text-muted-foreground">
+              <Phone className="w-4 h-4 mt-0.5" />
+              <span>+91 (800) 123-4567</span>
+            </div>
+            <div className="flex items-start gap-3 text-sm text-muted-foreground">
+              <MapPin className="w-4 h-4 mt-0.5" />
+              <span>Global Business Hub, Pune, Maharashtra</span>
+            </div>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            © 2025 Myark. All rights reserved.
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Myark. All rights reserved.
           </p>
-          <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-secondary fill-secondary" /> for dreamers everywhere
-          </p>
+          <div className="flex gap-6 text-xs text-muted-foreground">
+            <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <div className="flex items-center gap-1">
+              Made with <Heart className="w-3 h-3 text-rose-500 fill-current" /> for Students
+            </div>
+          </div>
         </div>
       </div>
     </footer>

@@ -3,7 +3,6 @@
  * Game-like, mobile-first authentication modal/drawer
  * Handles both login and registration flows
  */
-
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowLeft, Loader2, Sparkles } from "lucide-react";
@@ -26,18 +25,15 @@ import MascotFeedback, { type MascotState } from "./MascotFeedback";
 import PhoneInput from "./PhoneInput";
 import PinInput from "./PinInput";
 import Confetti from "@/components/Confetti";
-
 // ============================================
 // TYPES
 // ============================================
-
 type AuthStep =
     | 'phone'
     | 'pin_create'
     | 'pin_confirm'
     | 'pin_login'
     | 'success';
-
 interface AuthState {
     step: AuthStep;
     mode: 'login' | 'register';
@@ -47,11 +43,9 @@ interface AuthState {
     error: string;
     loading: boolean;
 }
-
 // ============================================
 // STEP CONFIGURATIONS
 // ============================================
-
 const stepConfig: Record<AuthStep, {
     title: string;
     subtitle: string;
@@ -59,45 +53,42 @@ const stepConfig: Record<AuthStep, {
     mascotMessage: string;
 }> = {
     phone: {
-        title: "Let's get started! 🚀",
+        title: "Let's get started! =�",
         subtitle: "Enter your mobile number",
         mascotState: 'idle',
-        mascotMessage: "Drop your digits, explorer! 📱",
+        mascotMessage: "Drop your digits, explorer! =�",
     },
     pin_create: {
         title: "Create your secret code",
         subtitle: "Pick 4 digits you'll remember",
         mascotState: 'thinking',
-        mascotMessage: "Make it memorable, make it yours! 🎯",
+        mascotMessage: "Make it memorable, make it yours! <�",
     },
     pin_confirm: {
         title: "Confirm your code",
         subtitle: "Enter the same 4 digits again",
         mascotState: 'thinking',
-        mascotMessage: "One more time to lock it in! ✨",
+        mascotMessage: "One more time to lock it in! (",
     },
     pin_login: {
-        title: "Welcome back! 👋",
+        title: "Welcome back! �x9",
         subtitle: "Enter your secret code",
         mascotState: 'excited',
-        mascotMessage: "Ready to continue your adventure? 🎮",
+        mascotMessage: "Ready to continue your adventure? <�",
     },
     success: {
-        title: "You're in! 🎉",
+        title: "You're in! <�",
         subtitle: "Welcome to MyArk",
         mascotState: 'celebrating',
-        mascotMessage: "Let the games begin! 🏆",
+        mascotMessage: "Let the games begin! �x� ",
     },
 };
-
 // ============================================
 // AUTH MODAL COMPONENT
 // ============================================
-
 const AuthModal = () => {
     const isMobile = useMediaQuery("(max-width: 768px)");
     const { authModalOpen, hideAuthModal, authModalOptions, login, register } = useStudentAuth();
-
     const [state, setState] = useState<AuthState>({
         step: 'phone',
         mode: authModalOptions?.mode || 'login',
@@ -107,9 +98,7 @@ const AuthModal = () => {
         error: '',
         loading: false,
     });
-
     const [showConfetti, setShowConfetti] = useState(false);
-
     // Reset state when modal opens
     useEffect(() => {
         if (authModalOpen) {
@@ -124,28 +113,22 @@ const AuthModal = () => {
             });
         }
     }, [authModalOpen, authModalOptions]);
-
     // Get current step config
     const config = stepConfig[state.step];
     const mascotState: MascotState = state.error ? 'concerned' : config.mascotState;
     const mascotMessage = state.error || config.mascotMessage;
-
     // ============================================
     // HANDLERS
     // ============================================
-
     const handlePhoneSubmit = useCallback(async () => {
         if (state.phone.length !== 10) {
             setState(s => ({ ...s, error: "Please enter a valid 10-digit mobile number" }));
             return;
         }
-
         setState(s => ({ ...s, loading: true, error: '' }));
-
         // Try to detect if this is a new or existing user
         // For simplicity, we'll try login first and switch to register if not found
         const loginResult = await login(state.phone, '0000'); // Dummy PIN to check existence
-
         if (loginResult.errorCode === 'USER_NOT_FOUND') {
             // New user - go to registration
             setState(s => ({
@@ -177,39 +160,32 @@ const AuthModal = () => {
             }));
         }
     }, [state.phone, login]);
-
     const handlePinCreate = useCallback(() => {
         if (state.pin.length !== 4) {
             setState(s => ({ ...s, error: "PIN must be 4 digits" }));
             return;
         }
-
         setState(s => ({
             ...s,
             step: 'pin_confirm',
             error: '',
         }));
     }, [state.pin]);
-
     const handlePinConfirm = useCallback(async () => {
         if (state.confirmPin.length !== 4) {
             setState(s => ({ ...s, error: "Please confirm your PIN" }));
             return;
         }
-
         if (state.pin !== state.confirmPin) {
             setState(s => ({
                 ...s,
-                error: "Oops! Those PINs don't match. Try again! 💪",
+                error: "Oops! Those PINs don't match. Try again! =�",
                 confirmPin: '',
             }));
             return;
         }
-
         setState(s => ({ ...s, loading: true, error: '' }));
-
         const result = await register(state.phone, state.pin);
-
         if (result.success) {
             setShowConfetti(true);
             setState(s => ({ ...s, loading: false, step: 'success' }));
@@ -222,17 +198,13 @@ const AuthModal = () => {
             }));
         }
     }, [state.pin, state.confirmPin, state.phone, register]);
-
     const handlePinLogin = useCallback(async () => {
         if (state.pin.length !== 4) {
             setState(s => ({ ...s, error: "Please enter your 4-digit PIN" }));
             return;
         }
-
         setState(s => ({ ...s, loading: true, error: '' }));
-
         const result = await login(state.phone, state.pin);
-
         if (result.success) {
             setShowConfetti(true);
             setState(s => ({ ...s, loading: false, step: 'success' }));
@@ -246,7 +218,6 @@ const AuthModal = () => {
             }));
         }
     }, [state.phone, state.pin, login]);
-
     const handleBack = useCallback(() => {
         if (state.step === 'pin_create' || state.step === 'pin_login') {
             setState(s => ({ ...s, step: 'phone', pin: '', confirmPin: '', error: '' }));
@@ -254,7 +225,6 @@ const AuthModal = () => {
             setState(s => ({ ...s, step: 'pin_create', confirmPin: '', error: '' }));
         }
     }, [state.step]);
-
     const handleClose = useCallback(() => {
         if (state.step === 'success') {
             // Auto close after success
@@ -263,7 +233,6 @@ const AuthModal = () => {
             hideAuthModal();
         }
     }, [state.step, hideAuthModal]);
-
     // Auto close after success
     useEffect(() => {
         if (state.step === 'success') {
@@ -273,16 +242,13 @@ const AuthModal = () => {
             return () => clearTimeout(timer);
         }
     }, [state.step, hideAuthModal]);
-
     // ============================================
     // RENDER CONTENT
     // ============================================
-
     const renderContent = () => (
         <div className="flex flex-col items-center px-6 py-8 space-y-6">
             {/* Confetti for success */}
             {showConfetti && <Confetti isActive={showConfetti} />}
-
             {/* Back button (not on first or success step) */}
             {state.step !== 'phone' && state.step !== 'success' && (
                 <motion.button
@@ -295,7 +261,6 @@ const AuthModal = () => {
                     <ArrowLeft className="w-5 h-5" />
                 </motion.button>
             )}
-
             {/* Close button (Only show manual one on mobile/drawer where it's not built-in) */}
             {isMobile && state.step !== 'success' && (
                 <button
@@ -306,13 +271,11 @@ const AuthModal = () => {
                     <X className="w-5 h-5" />
                 </button>
             )}
-
             {/* Mascot */}
             <MascotFeedback
                 state={mascotState}
                 message={mascotMessage}
             />
-
             {/* Title & Subtitle */}
             <div className="text-center space-y-1">
                 <motion.h2
@@ -333,7 +296,6 @@ const AuthModal = () => {
                     {config.subtitle}
                 </motion.p>
             </div>
-
             {/* Step Content */}
             <AnimatePresence mode="wait">
                 {state.step === 'phone' && (
@@ -366,7 +328,6 @@ const AuthModal = () => {
                         </Button>
                     </motion.div>
                 )}
-
                 {state.step === 'pin_create' && (
                     <motion.div
                         key="pin_create"
@@ -389,11 +350,10 @@ const AuthModal = () => {
                             className="w-full h-12 text-base font-semibold"
                             size="lg"
                         >
-                            Lock it in 🔐
+                            Lock it in �x�
                         </Button>
                     </motion.div>
                 )}
-
                 {state.step === 'pin_confirm' && (
                     <motion.div
                         key="pin_confirm"
@@ -419,12 +379,11 @@ const AuthModal = () => {
                             {state.loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                "Create Account 🚀"
+                                "Create Account =�"
                             )}
                         </Button>
                     </motion.div>
                 )}
-
                 {state.step === 'pin_login' && (
                     <motion.div
                         key="pin_login"
@@ -450,7 +409,7 @@ const AuthModal = () => {
                             {state.loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                "Unlock 🔓"
+                                "Unlock ="
                             )}
                         </Button>
                         <p className="text-center text-sm text-muted-foreground">
@@ -461,7 +420,6 @@ const AuthModal = () => {
                         </p>
                     </motion.div>
                 )}
-
                 {state.step === 'success' && (
                     <motion.div
                         key="success"
@@ -475,7 +433,7 @@ const AuthModal = () => {
                             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
                             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
                         >
-                            <span className="text-xl">🎮</span>
+                            <span className="text-xl">🎉</span>
                             <span className="font-bold text-primary">+50 XP</span>
                         </motion.div>
                         <p className="text-muted-foreground">
@@ -486,27 +444,26 @@ const AuthModal = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
             {/* Trigger context message */}
-            {authModalOptions?.message && state.step === 'phone' && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/10 text-center"
-                >
-                    <p className="text-sm text-muted-foreground">
-                        {authModalOptions.message}
-                    </p>
-                </motion.div>
-            )}
-        </div>
+            {
+                authModalOptions?.message && state.step === 'phone' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/10 text-center"
+                    >
+                        <p className="text-sm text-muted-foreground">
+                            {authModalOptions.message}
+                        </p>
+                    </motion.div>
+                )
+            }
+        </div >
     );
-
     // ============================================
     // RENDER MODAL/DRAWER
     // ============================================
-
     if (isMobile) {
         return (
             <Drawer open={authModalOpen} onOpenChange={(open) => !open && handleClose()}>
@@ -519,7 +476,6 @@ const AuthModal = () => {
             </Drawer>
         );
     }
-
     return (
         <Dialog open={authModalOpen} onOpenChange={(open) => !open && handleClose()}>
             <DialogContent className="sm:max-w-md p-0 overflow-hidden">
@@ -531,5 +487,4 @@ const AuthModal = () => {
         </Dialog>
     );
 };
-
 export default AuthModal;

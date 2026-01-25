@@ -3,6 +3,8 @@
  * Provides auth state and methods throughout the app
  */
 
+"use client";
+
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { studentAuthService, type StudentUser, type AuthResult } from "./studentAuthService";
 

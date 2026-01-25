@@ -1,8 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X, User, Zap, LogOut, Flame } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useStudentAuth } from "@/lib/studentAuth";
 import {
   DropdownMenu,
@@ -39,7 +41,7 @@ const Navbar = () => {
       <div className="relative max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 text-xl">
               🐧
             </div>
@@ -51,7 +53,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.label}
-                to={link.href}
+                href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
               >
                 {link.label}
@@ -88,7 +90,7 @@ const Navbar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem asChild>
-                      <Link to="/profile" className="flex items-center gap-2">
+                      <Link href="/profile" className="flex items-center gap-2">
                         <User className="w-4 h-4" />
                         My Profile
                       </Link>
@@ -103,7 +105,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/profile">
+                <Link href="/profile">
                   <Button variant="ghost" size="sm" className="gap-2">
                     <User className="w-4 h-4" />
                     Profile
@@ -136,7 +138,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.label}
-                to={link.href}
+                href={link.href}
                 className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 onClick={() => setIsOpen(false)}
               >
@@ -159,7 +161,7 @@ const Navbar = () => {
                   <span className="text-xs text-muted-foreground">• Level {student.level}</span>
                 </div>
                 <Link
-                  to="/profile"
+                  href="/profile"
                   className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
@@ -178,7 +180,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  to="/profile"
+                  href="/profile"
                   className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
@@ -202,4 +204,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
