@@ -96,6 +96,7 @@ const COLLECTIONS = {
     studentUsers: "studentUsers",
     studentSessions: "studentSessions",
     studentLeads: "studentLeads",
+    userPhones: "userPhones",
 } as const;
 
 const MAX_FAILED_ATTEMPTS = 5;
@@ -239,12 +240,8 @@ export const studentAuthService = {
             }
 
             // Check if phone already registered
-            const existingQuery = query(
-                collection(db, COLLECTIONS.studentUsers),
-                where("phone", "==", cleanPhone)
-            );
-            const existingDocs = await getDocs(existingQuery);
-            if (!existingDocs.empty) {
+            const phoneDoc = await getDoc(doc(db, COLLECTIONS.userPhones, cleanPhone));
+            if (phoneDoc.exists()) {
                 return { success: false, error: "This number is already registered. Try logging in!", errorCode: 'PHONE_EXISTS' };
             }
 
@@ -281,6 +278,13 @@ export const studentAuthService = {
                 lastLoginAt: Timestamp.fromDate(now),
             });
 
+            // Create phone lookup for unauthenticated queries
+            await setDoc(doc(db, COLLECTIONS.userPhones, cleanPhone), {
+                phone: cleanPhone,
+                userId: userId,
+                createdAt: Timestamp.fromDate(now),
+            });
+
             // Convert lead to customer/user
             await this.convertLead(cleanPhone);
 
@@ -306,18 +310,19 @@ export const studentAuthService = {
                 return { success: false, error: "Please enter a valid 10-digit mobile number", errorCode: 'INVALID_PHONE' };
             }
 
-            // Find user by phone
-            const userQuery = query(
-                collection(db, COLLECTIONS.studentUsers),
-                where("phone", "==", cleanPhone)
-            );
-            const userDocs = await getDocs(userQuery);
-
-            if (userDocs.empty) {
+            // Find user by phone using phone lookup
+            const phoneDoc = await getDoc(doc(db, COLLECTIONS.userPhones, cleanPhone));
+            if (!phoneDoc.exists()) {
                 return { success: false, error: "No account found with this number. Want to register?", errorCode: 'USER_NOT_FOUND' };
             }
+            const userId = phoneDoc.data().userId;
 
-            const userDoc = userDocs.docs[0];
+            // Get user data
+            const userDoc = await getDoc(doc(db, COLLECTIONS.studentUsers, userId));
+            if (!userDoc.exists()) {
+                // Inconsistent state, treat as not found
+                return { success: false, error: "No account found with this number. Want to register?", errorCode: 'USER_NOT_FOUND' };
+            }
             const userData = userDoc.data();
 
             // Check if blocked
@@ -339,7 +344,7 @@ export const studentAuthService = {
             // Verify PIN
             const isValidPin = await verifyPin(pin, userData.pinHash);
             if (!isValidPin) {
-                await this.incrementFailedAttempts(userDoc.id);
+                await this.incrementFailedAttempts(userId);
                 const remaining = MAX_FAILED_ATTEMPTS - (userData.failedLoginAttempts + 1);
                 return {
                     success: false,
@@ -354,7 +359,7 @@ export const studentAuthService = {
             const newStreak = calculateNewStreak(userData.lastLoginAt?.toDate(), userData.streakDays || 0);
 
             // Clear failed attempts and update last login
-            await updateDoc(doc(db, COLLECTIONS.studentUsers, userDoc.id), {
+            await updateDoc(doc(db, COLLECTIONS.studentUsers, userId), {
                 failedLoginAttempts: 0,
                 lastLoginAt: Timestamp.now(),
                 streakDays: newStreak,
@@ -362,11 +367,11 @@ export const studentAuthService = {
             });
 
             // Create session
-            const session = await this.createSession(userDoc.id);
+            const session = await this.createSession(userId);
 
             // Build user object
             const user: StudentUser = {
-                id: userDoc.id,
+                id: userId,
                 phone: userData.phone,
                 name: userData.name,
                 grade: userData.grade,

@@ -160,7 +160,6 @@ const Dashboard = () => {
                                         <p className="text-3xl font-bold font-display">{stat.value}</p>
                                         {stat.change && (
                                             <p className={`text-xs ${stat.changeType === "positive" ? "text-success" :
-                                                stat.changeType === "negative" ? "text-destructive" :
                                                     "text-muted-foreground"
                                                 }`}>
                                                 <TrendingUp className="w-3 h-3 inline mr-1" />

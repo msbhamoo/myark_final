@@ -1,2 +1,2 @@
-:HL["/_next/static/chunks/8c697d6827f52245.css","style"]
-0:{"buildId":"CbQGVA3b0RwqrAl3hO9oZ","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"quest-master","paramType":null,"paramKey":"quest-master","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/_next/static/chunks/487153ef69b543c9.css","style"]
+0:{"buildId":"bT4Xzwe77CSny_jBuSxHB","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"quest-master","paramType":null,"paramKey":"quest-master","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

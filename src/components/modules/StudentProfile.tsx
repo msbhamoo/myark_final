@@ -211,7 +211,7 @@ const StudentProfilePage = () => {
   const { student, isAuthenticated, loading, updateStudent, addXPWithPersist } = useStudentAuth();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeTab, setActiveTab] = useState<"overview" | "badges" | "saved" | "activity">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "badges" | "saved" | "activity" | "applied">("overview");
   const [showConfetti, setShowConfetti] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);

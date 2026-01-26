@@ -1,8 +1,1 @@
-{
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/students/page": "app/admin/students/page.js",
-  "/opportunity/[id]/page": "app/opportunity/[id]/page.js",
-  "/page": "app/page.js",
-  "/profile/page": "app/profile/page.js"
-}
+{}

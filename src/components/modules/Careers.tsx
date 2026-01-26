@@ -63,7 +63,7 @@ const Careers = () => {
         fetchCareers();
     }, []);
 
-    const categories = ["All", ...new Set(careers.map(c => c.category).filter(Boolean))];
+    const categories = ["All", ...Array.from(new Set(careers.map(c => c.category).filter(Boolean)))];
 
     const filteredCareers = careers.filter(career => {
         const matchesSearch = career.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

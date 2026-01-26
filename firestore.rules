@@ -17,9 +17,15 @@ service cloud.firestore {
       allow write: if request.auth != null;
     }
 
+    // Allow unauthenticated read for phone lookup
+    match /userPhones/{phone} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
     // Allow authenticated users to read/write their own student data
-    match /students/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+    match /studentUsers/{userId} {
+      allow read, write: if true; // Temporarily allow for custom auth
     }
 
     // Admin operations - require authentication

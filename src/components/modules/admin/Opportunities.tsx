@@ -438,7 +438,6 @@ const Opportunities = () => {
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <div className="text-foreground font-mono text-xs">+91 {student.phone}</div>
-                                                    <div className="text-[11px] text-muted-foreground mt-0.5">{student.email || 'No email provided'}</div>
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <Badge variant="secondary" className="bg-muted text-muted-foreground font-medium px-2 py-0">Class {student.grade || "N/A"}</Badge>

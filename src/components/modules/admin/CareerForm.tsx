@@ -328,7 +328,7 @@ const CareerForm = () => {
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label>Category Color</Label>
-                                <Select value={formData.categoryColor} onValueChange={(v) => setFormData({ ...formData, categoryColor: v })}>
+                                <Select value={formData.categoryColor} onValueChange={(v: string) => setFormData({ ...formData, categoryColor: v })}>
                                     <SelectTrigger><SelectValue /></SelectTrigger>
                                     <SelectContent>
                                         {CATEGORY_COLORS.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
