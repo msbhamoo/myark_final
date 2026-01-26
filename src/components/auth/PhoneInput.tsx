@@ -109,7 +109,7 @@ const PhoneInput = ({
                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                         className="text-success text-xl"
                     >
-                        âœ“
+                        ✓
                     </motion.div>
                 )}
             </motion.div>
@@ -121,7 +121,7 @@ const PhoneInput = ({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-sm text-destructive flex items-center gap-1"
                 >
-                    <span>âš ï¸</span> {error}
+                    <span>⚠️</span> {error}
                 </motion.p>
             )}
 

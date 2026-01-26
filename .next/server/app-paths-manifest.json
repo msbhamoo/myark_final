@@ -22,8 +22,12 @@
   "/explore/page": "app/explore/page.js",
   "/opportunity/[id]/page": "app/opportunity/[id]/page.js",
   "/page": "app/page.js",
+  "/privacy/page": "app/privacy/page.js",
   "/profile/page": "app/profile/page.js",
   "/quest-master/page": "app/quest-master/page.js",
+  "/rewards/page": "app/rewards/page.js",
   "/robots.txt/route": "app/robots.txt/route.js",
-  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+  "/schools/page": "app/schools/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/terms/page": "app/terms/page.js"
 }

@@ -1,61 +1,61 @@
-"use🏆client";
+"use client";
 
-import🏆{🏆motion🏆}🏆from🏆"framer-motion";
-import🏆{🏆School,🏆ArrowRight,🏆CheckCircle2🏆}🏆from🏆"lucide-react";
-import🏆{🏆Button🏆}🏆from🏆"@/components/ui/button";
-import🏆Link🏆from🏆"next/link";
+import { motion } from "framer-motion";
+import { School, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export🏆default🏆function🏆SchoolsPage()🏆{
-🏆🏆🏆🏆return🏆(
-🏆🏆🏆🏆🏆🏆🏆🏆<div🏆className✨"min-h-screen🏆bg-background🏆pt-24🏆pb-12🏆px-4">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<div🏆className✨"max-w-4xl🏆mx-auto">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<div🏆className✨"text-center🏆space-y-6🏆mb-16">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<motion.div
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆initial✨{{🏆opacity:🏆0,🏆scale:🏆0.9🏆}}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆animate✨{{🏆opacity:🏆1,🏆scale:🏆1🏆}}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆className✨"inline-fle🏆items-center🏆gap-2🏆px-4🏆py-2🏆rounded-full🏆bg-secondary/10🏆text-secondary🏆font-bold🏆text-sm"
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<School🏆className✨"w-4🏆h-4"🏆/>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆For🏆Institutions
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</motion.div>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<h1🏆className✨"text-4xl🏆md:text-6xl🏆font-bold🏆font-display">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆Empower🏆Your🏆<span🏆className✨"text-primary🏆italic">Students</span>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</h1>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<p🏆className✨"text-xl🏆text-muted-foreground🏆max-w-2xl🏆mx-auto">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆Bring🏆Myark🏆to🏆your🏆school🏆and🏆give🏆your🏆students🏆access🏆to🏆a🏆world🏆of
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆scholarships,🏆competitions,🏆and🏆professional🏆growth🏆opportunities.
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</p>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</div>
+export default function SchoolsPage() {
+    return (
+        <div className="min-h-screen bg-background pt-24 pb-12 px-4">
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center space-y-6 mb-16">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary font-bold text-sm"
+                    >
+                        <School className="w-4 h-4" />
+                        For Institutions
+                    </motion.div>
+                    <h1 className="text-4xl md:text-6xl font-bold font-display">
+                        Empower Your <span className="text-primary italic">Students</span>
+                    </h1>
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                        Bring Myark to your school and give your students access to a world of
+                        scholarships, competitions, and professional growth opportunities.
+                    </p>
+                </div>
 
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<div🏆className✨"grid🏆md:grid-cols-3🏆gap-8🏆mb-16">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆{[
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆{🏆title:🏆"Direct🏆Integration",🏆desc:🏆"Easily🏆track🏆student🏆progress🏆and🏆achievements."🏆},
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆{🏆title:🏆"Exclusive🏆Access",🏆desc:🏆"Unlock🏆special🏆opportunities🏆for🏆your🏆institutional🏆students."🏆},
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆{🏆title:🏆"Analytics",🏆desc:🏆"Get🏆insights🏆into🏆student🏆engagement🏆and🏆success🏆rates."🏆}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆].map((feature,🏆i)🏆✨>🏆(
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<motion.div
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆key✨{i}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆initial✨{{🏆opacity:🏆0,🏆y:🏆20🏆}}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆animate✨{{🏆opacity:🏆1,🏆y:🏆0🏆}}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆transition✨{{🏆delay:🏆i🏆*🏆0.1🏆}}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆className✨"p-6🏆rounded-[30px]🏆bg-muted/50🏆border🏆border-border/50"
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<CheckCircle2🏆className✨"w-8🏆h-8🏆text-primary🏆mb-4"🏆/>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<h3🏆className✨"text-lg🏆font-bold🏆mb-2">{feature.title}</h3>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<p🏆className✨"text-sm🏆text-muted-foreground">{feature.desc}</p>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</motion.div>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆))}
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</div>
+                <div className="grid md:grid-cols-3 gap-8 mb-16">
+                    {[
+                        { title: "Direct Integration", desc: "Easily track student progress and achievements." },
+                        { title: "Exclusive Access", desc: "Unlock special opportunities for your institutional students." },
+                        { title: "Analytics", desc: "Get insights into student engagement and success rates." }
+                    ].map((feature, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="p-6 rounded-[30px] bg-muted/50 border border-border/50"
+                        >
+                            <CheckCircle2 className="w-8 h-8 text-primary mb-4" />
+                            <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                            <p className="text-sm text-muted-foreground">{feature.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
 
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<div🏆className✨"text-center">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<Link🏆href✨"mailto:support@myark.in">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<Button🏆size✨"lg"🏆className✨"rounded-full🏆px-8">
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆Contact🏆for🏆Partnership
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆<ArrowRight🏆className✨"w-4🏆h-4🏆ml-2"🏆/>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</Button>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</Link>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</div>
-🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆🏆</div>
-🏆🏆🏆🏆🏆🏆🏆🏆</div>
-🏆🏆🏆🏆);
+                <div className="text-center">
+                    <Link href="mailto:support@myark.in">
+                        <Button size="lg" className="rounded-full px-8">
+                            Contact for Partnership
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
 }

@@ -22,8 +22,12 @@
   "/explore/page": "/explore",
   "/opportunity/[id]/page": "/opportunity/[id]",
   "/page": "/",
+  "/privacy/page": "/privacy",
   "/profile/page": "/profile",
   "/quest-master/page": "/quest-master",
+  "/rewards/page": "/rewards",
   "/robots.txt/route": "/robots.txt",
-  "/sitemap.xml/route": "/sitemap.xml"
+  "/schools/page": "/schools",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/terms/page": "/terms"
 }

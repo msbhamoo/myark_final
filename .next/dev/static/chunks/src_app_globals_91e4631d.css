@@ -2711,6 +2711,10 @@ h1, h2, h3, h4, h5, h6 {
   background-image: radial-gradient(at top, #00eaff1a 0%, #0000 50%);
 }
 
+.bg-gradient-to-tr {
+  background-image: linear-gradient(to top right, var(--tw-gradient-stops));
+}
+
 .from-accent {
   --tw-gradient-from: hsl(var(--accent)) var(--tw-gradient-from-position);
   --tw-gradient-to: hsl(var(--accent) / 0) var(--tw-gradient-to-position);
@@ -3612,6 +3616,11 @@ h1, h2, h3, h4, h5, h6 {
 .text-xs {
   font-size: .75rem;
   line-height: 1rem;
+}
+
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
 }
 
 .font-black {
