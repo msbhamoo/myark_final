@@ -31,8 +31,8 @@ import { useToast } from "@/hooks/use-toast";
 import { careersService } from "@/lib/firestore";
 import type { Career } from "@/types/admin";
 import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill-new/dist/quill.snow.css';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import ImageUpload from "@/components/ImageUpload";
 
 

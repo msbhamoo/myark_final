@@ -34,8 +34,8 @@ import { useToast } from "@/hooks/use-toast";
 import { blogsService } from "@/lib/firestore";
 import type { BlogPost, BlogStatus } from "@/types/admin";
 import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill-new/dist/quill.snow.css';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import ImageUpload from "@/components/ImageUpload";
 
 const CATEGORIES = ["Education", "Career Advice", "Study Tips", "Scholarships", "Student Life", "Technology"];

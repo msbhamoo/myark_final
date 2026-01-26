@@ -18,6 +18,32 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
             <body>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function() {
+                                var findDOMNodePolyfill = function(instance) {
+                                    if (!instance) return null;
+                                    if (instance instanceof HTMLElement) return instance;
+                                    return instance.getDOMNode ? instance.getDOMNode() : null;
+                                };
+                                try {
+                                    window.ReactDOM = window.ReactDOM || {};
+                                    var rd = window.ReactDOM;
+                                    if (!rd.findDOMNode && Object.isExtensible(rd)) {
+                                        Object.defineProperty(rd, 'findDOMNode', {
+                                            value: findDOMNodePolyfill,
+                                            configurable: true,
+                                            writable: true
+                                        });
+                                    }
+                                } catch (e) {
+                                    console.warn('Myark: Global findDOMNode polyfill failed.');
+                                }
+                            })();
+                        `,
+                    }}
+                />
                 <AppProviders>{children}</AppProviders>
             </body>
         </html>
