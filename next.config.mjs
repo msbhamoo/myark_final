@@ -15,6 +15,7 @@ const nextConfig = {
         appIsrStatus: false,
         buildActivity: false,
     },
+
 };
 
 export default nextConfig;

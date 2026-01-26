@@ -62,14 +62,14 @@ const Categories = () => {
   };
 
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-12 md:py-24 px-4 relative">
       {/* Background elements */}
       <div className="absolute left-0 top-1/2 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute right-0 bottom-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             What's Your <span className="gradient-text-secondary">Vibe?</span>
           </h2>
@@ -80,13 +80,13 @@ const Categories = () => {
 
         {/* Category grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
               <div key={i} className="h-40 rounded-3xl bg-muted/50 animate-pulse border border-white/5" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {OPPORTUNITY_TYPES.map((type, index) => {
               const IconComponent = ICON_MAP[type.icon] || Sparkles;
               // Simple color mapping logic since we store tailwind classes like "text-blue-500"

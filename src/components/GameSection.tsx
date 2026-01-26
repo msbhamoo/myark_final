@@ -29,7 +29,7 @@ const GameSection = () => {
   };
 
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-12 md:py-24 px-4 relative">
       <Confetti isActive={showConfetti} />
 
       {/* Background */}
@@ -41,7 +41,7 @@ const GameSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Level Up Your <span className="gradient-text-primary">Journey</span>
@@ -72,7 +72,7 @@ const GameSection = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="glass-card p-6 md:p-8"
+            className="glass-card p-4 md:p-8"
           >
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-display text-xl font-bold">Achievements</h3>
@@ -130,7 +130,7 @@ const GameSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-8 glass-card p-6 md:p-8 hover:scale-[1.02] transition-transform cursor-pointer"
+          className="mt-6 md:mt-8 glass-card p-4 md:p-8 hover:scale-[1.02] transition-transform cursor-pointer"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">

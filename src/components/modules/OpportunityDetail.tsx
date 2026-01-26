@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
     ArrowLeft,
@@ -1070,6 +1071,48 @@ const OpportunityDetail = () => {
                     </div>
                 )}
             </AnimatePresence>
+
+            {/* Related Opportunities Section */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="py-16 px-4 md:px-8"
+            >
+                <div className="max-w-7xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl font-black text-center mb-8">
+                        More Opportunities You Might Like
+                    </h2>
+                    <p className="text-center text-white/60 mb-12 max-w-2xl mx-auto">
+                        Discover similar scholarships, competitions, and workshops that match your interests.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Placeholder for related opportunities - will be populated dynamically */}
+                        <div className="glass-card p-6 hover:scale-105 transition-transform cursor-pointer">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                                    <Trophy className="w-6 h-6 text-white" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold">Similar Opportunity</h3>
+                                    <p className="text-sm text-white/60">Coming soon...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-8">
+                        <Link
+                            href="/explore"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold hover:scale-105 transition-transform"
+                        >
+                            Explore All Opportunities
+                            <ArrowLeft className="w-4 h-4 rotate-180" />
+                        </Link>
+                    </div>
+                </div>
+            </motion.div>
 
             <div className="h-20 md:hidden" />
             <Footer />

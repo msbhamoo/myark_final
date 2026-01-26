@@ -81,7 +81,7 @@ const stepConfig: Record<AuthStep, {
     },
     success: {
         title: "You're in! 🎉",
-        subtitle: "Welcome to MyArk",
+        subtitle: "Welcome to My Ark",
         mascotState: 'celebrating',
         mascotMessage: "Let the games begin! 🏆",
     },

@@ -45,7 +45,7 @@ const Navbar = () => {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 text-xl">
               🐧
             </div>
-            <span className="font-display text-xl font-bold italic tracking-tight underline decoration-primary/30 decoration-4 underline-offset-4">Myark</span>
+            <span className="font-display text-xl font-bold italic tracking-tight underline decoration-primary/30 decoration-4 underline-offset-4">My Ark</span>
           </Link>
 
           {/* Desktop nav */}

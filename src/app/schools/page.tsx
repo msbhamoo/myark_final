@@ -22,7 +22,7 @@ export default function SchoolsPage() {
                         Empower Your <span className="text-primary italic">Students</span>
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Bring Myark to your school and give your students access to a world of
+                        Bring My Ark to your school and give your students access to a world of
                         scholarships, competitions, and professional growth opportunities.
                     </p>
                 </div>

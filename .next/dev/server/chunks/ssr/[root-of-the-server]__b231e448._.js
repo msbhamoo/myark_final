@@ -333,7 +333,7 @@ const opportunitiesService = {
     },
     // Real-time listener
     subscribe (callback) {
-        const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["orderBy"])("createdAt", "desc"));
+        const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["where"])("status", "==", "published"), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["orderBy"])("createdAt", "desc"));
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["onSnapshot"])(q, (snapshot)=>{
             const opportunities = snapshot.docs.map((doc)=>({
                     id: doc.id,
@@ -792,17 +792,48 @@ __turbopack_context__.s([
     "constructMetadata",
     ()=>constructMetadata
 ]);
-function constructMetadata({ title, description = "The ultimate RPG for your real-life success. Discover scholarships, competitions, olympiads, and career opportunities tailored for Gen Z students.", image = "https://myark.in/og-image.png", url = "https://myark.in", type = "website", keywords = [
+function constructMetadata({ title, description = "Discover scholarships, competitions, olympiads, and career opportunities tailored for students. Apply smart, don't miss out!", image = "https://myark.in/og-image.png", url = "https://myark.in", type = "website", keywords = [
     "scholarships",
     "competitions",
     "olympiads",
     "internships",
     "students",
-    "Gen Z",
     "career guide",
     "education"
-], noIndex = false, publishedTime, authors }) {
-    const fullTitle = title.includes('Myark') ? title : `${title} | Myark`;
+], noIndex = false, publishedTime, modifiedTime, authors }) {
+    // Generate Myark-branded title following Gen Z strategy
+    const generateMyarkTitle = (baseTitle)=>{
+        // If it's the default/homepage title or "Myark"
+        const cleanBase = baseTitle.trim();
+        if (cleanBase === 'Myark' || cleanBase === 'Home' || cleanBase === 'Homepage') {
+            return 'Myark – Discover Scholarships, Olympiads & Student Opportunities (Classes 4–12)';
+        }
+        // Handle specific categories with Gen Z twist
+        const normalizedTitle = cleanBase.toLowerCase();
+        if (normalizedTitle.includes('scholarship')) {
+            return `Myark | Scholarships for Students – Apply Smart, Don't Miss Out`;
+        }
+        if (normalizedTitle.includes('olympiad')) {
+            return `Myark | Olympiads for Students – Prep, Apply & Level Up`;
+        }
+        if (normalizedTitle.includes('competition')) {
+            return `Myark | Student Competitions – Win, Learn & Build Your Profile`;
+        }
+        if (normalizedTitle.includes('workshop')) {
+            return `Myark | Workshops for Students – Discover, Learn & Level Up`;
+        }
+        if (normalizedTitle.includes('ai') || normalizedTitle.includes('coding') || normalizedTitle.includes('robotics')) {
+            return `Myark | AI, Coding & Robotics – Opportunities for Curious Students`;
+        }
+        if (normalizedTitle.includes('india')) {
+            return `Myark | Student Opportunities in India – Classes 4–12`;
+        }
+        // If it's an opportunity detail page, it might already have "Myark |" prefixed
+        if (cleanBase.startsWith('Myark')) return cleanBase;
+        // Default: Ensure it starts with Myark
+        return `Myark | ${cleanBase}`;
+    };
+    const fullTitle = generateMyarkTitle(title);
     return {
         title: fullTitle,
         description,
@@ -882,6 +913,20 @@ function generateSchema(match, type, url) {
                 }))
         };
     }
+    if (type === 'FAQ') {
+        return {
+            ...base,
+            "@type": "FAQPage",
+            "mainEntity": match.faqs?.map((faq)=>({
+                    "@type": "Question",
+                    "name": faq.question,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": faq.answer
+                    }
+                })) || []
+        };
+    }
     // Common Opportunity Fields
     const common = {
         "name": match.seoConfig?.metaTitle || match.title,
@@ -910,6 +955,7 @@ function generateSchema(match, type, url) {
             ...base,
             "@type": "FinancialProduct",
             ...common,
+            "category": "Scholarship",
             "financialAidEligible": {
                 "@type": "DefinedTerm",
                 "name": "Eligible Students",
@@ -930,6 +976,7 @@ function generateSchema(match, type, url) {
             "startDate": match.dates?.eventDate || match.dates?.registrationStart,
             "endDate": match.dates?.eventDate || match.dates?.registrationEnd,
             "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": match.location === "Online" ? "https://schema.org/OnlineEventAttendanceMode" : "https://schema.org/OfflineEventAttendanceMode",
             "location": {
                 "@type": match.location === "Online" ? "VirtualLocation" : "Place",
                 "name": match.location || "Online",
@@ -959,7 +1006,8 @@ function generateSchema(match, type, url) {
             "hasCourseInstance": {
                 "@type": "CourseInstance",
                 "courseMode": match.location === "Online" ? "online" : "onsite",
-                "startDate": match.dates?.eventDate
+                "startDate": match.dates?.eventDate,
+                "endDate": match.dates?.registrationEnd
             }
         };
     }
@@ -980,57 +1028,102 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modules
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/src/lib/firestore.ts [app-rsc] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/seo.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$schema$2d$generator$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/schema-generator.ts [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$api$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/next/dist/api/navigation.react-server.js [app-rsc] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/components/navigation.react-server.js [app-rsc] (ecmascript)");
+;
 ;
 ;
 ;
 ;
 ;
 async function generateMetadata({ params }) {
-    const opportunity = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__["opportunitiesService"].getById(params.id);
-    if (!opportunity) {
+    try {
+        const { id } = await params;
+        const opportunity = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__["opportunitiesService"].getById(id);
+        if (!opportunity) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
+                title: "Opportunity Not Found",
+                description: "This opportunity may have expired or been removed.",
+                noIndex: true
+            });
+        }
+        // Dynamic metadata based on opportunity data with Gen Z excitement
+        let dynamicTitle = opportunity.title;
+        // Add class context if available
+        if (opportunity.class) {
+            dynamicTitle = `${opportunity.title} for Class ${opportunity.class} Students`;
+        }
+        // Make it Gen Z-friendly and action-oriented
+        if (opportunity.type === 'scholarship') {
+            dynamicTitle = `${dynamicTitle} – Apply Smart, Don't Miss Out`;
+        } else if (opportunity.type === 'olympiad') {
+            dynamicTitle = `${dynamicTitle} – Prep, Apply & Level Up`;
+        } else if (opportunity.type === 'competition') {
+            dynamicTitle = `${dynamicTitle} – Win, Learn & Build Your Profile`;
+        } else if (opportunity.type === 'workshop') {
+            dynamicTitle = `${dynamicTitle} – Discover, Learn & Level Up`;
+        } else {
+            dynamicTitle = `${dynamicTitle} – Discover & Apply Now`;
+        }
+        const title = `Myark | ${dynamicTitle}`;
+        const description = opportunity.seoConfig?.metaDescription || `${opportunity.shortDescription} Apply now for ${opportunity.category} opportunities. ${opportunity.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
-            title: "Opportunity Not Found",
-            description: "This opportunity may have expired or been removed.",
-            noIndex: true
+            title,
+            description,
+            image: opportunity.image,
+            url: `https://myark.in/opportunity/${opportunity.id}`,
+            keywords: opportunity.seoConfig?.keywords || [
+                opportunity.category,
+                'students',
+                'opportunities',
+                opportunity.class ? `class ${opportunity.class}` : ''
+            ].filter(Boolean),
+            type: 'article',
+            publishedTime: opportunity.createdAt?.toISOString(),
+            modifiedTime: opportunity.updatedAt?.toISOString(),
+            noIndex: opportunity.seoConfig?.noIndex || false
+        });
+    } catch (error) {
+        console.error('Error generating metadata:', error);
+        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
+            title: "My Ark Opportunities",
+            description: "Discover scholarships, olympiads, and competitions for students."
         });
     }
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
-        title: opportunity.seoConfig?.metaTitle || opportunity.title,
-        description: opportunity.seoConfig?.metaDescription || opportunity.shortDescription,
-        image: opportunity.image,
-        url: `https://myark.in/opportunity/${opportunity.id}`,
-        keywords: opportunity.seoConfig?.keywords || opportunity.tags,
-        updatedTime: opportunity.updatedAt?.toISOString(),
-        noIndex: opportunity.seoConfig?.noIndex
-    });
 }
 async function OpportunityDetailPage({ params }) {
-    const opportunity = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__["opportunitiesService"].getById(params.id);
-    if (!opportunity) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modules$2f$OpportunityDetail$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-        fileName: "[project]/src/app/opportunity/[id]/page.tsx",
-        lineNumber: 36,
-        columnNumber: 30
-    }, this);
-    const jsonLd = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$schema$2d$generator$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["generateSchema"])(opportunity, opportunity.seoConfig?.schemaType || 'EducationEvent', `https://myark.in/opportunity/${params.id}`);
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Fragment"], {
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
-                type: "application/ld+json",
-                dangerouslySetInnerHTML: {
-                    __html: JSON.stringify(jsonLd)
-                }
-            }, void 0, false, {
-                fileName: "[project]/src/app/opportunity/[id]/page.tsx",
-                lineNumber: 46,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modules$2f$OpportunityDetail$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                fileName: "[project]/src/app/opportunity/[id]/page.tsx",
-                lineNumber: 50,
-                columnNumber: 13
-            }, this)
-        ]
-    }, void 0, true);
+    try {
+        const { id } = await params;
+        const opportunity = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firestore$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__["opportunitiesService"].getById(id);
+        if (!opportunity) {
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["notFound"])();
+        }
+        // Generate schema markup
+        const schemaType = opportunity.seoConfig?.schemaType || 'EducationEvent';
+        const jsonLd = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$schema$2d$generator$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["generateSchema"])(opportunity, schemaType, `https://myark.in/opportunity/${id}`);
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Fragment"], {
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                    type: "application/ld+json",
+                    dangerouslySetInnerHTML: {
+                        __html: JSON.stringify(jsonLd)
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/src/app/opportunity/[id]/page.tsx",
+                    lineNumber: 88,
+                    columnNumber: 17
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modules$2f$OpportunityDetail$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                    fileName: "[project]/src/app/opportunity/[id]/page.tsx",
+                    lineNumber: 92,
+                    columnNumber: 17
+                }, this)
+            ]
+        }, void 0, true);
+    } catch (error) {
+        console.error('Error loading opportunity:', error);
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$components$2f$navigation$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["notFound"])();
+    }
 }
 }),
 "[project]/src/app/opportunity/[id]/page.tsx [app-rsc] (ecmascript, Next.js Server Component)", ((__turbopack_context__) => {

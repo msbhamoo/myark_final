@@ -73,7 +73,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-12 md:py-20">
       {/* Background glow effects */}
       <div className="absolute inset-0 bg-hero-glow pointer-events-none" />
       <motion.div
@@ -112,7 +112,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-4 md:mb-8"
         >
           <motion.div
             animate={{ rotate: 360 }}
@@ -128,7 +128,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6"
         >
           <span className="block mb-2">Unlock Amazing</span>
           <TypewriterText
@@ -143,7 +143,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10"
+          className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-10"
         >
           Discover competitions, scholarships, olympiads & opportunities tailored just for you.
           <span className="text-foreground font-medium"> Level up your journey!</span>
@@ -177,7 +177,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="grid grid-cols-3 gap-8 mt-16"
+          className="grid grid-cols-3 gap-8 mt-10 md:mt-16"
         >
           <motion.div
             className="text-center group cursor-pointer"

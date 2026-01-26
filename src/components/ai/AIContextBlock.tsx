@@ -28,7 +28,7 @@ export function AIContextBlock({ opportunity }: AIContextBlockProps) {
                 </ul>
 
                 <h3>Why this matters</h3>
-                <p>This {opportunity.type} is verified by Myark. It helps students build their profile for {opportunity.tags.join(', ')}.</p>
+                <p>This {opportunity.type} is verified by My Ark. It helps students build their profile for {opportunity.tags.join(', ')}.</p>
             </article>
         </section>
     );

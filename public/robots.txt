@@ -1,11 +1,19 @@
-
 # AI Search Engine & Web SEO Configuration
 User-agent: *
 Allow: /
 Allow: /blog
 Allow: /opportunity
 Allow: /quest-master
+Allow: /explore
+Allow: /careers
+Allow: /schools
+
+# Block admin and private areas
 Disallow: /admin
 Disallow: /profile
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://myark.in/sitemap.xml
 
 Sitemap: https://myark.in/sitemap.xml

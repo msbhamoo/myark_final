@@ -31,9 +31,9 @@ const BlogSection = () => {
     if (!loading && blogs.length === 0) return null;
 
     return (
-        <section className="py-24 px-4 bg-muted/30">
+        <section className="py-12 md:py-24 px-4 bg-muted/30">
             <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
                     <div>
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -81,7 +81,7 @@ const BlogSection = () => {
                                 className="group cursor-pointer"
                                 onClick={() => router.push(`/blog/${blog.slug}`)}
                             >
-                                <div className="relative aspect-[16/10] rounded-[30px] overflow-hidden mb-6 shadow-lg">
+                                <div className="relative aspect-[16/10] rounded-[24px] md:rounded-[30px] overflow-hidden mb-4 md:mb-6 shadow-lg">
                                     <img
                                         src={blog.coverImage || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop"}
                                         alt={blog.title}
@@ -107,7 +107,7 @@ const BlogSection = () => {
                                     <h3 className="text-xl font-bold font-display group-hover:text-primary transition-colors line-clamp-2">
                                         {blog.title}
                                     </h3>
-                                    <p className="text-muted-foreground text-sm line-clamp-2">
+                                    <p className="text-muted-foreground text-sm line-clamp-2 hidden md:block">
                                         {blog.excerpt}
                                     </p>
                                     <div className="flex items-center gap-2 text-primary text-sm font-bold group-hover:gap-3 transition-all pt-2">

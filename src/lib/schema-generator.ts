@@ -1,6 +1,6 @@
 import { Opportunity } from '@/types/admin';
 
-type SchemaType = 'Scholarship' | 'EducationEvent' | 'Course' | 'Article' | 'BreadcrumbList';
+type SchemaType = 'Scholarship' | 'EducationEvent' | 'Course' | 'Article' | 'BreadcrumbList' | 'FAQ';
 
 export function generateSchema(match: Opportunity | any, type: SchemaType, url: string) {
     const base = {
@@ -17,6 +17,21 @@ export function generateSchema(match: Opportunity | any, type: SchemaType, url: 
                 "name": item.name,
                 "item": item.item
             }))
+        };
+    }
+
+    if (type === 'FAQ') {
+        return {
+            ...base,
+            "@type": "FAQPage",
+            "mainEntity": match.faqs?.map((faq: { question: string; answer: string }) => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.answer
+                }
+            })) || []
         };
     }
 
@@ -49,6 +64,7 @@ export function generateSchema(match: Opportunity | any, type: SchemaType, url: 
             ...base,
             "@type": "FinancialProduct",
             ...common,
+            "category": "Scholarship",
             "financialAidEligible": {
                 "@type": "DefinedTerm",
                 "name": "Eligible Students",
@@ -70,6 +86,7 @@ export function generateSchema(match: Opportunity | any, type: SchemaType, url: 
             "startDate": match.dates?.eventDate || match.dates?.registrationStart,
             "endDate": match.dates?.eventDate || match.dates?.registrationEnd,
             "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": match.location === "Online" ? "https://schema.org/OnlineEventAttendanceMode" : "https://schema.org/OfflineEventAttendanceMode",
             "location": {
                 "@type": match.location === "Online" ? "VirtualLocation" : "Place",
                 "name": match.location || "Online",
@@ -96,6 +113,7 @@ export function generateSchema(match: Opportunity | any, type: SchemaType, url: 
                 "@type": "CourseInstance",
                 "courseMode": match.location === "Online" ? "online" : "onsite",
                 "startDate": match.dates?.eventDate,
+                "endDate": match.dates?.registrationEnd,
             }
         };
     }

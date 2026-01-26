@@ -50,8 +50,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$provide
 ;
 ;
 const metadata = {
-    title: "MyArk",
-    description: "Find scholarships, olympiads, and opportunities for students.",
+    title: "Myark – Discover Scholarships, Olympiads & Student Opportunities (Classes 4–12)",
+    description: "Explore scholarships, competitions, olympiads, and career opportunities for students. Apply smart, don't miss out on your future!",
     icons: {
         icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐧</text></svg>'
     }

@@ -72,7 +72,7 @@ export const gamificationService = {
         }
     },
 
-    async processAction(userId: string, actionKey: string, targetId?: string): Promise<{ xpEarned: number; milestoneReached: boolean }> {
+    async processAction(userId: string, actionKey: XPActionType, targetId?: string): Promise<{ xpEarned: number; milestoneReached: boolean }> {
         const config = await this.getConfig();
         const actionConfig = config.xpActions[actionKey];
 

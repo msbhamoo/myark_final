@@ -80,7 +80,7 @@ const FeaturedOpportunities = () => {
   }, [isForYou, student]);
 
   return (
-    <section id="trending-opportunities" className="py-24 px-4 relative overflow-hidden">
+    <section id="trending-opportunities" className="py-12 md:py-24 px-4 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent pointer-events-none" />
 
@@ -90,7 +90,7 @@ const FeaturedOpportunities = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12"
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-12"
         >
           <div>
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-3">
@@ -154,8 +154,8 @@ const FeaturedOpportunities = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className={cn(
-            "mt-16 glass-card text-center relative overflow-hidden group cursor-pointer hover:scale-[1.01] transition-transform",
-            student?.interests?.length ? "p-6 md:p-8" : "p-8 md:p-12"
+            "mt-10 md:mt-16 glass-card text-center relative overflow-hidden group cursor-pointer hover:scale-[1.01] transition-transform",
+            student?.interests?.length ? "p-4 md:p-8" : "p-6 md:p-12"
           )}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 pointer-events-none" />
@@ -194,7 +194,7 @@ const FeaturedOpportunities = () => {
         </motion.div>
       </div>
       <QuickQuizModal open={quizOpen} onOpenChange={setQuizOpen} />
-    </section>
+    </section >
   );
 };
 
