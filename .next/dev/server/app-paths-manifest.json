@@ -1,1 +1,22 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/badges/page": "app/admin/badges/page.js",
+  "/admin/gamification/page": "app/admin/gamification/page.js",
+  "/admin/notifications/page": "app/admin/notifications/page.js",
+  "/admin/opportunities/[id]/page": "app/admin/opportunities/[id]/page.js",
+  "/admin/opportunities/page": "app/admin/opportunities/page.js",
+  "/admin/organizers/page": "app/admin/organizers/page.js",
+  "/admin/partners/page": "app/admin/partners/page.js",
+  "/admin/rewards/page": "app/admin/rewards/page.js",
+  "/admin/schools/page": "app/admin/schools/page.js",
+  "/admin/settings/page": "app/admin/settings/page.js",
+  "/admin/students/page": "app/admin/students/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/careers/page": "app/careers/page.js",
+  "/opportunity/[id]/page": "app/opportunity/[id]/page.js",
+  "/page": "app/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/rewards/page": "app/rewards/page.js",
+  "/schools/page": "app/schools/page.js"
+}

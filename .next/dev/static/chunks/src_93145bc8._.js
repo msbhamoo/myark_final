@@ -305,6 +305,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-client] (ecmascript) <export default as Zap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shopping-bag.js [app-client] (ecmascript) <export default as ShoppingBag>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ticket$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Ticket$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ticket.js [app-client] (ecmascript) <export default as Ticket>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield.js [app-client] (ecmascript) <export default as Shield>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/input.tsx [app-client] (ecmascript)");
@@ -348,6 +349,11 @@ const navItems = [
         label: "Students",
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Users$3e$__["Users"],
         path: "/admin/students"
+    },
+    {
+        label: "User Accounts",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"],
+        path: "/admin/users"
     },
     {
         label: "Schools",
@@ -426,7 +432,7 @@ const AdminLayout = ({ children })=>{
                         className: "w-12 h-12 animate-spin text-primary mx-auto"
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 90,
+                        lineNumber: 92,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -434,18 +440,18 @@ const AdminLayout = ({ children })=>{
                         children: loading ? "Authenticating..." : "Redirecting to login..."
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 91,
+                        lineNumber: 93,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                lineNumber: 89,
+                lineNumber: 91,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-            lineNumber: 88,
+            lineNumber: 90,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -493,12 +499,12 @@ const AdminLayout = ({ children })=>{
                                                 children: "M"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 132,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 129,
+                                            lineNumber: 131,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -506,13 +512,13 @@ const AdminLayout = ({ children })=>{
                                             children: "MyArk Admin"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 132,
+                                            lineNumber: 134,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, "full-logo", true, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 122,
+                                    lineNumber: 124,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                     initial: {
@@ -530,17 +536,17 @@ const AdminLayout = ({ children })=>{
                                         children: "M"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 142,
+                                        lineNumber: 144,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, "icon-logo", false, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 135,
+                                    lineNumber: 137,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 120,
+                                lineNumber: 122,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -552,18 +558,18 @@ const AdminLayout = ({ children })=>{
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 152,
+                                    lineNumber: 154,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 146,
+                                lineNumber: 148,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 119,
+                        lineNumber: 121,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -578,7 +584,7 @@ const AdminLayout = ({ children })=>{
                                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-5 h-5 shrink-0", !sidebarOpen && "mx-auto")
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 171,
+                                        lineNumber: 173,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -599,12 +605,12 @@ const AdminLayout = ({ children })=>{
                                             children: item.label
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 176,
                                             columnNumber: 41
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 172,
+                                        lineNumber: 174,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     item.badge && sidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -612,7 +618,7 @@ const AdminLayout = ({ children })=>{
                                         children: item.badge
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 185,
+                                        lineNumber: 187,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     item.badge && !sidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -620,19 +626,19 @@ const AdminLayout = ({ children })=>{
                                         children: item.badge
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 190,
+                                        lineNumber: 192,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, item.path, true, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 161,
+                                lineNumber: 163,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0));
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 157,
+                        lineNumber: 159,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -646,31 +652,31 @@ const AdminLayout = ({ children })=>{
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 209,
+                                    lineNumber: 211,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 sidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "Logout"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 210,
+                                    lineNumber: 212,
                                     columnNumber: 41
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                            lineNumber: 201,
+                            lineNumber: 203,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 200,
+                        lineNumber: 202,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                lineNumber: 110,
+                lineNumber: 112,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -688,12 +694,12 @@ const AdminLayout = ({ children })=>{
                     onClick: ()=>setMobileMenuOpen(false)
                 }, void 0, false, {
                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                    lineNumber: 218,
+                    lineNumber: 220,
                     columnNumber: 21
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                lineNumber: 216,
+                lineNumber: 218,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -726,12 +732,12 @@ const AdminLayout = ({ children })=>{
                                                 children: "M"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 241,
+                                                lineNumber: 243,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 240,
+                                            lineNumber: 242,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -739,13 +745,13 @@ const AdminLayout = ({ children })=>{
                                             children: "MyArk Admin"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 243,
+                                            lineNumber: 245,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 239,
+                                    lineNumber: 241,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -756,18 +762,18 @@ const AdminLayout = ({ children })=>{
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 248,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 245,
+                                    lineNumber: 247,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                            lineNumber: 238,
+                            lineNumber: 240,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -783,7 +789,7 @@ const AdminLayout = ({ children })=>{
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 265,
+                                            lineNumber: 267,
                                             columnNumber: 41
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -791,7 +797,7 @@ const AdminLayout = ({ children })=>{
                                             children: item.label
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 266,
+                                            lineNumber: 268,
                                             columnNumber: 41
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         item.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -799,19 +805,19 @@ const AdminLayout = ({ children })=>{
                                             children: item.badge
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 268,
+                                            lineNumber: 270,
                                             columnNumber: 45
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, item.path, true, {
                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                    lineNumber: 254,
+                                    lineNumber: 256,
                                     columnNumber: 37
                                 }, ("TURBOPACK compile-time value", void 0));
                             })
                         }, void 0, false, {
                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                            lineNumber: 250,
+                            lineNumber: 252,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -825,36 +831,36 @@ const AdminLayout = ({ children })=>{
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 283,
+                                        lineNumber: 285,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Logout"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 284,
+                                        lineNumber: 286,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 278,
+                                lineNumber: 280,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                            lineNumber: 277,
+                            lineNumber: 279,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                    lineNumber: 231,
+                    lineNumber: 233,
                     columnNumber: 21
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                lineNumber: 229,
+                lineNumber: 231,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -875,12 +881,12 @@ const AdminLayout = ({ children })=>{
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 307,
+                                            lineNumber: 309,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 301,
+                                        lineNumber: 303,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -892,12 +898,12 @@ const AdminLayout = ({ children })=>{
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                            lineNumber: 315,
+                                            lineNumber: 317,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 309,
+                                        lineNumber: 311,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -905,13 +911,13 @@ const AdminLayout = ({ children })=>{
                                         children: getCurrentPageTitle()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 317,
+                                        lineNumber: 319,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 300,
+                                lineNumber: 302,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -924,7 +930,7 @@ const AdminLayout = ({ children })=>{
                                                 className: "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 323,
+                                                lineNumber: 325,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -932,13 +938,13 @@ const AdminLayout = ({ children })=>{
                                                 className: "w-64 pl-9 bg-muted/50 border-transparent focus:border-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 324,
+                                                lineNumber: 326,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 322,
+                                        lineNumber: 324,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -950,7 +956,7 @@ const AdminLayout = ({ children })=>{
                                                 className: "w-5 h-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 332,
+                                                lineNumber: 334,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -958,13 +964,13 @@ const AdminLayout = ({ children })=>{
                                                 children: "2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 333,
+                                                lineNumber: 335,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 333,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
@@ -982,12 +988,12 @@ const AdminLayout = ({ children })=>{
                                                                 children: user?.displayName?.charAt(0) || "A"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                                lineNumber: 343,
+                                                                lineNumber: 345,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                            lineNumber: 342,
+                                                            lineNumber: 344,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -995,18 +1001,18 @@ const AdminLayout = ({ children })=>{
                                                             children: user?.displayName || "Admin"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                            lineNumber: 347,
+                                                            lineNumber: 349,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                    lineNumber: 341,
+                                                    lineNumber: 343,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 340,
+                                                lineNumber: 342,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1019,7 +1025,7 @@ const AdminLayout = ({ children })=>{
                                                         children: user?.email
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                        lineNumber: 353,
+                                                        lineNumber: 355,
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -1030,38 +1036,38 @@ const AdminLayout = ({ children })=>{
                                                                 className: "w-4 h-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                                lineNumber: 357,
+                                                                lineNumber: 359,
                                                                 columnNumber: 37
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             "Logout"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                        lineNumber: 356,
+                                                        lineNumber: 358,
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                                lineNumber: 352,
+                                                lineNumber: 354,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                        lineNumber: 339,
+                                        lineNumber: 341,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                                lineNumber: 320,
+                                lineNumber: 322,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 299,
+                        lineNumber: 301,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1069,19 +1075,19 @@ const AdminLayout = ({ children })=>{
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                        lineNumber: 366,
+                        lineNumber: 368,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-                lineNumber: 292,
+                lineNumber: 294,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/admin/AdminLayout.tsx",
-        lineNumber: 108,
+        lineNumber: 110,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

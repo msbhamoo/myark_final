@@ -152,7 +152,7 @@ const Explore = () => {
 
                         <div>
 
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-4">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest mb-4" suppressHydrationWarning>
 
                                 <Sparkles className="w-3 h-3" />
 
@@ -255,15 +255,11 @@ const Explore = () => {
                                     type={opp.type as any}
 
                                     deadline={(() => {
-
+                                        if (opp.dates?.registrationEndDescription) return opp.dates.registrationEndDescription;
                                         if (!mounted || !opp.dates?.registrationEnd) return "Ending Soon";
-
                                         const end = new Date(opp.dates.registrationEnd).getTime();
-
                                         const diff = Math.ceil((end - Date.now()) / (1000 * 60 * 60 * 24));
-
                                         return diff > 0 ? `${diff} days left` : "Ending Soon";
-
                                     })()}
 
                                     participants={opp.applicationCount || 0}

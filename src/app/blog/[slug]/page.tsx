@@ -2,7 +2,7 @@ import BlogDetail from "@/components/modules/BlogDetail";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Blog Post | My Ark",
+    title: "Blog Post | Myark",
     description: "Read this blog post.",
 };
 

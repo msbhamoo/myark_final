@@ -63,7 +63,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$modules
 ;
 ;
 const metadata = {
-    title: "Opportunities | Admin | My Ark",
+    title: "Opportunities | Admin | Myark",
     description: "Manage opportunities."
 };
 function OpportunitiesPage() {

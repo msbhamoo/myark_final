@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
 
-    title: "New Opportunity | Admin | My Ark",
+    title: "New Opportunity | Admin | Myark",
 
     description: "Create a new opportunity.",
 

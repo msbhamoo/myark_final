@@ -1161,6 +1161,16 @@ _c = ReactQuill;
 ;
 ;
 // No hardcoded grades, will fetch from settings
+const formatDateForInput = (date)=>{
+    if (!date) return "";
+    try {
+        const d = date && date.toDate ? date.toDate() : new Date(date);
+        if (isNaN(d.getTime())) return "";
+        return d.toISOString().split('T')[0];
+    } catch (e) {
+        return "";
+    }
+};
 const OpportunityForm = ()=>{
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
@@ -1381,12 +1391,12 @@ const OpportunityForm = ()=>{
                 className: "w-8 h-8 animate-spin text-primary"
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                lineNumber: 505,
+                lineNumber: 240,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-            lineNumber: 503,
+            lineNumber: 239,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1407,12 +1417,12 @@ const OpportunityForm = ()=>{
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 527,
+                                    lineNumber: 250,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 525,
+                                lineNumber: 249,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1422,7 +1432,7 @@ const OpportunityForm = ()=>{
                                         children: isEditing ? "Edit Opportunity" : "Add New Opportunity"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 533,
+                                        lineNumber: 253,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1430,19 +1440,19 @@ const OpportunityForm = ()=>{
                                         children: "Fill in the details below"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 539,
+                                        lineNumber: 256,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 531,
+                                lineNumber: 252,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 523,
+                        lineNumber: 248,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1457,14 +1467,14 @@ const OpportunityForm = ()=>{
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 549,
+                                        lineNumber: 261,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     "Preview"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 547,
+                                lineNumber: 260,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1476,33 +1486,33 @@ const OpportunityForm = ()=>{
                                         className: "w-4 h-4 animate-spin mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 557,
+                                        lineNumber: 265,
                                         columnNumber: 36
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 559,
+                                        lineNumber: 266,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     isEditing ? "Update" : "Save"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 555,
+                                lineNumber: 264,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 545,
+                        lineNumber: 259,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                lineNumber: 521,
+                lineNumber: 247,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1525,12 +1535,12 @@ const OpportunityForm = ()=>{
                                         children: "Basic Information"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 581,
+                                        lineNumber: 276,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 579,
+                                    lineNumber: 275,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1546,7 +1556,7 @@ const OpportunityForm = ()=>{
                                                         children: "Title *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 591,
+                                                        lineNumber: 281,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1557,13 +1567,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 593,
+                                                        lineNumber: 282,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 589,
+                                                lineNumber: 280,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1573,7 +1583,7 @@ const OpportunityForm = ()=>{
                                                         children: "Type *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 611,
+                                                        lineNumber: 291,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -1586,12 +1596,12 @@ const OpportunityForm = ()=>{
                                                                     placeholder: "Select type"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 617,
+                                                                    lineNumber: 294,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 615,
+                                                                lineNumber: 293,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1602,29 +1612,29 @@ const OpportunityForm = ()=>{
                                                                             children: type.name
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                            lineNumber: 627,
+                                                                            lineNumber: 299,
                                                                             columnNumber: 53
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, type.id, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 625,
+                                                                        lineNumber: 298,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 621,
+                                                                lineNumber: 296,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 613,
+                                                        lineNumber: 292,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 609,
+                                                lineNumber: 290,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1634,7 +1644,7 @@ const OpportunityForm = ()=>{
                                                         children: "Organizer *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 641,
+                                                        lineNumber: 306,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1657,18 +1667,18 @@ const OpportunityForm = ()=>{
                                                                                     className: "ml-2 h-4 w-4 shrink-0 opacity-50"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                    lineNumber: 663,
+                                                                                    lineNumber: 317,
                                                                                     columnNumber: 53
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                            lineNumber: 649,
+                                                                            lineNumber: 310,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 647,
+                                                                        lineNumber: 309,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$popover$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PopoverContent"], {
@@ -1679,7 +1689,7 @@ const OpportunityForm = ()=>{
                                                                                     placeholder: "Search organizer..."
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                    lineNumber: 673,
+                                                                                    lineNumber: 322,
                                                                                     columnNumber: 53
                                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$command$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CommandList"], {
@@ -1688,7 +1698,7 @@ const OpportunityForm = ()=>{
                                                                                             children: "No organizer found."
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                            lineNumber: 677,
+                                                                                            lineNumber: 324,
                                                                                             columnNumber: 57
                                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$command$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CommandGroup"], {
@@ -1703,42 +1713,42 @@ const OpportunityForm = ()=>{
                                                                                                             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("mr-2 h-4 w-4", formData.organizer === org.name ? "opacity-100" : "opacity-0")
                                                                                                         }, void 0, false, {
                                                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                                            lineNumber: 699,
+                                                                                                            lineNumber: 335,
                                                                                                             columnNumber: 69
                                                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                                                         org.name
                                                                                                     ]
                                                                                                 }, org.id, true, {
                                                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                                    lineNumber: 683,
+                                                                                                    lineNumber: 327,
                                                                                                     columnNumber: 65
                                                                                                 }, ("TURBOPACK compile-time value", void 0)))
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                            lineNumber: 679,
+                                                                                            lineNumber: 325,
                                                                                             columnNumber: 57
                                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                                    lineNumber: 675,
+                                                                                    lineNumber: 323,
                                                                                     columnNumber: 53
                                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                            lineNumber: 671,
+                                                                            lineNumber: 321,
                                                                             columnNumber: 49
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 669,
+                                                                        lineNumber: 320,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 645,
+                                                                lineNumber: 308,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1752,18 +1762,18 @@ const OpportunityForm = ()=>{
                                                                     className: "w-4 h-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 743,
+                                                                    lineNumber: 357,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 727,
+                                                                lineNumber: 349,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 643,
+                                                        lineNumber: 307,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1771,13 +1781,13 @@ const OpportunityForm = ()=>{
                                                         children: "Manage in sidebar"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 749,
+                                                        lineNumber: 360,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 639,
+                                                lineNumber: 305,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1788,7 +1798,7 @@ const OpportunityForm = ()=>{
                                                         children: "Short Description *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 755,
+                                                        lineNumber: 363,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -1800,35 +1810,35 @@ const OpportunityForm = ()=>{
                                                         rows: 2
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 757,
+                                                        lineNumber: 364,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 753,
+                                                lineNumber: 362,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 587,
+                                        lineNumber: 279,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 585,
+                                    lineNumber: 278,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 577,
+                            lineNumber: 274,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 575,
+                        lineNumber: 273,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1850,12 +1860,12 @@ const OpportunityForm = ()=>{
                                         children: "Details"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 793,
+                                        lineNumber: 381,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 791,
+                                    lineNumber: 380,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1869,7 +1879,7 @@ const OpportunityForm = ()=>{
                                                     children: "Full Description"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 801,
+                                                    lineNumber: 385,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1912,18 +1922,18 @@ const OpportunityForm = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 805,
+                                                        lineNumber: 387,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 803,
+                                                    lineNumber: 386,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 799,
+                                            lineNumber: 384,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1937,12 +1947,12 @@ const OpportunityForm = ()=>{
                                                         onChange: (url)=>handleChange("image", url)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 841,
+                                                        lineNumber: 405,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 839,
+                                                    lineNumber: 404,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1952,7 +1962,7 @@ const OpportunityForm = ()=>{
                                                             children: "Apply Link"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 855,
+                                                            lineNumber: 412,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1965,7 +1975,7 @@ const OpportunityForm = ()=>{
                                                                     onChange: (e)=>handleChange("link", e.target.value)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 859,
+                                                                    lineNumber: 414,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1976,24 +1986,24 @@ const OpportunityForm = ()=>{
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 873,
+                                                                        lineNumber: 421,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 871,
+                                                                    lineNumber: 420,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 857,
+                                                            lineNumber: 413,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 853,
+                                                    lineNumber: 411,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2003,7 +2013,7 @@ const OpportunityForm = ()=>{
                                                             children: "Location"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 883,
+                                                            lineNumber: 426,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2014,13 +2024,13 @@ const OpportunityForm = ()=>{
                                                             className: "mt-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 885,
+                                                            lineNumber: 427,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 881,
+                                                    lineNumber: 425,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2030,7 +2040,7 @@ const OpportunityForm = ()=>{
                                                             children: "Tags (comma separated)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 903,
+                                                            lineNumber: 436,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2041,36 +2051,36 @@ const OpportunityForm = ()=>{
                                                             className: "mt-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 905,
+                                                            lineNumber: 437,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 901,
+                                                    lineNumber: 435,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 837,
+                                            lineNumber: 403,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 797,
+                                    lineNumber: 383,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 789,
+                            lineNumber: 379,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 787,
+                        lineNumber: 378,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2092,12 +2102,12 @@ const OpportunityForm = ()=>{
                                         children: "Eligibility"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 939,
+                                        lineNumber: 453,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 937,
+                                    lineNumber: 452,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2109,7 +2119,7 @@ const OpportunityForm = ()=>{
                                                     children: "Eligible Grades"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 947,
+                                                    lineNumber: 457,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2124,18 +2134,18 @@ const OpportunityForm = ()=>{
                                                             ]
                                                         }, grade, true, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 953,
+                                                            lineNumber: 460,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 949,
+                                                    lineNumber: 458,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 945,
+                                            lineNumber: 456,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2147,7 +2157,7 @@ const OpportunityForm = ()=>{
                                                         children: "Maximum Age (Optional)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 987,
+                                                        lineNumber: 476,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2162,18 +2172,18 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 989,
+                                                        lineNumber: 477,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 985,
+                                                lineNumber: 475,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 983,
+                                            lineNumber: 474,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2184,7 +2194,7 @@ const OpportunityForm = ()=>{
                                                     children: "Detailed Eligibility (Entrance Rights)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1013,
+                                                    lineNumber: 488,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2220,35 +2230,35 @@ const OpportunityForm = ()=>{
                                                         placeholder: "Outline specific requirements, age limits, or criteria..."
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1017,
+                                                        lineNumber: 490,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1015,
+                                                    lineNumber: 489,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1011,
+                                            lineNumber: 487,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 943,
+                                    lineNumber: 455,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 935,
+                            lineNumber: 451,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 933,
+                        lineNumber: 450,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2273,19 +2283,19 @@ const OpportunityForm = ()=>{
                                                 className: "w-5 h-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1067,
+                                                lineNumber: 514,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             "Important Dates"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1065,
+                                        lineNumber: 513,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1063,
+                                    lineNumber: 512,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2299,27 +2309,40 @@ const OpportunityForm = ()=>{
                                                         children: "Registration Start"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1081,
+                                                        lineNumber: 521,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "registrationStart",
                                                         type: "date",
-                                                        value: formData.dates?.registrationStart ? new Date(formData.dates.registrationStart).toISOString().split('T')[0] : "",
+                                                        value: formatDateForInput(formData.dates?.registrationStart),
                                                         onChange: (e)=>handleChange("dates", {
                                                                 ...formData.dates,
-                                                                registrationStart: new Date(e.target.value)
+                                                                registrationStart: e.target.value ? new Date(e.target.value) : null
                                                             }),
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1083,
+                                                        lineNumber: 522,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        placeholder: "Custom text (e.g. Ongoing)",
+                                                        value: formData.dates?.registrationStartDescription || "",
+                                                        onChange: (e)=>handleChange("dates", {
+                                                                ...formData.dates,
+                                                                registrationStartDescription: e.target.value
+                                                            }),
+                                                        className: "mt-2 text-xs"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
+                                                        lineNumber: 529,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1079,
+                                                lineNumber: 520,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2329,27 +2352,40 @@ const OpportunityForm = ()=>{
                                                         children: "Registration End *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1101,
+                                                        lineNumber: 537,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "registrationEnd",
                                                         type: "date",
-                                                        value: formData.dates?.registrationEnd ? new Date(formData.dates.registrationEnd).toISOString().split('T')[0] : "",
+                                                        value: formatDateForInput(formData.dates?.registrationEnd),
                                                         onChange: (e)=>handleChange("dates", {
                                                                 ...formData.dates,
-                                                                registrationEnd: new Date(e.target.value)
+                                                                registrationEnd: e.target.value ? new Date(e.target.value) : null
                                                             }),
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1103,
+                                                        lineNumber: 538,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        placeholder: "Custom text (e.g. No deadline)",
+                                                        value: formData.dates?.registrationEndDescription || "",
+                                                        onChange: (e)=>handleChange("dates", {
+                                                                ...formData.dates,
+                                                                registrationEndDescription: e.target.value
+                                                            }),
+                                                        className: "mt-2 text-xs"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
+                                                        lineNumber: 545,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1099,
+                                                lineNumber: 536,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2360,21 +2396,34 @@ const OpportunityForm = ()=>{
                                                         children: "Event Date (Optional)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1121,
+                                                        lineNumber: 553,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "eventDate",
                                                         type: "date",
-                                                        value: formData.dates?.eventDate ? new Date(formData.dates.eventDate).toISOString().split('T')[0] : "",
+                                                        value: formatDateForInput(formData.dates?.eventDate),
                                                         onChange: (e)=>handleChange("dates", {
                                                                 ...formData.dates,
-                                                                eventDate: new Date(e.target.value)
+                                                                eventDate: e.target.value ? new Date(e.target.value) : null
                                                             }),
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1123,
+                                                        lineNumber: 554,
+                                                        columnNumber: 37
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        placeholder: "Custom text (e.g. January 2026)",
+                                                        value: formData.dates?.eventDateDescription || "",
+                                                        onChange: (e)=>handleChange("dates", {
+                                                                ...formData.dates,
+                                                                eventDateDescription: e.target.value
+                                                            }),
+                                                        className: "mt-2 text-xs"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
+                                                        lineNumber: 561,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2382,35 +2431,35 @@ const OpportunityForm = ()=>{
                                                         children: "Date when the exams, competition or workshop actually takes place."
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1137,
+                                                        lineNumber: 567,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1119,
+                                                lineNumber: 552,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1077,
+                                        lineNumber: 519,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1075,
+                                    lineNumber: 518,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1061,
+                            lineNumber: 511,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 1059,
+                        lineNumber: 510,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2432,12 +2481,12 @@ const OpportunityForm = ()=>{
                                         children: "Prizes & Fees"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1159,
+                                        lineNumber: 577,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1157,
+                                    lineNumber: 576,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2450,7 +2499,7 @@ const OpportunityForm = ()=>{
                                                         children: "Fee Type"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1169,
+                                                        lineNumber: 582,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2466,7 +2515,7 @@ const OpportunityForm = ()=>{
                                                                 children: "Free"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1173,
+                                                                lineNumber: 584,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2476,29 +2525,29 @@ const OpportunityForm = ()=>{
                                                                 children: "Paid"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1187,
+                                                                lineNumber: 591,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1171,
+                                                        lineNumber: 583,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1167,
+                                                lineNumber: 581,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             feeType === "paid" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                         htmlFor: "fees",
-                                                        children: "Registration Fee (ï¿½\x1aï¿½)"
+                                                        children: "Registration Fee (₹\x1a₹)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1209,
+                                                        lineNumber: 602,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2510,13 +2559,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1211,
+                                                        lineNumber: 603,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1207,
+                                                lineNumber: 601,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2526,12 +2575,12 @@ const OpportunityForm = ()=>{
                                                         children: "1st Prize"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1233,
+                                                        lineNumber: 614,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "prizeFirst",
-                                                        placeholder: "e.g., ï¿½\x1aï¿½50,000",
+                                                        placeholder: "e.g., ₹\x1a₹50,000",
                                                         value: formData.prizes?.first,
                                                         onChange: (e)=>handleChange("prizes", {
                                                                 ...formData.prizes,
@@ -2540,13 +2589,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1235,
+                                                        lineNumber: 615,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1231,
+                                                lineNumber: 613,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2556,12 +2605,12 @@ const OpportunityForm = ()=>{
                                                         children: "2nd Prize"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1253,
+                                                        lineNumber: 624,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "prizeSecond",
-                                                        placeholder: "e.g., ï¿½\x1aï¿½25,000",
+                                                        placeholder: "e.g., ₹\x1a₹25,000",
                                                         value: formData.prizes?.second,
                                                         onChange: (e)=>handleChange("prizes", {
                                                                 ...formData.prizes,
@@ -2570,13 +2619,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1255,
+                                                        lineNumber: 625,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1251,
+                                                lineNumber: 623,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2586,12 +2635,12 @@ const OpportunityForm = ()=>{
                                                         children: "3rd Prize"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1273,
+                                                        lineNumber: 634,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                                                         id: "prizeThird",
-                                                        placeholder: "e.g., ï¿½\x1aï¿½10,000",
+                                                        placeholder: "e.g., ₹\x1a₹10,000",
                                                         value: formData.prizes?.third,
                                                         onChange: (e)=>handleChange("prizes", {
                                                                 ...formData.prizes,
@@ -2600,13 +2649,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1275,
+                                                        lineNumber: 635,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1271,
+                                                lineNumber: 633,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2616,7 +2665,7 @@ const OpportunityForm = ()=>{
                                                         children: "Other Perks / Prizes"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1293,
+                                                        lineNumber: 644,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2630,13 +2679,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1295,
+                                                        lineNumber: 645,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1291,
+                                                lineNumber: 643,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2650,7 +2699,7 @@ const OpportunityForm = ()=>{
                                                                 children: "Certificates Provided"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1315,
+                                                                lineNumber: 655,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2658,13 +2707,13 @@ const OpportunityForm = ()=>{
                                                                 children: "Students get a verified certificate"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1317,
+                                                                lineNumber: 656,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1313,
+                                                        lineNumber: 654,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2675,13 +2724,13 @@ const OpportunityForm = ()=>{
                                                             })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1321,
+                                                        lineNumber: 658,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1311,
+                                                lineNumber: 653,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2695,14 +2744,14 @@ const OpportunityForm = ()=>{
                                                                 className: "w-3.5 h-3.5 text-secondary fill-secondary"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1335,
+                                                                lineNumber: 665,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             "XP Points Awarded"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1333,
+                                                        lineNumber: 664,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2714,7 +2763,7 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1 font-bold text-secondary"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1341,
+                                                        lineNumber: 668,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2722,35 +2771,35 @@ const OpportunityForm = ()=>{
                                                         children: "Redeemable with brand collaborations"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1357,
+                                                        lineNumber: 676,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1331,
+                                                lineNumber: 663,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1165,
+                                        lineNumber: 580,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1163,
+                                    lineNumber: 579,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1155,
+                            lineNumber: 575,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 1153,
+                        lineNumber: 574,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2776,19 +2825,19 @@ const OpportunityForm = ()=>{
                                                 className: "w-5 h-5 text-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1381,
+                                                lineNumber: 687,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             "SEO & AI Discovery (GEO/AEO)"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1379,
+                                        lineNumber: 686,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1377,
+                                    lineNumber: 685,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2804,7 +2853,7 @@ const OpportunityForm = ()=>{
                                                         children: "Custom Meta Title"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1395,
+                                                        lineNumber: 694,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2815,13 +2864,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1397,
+                                                        lineNumber: 695,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1393,
+                                                lineNumber: 693,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2832,7 +2881,7 @@ const OpportunityForm = ()=>{
                                                         children: "Meta Description"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1415,
+                                                        lineNumber: 704,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2844,13 +2893,13 @@ const OpportunityForm = ()=>{
                                                         rows: 2
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1417,
+                                                        lineNumber: 705,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1413,
+                                                lineNumber: 703,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2861,7 +2910,7 @@ const OpportunityForm = ()=>{
                                                         children: "AI Quick Summary (Distilled for LLMs)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1437,
+                                                        lineNumber: 715,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2873,7 +2922,7 @@ const OpportunityForm = ()=>{
                                                         rows: 3
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1439,
+                                                        lineNumber: 716,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2881,13 +2930,13 @@ const OpportunityForm = ()=>{
                                                         children: "This version is prioritized by AI models during semantic search."
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1455,
+                                                        lineNumber: 724,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1435,
+                                                lineNumber: 714,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2897,7 +2946,7 @@ const OpportunityForm = ()=>{
                                                         children: "Structured Data Type"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1461,
+                                                        lineNumber: 727,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2908,12 +2957,12 @@ const OpportunityForm = ()=>{
                                                                 className: "mt-1",
                                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 1473,
+                                                                    lineNumber: 733,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1471,
+                                                                lineNumber: 732,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2923,7 +2972,7 @@ const OpportunityForm = ()=>{
                                                                         children: "Scholarship"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 1479,
+                                                                        lineNumber: 736,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2931,7 +2980,7 @@ const OpportunityForm = ()=>{
                                                                         children: "Competition/Event"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 1481,
+                                                                        lineNumber: 737,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2939,7 +2988,7 @@ const OpportunityForm = ()=>{
                                                                         children: "Workshop/Course"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 1483,
+                                                                        lineNumber: 738,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2947,25 +2996,25 @@ const OpportunityForm = ()=>{
                                                                         children: "Help/FAQ"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                        lineNumber: 1485,
+                                                                        lineNumber: 739,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1477,
+                                                                lineNumber: 735,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1463,
+                                                        lineNumber: 728,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1459,
+                                                lineNumber: 726,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2975,7 +3024,7 @@ const OpportunityForm = ()=>{
                                                         children: "Canonical URL"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1495,
+                                                        lineNumber: 744,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2986,13 +3035,13 @@ const OpportunityForm = ()=>{
                                                         className: "mt-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1497,
+                                                        lineNumber: 745,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1493,
+                                                lineNumber: 743,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3006,7 +3055,7 @@ const OpportunityForm = ()=>{
                                                                 children: "Hide from Search Engines"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1517,
+                                                                lineNumber: 755,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3014,13 +3063,13 @@ const OpportunityForm = ()=>{
                                                                 children: "Sets robots to 'noindex'"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1519,
+                                                                lineNumber: 756,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1515,
+                                                        lineNumber: 754,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3028,35 +3077,35 @@ const OpportunityForm = ()=>{
                                                         onCheckedChange: (v)=>handleSEOChange("noIndex", v)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1523,
+                                                        lineNumber: 758,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1513,
+                                                lineNumber: 753,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1391,
+                                        lineNumber: 692,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1389,
+                                    lineNumber: 691,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1375,
+                            lineNumber: 684,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 1373,
+                        lineNumber: 683,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3078,12 +3127,12 @@ const OpportunityForm = ()=>{
                                         children: "Settings"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1551,
+                                        lineNumber: 771,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1549,
+                                    lineNumber: 770,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3098,7 +3147,7 @@ const OpportunityForm = ()=>{
                                                             children: "Status"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1561,
+                                                            lineNumber: 776,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3106,13 +3155,13 @@ const OpportunityForm = ()=>{
                                                             children: "Control visibility of this opportunity"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1563,
+                                                            lineNumber: 777,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1559,
+                                                    lineNumber: 775,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -3123,12 +3172,12 @@ const OpportunityForm = ()=>{
                                                             className: "w-40",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                lineNumber: 1571,
+                                                                lineNumber: 781,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1569,
+                                                            lineNumber: 780,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3138,7 +3187,7 @@ const OpportunityForm = ()=>{
                                                                     children: "Draft"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 1577,
+                                                                    lineNumber: 784,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3146,7 +3195,7 @@ const OpportunityForm = ()=>{
                                                                     children: "Published"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 1579,
+                                                                    lineNumber: 785,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3154,25 +3203,25 @@ const OpportunityForm = ()=>{
                                                                     children: "Closed"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                                    lineNumber: 1581,
+                                                                    lineNumber: 786,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1575,
+                                                            lineNumber: 783,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1567,
+                                                    lineNumber: 779,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1557,
+                                            lineNumber: 774,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3184,7 +3233,7 @@ const OpportunityForm = ()=>{
                                                             children: "Featured"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1593,
+                                                            lineNumber: 792,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3192,13 +3241,13 @@ const OpportunityForm = ()=>{
                                                             children: "Show in featured section on homepage"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1595,
+                                                            lineNumber: 793,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1591,
+                                                    lineNumber: 791,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3206,30 +3255,30 @@ const OpportunityForm = ()=>{
                                                     onCheckedChange: (v)=>handleChange("featured", v)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1599,
+                                                    lineNumber: 795,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1589,
+                                            lineNumber: 790,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1555,
+                                    lineNumber: 773,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1547,
+                            lineNumber: 769,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 1545,
+                        lineNumber: 768,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3242,7 +3291,7 @@ const OpportunityForm = ()=>{
                                 children: "Cancel"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 1621,
+                                lineNumber: 805,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3262,14 +3311,14 @@ const OpportunityForm = ()=>{
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1641,
+                                                lineNumber: 815,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             "Delete"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1631,
+                                        lineNumber: 810,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3281,39 +3330,39 @@ const OpportunityForm = ()=>{
                                                 className: "w-4 h-4 animate-spin mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1651,
+                                                lineNumber: 820,
                                                 columnNumber: 40
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                lineNumber: 1653,
+                                                lineNumber: 821,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             isEditing ? "Update Opportunity" : "Create Opportunity"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                        lineNumber: 1649,
+                                        lineNumber: 819,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 1627,
+                                lineNumber: 808,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                        lineNumber: 1619,
+                        lineNumber: 804,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                lineNumber: 571,
+                lineNumber: 271,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3327,12 +3376,12 @@ const OpportunityForm = ()=>{
                                 children: "Add New Organizer"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                lineNumber: 1675,
+                                lineNumber: 831,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1673,
+                            lineNumber: 830,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3345,7 +3394,7 @@ const OpportunityForm = ()=>{
                                             children: "Organizer Name *"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1683,
+                                            lineNumber: 835,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -3357,13 +3406,13 @@ const OpportunityForm = ()=>{
                                             placeholder: "e.g., Delhi Public School"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1685,
+                                            lineNumber: 836,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1681,
+                                    lineNumber: 834,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3373,7 +3422,7 @@ const OpportunityForm = ()=>{
                                             children: "Type"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1699,
+                                            lineNumber: 843,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -3386,12 +3435,12 @@ const OpportunityForm = ()=>{
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                        lineNumber: 1711,
+                                                        lineNumber: 849,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1709,
+                                                    lineNumber: 848,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3401,7 +3450,7 @@ const OpportunityForm = ()=>{
                                                             children: "School"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1717,
+                                                            lineNumber: 852,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3409,7 +3458,7 @@ const OpportunityForm = ()=>{
                                                             children: "Government"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1719,
+                                                            lineNumber: 853,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3417,7 +3466,7 @@ const OpportunityForm = ()=>{
                                                             children: "NGO"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1721,
+                                                            lineNumber: 854,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3425,7 +3474,7 @@ const OpportunityForm = ()=>{
                                                             children: "Corporate"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1723,
+                                                            lineNumber: 855,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3433,31 +3482,31 @@ const OpportunityForm = ()=>{
                                                             children: "Other"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                            lineNumber: 1725,
+                                                            lineNumber: 856,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                                    lineNumber: 1715,
+                                                    lineNumber: 851,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1701,
+                                            lineNumber: 844,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1697,
+                                    lineNumber: 842,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1679,
+                            lineNumber: 833,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3468,7 +3517,7 @@ const OpportunityForm = ()=>{
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1737,
+                                    lineNumber: 862,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3479,41 +3528,41 @@ const OpportunityForm = ()=>{
                                             className: "w-4 h-4 animate-spin mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                            lineNumber: 1741,
+                                            lineNumber: 864,
                                             columnNumber: 43
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         "Add Organizer"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                                    lineNumber: 1739,
+                                    lineNumber: 863,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                            lineNumber: 1735,
+                            lineNumber: 861,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                    lineNumber: 1671,
+                    lineNumber: 829,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-                lineNumber: 1669,
+                lineNumber: 828,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/admin/OpportunityForm.tsx",
-        lineNumber: 517,
+        lineNumber: 245,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(OpportunityForm, "ucaX+LH009K5KBAPPKzlFeTGS1I=", false, function() {
+_s(OpportunityForm, "LXgeiDwrzqPhP49U2syY0JkxzMg=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],

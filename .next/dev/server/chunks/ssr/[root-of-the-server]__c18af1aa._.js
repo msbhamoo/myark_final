@@ -301,7 +301,7 @@ const Navbar = ()=>{
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "font-display text-xl font-bold italic tracking-tight underline decoration-primary/30 decoration-4 underline-offset-4",
-                                        children: "My Ark"
+                                        children: "Myark"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Navbar.tsx",
                                         lineNumber: 48,
@@ -1759,8 +1759,9 @@ const StoriesCarousel = ()=>{
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("relative h-56 rounded-2xl overflow-hidden bg-gradient-to-br p-4 flex flex-col justify-between transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl", TYPE_GRADIENTS[opp.type] || TYPE_GRADIENTS.other),
                                 children: [
-                                    daysLeft > 0 && daysLeft <= 7 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold flex items-center gap-1",
+                                    opp.dates?.registrationEndDescription ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-[10px] font-bold flex items-center gap-1",
+                                        suppressHydrationWarning: true,
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
                                                 className: "w-3 h-3"
@@ -1769,12 +1770,29 @@ const StoriesCarousel = ()=>{
                                                 lineNumber: 145,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0)),
+                                            opp.dates.registrationEndDescription
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/StoriesCarousel.tsx",
+                                        lineNumber: 144,
+                                        columnNumber: 21
+                                    }, ("TURBOPACK compile-time value", void 0)) : daysLeft > 0 && daysLeft <= 7 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold flex items-center gap-1",
+                                        suppressHydrationWarning: true,
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                                className: "w-3 h-3"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/StoriesCarousel.tsx",
+                                                lineNumber: 150,
+                                                columnNumber: 23
+                                            }, ("TURBOPACK compile-time value", void 0)),
                                             daysLeft,
                                             "d left"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 149,
                                         columnNumber: 21
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1782,7 +1800,7 @@ const StoriesCarousel = ()=>{
                                         children: opp.type === 'competition' ? '🏆' : opp.type === 'scholarship' ? '🎓' : '✨'
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 151,
+                                        lineNumber: 156,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1792,7 +1810,7 @@ const StoriesCarousel = ()=>{
                                                 children: opp.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 157,
+                                                lineNumber: 162,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1800,7 +1818,7 @@ const StoriesCarousel = ()=>{
                                                 children: opp.organizer
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 160,
+                                                lineNumber: 165,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1810,7 +1828,7 @@ const StoriesCarousel = ()=>{
                                                         className: "w-3 h-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                        lineNumber: 162,
+                                                        lineNumber: 167,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opp.applicationCount?.toLocaleString() || 0,
@@ -1818,13 +1836,13 @@ const StoriesCarousel = ()=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 166,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 161,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1835,17 +1853,17 @@ const StoriesCarousel = ()=>{
                                                 className: "w-5 h-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 175,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 174,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 173,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
@@ -2242,7 +2260,7 @@ const Categories = ()=>{
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6",
-                        children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$types$2f$admin$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["OPPORTUNITY_TYPES"].map((type, index)=>{
+                        children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$types$2f$admin$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["OPPORTUNITY_TYPES"].filter((type)=>(counts[type.id] || 0) > 0).map((type, index)=>{
                             const IconComponent = ICON_MAP[type.icon] || __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"];
                             // Simple color mapping logic since we store tailwind classes like "text-blue-500"
                             // but CategoryCard likely expects "primary" | "secondary" | "accent" etc.
@@ -2370,7 +2388,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/auth.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$studentAuth$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/studentAuth.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/hooks/use-toast.ts [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/message-circle.js [app-ssr] (ecmascript) <export default as MessageCircle>");
 "use client";
+;
 ;
 ;
 ;
@@ -2401,6 +2421,14 @@ const typeConfig = {
         class: "bg-secondary/20 text-secondary border-secondary/30"
     }
 };
+const formatPrizeWithEmoji = (prize)=>{
+    if (!prize) return null;
+    const p = prize.toLowerCase();
+    if (p.includes('certificate')) return `📜 ${prize}`;
+    if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
+    if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
+    return `🎁 ${prize}`;
+};
 const OpportunityCard = ({ id, title, organization, type, deadline, participants, prize, featured = false, delay = 0, views: initialViews, hypes: initialHypes = 0 })=>{
     const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [views, setViews] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(initialViews || 0);
@@ -2423,7 +2451,10 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
     const { toast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useToast"])();
     const isBookmarked = student?.savedOpportunities?.includes(id) || false;
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const config = typeConfig[type];
+    const config = typeConfig[type] || {
+        label: "Opportunity",
+        class: "bg-gray-500/20 text-gray-500 border-gray-500/30"
+    };
     const handleClick = ()=>{
         router.push(`/opportunity/${id}`);
     };
@@ -2499,6 +2530,13 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
             });
         }
     };
+    const handleShare = (e)=>{
+        e.stopPropagation();
+        const shareUrl = `${window.location.origin}/opportunity/${id}`;
+        const text = `*🔥 New Opportunity on Myark! 🔥*\n\n*Title:* ${title}\n*Organizer:* ${organization}\n*Reward:* ${prize || 'Certificate'}\n*Deadline:* ${deadline}\n\nCheck it out and apply here:\n${shareUrl}\n\n#Myark #StudentOpportunities`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(whatsappUrl, '_blank');
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
         initial: {
             opacity: 0,
@@ -2532,7 +2570,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 167,
+                lineNumber: 188,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2544,19 +2582,19 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                             className: "w-3 h-3 mr-1"
                         }, void 0, false, {
                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                            lineNumber: 177,
+                            lineNumber: 198,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0)),
                         "Trending"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                    lineNumber: 176,
+                    lineNumber: 197,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 175,
+                lineNumber: 196,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2571,7 +2609,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                 children: config.label
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 187,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2588,7 +2626,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                         className: "w-4 h-4 group-hover/hype:fill-current"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                        lineNumber: 199,
+                                                        lineNumber: 220,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2612,23 +2650,23 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                                     className: "w-4 h-4 fill-current"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                                    lineNumber: 209,
+                                                                    lineNumber: 230,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, heart.id, false, {
                                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                                lineNumber: 202,
+                                                                lineNumber: 223,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                        lineNumber: 200,
+                                                        lineNumber: 221,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                lineNumber: 192,
+                                                lineNumber: 213,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             hypeCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2636,13 +2674,13 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                 children: hypeCount
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                lineNumber: 215,
+                                                lineNumber: 236,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 191,
+                                        lineNumber: 212,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2652,24 +2690,40 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-4 h-4 transition-all", isBookmarked && "fill-current")
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 251,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 221,
+                                        lineNumber: 242,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: handleShare,
+                                        className: "p-2 rounded-lg bg-emerald-500/10 text-emerald-500 transition-all duration-300 hover:scale-110 hover:bg-emerald-500/20",
+                                        title: "Share on WhatsApp",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__["MessageCircle"], {
+                                            className: "w-4 h-4"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/OpportunityCard.tsx",
+                                            lineNumber: 261,
+                                            columnNumber: 15
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/OpportunityCard.tsx",
+                                        lineNumber: 256,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 190,
+                                lineNumber: 211,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 186,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2677,7 +2731,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 238,
+                        lineNumber: 267,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2685,7 +2739,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         children: organization
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 241,
+                        lineNumber: 270,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     prize && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2695,15 +2749,15 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         },
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             className: "text-sm font-medium text-accent",
-                            children: prize
+                            children: formatPrizeWithEmoji(prize)
                         }, void 0, false, {
                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                            lineNumber: 249,
+                            lineNumber: 278,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 245,
+                        lineNumber: 274,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2716,20 +2770,20 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 256,
+                                        lineNumber: 285,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: deadline
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 257,
+                                        lineNumber: 286,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 255,
+                                lineNumber: 284,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2739,20 +2793,21 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 260,
+                                        lineNumber: 289,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        children: participants.toLocaleString()
+                                        suppressHydrationWarning: true,
+                                        children: mounted ? participants.toLocaleString() : participants
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 261,
+                                        lineNumber: 290,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 259,
+                                lineNumber: 288,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2762,26 +2817,27 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 264,
+                                        lineNumber: 293,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        children: views.toLocaleString()
+                                        suppressHydrationWarning: true,
+                                        children: mounted ? views.toLocaleString() : views
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 294,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 263,
+                                lineNumber: 292,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 254,
+                        lineNumber: 283,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2792,7 +2848,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                 children: "Explore"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 271,
+                                lineNumber: 300,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2806,24 +2862,24 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                                    lineNumber: 276,
+                                    lineNumber: 305,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 272,
+                                lineNumber: 301,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 270,
+                        lineNumber: 299,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 184,
+                lineNumber: 205,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2833,7 +2889,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         className: "w-2 h-2 rounded-full bg-success animate-pulse"
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 283,
+                        lineNumber: 312,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2845,19 +2901,19 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 284,
+                        lineNumber: 313,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 282,
+                lineNumber: 311,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/OpportunityCard.tsx",
-        lineNumber: 153,
+        lineNumber: 174,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -3666,6 +3722,7 @@ const FeaturedOpportunities = ()=>{
                                 organization: opp.organizer || "Admin",
                                 type: opp.type,
                                 deadline: (()=>{
+                                    if (opp.dates?.registrationEndDescription) return opp.dates.registrationEndDescription;
                                     if (!mounted || !opp.dates?.registrationEnd) return "Ending Soon";
                                     const end = new Date(opp.dates.registrationEnd).getTime();
                                     const diff = Math.ceil((end - Date.now()) / (1000 * 60 * 60 * 24));
@@ -3690,12 +3747,12 @@ const FeaturedOpportunities = ()=>{
                             children: "New opportunities landing soon!"
                         }, void 0, false, {
                             fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                            lineNumber: 147,
+                            lineNumber: 148,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                        lineNumber: 146,
+                        lineNumber: 147,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3716,7 +3773,7 @@ const FeaturedOpportunities = ()=>{
                                 className: "absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 pointer-events-none"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                lineNumber: 161,
+                                lineNumber: 162,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3733,12 +3790,12 @@ const FeaturedOpportunities = ()=>{
                                     className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                    lineNumber: 168,
+                                    lineNumber: 169,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                lineNumber: 163,
+                                lineNumber: 164,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3752,7 +3809,7 @@ const FeaturedOpportunities = ()=>{
                                                 children: student?.interests?.length ? "Want to refresh your recommendations? 🔄" : "Can't find what you're looking for?"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                                lineNumber: 173,
+                                                lineNumber: 174,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3760,13 +3817,13 @@ const FeaturedOpportunities = ()=>{
                                                 children: student?.interests?.length ? "Update your interests and vibes to get a fresh set of curated opportunities." : "Tell us your interests and we'll curate the perfect opportunities just for you!"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                                lineNumber: 178,
+                                                lineNumber: 179,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                        lineNumber: 172,
+                                        lineNumber: 173,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3779,26 +3836,26 @@ const FeaturedOpportunities = ()=>{
                                                 className: "w-5 h-5 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                                lineNumber: 190,
+                                                lineNumber: 191,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             student?.interests?.length ? "Update Quiz" : "Take a Quick Quiz"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                        lineNumber: 184,
+                                        lineNumber: 185,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                                lineNumber: 171,
+                                lineNumber: 172,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                        lineNumber: 152,
+                        lineNumber: 153,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
@@ -3812,7 +3869,7 @@ const FeaturedOpportunities = ()=>{
                 onOpenChange: setQuizOpen
             }, void 0, false, {
                 fileName: "[project]/src/components/FeaturedOpportunities.tsx",
-                lineNumber: 196,
+                lineNumber: 197,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
@@ -4970,7 +5027,7 @@ const Footer = ()=>{
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             className: "font-display text-lg font-bold italic",
-                                            children: "My Ark"
+                                            children: "Myark"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Footer.tsx",
                                             lineNumber: 17,
@@ -5211,7 +5268,7 @@ const Footer = ()=>{
                             children: [
                                 "© ",
                                 new Date().getFullYear(),
-                                " My Ark. All rights reserved."
+                                " Myark. All rights reserved."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Footer.tsx",

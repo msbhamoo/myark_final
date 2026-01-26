@@ -2,7 +2,7 @@ import CareerForm from "@/components/modules/admin/CareerForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Edit Career | Admin | My Ark",
+    title: "Edit Career | Admin | Myark",
     description: "Edit career profile.",
 };
 

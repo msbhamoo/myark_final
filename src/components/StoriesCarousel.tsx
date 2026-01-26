@@ -140,8 +140,13 @@ const StoriesCarousel = () => {
                   )}
                 >
                   {/* Urgent badge */}
-                  {daysLeft > 0 && daysLeft <= 7 && (
-                    <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold flex items-center gap-1">
+                  {opp.dates?.registrationEndDescription ? (
+                    <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-[10px] font-bold flex items-center gap-1" suppressHydrationWarning>
+                      <Clock className="w-3 h-3" />
+                      {opp.dates.registrationEndDescription}
+                    </div>
+                  ) : daysLeft > 0 && daysLeft <= 7 && (
+                    <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold flex items-center gap-1" suppressHydrationWarning>
                       <Clock className="w-3 h-3" />
                       {daysLeft}d left
                     </div>

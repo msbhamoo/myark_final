@@ -42,7 +42,7 @@ export const COLLECTIONS = {
     opportunities: "opportunities",
     blogs: "blogs",
     careers: "careers",
-    students: "students",
+    students: "studentUsers",
     schoolDemos: "schoolDemos",
     notifications: "notifications",
     badges: "badges",
@@ -172,6 +172,45 @@ export const opportunitiesService = {
         await updateDoc(docRef, {
             hypeCount: increment(1)
         });
+    },
+
+    async shareOpportunity(id: string) {
+        const docRef = doc(db, COLLECTIONS.opportunities, id);
+        await updateDoc(docRef, {
+            shareCount: increment(1)
+        });
+    },
+
+    async incrementView(id: string) {
+        const docRef = doc(db, COLLECTIONS.opportunities, id);
+        await updateDoc(docRef, {
+            viewCount: increment(1)
+        });
+    },
+
+    async incrementApplication(id: string) {
+        const docRef = doc(db, COLLECTIONS.opportunities, id);
+        await updateDoc(docRef, {
+            applicationCount: increment(1)
+        });
+    },
+
+    async syncApplicationCount(id: string) {
+        // Query all students who applied to this opportunity
+        const q = query(
+            collection(db, "studentUsers"),
+            where("appliedOpportunities", "array-contains", id)
+        );
+        const snapshot = await getDocs(q);
+        const count = snapshot.size;
+
+        // Update the opportunity with the true count
+        const docRef = doc(db, COLLECTIONS.opportunities, id);
+        await updateDoc(docRef, {
+            applicationCount: count
+        });
+
+        return count;
     },
 
     async delete(id: string) {
@@ -384,12 +423,15 @@ export const studentsService = {
         const q = query(collection(db, COLLECTIONS.students), ...constraints);
         const snapshot = await getDocs(q);
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            createdAt: toDate(doc.data().createdAt),
-            lastActiveAt: toDate(doc.data().lastActiveAt),
-        })) as Student[];
+        return snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: toDate(data.createdAt),
+                lastActiveAt: toDate(data.lastActiveAt || data.lastLoginAt),
+            };
+        }) as Student[];
     },
 
     async getById(id: string) {
@@ -463,6 +505,16 @@ export const schoolDemosService = {
             createdAt: toDate(doc.data().createdAt),
             updatedAt: toDate(doc.data().updatedAt),
         })) as SchoolDemo[];
+    },
+
+    async create(data: Omit<SchoolDemo, "id" | "createdAt" | "updatedAt">) {
+        const docRef = await addDoc(collection(db, COLLECTIONS.schoolDemos), {
+            ...data,
+            status: data.status || 'pending',
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+        });
+        return docRef.id;
     },
 
     async updateStatus(id: string, status: string, notes?: string) {

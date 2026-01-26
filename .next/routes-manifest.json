@@ -96,6 +96,12 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/admin/badges",
+      "regex": "^/admin/badges(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/badges(?:/)?$"
+    },
+    {
       "page": "/admin/blog",
       "regex": "^/admin/blog(?:/)?$",
       "routeKeys": {},
@@ -118,6 +124,12 @@
       "regex": "^/admin/careers/new(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/careers/new(?:/)?$"
+    },
+    {
+      "page": "/admin/gamification",
+      "regex": "^/admin/gamification(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/gamification(?:/)?$"
     },
     {
       "page": "/admin/login",
@@ -144,6 +156,30 @@
       "namedRegex": "^/admin/opportunities/new(?:/)?$"
     },
     {
+      "page": "/admin/organizers",
+      "regex": "^/admin/organizers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/organizers(?:/)?$"
+    },
+    {
+      "page": "/admin/partners",
+      "regex": "^/admin/partners(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/partners(?:/)?$"
+    },
+    {
+      "page": "/admin/rewards",
+      "regex": "^/admin/rewards(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/rewards(?:/)?$"
+    },
+    {
+      "page": "/admin/schools",
+      "regex": "^/admin/schools(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/schools(?:/)?$"
+    },
+    {
       "page": "/admin/settings",
       "regex": "^/admin/settings(?:/)?$",
       "routeKeys": {},
@@ -154,6 +190,12 @@
       "regex": "^/admin/students(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/students(?:/)?$"
+    },
+    {
+      "page": "/admin/users",
+      "regex": "^/admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/users(?:/)?$"
     },
     {
       "page": "/blog",

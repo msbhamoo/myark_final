@@ -13,6 +13,7 @@ import { gamificationService } from "@/lib/gamificationService";
 import { useAuth } from "@/lib/auth";
 import { useStudentAuth } from "@/lib/studentAuth";
 import { useToast } from "@/hooks/use-toast";
+import { MessageCircle, Share2 } from "lucide-react";
 
 interface OpportunityCardProps {
   id: string;
@@ -46,6 +47,15 @@ const typeConfig = {
     label: "Workshop",
     class: "bg-secondary/20 text-secondary border-secondary/30",
   },
+};
+
+const formatPrizeWithEmoji = (prize?: string) => {
+  if (!prize) return null;
+  const p = prize.toLowerCase();
+  if (p.includes('certificate')) return `📜 ${prize}`;
+  if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
+  if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
+  return `🎁 ${prize}`;
 };
 
 const OpportunityCard = ({
@@ -152,6 +162,14 @@ const OpportunityCard = ({
     }
   };
 
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}/opportunity/${id}`;
+    const text = `*🔥 New Opportunity on Myark! 🔥*\n\n*Title:* ${title}\n*Organizer:* ${organization}\n*Reward:* ${prize || 'Certificate'}\n*Deadline:* ${deadline}\n\nCheck it out and apply here:\n${shareUrl}\n\n#Myark #StudentOpportunities`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -234,6 +252,14 @@ const OpportunityCard = ({
                 className={cn("w-4 h-4 transition-all", isBookmarked && "fill-current")}
               />
             </button>
+
+            <button
+              onClick={handleShare}
+              className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 transition-all duration-300 hover:scale-110 hover:bg-emerald-500/20"
+              title="Share on WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -249,7 +275,7 @@ const OpportunityCard = ({
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 mb-4"
             animate={{ scale: isHovered ? 1.05 : 1 }}
           >
-            <span className="text-sm font-medium text-accent">{prize}</span>
+            <span className="text-sm font-medium text-accent">{formatPrizeWithEmoji(prize)}</span>
           </motion.div>
         )}
 
@@ -261,11 +287,11 @@ const OpportunityCard = ({
           </div>
           <div className="flex items-center gap-1">
             <Users className="w-4 h-4" />
-            <span>{participants.toLocaleString()}</span>
+            <span suppressHydrationWarning>{mounted ? participants.toLocaleString() : participants}</span>
           </div>
           <div className="flex items-center gap-1">
             <Eye className="w-4 h-4" />
-            <span>{views.toLocaleString()}</span>
+            <span suppressHydrationWarning>{mounted ? views.toLocaleString() : views}</span>
           </div>
         </div>
 

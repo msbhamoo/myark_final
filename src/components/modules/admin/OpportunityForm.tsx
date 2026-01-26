@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Save, Eye, Trash2, Image, Calendar, Link as LinkIcon, Plus, Check, ChevronsUpDown, Loader2, Zap, Sparkles } from "lucide-react";
+import { ArrowLeft, Save, Eye, Trash2, Image, Calendar, Link as LinkIcon, Plus, Check, ChevronsUpDown, Loader2, Zap, Sparkles, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,6 +35,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
     DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
@@ -45,6 +46,7 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import ImageUpload from "@/components/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
 import { opportunitiesService, settingsService } from "@/lib/firestore";
+import studentAuthService, { type StudentUser } from "@/lib/studentAuthService";
 // No hardcoded grades, will fetch from settings
 const formatDateForInput = (date: any) => {
     if (!date) return "";
@@ -108,6 +110,9 @@ const OpportunityForm = () => {
         website: "",
     });
     const [savingOrg, setSavingOrg] = useState(false);
+    const [applicants, setApplicants] = useState<StudentUser[]>([]);
+    const [loadingApplicants, setLoadingApplicants] = useState(false);
+    const [showApplicantsDialog, setShowApplicantsDialog] = useState(false);
     const handleChange = (field: string, value: unknown) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
@@ -182,6 +187,25 @@ const OpportunityForm = () => {
         } finally {
             setLoading(false);
         }
+
+        if (id) {
+            fetchApplicants(id);
+        }
+    };
+
+    const fetchApplicants = async (oppId: string) => {
+        setLoadingApplicants(true);
+        try {
+            const allUsers = await studentAuthService.getAllUsers();
+            const filtered = allUsers.filter(user =>
+                user.appliedOpportunities?.includes(oppId)
+            );
+            setApplicants(filtered);
+        } catch (error) {
+            console.error("Error fetching applicants:", error);
+        } finally {
+            setLoadingApplicants(false);
+        }
     };
     useEffect(() => {
         fetchInitialData();
@@ -202,6 +226,22 @@ const OpportunityForm = () => {
             setSavingOrg(false);
         }
     };
+
+    const handleSyncCount = async () => {
+        if (!id) return;
+        setLoadingApplicants(true);
+        try {
+            const count = await opportunitiesService.syncApplicationCount(id);
+            setFormData(prev => ({ ...prev, applicationCount: count }));
+            await fetchApplicants(id);
+            toast({ title: "Counts Synced", description: `Found ${count} verified applications.` });
+        } catch (error) {
+            console.error("Sync failed:", error);
+            toast({ title: "Sync Failed", description: "Database error.", variant: "destructive" });
+        } finally {
+            setLoadingApplicants(false);
+        }
+    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.title) {
@@ -215,10 +255,23 @@ const OpportunityForm = () => {
             const processedTags = typeof currentTags === 'string'
                 ? currentTags.split(",").map(t => t.trim()).filter(t => t !== "")
                 : currentTags;
+            // Omit technical fields from update to prevent overwriting with stale counts
+            const {
+                id: _id,
+                applicationCount,
+                hypeCount,
+                viewCount,
+                shareCount,
+                createdAt,
+                updatedAt,
+                ...updateableData
+            } = formData;
+
             const finalData = {
-                ...formData,
+                ...updateableData,
                 tags: processedTags
             };
+
             if (id) {
                 await opportunitiesService.update(id, finalData as any);
                 toast({ title: "Updated", description: "Opportunity updated successfully" });
@@ -526,6 +579,12 @@ const OpportunityForm = () => {
                                         onChange={(e) => handleChange("dates", { ...formData.dates, registrationStart: e.target.value ? new Date(e.target.value) : null })}
                                         className="mt-1"
                                     />
+                                    <Input
+                                        placeholder="Custom text (e.g. Ongoing)"
+                                        value={formData.dates?.registrationStartDescription || ""}
+                                        onChange={(e) => handleChange("dates", { ...formData.dates, registrationStartDescription: e.target.value })}
+                                        className="mt-2 text-xs"
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="registrationEnd">Registration End *</Label>
@@ -536,6 +595,12 @@ const OpportunityForm = () => {
                                         onChange={(e) => handleChange("dates", { ...formData.dates, registrationEnd: e.target.value ? new Date(e.target.value) : null })}
                                         className="mt-1"
                                     />
+                                    <Input
+                                        placeholder="Custom text (e.g. No deadline)"
+                                        value={formData.dates?.registrationEndDescription || ""}
+                                        onChange={(e) => handleChange("dates", { ...formData.dates, registrationEndDescription: e.target.value })}
+                                        className="mt-2 text-xs"
+                                    />
                                 </div>
                                 <div className="sm:col-span-2">
                                     <Label htmlFor="eventDate">Event Date (Optional)</Label>
@@ -545,6 +610,12 @@ const OpportunityForm = () => {
                                         value={formatDateForInput(formData.dates?.eventDate)}
                                         onChange={(e) => handleChange("dates", { ...formData.dates, eventDate: e.target.value ? new Date(e.target.value) : null })}
                                         className="mt-1"
+                                    />
+                                    <Input
+                                        placeholder="Custom text (e.g. January 2026)"
+                                        value={formData.dates?.eventDateDescription || ""}
+                                        onChange={(e) => handleChange("dates", { ...formData.dates, eventDateDescription: e.target.value })}
+                                        className="mt-2 text-xs"
                                     />
                                     <p className="text-xs text-muted-foreground mt-1">Date when the exams, competition or workshop actually takes place.</p>
                                 </div>
@@ -806,6 +877,134 @@ const OpportunityForm = () => {
                     </div>
                 </div>
             </form>
+
+            {/* Applicants List */}
+            {isEditing && (
+                <div className="mt-8 pt-8 border-t border-border/50">
+                    <div className="glass-card p-6 rounded-2xl flex items-center justify-between bg-secondary/5 border-secondary/20">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
+                                <Users className="w-6 h-6 text-secondary" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold">Quest Participants</h3>
+                                <p className="text-sm text-muted-foreground">{applicants.length} heroes have joined this opportunity</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button
+                                variant="outline"
+                                onClick={handleSyncCount}
+                                disabled={loadingApplicants}
+                                className="border-secondary/30 text-secondary hover:bg-secondary/10"
+                            >
+                                {loadingApplicants ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Zap className="w-4 h-4 mr-2" />}
+                                Sync DB
+                            </Button>
+                            <Button
+                                className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
+                                onClick={() => setShowApplicantsDialog(true)}
+                            >
+                                <Eye className="w-4 h-4 mr-2" />
+                                View Applicants
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Applicants List Dialog */}
+            <Dialog open={showApplicantsDialog} onOpenChange={setShowApplicantsDialog}>
+                <DialogContent className="sm:max-w-3xl max-h-[80vh] overflow-hidden flex flex-col p-0 border-secondary/20 bg-card">
+                    <DialogHeader className="p-6 border-b border-border/50 bg-muted/30">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <DialogTitle className="text-2xl font-display font-bold">Quest Applicants</DialogTitle>
+                                <DialogDescription>Verified students for "{formData.title}"</DialogDescription>
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => fetchApplicants(id)}
+                                disabled={loadingApplicants}
+                                className="gap-2"
+                            >
+                                {loadingApplicants ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                                Refresh
+                            </Button>
+                        </div>
+                    </DialogHeader>
+
+                    <div className="flex-1 overflow-y-auto p-0">
+                        {applicants.length === 0 ? (
+                            <div className="py-20 text-center">
+                                <Users className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+                                <p className="text-lg font-medium text-muted-foreground">No heroes have stepped forward yet.</p>
+                                <p className="text-sm text-muted-foreground/60">Share this quest to attract participants!</p>
+                            </div>
+                        ) : (
+                            <table className="w-full text-sm">
+                                <thead className="sticky top-0 bg-muted z-10">
+                                    <tr className="border-b border-border/50">
+                                        <th className="px-6 py-4 text-left font-bold text-muted-foreground">Student</th>
+                                        <th className="px-6 py-4 text-left font-bold text-muted-foreground">Contact</th>
+                                        <th className="px-6 py-4 text-left font-bold text-muted-foreground">Class</th>
+                                        <th className="px-6 py-4 text-left font-bold text-muted-foreground">Aura (XP)</th>
+                                        <th className="px-6 py-4 text-right font-bold text-muted-foreground">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-border/30">
+                                    {applicants.map((student) => (
+                                        <tr key={student.id} className="transition-colors hover:bg-muted/30 group">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center font-bold text-primary border border-primary/10">
+                                                        {student.name ? student.name.charAt(0) : "S"}
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold text-foreground">{student.name || "Anonymous Student"}</div>
+                                                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Level {student.level || 1}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-foreground font-mono">+91 {student.phone}</div>
+                                                <div className="text-xs text-muted-foreground">{student.email || 'No email provided'}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Badge variant="secondary" className="bg-muted border-primary/10">Class {student.grade || "N/A"}</Badge>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-1.5 text-secondary font-bold">
+                                                    <Zap className="w-3.5 h-3.5 fill-current" />
+                                                    {student.xpPoints?.toLocaleString()}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    onClick={() => router.push(`/admin/students`)}
+                                                >
+                                                    View User
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+
+                    <DialogFooter className="p-4 border-t border-border/50 bg-muted/10">
+                        <Button variant="ghost" onClick={() => setShowApplicantsDialog(false)}>
+                            Close
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
             {/* Quick Add Organizer Dialog */}
             <Dialog open={showAddOrganizer} onOpenChange={setShowAddOrganizer}>
                 <DialogContent className="sm:max-w-md">

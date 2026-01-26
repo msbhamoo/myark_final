@@ -81,6 +81,9 @@ export interface Opportunity {
         registrationStart: Date;
         registrationEnd: Date;
         eventDate?: Date;
+        registrationStartDescription?: string; // e.g., "Ongoing"
+        registrationEndDescription?: string;   // e.g., "No fixed deadline"
+        eventDateDescription?: string;          // e.g., "January 2026 for many schools"
     };
     prizes?: {
         first?: string;
@@ -100,6 +103,8 @@ export interface Opportunity {
     xpValue?: number; // XP points awarded for participating
     hypeCount?: number; // Dynamic like/hype counter
     applicationCount?: number;
+    shareCount?: number;
+    viewCount?: number;
     seoConfig?: SEOConfig; // New SEO & AI visibility settings
     createdAt: Date;
     updatedAt: Date;

@@ -521,6 +521,9 @@ export const studentAuthService = {
                     weeklyTimeCommitment: data.weeklyTimeCommitment,
                     deliveryPreference: data.deliveryPreference,
                     interests: data.interests || [],
+                    appliedOpportunities: data.appliedOpportunities || [],
+                    savedOpportunities: data.savedOpportunities || [],
+                    email: data.email,
                 } as StudentUser;
             });
 
@@ -652,9 +655,16 @@ export const studentAuthService = {
     // Apply to opportunity and track it
     async applyToOpportunity(userId: string, opportunityId: string): Promise<void> {
         const { arrayUnion } = await import('firebase/firestore');
-        await updateDoc(doc(db, COLLECTIONS.studentUsers, userId), {
+        const userRef = doc(db, COLLECTIONS.studentUsers, userId);
+        const oppRef = doc(db, "opportunities", opportunityId);
+
+        await updateDoc(userRef, {
             appliedOpportunities: arrayUnion(opportunityId),
             xpPoints: increment(40), // +40 XP for applying
+        });
+
+        await updateDoc(oppRef, {
+            applicationCount: increment(1)
         });
     },
 

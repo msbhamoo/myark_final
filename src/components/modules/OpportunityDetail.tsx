@@ -253,7 +253,7 @@ const StoryCard = ({
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay }}
-            className="glass-card p-6 md:p-8 relative overflow-hidden"
+            className="glass-card p-6 md:p-8 relative"
         >
             <div className={`absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${gradient}`} />
             <div className="flex items-center gap-3 mb-4">
@@ -299,6 +299,15 @@ const TYPE_EMOJI: Record<string, string> = {
     other: "✨",
 };
 
+const formatPrizeWithEmoji = (prize?: string) => {
+    if (!prize) return null;
+    const p = prize.toLowerCase();
+    if (p.includes('certificate')) return `📜 ${prize}`;
+    if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
+    if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
+    return `🎁 ${prize}`;
+};
+
 // ============================================
 // MAIN COMPONENT
 // ============================================
@@ -323,9 +332,15 @@ const OpportunityDetail = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
     const [waitingForConfirmation, setWaitingForConfirmation] = useState(false);
     const [showAuraCheck, setShowAuraCheck] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Simulated live data
     useEffect(() => {
+        // Fix hydration mismatch: only randomize on client
         setLiveViewers(Math.floor(Math.random() * 80) + 20);
         const interval = setInterval(() => {
             setLiveViewers((prev) => Math.max(10, prev + Math.floor(Math.random() * 5) - 2));
@@ -403,7 +418,18 @@ const OpportunityDetail = () => {
                 const data = await opportunitiesService.getById(id);
                 if (data) {
                     setOpportunity(data);
-                    setLikes(data.hypeCount || data.applicationCount || Math.floor(Math.random() * 500) + 100);
+                    // Fix hydration mismatch: only randomize/fallback on client
+                    setLikes(data.hypeCount || 0);
+
+                    // Unique view tracking
+                    if (!isPreview) {
+                        const viewedOpps = JSON.parse(localStorage.getItem('myark_viewed_opps') || '[]');
+                        if (!viewedOpps.includes(id)) {
+                            await opportunitiesService.incrementView(id);
+                            viewedOpps.push(id);
+                            localStorage.setItem('myark_viewed_opps', JSON.stringify(viewedOpps));
+                        }
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching opportunity:", error);
@@ -515,15 +541,11 @@ const OpportunityDetail = () => {
     if (!opportunity) {
         return (
             <div className="min-h-screen bg-background">
-                {opportunity && (
-                    <SEO
-                        title={opportunity.title}
-                        description={opportunity.shortDescription || "Unlock this amazing opportunity on Myark."}
-                        image={opportunity.image}
-                        url={`https://myark.in/opportunity/${id}`}
-                        schema={generateOpportunitySchema(opportunity, id || "")}
-                    />
-                )}
+                <SEO
+                    title="Opportunity Not Found | Myark"
+                    description="This opportunity could not be found or has ended."
+                    url={`https://myark.in/opportunity/${id}`}
+                />
                 <Navbar />
                 <div className="flex items-center justify-center min-h-[80vh] px-4">
                     <div className="glass-card p-12 text-center max-w-md">
@@ -641,13 +663,13 @@ const OpportunityDetail = () => {
                                 {opportunity.prizes?.first && (
                                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30">
                                         <Trophy className="w-4 h-4 text-amber-400" />
-                                        <span className="font-bold text-amber-400 text-sm">{opportunity.prizes.first}</span>
+                                        <span className="font-bold text-amber-400 text-sm">{formatPrizeWithEmoji(opportunity.prizes.first)}</span>
                                     </div>
                                 )}
                                 {opportunity.prizes?.certificates && (
                                     <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30">
                                         <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                                        <span className="font-bold text-emerald-400 text-sm">Certificate</span>
+                                        <span className="font-bold text-emerald-400 text-sm">📜 Certificate</span>
                                     </div>
                                 )}
                             </div>
@@ -677,6 +699,25 @@ const OpportunityDetail = () => {
                                 </div>
                                 <Button variant="outline" size="icon" onClick={handleBookmark} className={cn("h-14 w-14 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10", isBookmarked && "text-secondary border-secondary/30")}>
                                     <Bookmark className={cn("w-5 h-5", isBookmarked && "fill-current")} />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => {
+                                        const shareUrl = window.location.href;
+                                        const deadlineStr = opportunity.dates?.registrationEndDescription || (opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD');
+                                        const text = `*🔥 New Opportunity on Myark! 🔥*\n\n*Title:* ${opportunity.title}\n*Organizer:* ${opportunity.organizer || 'Myark'}\n*Reward:* ${opportunity.prizes?.first || 'Certificate'}\n*Deadline:* ${deadlineStr}\n\nCheck it out and apply here:\n${shareUrl}\n\n#Myark #StudentOpportunities`;
+                                        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                                        window.open(whatsappUrl, '_blank');
+
+                                        // Track share
+                                        if (id && id !== 'preview') {
+                                            opportunitiesService.shareOpportunity(id).catch(console.error);
+                                        }
+                                    }}
+                                    className="h-14 w-14 rounded-2xl border-emerald-500/30 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                                >
+                                    <MessageCircle className="w-5 h-5" />
                                 </Button>
                             </div>
                         </motion.div>
@@ -902,22 +943,28 @@ const OpportunityDetail = () => {
                     {/* Key Dates */}
                     <StoryCard title="Important Dates 📅" icon={Calendar} gradient="from-rose-500 to-pink-500">
                         <div className="space-y-3">
-                            {opportunity.dates?.registrationStart && (
+                            {(opportunity.dates?.registrationStart || opportunity.dates?.registrationStartDescription) && (
                                 <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
                                     <span className="text-white/70">Registration Opens</span>
-                                    <span className="font-bold text-white">{new Date(opportunity.dates.registrationStart).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                                    <span className="font-bold text-white" suppressHydrationWarning>
+                                        {opportunity.dates.registrationStartDescription || (opportunity.dates.registrationStart && mounted && new Date(opportunity.dates.registrationStart).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }))}
+                                    </span>
                                 </div>
                             )}
-                            {opportunity.dates?.registrationEnd && (
+                            {(opportunity.dates?.registrationEnd || opportunity.dates?.registrationEndDescription) && (
                                 <div className="flex items-center justify-between p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
                                     <span className="text-rose-400 font-medium">Registration Closes</span>
-                                    <span className="font-bold text-rose-400">{new Date(opportunity.dates.registrationEnd).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                                    <span className="font-bold text-rose-400" suppressHydrationWarning>
+                                        {opportunity.dates.registrationEndDescription || (opportunity.dates.registrationEnd && mounted && new Date(opportunity.dates.registrationEnd).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }))}
+                                    </span>
                                 </div>
                             )}
-                            {opportunity.dates?.eventDate && (
+                            {(opportunity.dates?.eventDate || opportunity.dates?.eventDateDescription) && (
                                 <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
                                     <span className="text-white/70">Event Date</span>
-                                    <span className="font-bold text-white">{new Date(opportunity.dates.eventDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                                    <span className="font-bold text-white" suppressHydrationWarning>
+                                        {opportunity.dates.eventDateDescription || (opportunity.dates.eventDate && mounted && new Date(opportunity.dates.eventDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }))}
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -939,14 +986,14 @@ const OpportunityDetail = () => {
                     {/* Full Description */}
                     {opportunity.description && (
                         <StoryCard title="Full Details 📖" icon={Info} gradient="from-slate-500 to-gray-500">
-                            <div className="prose prose-invert prose-sm max-w-none text-white/70 quill-content leading-relaxed" dangerouslySetInnerHTML={{ __html: opportunity.description }} />
+                            <div className="prose prose-invert prose-sm w-full max-w-none text-white/70 quill-content leading-relaxed break-words overflow-visible" dangerouslySetInnerHTML={{ __html: opportunity.description }} />
                         </StoryCard>
                     )}
 
                     {/* Eligibility Description */}
                     {opportunity.eligibility?.description && (
                         <StoryCard title="Eligibility Details 📋" icon={CheckCircle2} gradient="from-teal-500 to-cyan-500">
-                            <div className="prose prose-invert prose-sm max-w-none text-white/70 quill-content leading-relaxed" dangerouslySetInnerHTML={{ __html: opportunity.eligibility.description }} />
+                            <div className="prose prose-invert prose-sm w-full max-w-none text-white/70 quill-content leading-relaxed break-words overflow-visible" dangerouslySetInnerHTML={{ __html: opportunity.eligibility.description }} />
                         </StoryCard>
                     )}
                 </div>

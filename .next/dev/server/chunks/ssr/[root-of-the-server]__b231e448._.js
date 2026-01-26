@@ -216,7 +216,7 @@ const COLLECTIONS = {
     opportunities: "opportunities",
     blogs: "blogs",
     careers: "careers",
-    students: "students",
+    students: "studentUsers",
     schoolDemos: "schoolDemos",
     notifications: "notifications",
     badges: "badges",
@@ -327,6 +327,36 @@ const opportunitiesService = {
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateDoc"])(docRef, {
             hypeCount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["increment"])(1)
         });
+    },
+    async shareOpportunity (id) {
+        const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities, id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateDoc"])(docRef, {
+            shareCount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["increment"])(1)
+        });
+    },
+    async incrementView (id) {
+        const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities, id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateDoc"])(docRef, {
+            viewCount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["increment"])(1)
+        });
+    },
+    async incrementApplication (id) {
+        const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities, id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateDoc"])(docRef, {
+            applicationCount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["increment"])(1)
+        });
+    },
+    async syncApplicationCount (id) {
+        // Query all students who applied to this opportunity
+        const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], "studentUsers"), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["where"])("appliedOpportunities", "array-contains", id));
+        const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getDocs"])(q);
+        const count = snapshot.size;
+        // Update the opportunity with the true count
+        const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities, id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateDoc"])(docRef, {
+            applicationCount: count
+        });
+        return count;
     },
     async delete (id) {
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["deleteDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.opportunities, id));
@@ -498,12 +528,15 @@ const studentsService = {
         }
         const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.students), ...constraints);
         const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getDocs"])(q);
-        return snapshot.docs.map((doc)=>({
+        return snapshot.docs.map((doc)=>{
+            const data = doc.data();
+            return {
                 id: doc.id,
-                ...doc.data(),
-                createdAt: toDate(doc.data().createdAt),
-                lastActiveAt: toDate(doc.data().lastActiveAt)
-            }));
+                ...data,
+                createdAt: toDate(data.createdAt),
+                lastActiveAt: toDate(data.lastActiveAt || data.lastLoginAt)
+            };
+        });
     },
     async getById (id) {
         const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.students, id);
@@ -562,6 +595,15 @@ const schoolDemosService = {
                 createdAt: toDate(doc.data().createdAt),
                 updatedAt: toDate(doc.data().updatedAt)
             }));
+    },
+    async create (data) {
+        const docRef = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["addDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.schoolDemos), {
+            ...data,
+            status: data.status || 'pending',
+            createdAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Timestamp"].now(),
+            updatedAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Timestamp"].now()
+        });
+        return docRef.id;
     },
     async updateStatus (id, status, notes) {
         const docRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.schoolDemos, id);
@@ -1048,45 +1090,45 @@ async function generateMetadata({ params }) {
             });
         }
         // Dynamic metadata based on opportunity data with Gen Z excitement
-        let dynamicTitle = opportunity.title;
+        let dynamicTitle = opportunity?.title || 'Opportunity';
         // Add class context if available
-        if (opportunity.class) {
+        if (opportunity?.class) {
             dynamicTitle = `${opportunity.title} for Class ${opportunity.class} Students`;
         }
         // Make it Gen Z-friendly and action-oriented
-        if (opportunity.type === 'scholarship') {
+        if (opportunity?.type === 'scholarship') {
             dynamicTitle = `${dynamicTitle} – Apply Smart, Don't Miss Out`;
-        } else if (opportunity.type === 'olympiad') {
+        } else if (opportunity?.type === 'olympiad') {
             dynamicTitle = `${dynamicTitle} – Prep, Apply & Level Up`;
-        } else if (opportunity.type === 'competition') {
+        } else if (opportunity?.type === 'competition') {
             dynamicTitle = `${dynamicTitle} – Win, Learn & Build Your Profile`;
-        } else if (opportunity.type === 'workshop') {
+        } else if (opportunity?.type === 'workshop') {
             dynamicTitle = `${dynamicTitle} – Discover, Learn & Level Up`;
         } else {
             dynamicTitle = `${dynamicTitle} – Discover & Apply Now`;
         }
         const title = `Myark | ${dynamicTitle}`;
-        const description = opportunity.seoConfig?.metaDescription || `${opportunity.shortDescription} Apply now for ${opportunity.category} opportunities. ${opportunity.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
+        const description = opportunity?.seoConfig?.metaDescription || `${opportunity?.shortDescription || 'Discover this amazing opportunity'} Apply now for ${opportunity?.category || 'student'} opportunities. ${opportunity?.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
             title,
             description,
-            image: opportunity.image,
-            url: `https://myark.in/opportunity/${opportunity.id}`,
-            keywords: opportunity.seoConfig?.keywords || [
-                opportunity.category,
+            image: opportunity?.image,
+            url: `https://myark.in/opportunity/${opportunity?.id || id}`,
+            keywords: opportunity?.seoConfig?.keywords || [
+                opportunity?.category || 'opportunities',
                 'students',
-                'opportunities',
-                opportunity.class ? `class ${opportunity.class}` : ''
+                'scholarships',
+                opportunity?.class ? `class ${opportunity.class}` : ''
             ].filter(Boolean),
             type: 'article',
-            publishedTime: opportunity.createdAt?.toISOString(),
-            modifiedTime: opportunity.updatedAt?.toISOString(),
-            noIndex: opportunity.seoConfig?.noIndex || false
+            publishedTime: opportunity?.createdAt?.toISOString(),
+            modifiedTime: opportunity?.updatedAt?.toISOString(),
+            noIndex: opportunity?.seoConfig?.noIndex || false
         });
     } catch (error) {
         console.error('Error generating metadata:', error);
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$seo$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["constructMetadata"])({
-            title: "My Ark Opportunities",
+            title: "Myark Opportunities",
             description: "Discover scholarships, olympiads, and competitions for students."
         });
     }

@@ -16,7 +16,11 @@ import {
     Plus,
     X,
     Heart,
+    Key,
+    Clock,
+    Shield,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +36,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -48,7 +53,17 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { studentsService, badgesService } from "@/lib/firestore";
+import { studentAuthService } from "@/lib/studentAuthService";
 import type { Student, Badge as BadgeType } from "@/types/admin";
 import { cn } from "@/lib/utils";
 
@@ -61,6 +76,10 @@ const Students = () => {
     const [allBadges, setAllBadges] = useState<BadgeType[]>([]);
     const [isAssigning, setIsAssigning] = useState(false);
     const [stats, setStats] = useState({ total: 0, activeThisWeek: 0, avgStreak: 0, newThisWeek: 0 });
+    const [showResetPinDialog, setShowResetPinDialog] = useState(false);
+    const [newPin, setNewPin] = useState("");
+    const [actionLoading, setActionLoading] = useState(false);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -116,10 +135,44 @@ const Students = () => {
         }
     };
 
-    const filteredStudents = students.filter(student =>
-        student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const handleResetPin = async () => {
+        if (!selectedStudent || newPin.length !== 4) return;
+        setActionLoading(true);
+        try {
+            await studentAuthService.resetUserPin(selectedStudent.id, newPin);
+            toast({ title: "PIN Reset", description: `New PIN set for student` });
+            setShowResetPinDialog(false);
+            setNewPin("");
+        } catch (error) {
+            toast({ title: "Error", description: "Failed to reset PIN", variant: "destructive" });
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const formatLastActive = (date?: Date) => {
+        if (!date) return "Never";
+        const now = new Date();
+        const diff = now.getTime() - new Date(date).getTime();
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return "Just now";
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        return new Date(date).toLocaleDateString();
+    };
+
+    const filteredStudents = students.filter(student => {
+        const name = student.name || "Anonymous";
+        const email = student.email || "";
+        const phone = (student as any).phone || "";
+        return name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            phone.includes(searchQuery);
+    });
 
     const isActiveRecently = (lastActive: Date | undefined) => {
         if (!lastActive) return false;
@@ -248,6 +301,7 @@ const Students = () => {
                                         <TableHead>Streak</TableHead>
                                         <TableHead>XP</TableHead>
                                         <TableHead>Applications</TableHead>
+                                        <TableHead>Last Active</TableHead>
                                         <TableHead>Status</TableHead>
                                         <TableHead className="w-12"></TableHead>
                                     </TableRow>
@@ -265,11 +319,11 @@ const Students = () => {
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-foreground font-semibold">
-                                                        {student.name.charAt(0)}
+                                                        {(student.name || "S").charAt(0)}
                                                     </div>
                                                     <div>
-                                                        <p className="font-medium">{student.name}</p>
-                                                        <p className="text-sm text-muted-foreground">{student.email}</p>
+                                                        <p className="font-medium">{student.name || "Unnamed Student"}</p>
+                                                        <p className="text-sm text-muted-foreground">{student.email || (student as any).phone}</p>
                                                     </div>
                                                 </div>
                                             </TableCell>
@@ -292,9 +346,15 @@ const Students = () => {
                                                 </div>
                                             </TableCell>
                                             <TableCell>{student.appliedOpportunities?.length || 0}</TableCell>
+                                            <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+                                                <div className="flex items-center gap-1.5">
+                                                    <Clock className="w-3.5 h-3.5" />
+                                                    {formatLastActive(student.lastActiveAt)}
+                                                </div>
+                                            </TableCell>
                                             <TableCell>
                                                 {isActiveRecently(student.lastActiveAt) ? (
-                                                    <Badge className="bg-success/20 text-success">Active</Badge>
+                                                    <Badge className="bg-success/20 text-success border-success/30">Active</Badge>
                                                 ) : (
                                                     <Badge variant="outline" className="text-muted-foreground">Inactive</Badge>
                                                 )}
@@ -316,6 +376,15 @@ const Students = () => {
                                                                 <Mail className="w-4 h-4 mr-2" />
                                                                 Send Email
                                                             </a>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator />
+                                                        <DropdownMenuItem onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedStudent(student);
+                                                            setShowResetPinDialog(true);
+                                                        }}>
+                                                            <Key className="w-4 h-4 mr-2" />
+                                                            Reset PIN
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -340,11 +409,11 @@ const Students = () => {
                             {/* Avatar & Name */}
                             <div className="flex items-center gap-4">
                                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-foreground font-bold text-2xl">
-                                    {selectedStudent.name.charAt(0)}
+                                    {(selectedStudent.name || "S").charAt(0)}
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-semibold">{selectedStudent.name}</h3>
-                                    <p className="text-muted-foreground">{selectedStudent.email}</p>
+                                    <h3 className="text-xl font-semibold">{selectedStudent.name || "Unnamed Student"}</h3>
+                                    <p className="text-muted-foreground">{selectedStudent.email || (selectedStudent as any).phone}</p>
                                 </div>
                             </div>
 
@@ -520,6 +589,48 @@ const Students = () => {
                     )}
                 </SheetContent>
             </Sheet>
+
+            {/* Reset PIN Dialog */}
+            <Dialog open={showResetPinDialog} onOpenChange={setShowResetPinDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Reset Student PIN</DialogTitle>
+                        <DialogDescription>
+                            Set a new 4-digit PIN for {selectedStudent?.name || "this student"}. They will need to use this PIN to log in.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label>New PIN (4 digits)</Label>
+                            <Input
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                maxLength={4}
+                                placeholder="0000"
+                                value={newPin}
+                                onChange={(e) => setNewPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                                className="text-center text-2xl tracking-widest font-mono"
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => {
+                            setShowResetPinDialog(false);
+                            setNewPin("");
+                        }}>
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleResetPin}
+                            disabled={actionLoading || newPin.length !== 4}
+                        >
+                            {actionLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                            Reset PIN
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

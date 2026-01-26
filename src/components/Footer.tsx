@@ -14,7 +14,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg">
                 🐧
               </div>
-              <span className="font-display text-lg font-bold italic">My Ark</span>
+              <span className="font-display text-lg font-bold italic">Myark</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Empowering students to discover their potential through scholarships, competitions, and career guidance.
@@ -76,7 +76,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} My Ark. All rights reserved.
+            © {new Date().getFullYear()} Myark. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>

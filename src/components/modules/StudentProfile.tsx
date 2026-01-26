@@ -217,6 +217,8 @@ const StudentProfilePage = () => {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [savedOpportunities, setSavedOpportunities] = useState<Opportunity[]>([]);
   const [loadingSaved, setLoadingSaved] = useState(false);
+  const [appliedOpportunities, setAppliedOpportunities] = useState<Opportunity[]>([]);
+  const [loadingApplied, setLoadingApplied] = useState(false);
   const [editName, setEditName] = useState("");
   const [adminBadges, setAdminBadges] = useState<AdminBadge[]>([]);
   const [showPowerUps, setShowPowerUps] = useState(false);
@@ -259,6 +261,25 @@ const StudentProfilePage = () => {
     };
     loadSaved();
   }, [student?.savedOpportunities]);
+
+  // Load applied opportunities
+  useEffect(() => {
+    const loadApplied = async () => {
+      if (student?.appliedOpportunities?.length) {
+        setLoadingApplied(true);
+        try {
+          const allOpps = await opportunitiesService.getAll();
+          const applied = allOpps.filter(o => student.appliedOpportunities.includes(o.id));
+          setAppliedOpportunities(applied);
+        } catch (error) {
+          console.error("Failed to load applied:", error);
+        } finally {
+          setLoadingApplied(false);
+        }
+      }
+    };
+    loadApplied();
+  }, [student?.appliedOpportunities]);
 
   // Load admin badges from Firebase
   useEffect(() => {
@@ -746,7 +767,8 @@ const StudentProfilePage = () => {
           {/* ===== TABS ===== */}
           <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
             {[
-              { id: "overview", label: "Overview", icon: TrendingUp },
+            { id: "overview", label: "Overview", icon: TrendingUp },
+              { id: "applied", label: "Applied", icon: Target },
               { id: "badges", label: "Badges", icon: Medal },
               { id: "saved", label: "Saved", icon: Bookmark },
               { id: "activity", label: "Activity", icon: Clock },
@@ -765,6 +787,55 @@ const StudentProfilePage = () => {
           {/* ===== TAB CONTENT ===== */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
+              {activeTab === "applied" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-6 rounded-xl">
+                  <h3 className="font-display text-xl font-bold mb-6 flex items-center gap-2">
+                    <Target className="w-5 h-5 text-primary" />
+                    Applied Opportunities
+                  </h3>
+                  {loadingApplied ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="w-8 h-8 animate-spin" />
+                    </div>
+                  ) : appliedOpportunities.length > 0 ? (
+                    <div className="space-y-4">
+                      {appliedOpportunities.map((opp) => (
+                        <motion.div
+                          key={opp.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          onClick={() => router.push(`/opportunity/${opp.id}`)}
+                          className="flex items-center justify-between p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-3">
+                            {opp.image && (
+                              <img src={opp.image} alt={opp.title} className="w-12 h-12 rounded-lg object-cover" />
+                            )}
+                            <div>
+                              <div className="font-bold group-hover:text-primary transition-colors">{opp.title}</div>
+                              <div className="text-sm text-muted-foreground flex items-center gap-2">
+                                <Badge className="bg-primary/20 text-primary text-xs">{opp.type}</Badge>
+                                {opp.organizer && <span>⬢ {opp.organizer}</span>}
+                                <span>⬢ Applied {new Date().toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Check className="w-5 h-5 text-success" />
+                            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Target className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+                      <p className="text-muted-foreground">No applications yet</p>
+                      <Button className="mt-4" onClick={() => router.push("/")}>Explore Opportunities</Button>
+                    </div>
+                  )}
+                </motion.div>
+              )}
               {activeTab === "overview" && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                   {/* Stats Grid */}

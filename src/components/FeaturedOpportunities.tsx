@@ -131,6 +131,7 @@ const FeaturedOpportunities = () => {
                 organization={opp.organizer || "Admin"}
                 type={opp.type as any}
                 deadline={(() => {
+                  if (opp.dates?.registrationEndDescription) return opp.dates.registrationEndDescription;
                   if (!mounted || !opp.dates?.registrationEnd) return "Ending Soon";
                   const end = new Date(opp.dates.registrationEnd).getTime();
                   const diff = Math.ceil((end - Date.now()) / (1000 * 60 * 60 * 24));

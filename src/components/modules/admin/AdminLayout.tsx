@@ -23,6 +23,7 @@ import {
     Zap,
     ShoppingBag,
     Ticket,
+    Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,7 @@ const navItems: NavItem[] = [
     { label: "Blog", icon: FileText, path: "/admin/blog" },
     { label: "Careers", icon: Briefcase, path: "/admin/careers" },
     { label: "Students", icon: Users, path: "/admin/students" },
+    { label: "User Accounts", icon: Shield, path: "/admin/users" },
     { label: "Schools", icon: School, path: "/admin/schools" },
     { label: "Organizers", icon: Users, path: "/admin/organizers" },
     { label: "Badges", icon: Medal, path: "/admin/badges" },
