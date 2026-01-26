@@ -2707,12 +2707,12 @@ h1, h2, h3, h4, h5, h6 {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
 
-.bg-hero-glow {
-  background-image: radial-gradient(at top, #00eaff1a 0%, #0000 50%);
-}
-
 .bg-gradient-to-tr {
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
+}
+
+.bg-hero-glow {
+  background-image: radial-gradient(at top, #00eaff1a 0%, #0000 50%);
 }
 
 .from-accent {
@@ -3581,6 +3581,11 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
 .text-\[0\.8rem\] {
   font-size: .8rem;
 }
@@ -3616,11 +3621,6 @@ h1, h2, h3, h4, h5, h6 {
 .text-xs {
   font-size: .75rem;
   line-height: 1rem;
-}
-
-.text-7xl {
-  font-size: 4.5rem;
-  line-height: 1;
 }
 
 .font-black {

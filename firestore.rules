@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to careers, blogs, and other public content
+    match /careers/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /blogs/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /opportunities/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Allow authenticated users to read/write their own student data
+    match /students/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Admin operations - require authentication
+    match /admins/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /notifications/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /schoolDemos/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /badges/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /settings/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /organizers/{document} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Default: require authentication for all other operations
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

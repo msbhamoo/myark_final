@@ -1,10 +1,4 @@
 {
-  "/blog/page": "app/blog/page.js",
-  "/careers/page": "app/careers/page.js",
-  "/page": "app/page.js",
-  "/privacy/page": "app/privacy/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/rewards/page": "app/rewards/page.js",
-  "/schools/page": "app/schools/page.js",
-  "/terms/page": "app/terms/page.js"
+  "/opportunity/[id]/page": "app/opportunity/[id]/page.js",
+  "/page": "app/page.js"
 }

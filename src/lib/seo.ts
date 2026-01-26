@@ -23,6 +23,7 @@ export function constructMetadata({
     keywords = ["scholarships", "competitions", "olympiads", "internships", "students", "Gen Z", "career guide", "education"],
     noIndex = false,
     publishedTime,
+    modifiedTime,
     authors,
 }: SEOConfig): Metadata {
     const fullTitle = title.includes('Myark') ? title : `${title} | Myark`;

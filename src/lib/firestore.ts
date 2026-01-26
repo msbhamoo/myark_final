@@ -182,6 +182,7 @@ export const opportunitiesService = {
     subscribe(callback: (opportunities: Opportunity[]) => void) {
         const q = query(
             collection(db, COLLECTIONS.opportunities),
+            where("status", "==", "published"),
             orderBy("createdAt", "desc")
         );
 
