@@ -190,6 +190,8 @@ __turbopack_context__.s([
     ()=>careersService,
     "dashboardService",
     ()=>dashboardService,
+    "leadsService",
+    ()=>leadsService,
     "notificationsService",
     ()=>notificationsService,
     "opportunitiesService",
@@ -221,7 +223,8 @@ const COLLECTIONS = {
     notifications: "notifications",
     badges: "badges",
     settings: "settings",
-    organizers: "organizers"
+    organizers: "organizers",
+    leads: "studentLeads"
 };
 const toDate = (timestamp)=>{
     if (!timestamp) return undefined;
@@ -576,6 +579,42 @@ const studentsService = {
             badges: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["arrayRemove"])(badgeId),
             updatedAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Timestamp"].now()
         });
+    }
+};
+const leadsService = {
+    async getAll (filters) {
+        const constraints = [
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["orderBy"])("createdAt", "desc")
+        ];
+        if (filters?.converted !== undefined) {
+            constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["where"])("converted", "==", filters.converted));
+        }
+        if (filters?.limit) {
+            constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["limit"])(filters.limit));
+        }
+        const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads), ...constraints);
+        const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getDocs"])(q);
+        return snapshot.docs.map((doc)=>{
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                createdAt: toDate(data.createdAt),
+                convertedAt: toDate(data.convertedAt)
+            };
+        });
+    },
+    async getStats () {
+        const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getDocs"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads));
+        const leads = snapshot.docs.map((doc)=>doc.data());
+        return {
+            total: leads.length,
+            converted: leads.filter((l)=>l.converted).length,
+            abandoned: leads.filter((l)=>!l.converted).length
+        };
+    },
+    async delete (id) {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["deleteDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$node$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads, id));
     }
 };
 const schoolDemosService = {

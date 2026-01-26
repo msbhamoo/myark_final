@@ -21,6 +21,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { useStudentAuth } from "@/lib/studentAuth";
+import { studentAuthService } from "@/lib/studentAuthService";
 import MascotFeedback, { type MascotState } from "./MascotFeedback";
 import PhoneInput from "./PhoneInput";
 import PinInput from "./PinInput";
@@ -92,7 +93,7 @@ const stepConfig: Record<AuthStep, {
 // ============================================
 const AuthModal = () => {
     const isMobile = useMediaQuery("(max-width: 768px)");
-    const { authModalOpen, hideAuthModal, authModalOptions, login, register } = useStudentAuth();
+    const { authModalOpen, hideAuthModal, authModalOptions, login, register, showOnboardingModal } = useStudentAuth();
     const [state, setState] = useState<AuthState>({
         step: 'phone',
         mode: authModalOptions?.mode || 'login',
@@ -138,6 +139,9 @@ const AuthModal = () => {
         const loginResult = await login(state.phone, '0000'); // Dummy PIN to check existence
         if (loginResult.errorCode === 'USER_NOT_FOUND') {
             // New user - go to registration
+            // CAPTURE LEAD IMMEDIATELY
+            studentAuthService.captureLead(state.phone);
+
             setState(s => ({
                 ...s,
                 loading: false,
@@ -198,7 +202,12 @@ const AuthModal = () => {
         if (result.success) {
             setShowConfetti(true);
             setState(s => ({ ...s, loading: false, step: 'success' }));
-            setTimeout(() => setShowConfetti(false), 3000);
+            setTimeout(() => {
+                setShowConfetti(false);
+                hideAuthModal();
+                // Trigger onboarding for new users
+                setTimeout(showOnboardingModal, 500);
+            }, 2500);
         } else {
             setState(s => ({
                 ...s,
@@ -206,7 +215,7 @@ const AuthModal = () => {
                 error: result.error || "Something went wrong",
             }));
         }
-    }, [state.pin, state.confirmPin, state.phone, register]);
+    }, [state.pin, state.confirmPin, state.phone, register, hideAuthModal, showOnboardingModal]);
 
     const handlePinLogin = useCallback(async () => {
         if (state.pin.length !== 4) {
@@ -452,7 +461,7 @@ const AuthModal = () => {
                         </motion.div>
                         <p className="text-muted-foreground">
                             {state.mode === 'register'
-                                ? "You've earned your first XP! Start exploring to level up."
+                                ? "Registering your profile... Get ready for a surprise! ✨"
                                 : "Welcome back! +10 XP for daily login."}
                         </p>
                     </motion.div>

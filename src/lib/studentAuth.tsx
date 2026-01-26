@@ -32,6 +32,11 @@ interface StudentAuthContextType {
     showAuthModal: (options?: AuthModalOptions) => void;
     hideAuthModal: () => void;
 
+    // Onboarding Modal
+    onboardingOpen: boolean;
+    showOnboardingModal: () => void;
+    hideOnboardingModal: () => void;
+
     // Auth Actions
     login: (phone: string, pin: string) => Promise<AuthResult>;
     register: (phone: string, pin: string) => Promise<AuthResult>;
@@ -76,6 +81,7 @@ export const StudentAuthProvider = ({ children }: StudentAuthProviderProps) => {
     const [loading, setLoading] = useState(true);
     const [authModalOpen, setAuthModalOpen] = useState(false);
     const [authModalOptions, setAuthModalOptions] = useState<AuthModalOptions | null>(null);
+    const [onboardingOpen, setOnboardingOpen] = useState(false);
 
     // Check for existing session on mount
     useEffect(() => {
@@ -114,6 +120,15 @@ export const StudentAuthProvider = ({ children }: StudentAuthProviderProps) => {
         // Small delay before clearing options to prevent flash
         setTimeout(() => setAuthModalOptions(null), 300);
     }, [authModalOptions]);
+
+    // Onboarding Modal Controls
+    const showOnboardingModal = useCallback(() => {
+        setOnboardingOpen(true);
+    }, []);
+
+    const hideOnboardingModal = useCallback(() => {
+        setOnboardingOpen(false);
+    }, []);
 
     // Login
     const login = useCallback(async (phone: string, pin: string): Promise<AuthResult> => {
@@ -250,6 +265,9 @@ export const StudentAuthProvider = ({ children }: StudentAuthProviderProps) => {
         authModalOptions,
         showAuthModal,
         hideAuthModal,
+        onboardingOpen,
+        showOnboardingModal,
+        hideOnboardingModal,
         login,
         register,
         logout,

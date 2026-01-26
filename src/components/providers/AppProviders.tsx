@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/lib/auth";
 import { StudentAuthProvider } from "@/lib/studentAuth";
-import { AuthModal } from "@/components/auth";
+import { AuthModal, OnboardingModal } from "@/components/auth";
 import CommunitySignals from "@/components/CommunitySignals";
 import { useState } from "react";
 
@@ -23,6 +23,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
                         <Toaster />
                         <Sonner />
                         <AuthModal />
+                        <OnboardingModal />
                         <CommunitySignals />
                     </TooltipProvider>
                 </StudentAuthProvider>

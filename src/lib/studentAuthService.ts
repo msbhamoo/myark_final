@@ -78,6 +78,16 @@ export interface RateLimitResult {
     lockoutUntil?: Date;
 }
 
+export interface StudentLead {
+    id: string;
+    phone: string;
+    createdAt: Date;
+    converted: boolean;
+    convertedAt?: Date;
+    device: string;
+    browser: string;
+}
+
 // ============================================
 // CONSTANTS
 // ============================================
@@ -85,6 +95,7 @@ export interface RateLimitResult {
 const COLLECTIONS = {
     studentUsers: "studentUsers",
     studentSessions: "studentSessions",
+    studentLeads: "studentLeads",
 } as const;
 
 const MAX_FAILED_ATTEMPTS = 5;
@@ -172,6 +183,45 @@ function calculateNewStreak(lastLoginAt: Date | undefined, currentStreak: number
 
 export const studentAuthService = {
     // ============================================
+    // LEAD CAPTURE
+    // ============================================
+
+    async captureLead(phone: string): Promise<void> {
+        try {
+            const cleanPhone = phone.replace(/\D/g, '');
+            if (cleanPhone.length !== 10) return;
+
+            const leadId = `lead_${cleanPhone}`;
+            const { device, browser } = getDeviceInfo();
+            const now = new Date();
+
+            await setDoc(doc(db, COLLECTIONS.studentLeads, leadId), {
+                id: leadId,
+                phone: cleanPhone,
+                createdAt: Timestamp.fromDate(now),
+                converted: false,
+                device,
+                browser,
+            }, { merge: true });
+        } catch (error) {
+            console.error("Lead capture error:", error);
+        }
+    },
+
+    async convertLead(phone: string): Promise<void> {
+        try {
+            const cleanPhone = phone.replace(/\D/g, '');
+            const leadId = `lead_${cleanPhone}`;
+            await updateDoc(doc(db, COLLECTIONS.studentLeads, leadId), {
+                converted: true,
+                convertedAt: Timestamp.now(),
+            });
+        } catch (error) {
+            // Might not exist, ignore
+        }
+    },
+
+    // ============================================
     // REGISTRATION
     // ============================================
 
@@ -230,6 +280,9 @@ export const studentAuthService = {
                 createdAt: Timestamp.fromDate(now),
                 lastLoginAt: Timestamp.fromDate(now),
             });
+
+            // Convert lead to customer/user
+            await this.convertLead(cleanPhone);
 
             // Create session
             const session = await this.createSession(userId);
