@@ -2286,7 +2286,7 @@ const PhoneInput = ({ value, onChange, error, disabled = false, autoFocus = fals
                             damping: 30
                         },
                         className: "text-success text-xl",
-                        children: "✓"
+                        children: "âœ“"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/PhoneInput.tsx",
                         lineNumber: 106,
@@ -2310,7 +2310,7 @@ const PhoneInput = ({ value, onChange, error, disabled = false, autoFocus = fals
                 className: "text-sm text-destructive flex items-center gap-1",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        children: "⚠️"
+                        children: "âš ï¸"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/PhoneInput.tsx",
                         lineNumber: 124,
@@ -2742,7 +2742,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Confett
 // ============================================
 const stepConfig = {
     phone: {
-        title: "Let's get started! 🚀",
+        title: "Let's get started! 🐧",
         subtitle: "Enter your mobile number",
         mascotState: 'idle',
         mascotMessage: "Drop your digits, explorer! 📱"
@@ -2751,19 +2751,19 @@ const stepConfig = {
         title: "Create your secret code",
         subtitle: "Pick 4 digits you'll remember",
         mascotState: 'thinking',
-        mascotMessage: "Make it memorable, make it yours! 🎯"
+        mascotMessage: "Make it memorable, make it yours! 💡"
     },
     pin_confirm: {
         title: "Confirm your code",
         subtitle: "Enter the same 4 digits again",
         mascotState: 'thinking',
-        mascotMessage: "One more time to lock it in! ✨"
+        mascotMessage: "One more time to lock it in! ✅"
     },
     pin_login: {
         title: "Welcome back! 👋",
         subtitle: "Enter your secret code",
         mascotState: 'excited',
-        mascotMessage: "Ready to continue your adventure? 🎮"
+        mascotMessage: "Ready to continue your adventure? 🚀"
     },
     success: {
         title: "You're in! 🎉",
@@ -2893,7 +2893,7 @@ const AuthModal = ()=>{
         if (state.pin !== state.confirmPin) {
             setState((s)=>({
                     ...s,
-                    error: "Oops! Those PINs don't match. Try again! 💪",
+                    error: "Oops! Those PINs don't match. Try again! 🧐",
                     confirmPin: ''
                 }));
             return;
@@ -3013,7 +3013,7 @@ const AuthModal = ()=>{
                     isActive: showConfetti
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 284,
+                    lineNumber: 265,
                     columnNumber: 30
                 }, ("TURBOPACK compile-time value", void 0)),
                 state.step !== 'phone' && state.step !== 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -3030,12 +3030,12 @@ const AuthModal = ()=>{
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 295,
+                        lineNumber: 275,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 288,
+                    lineNumber: 268,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 isMobile && state.step !== 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3046,12 +3046,12 @@ const AuthModal = ()=>{
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 306,
+                        lineNumber: 285,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 301,
+                    lineNumber: 280,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$auth$2f$MascotFeedback$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3059,7 +3059,7 @@ const AuthModal = ()=>{
                     message: mascotMessage
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 311,
+                    lineNumber: 289,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3078,7 +3078,7 @@ const AuthModal = ()=>{
                             children: config.title
                         }, config.title, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 318,
+                            lineNumber: 295,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -3095,13 +3095,13 @@ const AuthModal = ()=>{
                             children: config.subtitle
                         }, config.subtitle, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 326,
+                            lineNumber: 303,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 317,
+                    lineNumber: 294,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -3135,7 +3135,7 @@ const AuthModal = ()=>{
                                     onSubmit: handlePhoneSubmit
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 347,
+                                    lineNumber: 323,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3147,7 +3147,7 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 362,
+                                        lineNumber: 338,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -3156,20 +3156,20 @@ const AuthModal = ()=>{
                                                 className: "w-4 h-4 ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                                lineNumber: 364,
+                                                lineNumber: 340,
                                                 columnNumber: 44
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 355,
+                                    lineNumber: 331,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "phone", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 340,
+                            lineNumber: 316,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_create' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3200,7 +3200,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinCreate
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 378,
+                                    lineNumber: 353,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3208,16 +3208,16 @@ const AuthModal = ()=>{
                                     disabled: state.pin.length !== 4 || state.loading,
                                     className: "w-full h-12 text-base font-semibold",
                                     size: "lg",
-                                    children: "Lock it in 🔐"
+                                    children: "Lock it in 🔒"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 386,
+                                    lineNumber: 361,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_create", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 371,
+                            lineNumber: 346,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_confirm' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3248,7 +3248,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinConfirm
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 405,
+                                    lineNumber: 379,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3260,18 +3260,18 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 420,
+                                        lineNumber: 394,
                                         columnNumber: 33
-                                    }, ("TURBOPACK compile-time value", void 0)) : "Create Account 🚀"
+                                    }, ("TURBOPACK compile-time value", void 0)) : "Create Account ✨"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 413,
+                                    lineNumber: 387,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_confirm", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 398,
+                            lineNumber: 372,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_login' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3302,7 +3302,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinLogin
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 436,
+                                    lineNumber: 409,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3314,12 +3314,12 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 451,
+                                        lineNumber: 424,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : "Unlock 🔓"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 444,
+                                    lineNumber: 417,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3332,19 +3332,19 @@ const AuthModal = ()=>{
                                             children: "Get help"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 458,
+                                            lineNumber: 431,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 456,
+                                    lineNumber: 429,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_login", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 429,
+                            lineNumber: 402,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3375,10 +3375,10 @@ const AuthModal = ()=>{
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             className: "text-xl",
-                                            children: "🎮"
+                                            children: "🎉"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 478,
+                                            lineNumber: 450,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3386,13 +3386,13 @@ const AuthModal = ()=>{
                                             children: "+50 XP"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 479,
+                                            lineNumber: 451,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 472,
+                                    lineNumber: 444,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3400,19 +3400,19 @@ const AuthModal = ()=>{
                                     children: state.mode === 'register' ? "You've earned your first XP! Start exploring to level up." : "Welcome back! +10 XP for daily login."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 481,
+                                    lineNumber: 453,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "success", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 466,
+                            lineNumber: 438,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 338,
+                    lineNumber: 314,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 authModalOptions?.message && state.step === 'phone' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3433,18 +3433,18 @@ const AuthModal = ()=>{
                         children: authModalOptions.message
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 498,
-                        columnNumber: 21
+                        lineNumber: 470,
+                        columnNumber: 25
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 492,
-                    columnNumber: 17
+                    lineNumber: 464,
+                    columnNumber: 21
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 282,
+            lineNumber: 263,
             columnNumber: 9
         }, ("TURBOPACK compile-time value", void 0));
     // ============================================
@@ -3463,24 +3463,24 @@ const AuthModal = ()=>{
                             children: "Authenticate"
                         }, void 0, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 515,
+                            lineNumber: 487,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 514,
+                        lineNumber: 486,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0)),
                     renderContent()
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/auth/AuthModal.tsx",
-                lineNumber: 513,
+                lineNumber: 485,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 512,
+            lineNumber: 484,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -3496,24 +3496,24 @@ const AuthModal = ()=>{
                         children: "Authenticate"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 527,
+                        lineNumber: 498,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 526,
+                    lineNumber: 497,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 renderContent()
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 525,
+            lineNumber: 496,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/auth/AuthModal.tsx",
-        lineNumber: 524,
+        lineNumber: 495,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -4431,6 +4431,13 @@ const CommunitySignals = ({ className })=>{
                     ...doc.data()
                 }));
             setSignals(data);
+        }, (error)=>{
+            if (error.code === 'permission-denied') {
+                console.warn("Community signals access restricted by permissions.");
+                setSignals([]);
+            } else {
+                console.error("CommunitySignals listener error:", error);
+            }
         });
         return ()=>unsubscribe();
     }, []);
@@ -4441,7 +4448,7 @@ const CommunitySignals = ({ className })=>{
                     className: "w-4 h-4 text-yellow-500"
                 }, void 0, false, {
                     fileName: "[project]/src/components/CommunitySignals.tsx",
-                    lineNumber: 55,
+                    lineNumber: 62,
                     columnNumber: 34
                 }, ("TURBOPACK compile-time value", void 0));
             case 'xp':
@@ -4449,7 +4456,7 @@ const CommunitySignals = ({ className })=>{
                     className: "w-4 h-4 text-primary"
                 }, void 0, false, {
                     fileName: "[project]/src/components/CommunitySignals.tsx",
-                    lineNumber: 56,
+                    lineNumber: 63,
                     columnNumber: 31
                 }, ("TURBOPACK compile-time value", void 0));
             case 'redemption':
@@ -4457,7 +4464,7 @@ const CommunitySignals = ({ className })=>{
                     className: "w-4 h-4 text-secondary"
                 }, void 0, false, {
                     fileName: "[project]/src/components/CommunitySignals.tsx",
-                    lineNumber: 57,
+                    lineNumber: 64,
                     columnNumber: 39
                 }, ("TURBOPACK compile-time value", void 0));
             case 'hype':
@@ -4465,7 +4472,7 @@ const CommunitySignals = ({ className })=>{
                     className: "w-4 h-4 text-rose-500 fill-current"
                 }, void 0, false, {
                     fileName: "[project]/src/components/CommunitySignals.tsx",
-                    lineNumber: 58,
+                    lineNumber: 65,
                     columnNumber: 33
                 }, ("TURBOPACK compile-time value", void 0));
             default:
@@ -4473,7 +4480,7 @@ const CommunitySignals = ({ className })=>{
                     className: "w-4 h-4 text-primary"
                 }, void 0, false, {
                     fileName: "[project]/src/components/CommunitySignals.tsx",
-                    lineNumber: 59,
+                    lineNumber: 66,
                     columnNumber: 29
                 }, ("TURBOPACK compile-time value", void 0));
         }
@@ -4514,14 +4521,14 @@ const CommunitySignals = ({ className })=>{
                                         className: "w-full h-full rounded-full object-cover"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                                        lineNumber: 82,
+                                        lineNumber: 89,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "text-xs font-bold text-primary",
                                         children: signal.studentName[0]
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                                        lineNumber: 84,
+                                        lineNumber: 91,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4529,13 +4536,13 @@ const CommunitySignals = ({ className })=>{
                                         children: getIcon(signal.type)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                                        lineNumber: 86,
+                                        lineNumber: 93,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CommunitySignals.tsx",
-                                lineNumber: 80,
+                                lineNumber: 87,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4548,12 +4555,12 @@ const CommunitySignals = ({ className })=>{
                                             children: signal.studentName
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/CommunitySignals.tsx",
-                                            lineNumber: 92,
+                                            lineNumber: 99,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                                        lineNumber: 91,
+                                        lineNumber: 98,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4561,13 +4568,13 @@ const CommunitySignals = ({ className })=>{
                                         children: signal.content
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                                        lineNumber: 94,
+                                        lineNumber: 101,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CommunitySignals.tsx",
-                                lineNumber: 90,
+                                lineNumber: 97,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4575,18 +4582,18 @@ const CommunitySignals = ({ className })=>{
                                 children: "Just now"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/CommunitySignals.tsx",
-                                lineNumber: 98,
+                                lineNumber: 105,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, signal.id, true, {
                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                        lineNumber: 69,
+                        lineNumber: 76,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0)))
             }, void 0, false, {
                 fileName: "[project]/src/components/CommunitySignals.tsx",
-                lineNumber: 67,
+                lineNumber: 74,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4596,7 +4603,7 @@ const CommunitySignals = ({ className })=>{
                         className: "w-1.5 h-1.5 rounded-full bg-success animate-pulse"
                     }, void 0, false, {
                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                        lineNumber: 106,
+                        lineNumber: 113,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4604,19 +4611,19 @@ const CommunitySignals = ({ className })=>{
                         children: "Live Signals"
                     }, void 0, false, {
                         fileName: "[project]/src/components/CommunitySignals.tsx",
-                        lineNumber: 107,
+                        lineNumber: 114,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/CommunitySignals.tsx",
-                lineNumber: 105,
+                lineNumber: 112,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/CommunitySignals.tsx",
-        lineNumber: 66,
+        lineNumber: 73,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

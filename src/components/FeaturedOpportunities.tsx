@@ -31,7 +31,7 @@ const FeaturedOpportunities = () => {
     if (!isAuthenticated) {
       showAuthModal({
         trigger: "manual",
-        message: "â­ Sign in to save your results and earn 150 XP!"
+        message: "⭐ Sign in to save your results and earn 150 XP!"
       });
       return;
     }

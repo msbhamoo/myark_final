@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { uploadImage } from "@/lib/imagekit";
 import { opportunitiesService, badgesService, settingsService } from "@/lib/firestore";
 import type { Opportunity, Badge as AdminBadge, Organizer } from "@/types/admin";
+
 // ============================================
 // INTEREST OPTIONS
 // ============================================
@@ -42,6 +43,7 @@ const INTERESTS = [
   { id: "literature", label: "Literature", icon: BookOpen, color: "from-teal-500 to-cyan-500" },
   { id: "languages", label: "Languages", icon: Globe, color: "from-blue-500 to-indigo-500" },
 ];
+
 const GRADES = [4, 5, 6, 7, 8, 9, 10, 11, 12];
 const GENDER_OPTIONS = [
   { id: "male", label: "Male" },
@@ -49,25 +51,27 @@ const GENDER_OPTIONS = [
   { id: "other", label: "Other" },
   { id: "prefer_not_to_say", label: "Prefer not to say" },
 ];
+
 // ============================================
 // MYRO MESSAGES
 // ============================================
 const getMyroMessage = (percent: number, streak: number = 0) => {
   // Priority 1: Streak encouragement
   if (streak > 0) {
-    if (streak === 1) return { emoji: "=%", message: "Streak started! Come back tomorrow to keep it lit!" };
-    if (streak === 3) return { emoji: "�a�", message: "3-day streak! You're on fire! Keep it up!" };
-    if (streak >= 7) return { emoji: "�x", message: `${streak}-day streak! Absolute LEGEND! Don't stop now!` };
+    if (streak === 1) return { emoji: "🔥", message: "Streak started! Come back tomorrow to keep it lit!" };
+    if (streak === 3) return { emoji: "⚡", message: "3-day streak! You're on fire! Keep it up!" };
+    if (streak >= 7) return { emoji: "🏆", message: `${streak}-day streak! Absolute LEGEND! Don't stop now!` };
   }
   // Priority 2: Profile completion
-  if (percent === 0) return { emoji: "�x9", message: "Hey! Let's power up your profile!" };
-  if (percent < 25) return { emoji: "=�", message: "Great start! Keep going for better matches!" };
-  if (percent < 50) return { emoji: "=�", message: "Nice! You're building momentum!" };
+  if (percent === 0) return { emoji: "👋", message: "Hey! Let's power up your profile!" };
+  if (percent < 25) return { emoji: "✨", message: "Great start! Keep going for better matches!" };
+  if (percent < 50) return { emoji: "🚀", message: "Nice! You're building momentum!" };
   if (percent < 75) return { emoji: "⭐", message: "Halfway there! You're doing great!" };
-  if (percent < 100) return { emoji: "=%", message: "Almost maxed out! One more step!" };
+  if (percent < 100) return { emoji: "🔥", message: "Almost maxed out! One more step!" };
   // Default/Max
-  return { emoji: "�x� ", message: "LEGENDARY! Your profile is fully powered!" };
+  return { emoji: "👑", message: "LEGENDARY! Your profile is fully powered!" };
 };
+
 // ============================================
 // PROFILE POWER METER
 // ============================================
@@ -113,6 +117,7 @@ const ProfileMeter = ({ percent }: { percent: number }) => {
     </div>
   );
 };
+
 // ============================================
 // POWER-UP CARD
 // ============================================
@@ -166,7 +171,7 @@ const PowerUpCard = ({
             "text-xs font-black",
             isComplete ? "bg-emerald-500/20 text-emerald-400" : "bg-primary/20 text-primary"
           )}>
-            {isComplete ? "�S Done" : `+${xp} XP`}
+            {isComplete ? "✅ Done" : `+${xp} XP`}
           </Badge>
         </div>
         <p className="text-sm text-muted-foreground">{description}</p>
@@ -174,6 +179,7 @@ const PowerUpCard = ({
     </div>
   </motion.div>
 );
+
 // ============================================
 // MODAL OVERLAYS
 // ============================================
@@ -186,16 +192,17 @@ const ModalOverlay = ({ children, onClose }: { children: React.ReactNode; onClos
     onClick={onClose}
   >
     <motion.div
-    initial={{ y: 100, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    exit={{ y: 100, opacity: 0 }}
-    onClick={(e) => e.stopPropagation()}
-    className="w-full max-w-md glass-card p-6 rounded-3xl max-h-[80vh] overflow-auto"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 100, opacity: 0 }}
+      onClick={(e) => e.stopPropagation()}
+      className="w-full max-w-md glass-card p-6 rounded-3xl max-h-[80vh] overflow-auto"
     >
-    {children}
-  </motion.div>
+      {children}
+    </motion.div>
   </motion.div >
 );
+
 // ============================================
 // MAIN COMPONENT
 // ============================================
@@ -215,12 +222,14 @@ const StudentProfilePage = () => {
   const [showPowerUps, setShowPowerUps] = useState(false);
   const [schools, setSchools] = useState<Organizer[]>([]);
   const [schoolSearch, setSchoolSearch] = useState("");
+
   // Form states
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+
   useEffect(() => {
     if (student) {
       setSelectedGrade(student.grade || null);
@@ -231,6 +240,7 @@ const StudentProfilePage = () => {
       setEditName(student?.name || "");
     }
   }, [student]);
+
   // Load saved opportunities
   useEffect(() => {
     const loadSaved = async () => {
@@ -249,6 +259,7 @@ const StudentProfilePage = () => {
     };
     loadSaved();
   }, [student?.savedOpportunities]);
+
   // Load admin badges from Firebase
   useEffect(() => {
     const loadBadges = async () => {
@@ -261,6 +272,7 @@ const StudentProfilePage = () => {
     };
     loadBadges();
   }, []);
+
   // Load schools from organizers
   useEffect(() => {
     const loadSchools = async () => {
@@ -274,12 +286,14 @@ const StudentProfilePage = () => {
     };
     loadSchools();
   }, []);
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/");
     }
   }, [isAuthenticated, router]);
+
   // Calculate profile completion
   const calculateCompletion = () => {
     if (!student) return 0;
@@ -292,8 +306,10 @@ const StudentProfilePage = () => {
     if (student?.interests && student?.interests.length >= 3) complete++;
     return Math.round((complete / total) * 100);
   };
+
   const profilePercent = calculateCompletion();
   const myroMessage = getMyroMessage(profilePercent, student?.streakDays || 0);
+
   // Photo upload handler
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -318,6 +334,7 @@ const StudentProfilePage = () => {
       setUploadingPhoto(false);
     }
   };
+
   // Save name handler
   const handleSaveName = async () => {
     if (!editName.trim()) return;
@@ -326,8 +343,8 @@ const StudentProfilePage = () => {
       setActiveModal(null);
     } catch (error) {
     }
-    <Badge className="bg-success/20 text-success font-bold">All Complete ✅</Badge>
   };
+
   // Activity data (generated from student actions)
   const generateActivityTimeline = () => {
     const activities: Array<{ action: string; item: string; time: string; xp: number }> = [];
@@ -350,6 +367,7 @@ const StudentProfilePage = () => {
       { action: "Welcome to", item: "Myark!", time: "Just now", xp: 50 }
     ];
   };
+
   // Save handlers
   const handleSaveGrade = async () => {
     if (!selectedGrade) return;
@@ -360,7 +378,7 @@ const StudentProfilePage = () => {
         await addXPWithPersist(50);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000);
-        toast({ title: "+50 XP �x}", description: "Class saved!", className: "bg-primary text-primary-foreground border-none" });
+        toast({ title: "+50 XP 🎓", description: "Class saved!", className: "bg-primary text-primary-foreground border-none" });
       } else {
         toast({ title: "Class updated!", className: "bg-primary text-primary-foreground border-none" });
       }
@@ -369,6 +387,7 @@ const StudentProfilePage = () => {
       toast({ title: "Error", description: "Failed to save", variant: "destructive" });
     }
   };
+
   const handleSaveSchool = async () => {
     if (!selectedSchool) return;
     try {
@@ -387,6 +406,7 @@ const StudentProfilePage = () => {
       toast({ title: "Error", description: "Failed to save", variant: "destructive" });
     }
   };
+
   const handleSaveGender = async () => {
     if (!selectedGender) return;
     try {
@@ -403,6 +423,7 @@ const StudentProfilePage = () => {
       toast({ title: "Error", description: "Failed to save", variant: "destructive" });
     }
   };
+
   const handleSaveCity = async () => {
     if (!selectedCity) return;
     try {
@@ -419,6 +440,7 @@ const StudentProfilePage = () => {
       toast({ title: "Error", description: "Failed to save", variant: "destructive" });
     }
   };
+
   const handleSaveInterests = async () => {
     if (selectedInterests.length < 3) {
       toast({ title: "Select at least 3", description: "Pick 3+ interests for XP", variant: "destructive" });
@@ -431,7 +453,7 @@ const StudentProfilePage = () => {
         await addXPWithPersist(75);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000);
-        toast({ title: "+75 XP <�", description: "Interests saved!", className: "bg-primary text-primary-foreground border-none" });
+        toast({ title: "+75 XP ❤️", description: "Interests saved!", className: "bg-primary text-primary-foreground border-none" });
       } else {
         toast({ title: "Interests updated!", className: "bg-primary text-primary-foreground border-none" });
       }
@@ -440,73 +462,80 @@ const StudentProfilePage = () => {
       toast({ title: "Error", description: "Failed to save", variant: "destructive" });
     }
   };
+
   const toggleInterest = (id: string) => {
     setSelectedInterests(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
-    // Show loading or redirecting state
-    if (loading || !student) {
-      return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
-          <Loader2 className="w-12 h-12 animate-spin text-primary rounded-full p-2" />
-          <p className="text-primary font-bold animate-pulse tracking-widest uppercase text-xs">
-            {loading ? "Syncing Matrix..." : "Access Denied. Identity check failed."}
-          </p>
-        </div>
-      );
-    }
-    // Icon resolver for admin badges
-    const getBadgeIcon = (iconName: string) => {
-      const Icons: Record<string, any> = {
-        Star, Rocket, Target, Flame, Crown, Shield, Award, Medal, Trophy,
-        Users, Zap, Heart, GraduationCap, School, MapPin, Search, Sparkles
-      };
-      return Icons[iconName] || Award;
-    };
-    interface BadgeDisplay {
-      id: string | number;
-      name: string;
-      icon: any;
-      unlocked: boolean;
-      color: string;
-      condition: string;
-    }
-    // Combined badges: core logic + admin badges
-    let badges: BadgeDisplay[] = adminBadges.length > 0 ? adminBadges.map(b => ({
-      id: b.id,
-      name: b.name,
-      icon: getBadgeIcon(b.icon),
-      unlocked: !!(student?.badges?.includes(b.id) || student?.badges?.includes(b.name.toLowerCase().replace(/\s+/g, '_'))),
-      color: b.color || "from-gray-400 to-gray-600",
-      condition: b.xpRequirement ? `Reach ${b.xpRequirement} XP` : b.description
-    })) : [
-      { id: 1, name: "Early Bird", icon: Star, unlocked: !!student?.badges?.includes('early_bird'), color: "from-yellow-400 to-orange-500", condition: "Register on Myark" },
-      { id: 2, name: "Explorer", icon: Rocket, unlocked: (student?.appliedOpportunities?.length || 0) >= 1, color: "from-primary to-secondary", condition: "Apply to 1 opportunity" },
-      { id: 3, name: "Opportunity Hunter", icon: Target, unlocked: (student?.appliedOpportunities?.length || 0) >= 5, color: "from-green-400 to-emerald-500", condition: "Apply to 5 opportunities" },
-      { id: 4, name: "Streak King", icon: Flame, unlocked: (student?.streakDays || 0) >= 7, color: "from-orange-400 to-red-500", condition: "Maintain 7-day login streak" },
-      { id: 5, name: "Champion", icon: Crown, unlocked: (student?.xpPoints || 0) >= 1000, color: "from-purple-400 to-pink-500", condition: "Earn 1000 XP total" },
-      { id: 6, name: "Profile Pro", icon: Shield, unlocked: profilePercent === 100, color: "from-blue-400 to-cyan-500", condition: "Complete your profile 100%" },
-    ];
-    // Force include Profile Pro if not in admin badges
-    if (adminBadges.length > 0 && !badges.some(b => b.name === "Profile Pro")) {
-      badges.push({
-        id: "profile_pro_fixed",
-        name: "Profile Pro",
-        icon: Shield,
-        unlocked: profilePercent === 100,
-        color: "from-blue-400 to-cyan-500",
-        condition: "Complete your profile 100%"
-      });
-    }
+
+  // Show loading or redirecting state
+  if (loading || !student) {
     return (
-      <div className="min-h-screen bg-background">
-        <Confetti isActive={showConfetti} />
-        <Navbar />
-        <main className="pt-24 pb-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* ===== PROFILE HEADER ===== */}
-            <motion.div
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary rounded-full p-2" />
+        <p className="text-primary font-bold animate-pulse tracking-widest uppercase text-xs">
+          {loading ? "Syncing Matrix..." : "Access Denied. Identity check failed."}
+        </p>
+      </div>
+    );
+  }
+
+  // Icon resolver for admin badges
+  const getBadgeIcon = (iconName: string) => {
+    const Icons: Record<string, any> = {
+      Star, Rocket, Target, Flame, Crown, Shield, Award, Medal, Trophy,
+      Users, Zap, Heart, GraduationCap, School, MapPin, Search, Sparkles
+    };
+    return Icons[iconName] || Award;
+  };
+
+  interface BadgeDisplay {
+    id: string | number;
+    name: string;
+    icon: any;
+    unlocked: boolean;
+    color: string;
+    condition: string;
+  }
+
+  // Combined badges: core logic + admin badges
+  let badges: BadgeDisplay[] = adminBadges.length > 0 ? adminBadges.map(b => ({
+    id: b.id,
+    name: b.name,
+    icon: getBadgeIcon(b.icon),
+    unlocked: !!(student?.badges?.includes(b.id) || student?.badges?.includes(b.name.toLowerCase().replace(/\s+/g, '_'))),
+    color: b.color || "from-gray-400 to-gray-600",
+    condition: b.xpRequirement ? `Reach ${b.xpRequirement} XP` : b.description
+  })) : [
+    { id: 1, name: "Early Bird", icon: Star, unlocked: !!student?.badges?.includes('early_bird'), color: "from-yellow-400 to-orange-500", condition: "Register on Myark" },
+    { id: 2, name: "Explorer", icon: Rocket, unlocked: (student?.appliedOpportunities?.length || 0) >= 1, color: "from-primary to-secondary", condition: "Apply to 1 opportunity" },
+    { id: 3, name: "Opportunity Hunter", icon: Target, unlocked: (student?.appliedOpportunities?.length || 0) >= 5, color: "from-green-400 to-emerald-500", condition: "Apply to 5 opportunities" },
+    { id: 4, name: "Streak King", icon: Flame, unlocked: (student?.streakDays || 0) >= 7, color: "from-orange-400 to-red-500", condition: "Maintain 7-day login streak" },
+    { id: 5, name: "Champion", icon: Crown, unlocked: (student?.xpPoints || 0) >= 1000, color: "from-purple-400 to-pink-500", condition: "Earn 1000 XP total" },
+    { id: 6, name: "Profile Pro", icon: Shield, unlocked: profilePercent === 100, color: "from-blue-400 to-cyan-500", condition: "Complete your profile 100%" },
+  ];
+
+  // Force include Profile Pro if not in admin badges
+  if (adminBadges.length > 0 && !badges.some(b => b.name === "Profile Pro")) {
+    badges.push({
+      id: "profile_pro_fixed",
+      name: "Profile Pro",
+      icon: Shield,
+      unlocked: profilePercent === 100,
+      color: "from-blue-400 to-cyan-500",
+      condition: "Complete your profile 100%"
+    });
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Confetti isActive={showConfetti} />
+      <Navbar />
+      <main className="pt-24 pb-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* ===== PROFILE HEADER ===== */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="glass-card p-6 md:p-8 mb-8"
@@ -660,7 +689,7 @@ const StudentProfilePage = () => {
                       </Badge>
                     )}
                     {profilePercent === 100 && (
-                      <Badge className="bg-success/20 text-success font-bold">All Complete �S</Badge>
+                      <Badge className="bg-success/20 text-success font-bold">All Complete ✅</Badge>
                     )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -795,11 +824,11 @@ const StudentProfilePage = () => {
                         <div className="font-bold">{badge.name}</div>
                         {!badge.unlocked && (
                           <div className="text-xs text-muted-foreground mt-1 text-center">
-                            = {badge.condition}
+                            🎯 {badge.condition}
                           </div>
                         )}
                         {badge.unlocked && (
-                          <div className="text-xs text-success mt-1">�S Unlocked!</div>
+                          <div className="text-xs text-success mt-1">✅ Unlocked!</div>
                         )}
                       </div>
                     ))}
@@ -908,200 +937,200 @@ const StudentProfilePage = () => {
               </motion.div>
             </div>
           </div>
-      </div>
-      </main >
-  {/* ===== MODALS ===== */ }
-  <AnimatePresence>
-{
-  activeModal === "grade" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">What class are you in? 🎓</h3>
-      <p className="text-sm text-muted-foreground mb-6">This helps us find age-appropriate opportunities</p>
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        {GRADES.map((grade) => (
-          <button
-            key={grade}
-            onClick={() => setSelectedGrade(grade)}
-            className={cn(
-              "p-4 rounded-xl text-lg font-bold transition-all",
-              selectedGrade === grade
-                ? "bg-primary text-primary-foreground"
-                : "bg-white/5 hover:bg-white/10"
-            )}
-          >
-            {grade}
-          </button>
-        ))}
-      </div>
-      <Button className="w-full" onClick={handleSaveGrade} disabled={!selectedGrade}>
-        Save & Earn +50 XP
-      </Button>
-    </ModalOverlay>
-  )
-}
-{
-  activeModal === "school" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">Where do you study? 🏫</h3>
-      <p className="text-sm text-muted-foreground mb-4">Connect with school-specific events</p>
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="Search your school..."
-          value={schoolSearch}
-          onChange={(e) => setSchoolSearch(e.target.value)}
-          className="pl-9"
-        />
-      </div>
-      <div className="max-h-[300px] overflow-y-auto pr-2 mb-6 space-y-2 thin-scrollbar">
-        {schools
-          .filter(s => s.name.toLowerCase().includes(schoolSearch.toLowerCase()))
-          .map((school) => (
-            <button
-              key={school.id}
-              onClick={() => {
-                setSelectedSchool(school.name);
-                setSchoolSearch("");
-              }}
-              className={cn(
-                "w-full p-4 rounded-xl text-left font-medium transition-all",
-                selectedSchool === school.name
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-white/5 hover:bg-white/10"
-              )}
-            >
-              {school.name}
-            </button>
-          ))}
-        <div className="pt-4 border-t border-white/10">
-          <p className="text-xs text-muted-foreground mb-2 px-1">Can't find your school?</p>
-          <button
-            onClick={() => setSelectedSchool("other")}
-            className={cn(
-              "w-full p-4 rounded-xl text-left font-medium transition-all italic",
-              selectedSchool === "other"
-                ? "bg-primary text-primary-foreground"
-                : "bg-white/5 hover:bg-white/10"
-            )}
-          >
-            Enter school manually...
-          </button>
         </div>
-        {selectedSchool === "other" && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
-            <Input
-              placeholder="Type your school name..."
-              onChange={(e) => setSchoolSearch(e.target.value)}
-              onBlur={(e) => setSelectedSchool(e.target.value)}
-              className="mt-2"
-            />
-          </motion.div>
-        )}
-      </div>
-      <Button
-        className="w-full"
-        onClick={handleSaveSchool}
-        disabled={!selectedSchool || selectedSchool === "other"}
-      >
-        Save & Earn +50 XP
-      </Button>
-    </ModalOverlay>
-  )
-}
-{
-  activeModal === "gender" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">How do you identify? 👤</h3>
-      <p className="text-sm text-muted-foreground mb-6">Personalize your experience</p>
-      <div className="space-y-3 mb-6">
-        {GENDER_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => setSelectedGender(option.id)}
-            className={cn(
-              "w-full p-4 rounded-xl text-left font-medium transition-all",
-              selectedGender === option.id
-                ? "bg-primary text-primary-foreground"
-                : "bg-white/5 hover:bg-white/10"
-            )}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-      <Button className="w-full" onClick={handleSaveGender} disabled={!selectedGender}>
-        Save & Earn +25 XP
-      </Button>
-    </ModalOverlay>
-  )
-}
-{
-  activeModal === "city" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">Where are you from? 🌍</h3>
-      <p className="text-sm text-muted-foreground mb-6">Find local opportunities near you</p>
-      <Input
-        placeholder="Type your city..."
-        value={selectedCity}
-        onChange={(e) => setSelectedCity(e.target.value)}
-        className="mb-6"
-      />
-      <Button className="w-full" onClick={handleSaveCity} disabled={!selectedCity}>
-        Save & Earn +25 XP
-      </Button>
-    </ModalOverlay>
-  )
-}
-{
-  activeModal === "name" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">What's your name? ✍️</h3>
-      <p className="text-sm text-muted-foreground mb-6">How should we call you?</p>
-      <Input
-        placeholder="Your name..."
-        value={editName}
-        onChange={(e) => setEditName(e.target.value)}
-        className="mb-6"
-      />
-      <Button className="w-full" onClick={handleSaveName} disabled={!editName.trim()}>
-        Update Name
-      </Button>
-    </ModalOverlay>
-  )
-}
-{
-  activeModal === "interests" && (
-    <ModalOverlay onClose={() => setActiveModal(null)}>
-      <h3 className="text-xl font-black mb-2">What excites you? ❤️</h3>
-      <p className="text-sm text-muted-foreground mb-4">Pick at least 3 interests</p>
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        {INTERESTS.map((interest) => (
-          <button
-            key={interest.id}
-            onClick={() => toggleInterest(interest.id)}
-            className={cn(
-              "p-3 rounded-xl flex items-center gap-2 transition-all",
-              selectedInterests.includes(interest.id)
-                ? `bg-gradient-to-r ${interest.color} text-white`
-                : "bg-white/5 hover:bg-white/10"
-            )}
-          >
-            <interest.icon className="w-4 h-4" />
-            <span className="text-sm font-medium">{interest.label}</span>
-          </button>
-        ))}
-      </div>
-      <p className="text-sm text-center text-muted-foreground mb-4">
-        {selectedInterests.length}/3 selected
-      </p>
-      <Button className="w-full" onClick={handleSaveInterests} disabled={selectedInterests.length < 3}>
-        Save & Earn +75 XP
-      </Button>
-    </ModalOverlay>
-  )
-}
+      </main >
+      {/* ===== MODALS ===== */}
+      <AnimatePresence>
+        {
+          activeModal === "grade" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">What class are you in? 🎓</h3>
+              <p className="text-sm text-muted-foreground mb-6">This helps us find age-appropriate opportunities</p>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                {GRADES.map((grade) => (
+                  <button
+                    key={grade}
+                    onClick={() => setSelectedGrade(grade)}
+                    className={cn(
+                      "p-4 rounded-xl text-lg font-bold transition-all",
+                      selectedGrade === grade
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-white/5 hover:bg-white/10"
+                    )}
+                  >
+                    {grade}
+                  </button>
+                ))}
+              </div>
+              <Button className="w-full" onClick={handleSaveGrade} disabled={!selectedGrade}>
+                Save & Earn +50 XP
+              </Button>
+            </ModalOverlay>
+          )
+        }
+        {
+          activeModal === "school" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">Where do you study? 🏫</h3>
+              <p className="text-sm text-muted-foreground mb-4">Connect with school-specific events</p>
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search your school..."
+                  value={schoolSearch}
+                  onChange={(e) => setSchoolSearch(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <div className="max-h-[300px] overflow-y-auto pr-2 mb-6 space-y-2 thin-scrollbar">
+                {schools
+                  .filter(s => s.name.toLowerCase().includes(schoolSearch.toLowerCase()))
+                  .map((school) => (
+                    <button
+                      key={school.id}
+                      onClick={() => {
+                        setSelectedSchool(school.name);
+                        setSchoolSearch("");
+                      }}
+                      className={cn(
+                        "w-full p-4 rounded-xl text-left font-medium transition-all",
+                        selectedSchool === school.name
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-white/5 hover:bg-white/10"
+                      )}
+                    >
+                      {school.name}
+                    </button>
+                  ))}
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs text-muted-foreground mb-2 px-1">Can't find your school?</p>
+                  <button
+                    onClick={() => setSelectedSchool("other")}
+                    className={cn(
+                      "w-full p-4 rounded-xl text-left font-medium transition-all italic",
+                      selectedSchool === "other"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-white/5 hover:bg-white/10"
+                    )}
+                  >
+                    Enter school manually...
+                  </button>
+                </div>
+                {selectedSchool === "other" && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
+                    <Input
+                      placeholder="Type your school name..."
+                      onChange={(e) => setSchoolSearch(e.target.value)}
+                      onBlur={(e) => setSelectedSchool(e.target.value)}
+                      className="mt-2"
+                    />
+                  </motion.div>
+                )}
+              </div>
+              <Button
+                className="w-full"
+                onClick={handleSaveSchool}
+                disabled={!selectedSchool || selectedSchool === "other"}
+              >
+                Save & Earn +50 XP
+              </Button>
+            </ModalOverlay>
+          )
+        }
+        {
+          activeModal === "gender" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">How do you identify? 👤</h3>
+              <p className="text-sm text-muted-foreground mb-6">Personalize your experience</p>
+              <div className="space-y-3 mb-6">
+                {GENDER_OPTIONS.map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => setSelectedGender(option.id)}
+                    className={cn(
+                      "w-full p-4 rounded-xl text-left font-medium transition-all",
+                      selectedGender === option.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-white/5 hover:bg-white/10"
+                    )}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+              <Button className="w-full" onClick={handleSaveGender} disabled={!selectedGender}>
+                Save & Earn +25 XP
+              </Button>
+            </ModalOverlay>
+          )
+        }
+        {
+          activeModal === "city" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">Where are you from? 🌍</h3>
+              <p className="text-sm text-muted-foreground mb-6">Find local opportunities near you</p>
+              <Input
+                placeholder="Type your city..."
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="mb-6"
+              />
+              <Button className="w-full" onClick={handleSaveCity} disabled={!selectedCity}>
+                Save & Earn +25 XP
+              </Button>
+            </ModalOverlay>
+          )
+        }
+        {
+          activeModal === "name" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">What's your name? ✍️</h3>
+              <p className="text-sm text-muted-foreground mb-6">How should we call you?</p>
+              <Input
+                placeholder="Your name..."
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="mb-6"
+              />
+              <Button className="w-full" onClick={handleSaveName} disabled={!editName.trim()}>
+                Update Name
+              </Button>
+            </ModalOverlay>
+          )
+        }
+        {
+          activeModal === "interests" && (
+            <ModalOverlay onClose={() => setActiveModal(null)}>
+              <h3 className="text-xl font-black mb-2">What excites you? ❤️</h3>
+              <p className="text-sm text-muted-foreground mb-4">Pick at least 3 interests</p>
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {INTERESTS.map((interest) => (
+                  <button
+                    key={interest.id}
+                    onClick={() => toggleInterest(interest.id)}
+                    className={cn(
+                      "p-3 rounded-xl flex items-center gap-2 transition-all",
+                      selectedInterests.includes(interest.id)
+                        ? `bg-gradient-to-r ${interest.color} text-white`
+                        : "bg-white/5 hover:bg-white/10"
+                    )}
+                  >
+                    <interest.icon className="w-4 h-4" />
+                    <span className="text-sm font-medium">{interest.label}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="text-sm text-center text-muted-foreground mb-4">
+                {selectedInterests.length}/3 selected
+              </p>
+              <Button className="w-full" onClick={handleSaveInterests} disabled={selectedInterests.length < 3}>
+                Save & Earn +75 XP
+              </Button>
+            </ModalOverlay>
+          )
+        }
       </AnimatePresence >
-  <Footer />
+      <Footer />
     </div >
   );
 };

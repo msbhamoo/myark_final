@@ -1056,7 +1056,7 @@ const Hero = ()=>{
                 className: "absolute inset-0 bg-hero-glow pointer-events-none"
             }, void 0, false, {
                 fileName: "[project]/src/components/Hero.tsx",
-                lineNumber: 155,
+                lineNumber: 78,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1079,7 +1079,7 @@ const Hero = ()=>{
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/Hero.tsx",
-                lineNumber: 157,
+                lineNumber: 79,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1103,7 +1103,7 @@ const Hero = ()=>{
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/Hero.tsx",
-                lineNumber: 167,
+                lineNumber: 84,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             floatingElements.map(({ icon: Icon, color, position, delay }, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1143,17 +1143,17 @@ const Hero = ()=>{
                             className: `w-8 h-8 ${color}`
                         }, void 0, false, {
                             fileName: "[project]/src/components/Hero.tsx",
-                            lineNumber: 207,
+                            lineNumber: 104,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 197,
+                        lineNumber: 99,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, index, false, {
                     fileName: "[project]/src/components/Hero.tsx",
-                    lineNumber: 183,
+                    lineNumber: 92,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1183,12 +1183,12 @@ const Hero = ()=>{
                                     className: "w-4 h-4 text-primary"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Hero.tsx",
-                                    lineNumber: 241,
+                                    lineNumber: 121,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 233,
+                                lineNumber: 117,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1196,13 +1196,13 @@ const Hero = ()=>{
                                 children: "For students who dream BIG"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 245,
+                                lineNumber: 123,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 223,
+                        lineNumber: 112,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].h1, {
@@ -1224,7 +1224,7 @@ const Hero = ()=>{
                                 children: "Unlock Amazing"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 265,
+                                lineNumber: 133,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$TypewriterText$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1233,13 +1233,13 @@ const Hero = ()=>{
                                 onWordChange: setActiveWordIndex
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 267,
+                                lineNumber: 134,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 253,
+                        lineNumber: 127,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -1262,13 +1262,13 @@ const Hero = ()=>{
                                 children: " Level up your journey!"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 297,
+                                lineNumber: 149,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 283,
+                        lineNumber: 142,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1296,7 +1296,7 @@ const Hero = ()=>{
                                             className: "w-5 h-5 transition-transform group-hover:-translate-y-1 group-hover:rotate-12"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Hero.tsx",
-                                            lineNumber: 321,
+                                            lineNumber: 161,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         "Start Your Quest",
@@ -1304,18 +1304,18 @@ const Hero = ()=>{
                                             className: "w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Hero.tsx",
-                                            lineNumber: 325,
+                                            lineNumber: 163,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/Hero.tsx",
-                                    lineNumber: 319,
+                                    lineNumber: 160,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 317,
+                                lineNumber: 159,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1327,13 +1327,13 @@ const Hero = ()=>{
                                 children: "See What's Trending"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 331,
+                                lineNumber: 166,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 305,
+                        lineNumber: 153,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1364,7 +1364,7 @@ const Hero = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 371,
+                                        lineNumber: 186,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1372,13 +1372,13 @@ const Hero = ()=>{
                                         children: "Opportunities"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 377,
+                                        lineNumber: 189,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 363,
+                                lineNumber: 182,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1395,7 +1395,7 @@ const Hero = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 389,
+                                        lineNumber: 195,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1403,13 +1403,13 @@ const Hero = ()=>{
                                         children: "Students"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 395,
+                                        lineNumber: 198,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 381,
+                                lineNumber: 191,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1421,13 +1421,13 @@ const Hero = ()=>{
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "text-3xl md:text-4xl font-bold font-display text-success",
                                         children: [
-                                            "�\x1a�",
+                                            "🏆 ",
                                             count.scholarships,
                                             "Cr+"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 407,
+                                        lineNumber: 204,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1435,19 +1435,19 @@ const Hero = ()=>{
                                         children: "Scholarships Won"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 413,
+                                        lineNumber: 207,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 399,
+                                lineNumber: 200,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 351,
+                        lineNumber: 176,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1496,17 +1496,17 @@ const Hero = ()=>{
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Hero.tsx",
-                                                        lineNumber: 457,
+                                                        lineNumber: 229,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Hero.tsx",
-                                                    lineNumber: 455,
+                                                    lineNumber: 228,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, i, false, {
                                                 fileName: "[project]/src/components/Hero.tsx",
-                                                lineNumber: 441,
+                                                lineNumber: 221,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1520,18 +1520,18 @@ const Hero = ()=>{
                                             children: "+35k"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Hero.tsx",
-                                            lineNumber: 483,
+                                            lineNumber: 242,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/Hero.tsx",
-                                    lineNumber: 437,
+                                    lineNumber: 219,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 435,
+                                lineNumber: 218,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1561,7 +1561,7 @@ const Hero = ()=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/Hero.tsx",
-                                                lineNumber: 519,
+                                                lineNumber: 260,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1569,41 +1569,41 @@ const Hero = ()=>{
                                                 children: currentProof.text
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Hero.tsx",
-                                                lineNumber: 525,
+                                                lineNumber: 263,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, activeWordIndex, true, {
                                         fileName: "[project]/src/components/Hero.tsx",
-                                        lineNumber: 505,
+                                        lineNumber: 253,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Hero.tsx",
-                                    lineNumber: 503,
+                                    lineNumber: 252,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Hero.tsx",
-                                lineNumber: 501,
+                                lineNumber: 251,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Hero.tsx",
-                        lineNumber: 423,
+                        lineNumber: 212,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Hero.tsx",
-                lineNumber: 219,
+                lineNumber: 110,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Hero.tsx",
-        lineNumber: 151,
+        lineNumber: 76,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1721,12 +1721,12 @@ const StoriesCarousel = ()=>{
                 className: "w-6 h-6 animate-spin text-primary"
             }, void 0, false, {
                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                lineNumber: 151,
+                lineNumber: 76,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/StoriesCarousel.tsx",
-            lineNumber: 149,
+            lineNumber: 75,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1746,7 +1746,7 @@ const StoriesCarousel = ()=>{
                                     className: "w-5 h-5 text-secondary"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                    lineNumber: 177,
+                                    lineNumber: 89,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1754,13 +1754,13 @@ const StoriesCarousel = ()=>{
                                     children: "Trending Now"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                    lineNumber: 179,
+                                    lineNumber: 90,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/StoriesCarousel.tsx",
-                            lineNumber: 175,
+                            lineNumber: 88,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1774,12 +1774,12 @@ const StoriesCarousel = ()=>{
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 201,
+                                        lineNumber: 101,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                    lineNumber: 185,
+                                    lineNumber: 93,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1790,24 +1790,24 @@ const StoriesCarousel = ()=>{
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 221,
+                                        lineNumber: 111,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                    lineNumber: 205,
+                                    lineNumber: 103,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/StoriesCarousel.tsx",
-                            lineNumber: 183,
+                            lineNumber: 92,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                    lineNumber: 173,
+                    lineNumber: 87,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1839,7 +1839,7 @@ const StoriesCarousel = ()=>{
                                                 className: "w-3 h-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 289,
+                                                lineNumber: 145,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             daysLeft,
@@ -1847,15 +1847,15 @@ const StoriesCarousel = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 287,
+                                        lineNumber: 144,
                                         columnNumber: 21
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl",
-                                        children: opp.type === 'competition' ? '�x� ' : opp.type === 'scholarship' ? '�x}' : '=�'
+                                        children: opp.type === 'competition' ? '🏆' : opp.type === 'scholarship' ? '🎓' : '✨'
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 301,
+                                        lineNumber: 151,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1865,7 +1865,7 @@ const StoriesCarousel = ()=>{
                                                 children: opp.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 313,
+                                                lineNumber: 157,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1873,7 +1873,7 @@ const StoriesCarousel = ()=>{
                                                 children: opp.organizer
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 319,
+                                                lineNumber: 160,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1883,7 +1883,7 @@ const StoriesCarousel = ()=>{
                                                         className: "w-3 h-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                        lineNumber: 323,
+                                                        lineNumber: 162,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opp.applicationCount?.toLocaleString() || 0,
@@ -1891,13 +1891,13 @@ const StoriesCarousel = ()=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 321,
+                                                lineNumber: 161,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 311,
+                                        lineNumber: 156,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1908,45 +1908,45 @@ const StoriesCarousel = ()=>{
                                                 className: "w-5 h-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                                lineNumber: 339,
+                                                lineNumber: 170,
                                                 columnNumber: 23
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                            lineNumber: 337,
+                                            lineNumber: 169,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                        lineNumber: 335,
+                                        lineNumber: 168,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/StoriesCarousel.tsx",
-                                lineNumber: 271,
+                                lineNumber: 136,
                                 columnNumber: 17
                             }, ("TURBOPACK compile-time value", void 0))
                         }, opp.id, false, {
                             fileName: "[project]/src/components/StoriesCarousel.tsx",
-                            lineNumber: 253,
+                            lineNumber: 127,
                             columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0));
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/components/StoriesCarousel.tsx",
-                    lineNumber: 233,
+                    lineNumber: 117,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/StoriesCarousel.tsx",
-            lineNumber: 169,
+            lineNumber: 85,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/StoriesCarousel.tsx",
-        lineNumber: 167,
+        lineNumber: 84,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -2580,7 +2580,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
         try {
             await addXPWithPersist(2);
             toast({
-                title: "+2 XP �xS",
+                title: "+2 XP ⭐",
                 description: "Thanks for the hype!",
                 className: "bg-primary text-primary-foreground border-none"
             });
@@ -2656,7 +2656,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 333,
+                lineNumber: 167,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2668,19 +2668,19 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                             className: "w-3 h-3 mr-1"
                         }, void 0, false, {
                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                            lineNumber: 353,
+                            lineNumber: 177,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0)),
                         "Trending"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                    lineNumber: 351,
+                    lineNumber: 176,
                     columnNumber: 11
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 349,
+                lineNumber: 175,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2695,7 +2695,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                 children: config.label
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 373,
+                                lineNumber: 187,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2712,7 +2712,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                         className: "w-4 h-4 group-hover/hype:fill-current"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                        lineNumber: 397,
+                                                        lineNumber: 199,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2736,23 +2736,23 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                                     className: "w-4 h-4 fill-current"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                                    lineNumber: 417,
+                                                                    lineNumber: 209,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, heart.id, false, {
                                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                                lineNumber: 403,
+                                                                lineNumber: 202,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                        lineNumber: 399,
+                                                        lineNumber: 200,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                lineNumber: 383,
+                                                lineNumber: 192,
                                                 columnNumber: 15
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             hypeCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2760,13 +2760,13 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                                 children: hypeCount
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                                lineNumber: 429,
+                                                lineNumber: 215,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 381,
+                                        lineNumber: 191,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2776,24 +2776,24 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-4 h-4 transition-all", isBookmarked && "fill-current")
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                                            lineNumber: 459,
+                                            lineNumber: 230,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 441,
+                                        lineNumber: 221,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 379,
+                                lineNumber: 190,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 371,
+                        lineNumber: 186,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2801,7 +2801,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 475,
+                        lineNumber: 238,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2809,7 +2809,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         children: organization
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 481,
+                        lineNumber: 241,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     prize && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2822,12 +2822,12 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                             children: prize
                         }, void 0, false, {
                             fileName: "[project]/src/components/OpportunityCard.tsx",
-                            lineNumber: 497,
+                            lineNumber: 249,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 489,
+                        lineNumber: 245,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2840,20 +2840,20 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 511,
+                                        lineNumber: 256,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: deadline
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 513,
+                                        lineNumber: 257,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 509,
+                                lineNumber: 255,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2863,20 +2863,20 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 519,
+                                        lineNumber: 260,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: participants.toLocaleString()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 521,
+                                        lineNumber: 261,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 517,
+                                lineNumber: 259,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2886,26 +2886,26 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                         className: "w-4 h-4"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 527,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: views.toLocaleString()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                                        lineNumber: 529,
+                                        lineNumber: 265,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 525,
+                                lineNumber: 263,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 507,
+                        lineNumber: 254,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2916,7 +2916,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                 children: "Explore"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 541,
+                                lineNumber: 271,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2930,24 +2930,24 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/OpportunityCard.tsx",
-                                    lineNumber: 551,
+                                    lineNumber: 276,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                                lineNumber: 543,
+                                lineNumber: 272,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 539,
+                        lineNumber: 270,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 367,
+                lineNumber: 184,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2957,7 +2957,7 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         className: "w-2 h-2 rounded-full bg-success animate-pulse"
                     }, void 0, false, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 565,
+                        lineNumber: 283,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2969,19 +2969,19 @@ const OpportunityCard = ({ id, title, organization, type, deadline, participants
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/OpportunityCard.tsx",
-                        lineNumber: 567,
+                        lineNumber: 284,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/OpportunityCard.tsx",
-                lineNumber: 563,
+                lineNumber: 282,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/OpportunityCard.tsx",
-        lineNumber: 305,
+        lineNumber: 153,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -3041,137 +3041,137 @@ var _s = __turbopack_context__.k.signature();
 const QUIZ_STEPS = [
     {
         id: "grade",
-        title: "Which class are you in? �x}",
+        title: "Which class are you in? 🎓",
         options: [
             {
                 value: 8,
                 label: "Class 8",
-                emoji: "8️⒣"
+                emoji: "8️⃣"
             },
             {
                 value: 9,
                 label: "Class 9",
-                emoji: "9️⒣"
+                emoji: "9️⃣"
             },
             {
                 value: 10,
                 label: "Class 10",
-                emoji: "�xx"
+                emoji: "🔟"
             },
             {
                 value: 11,
                 label: "Class 11",
-                emoji: "�x"
+                emoji: "1️⃣1️⃣"
             },
             {
                 value: 12,
                 label: "Class 12",
-                emoji: "�x}"
+                emoji: "🎓"
             },
             {
                 value: 13,
                 label: "College+",
-                emoji: "�x�:️"
+                emoji: "🏛️"
             }
         ],
-        mascot: "Hey there! Let's get started. Which grade are you currently crushing? =�"
+        mascot: "Hey there! Let's get started. Which grade are you currently crushing? ✨"
     },
     {
         id: "interests",
-        title: "What are you interested in right now? �x��",
+        title: "What are you interested in right now? 🌈",
         multi: true,
         options: [
             {
                 value: "Scholarships",
                 label: "Scholarships",
-                emoji: "=�"
+                emoji: "✨"
             },
             {
                 value: "Olympiads",
                 label: "Olympiads",
-                emoji: "�x��"
+                emoji: "🧬"
             },
             {
                 value: "AI",
                 label: "AI & Tech",
-                emoji: "�x�"
+                emoji: "🤖"
             },
             {
                 value: "Sports",
                 label: "Sports",
-                emoji: "�x� "
+                emoji: "⚽"
             },
             {
                 value: "Art",
                 label: "Art & Design",
-                emoji: "�x}�"
+                emoji: "🎨"
             },
             {
                 value: "Math",
                 label: "Math & STEM",
-                emoji: "�~"
+                emoji: "📐"
             },
             {
                 value: "Science",
                 label: "Science",
-                emoji: "�x�"
+                emoji: "🧪"
             },
             {
                 value: "Writing",
                 label: "Storytelling",
-                emoji: "�S�️"
+                emoji: "📚"
             }
         ],
-        mascot: "Ooh, choices! Tap the stuff that makes you go 'Whoa!'. Pick as many as you like. ("
+        mascot: "Ooh, choices! Tap the stuff that makes you go 'Whoa!'. Pick as many as you like. 🎒"
     },
     {
         id: "personaGoal",
-        title: "What's your goal vibe? <",
+        title: "What's your goal vibe? 🎯",
         options: [
             {
                 value: "top_college",
-                label: "Top College �x}",
+                label: "Top College 🎓",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__["GraduationCap"]
             },
             {
                 value: "skills",
-                label: "Boss Skills �x�",
+                label: "Boss Skills 💡",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lightbulb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lightbulb$3e$__["Lightbulb"]
             },
             {
                 value: "recognition",
-                label: "Total Fame <",
+                label: "Total Fame 🏆",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"]
             },
             {
                 value: "exploring",
-                label: "Still Exploring >",
+                label: "Still Exploring 🔍",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"]
             }
         ],
-        mascot: "What's the dream, legend? Where do you want to see yourself next? �x�"
+        mascot: "What's the dream, legend? Where do you want to see yourself next? 💡"
     },
     {
         id: "competitiveness",
-        title: "How competitive are you feeling? =%",
+        title: "How competitive are you feeling? 🔥",
         options: [
             {
                 value: "chill",
-                label: "Chill Vibes Only �xR`",
+                label: "Chill Vibes Only 🌊",
                 color: "bg-blue-500"
             },
             {
                 value: "balanced",
-                label: "Balanced & Ready �a️",
+                label: "Balanced & Ready ⚖️",
                 color: "bg-primary"
             },
             {
                 value: "beast_mode",
-                label: "Full Beast Mode! =%",
+                label: "Full Beast Mode! 🔥",
                 color: "bg-orange-500"
             }
         ],
-        mascot: "How hard do you want to play? No pressure, just vibes! =%"
+        mascot: "How hard do you want to play? No pressure, just vibes! 🔥"
     },
     {
         id: "weeklyTimeCommitment",
@@ -3180,42 +3180,42 @@ const QUIZ_STEPS = [
             {
                 value: "1_2_hours",
                 label: "1-2 Hours",
-                emoji: "�a�"
+                emoji: "⌛"
             },
             {
                 value: "3_5_hours",
                 label: "3-5 Hours",
-                emoji: "�x9"
+                emoji: "📅"
             },
             {
                 value: "5_plus_hours",
                 label: "5+ Hours",
-                emoji: "="
+                emoji: "🔥"
             }
         ],
         mascot: "Gotta manage that stamina! How much time can you spare from your side-quests? ⏱️"
     },
     {
         id: "deliveryPreference",
-        title: "Online or offline opportunities? �xR��x��",
+        title: "Online or offline opportunities? 🌐📍",
         options: [
             {
                 value: "online",
-                label: "Digital World �xR�",
+                label: "Digital World 🌐",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$globe$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Globe$3e$__["Globe"]
             },
             {
                 value: "offline",
-                label: "In-Person �x��",
+                label: "In-Person 📍",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$target$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Target$3e$__["Target"]
             },
             {
                 value: "both",
-                label: "Give me Both! (",
+                label: "Give me Both! ✨",
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"]
             }
         ],
-        mascot: "Almost there! Do you prefer the matrix or the real world? �x��"
+        mascot: "Almost there! Do you prefer the matrix or the real world? 📍"
     }
 ];
 const QuickQuizModal = ({ open, onOpenChange })=>{
@@ -3293,7 +3293,7 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
             await addXPWithPersist(150);
             setShowCelebration(true);
             toast({
-                title: "QUEST COMPLETE! �x� ",
+                title: "QUEST COMPLETE! 🏆",
                 description: "You've earned 150 XP and the Pathfinder badge!",
                 className: "bg-success text-white border-none"
             });
@@ -3327,7 +3327,7 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                     isActive: showCelebration
                 }, void 0, false, {
                     fileName: "[project]/src/components/QuickQuizModal.tsx",
-                    lineNumber: 401,
+                    lineNumber: 201,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3345,12 +3345,12 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                 className: "h-full bg-gradient-to-r from-primary via-secondary to-accent"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                lineNumber: 411,
+                                lineNumber: 206,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                            lineNumber: 409,
+                            lineNumber: 205,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -3381,12 +3381,12 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                                     className: "w-full h-full object-contain"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                    lineNumber: 447,
+                                                    lineNumber: 224,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                lineNumber: 445,
+                                                lineNumber: 223,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3401,26 +3401,26 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                        lineNumber: 453,
+                                                        lineNumber: 227,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "absolute -left-2 top-6 w-4 h-4 bg-muted/50 border-l border-b border-white/5 rotate-45"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                        lineNumber: 459,
+                                                        lineNumber: 230,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                lineNumber: 451,
+                                                lineNumber: 226,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                        lineNumber: 443,
+                                        lineNumber: 222,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3430,12 +3430,12 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                             children: step.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                            lineNumber: 471,
+                                            lineNumber: 236,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                        lineNumber: 469,
+                                        lineNumber: 235,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3452,37 +3452,31 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                                 },
                                                 onClick: ()=>handleOptionSelect(step.id, option.value, step.multi),
                                                 className: `
-
                                                 relative p-5 rounded-2xl border-2 text-left transition-all duration-300 flex items-center gap-4
-
                                                 ${isSelected ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(var(--primary),0.1)]" : "border-white/5 bg-white/5 hover:border-white/20"}
-
                                             `,
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: `
-
                                                 w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl transition-all
-
                                                 ${isSelected ? "bg-primary text-white scale-110" : "bg-muted/50 text-muted-foreground"}
-
                                             `,
                                                         children: Icon ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
                                                             className: "w-6 h-6"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                            lineNumber: 533,
+                                                            lineNumber: 267,
                                                             columnNumber: 57
                                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            children: option.emoji || (typeof option.value === 'number' ? option.value > 12 ? "�x}" : option.value : "(")
+                                                            children: option.emoji || (typeof option.value === 'number' ? option.value > 12 ? "🎓" : option.value : "✨")
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                            lineNumber: 533,
+                                                            lineNumber: 267,
                                                             columnNumber: 88
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                        lineNumber: 525,
+                                                        lineNumber: 263,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3493,7 +3487,7 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                                                 children: option.label
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                                lineNumber: 539,
+                                                                lineNumber: 270,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             isSelected && step.multi && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].span, {
@@ -3506,39 +3500,39 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                                                     x: 0
                                                                 },
                                                                 className: "text-[10px] text-primary font-black uppercase tracking-widest mt-0.5",
-                                                                children: "Selected �S\x1c"
+                                                                children: "Selected ✅"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                                lineNumber: 543,
+                                                                lineNumber: 272,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                        lineNumber: 537,
+                                                        lineNumber: 269,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, option.value, true, {
                                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                                lineNumber: 501,
+                                                lineNumber: 251,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0));
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                        lineNumber: 483,
+                                        lineNumber: 242,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, currentStep, true, {
                                 fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                lineNumber: 427,
+                                lineNumber: 214,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                            lineNumber: 425,
+                            lineNumber: 213,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3554,14 +3548,14 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 296,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         " Back"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                    lineNumber: 579,
+                                    lineNumber: 290,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 step.multi || isLastStep ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3574,42 +3568,42 @@ const QuickQuizModal = ({ open, onOpenChange })=>{
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                            lineNumber: 611,
+                                            lineNumber: 306,
                                             columnNumber: 47
                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                            lineNumber: 611,
+                                            lineNumber: 306,
                                             columnNumber: 80
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/QuickQuizModal.tsx",
-                                    lineNumber: 599,
+                                    lineNumber: 300,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)) : null
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/QuickQuizModal.tsx",
-                            lineNumber: 577,
+                            lineNumber: 289,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/QuickQuizModal.tsx",
-                    lineNumber: 405,
+                    lineNumber: 203,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/QuickQuizModal.tsx",
-            lineNumber: 399,
+            lineNumber: 200,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/QuickQuizModal.tsx",
-        lineNumber: 397,
+        lineNumber: 199,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -3680,7 +3674,7 @@ const FeaturedOpportunities = ()=>{
         if (!isAuthenticated) {
             showAuthModal({
                 trigger: "manual",
-                message: "â­ Sign in to save your results and earn 150 XP!"
+                message: "⭐ Sign in to save your results and earn 150 XP!"
             });
             return;
         }

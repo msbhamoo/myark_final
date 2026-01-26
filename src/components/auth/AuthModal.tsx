@@ -25,6 +25,7 @@ import MascotFeedback, { type MascotState } from "./MascotFeedback";
 import PhoneInput from "./PhoneInput";
 import PinInput from "./PinInput";
 import Confetti from "@/components/Confetti";
+
 // ============================================
 // TYPES
 // ============================================
@@ -34,6 +35,7 @@ type AuthStep =
     | 'pin_confirm'
     | 'pin_login'
     | 'success';
+
 interface AuthState {
     step: AuthStep;
     mode: 'login' | 'register';
@@ -43,6 +45,7 @@ interface AuthState {
     error: string;
     loading: boolean;
 }
+
 // ============================================
 // STEP CONFIGURATIONS
 // ============================================
@@ -53,36 +56,37 @@ const stepConfig: Record<AuthStep, {
     mascotMessage: string;
 }> = {
     phone: {
-        title: "Let's get started! =�",
+        title: "Let's get started! 🐧",
         subtitle: "Enter your mobile number",
         mascotState: 'idle',
-        mascotMessage: "Drop your digits, explorer! =�",
+        mascotMessage: "Drop your digits, explorer! 📱",
     },
     pin_create: {
         title: "Create your secret code",
         subtitle: "Pick 4 digits you'll remember",
         mascotState: 'thinking',
-        mascotMessage: "Make it memorable, make it yours! <�",
+        mascotMessage: "Make it memorable, make it yours! 💡",
     },
     pin_confirm: {
         title: "Confirm your code",
         subtitle: "Enter the same 4 digits again",
         mascotState: 'thinking',
-        mascotMessage: "One more time to lock it in! (",
+        mascotMessage: "One more time to lock it in! ✅",
     },
     pin_login: {
-        title: "Welcome back! �x9",
+        title: "Welcome back! 👋",
         subtitle: "Enter your secret code",
         mascotState: 'excited',
-        mascotMessage: "Ready to continue your adventure? <�",
+        mascotMessage: "Ready to continue your adventure? 🚀",
     },
     success: {
-        title: "You're in! <�",
+        title: "You're in! 🎉",
         subtitle: "Welcome to MyArk",
         mascotState: 'celebrating',
-        mascotMessage: "Let the games begin! �x� ",
+        mascotMessage: "Let the games begin! 🏆",
     },
 };
+
 // ============================================
 // AUTH MODAL COMPONENT
 // ============================================
@@ -99,6 +103,7 @@ const AuthModal = () => {
         loading: false,
     });
     const [showConfetti, setShowConfetti] = useState(false);
+
     // Reset state when modal opens
     useEffect(() => {
         if (authModalOpen) {
@@ -113,10 +118,12 @@ const AuthModal = () => {
             });
         }
     }, [authModalOpen, authModalOptions]);
+
     // Get current step config
     const config = stepConfig[state.step];
     const mascotState: MascotState = state.error ? 'concerned' : config.mascotState;
     const mascotMessage = state.error || config.mascotMessage;
+
     // ============================================
     // HANDLERS
     // ============================================
@@ -160,6 +167,7 @@ const AuthModal = () => {
             }));
         }
     }, [state.phone, login]);
+
     const handlePinCreate = useCallback(() => {
         if (state.pin.length !== 4) {
             setState(s => ({ ...s, error: "PIN must be 4 digits" }));
@@ -171,6 +179,7 @@ const AuthModal = () => {
             error: '',
         }));
     }, [state.pin]);
+
     const handlePinConfirm = useCallback(async () => {
         if (state.confirmPin.length !== 4) {
             setState(s => ({ ...s, error: "Please confirm your PIN" }));
@@ -179,7 +188,7 @@ const AuthModal = () => {
         if (state.pin !== state.confirmPin) {
             setState(s => ({
                 ...s,
-                error: "Oops! Those PINs don't match. Try again! =�",
+                error: "Oops! Those PINs don't match. Try again! 🧐",
                 confirmPin: '',
             }));
             return;
@@ -198,6 +207,7 @@ const AuthModal = () => {
             }));
         }
     }, [state.pin, state.confirmPin, state.phone, register]);
+
     const handlePinLogin = useCallback(async () => {
         if (state.pin.length !== 4) {
             setState(s => ({ ...s, error: "Please enter your 4-digit PIN" }));
@@ -218,6 +228,7 @@ const AuthModal = () => {
             }));
         }
     }, [state.phone, state.pin, login]);
+
     const handleBack = useCallback(() => {
         if (state.step === 'pin_create' || state.step === 'pin_login') {
             setState(s => ({ ...s, step: 'phone', pin: '', confirmPin: '', error: '' }));
@@ -225,6 +236,7 @@ const AuthModal = () => {
             setState(s => ({ ...s, step: 'pin_create', confirmPin: '', error: '' }));
         }
     }, [state.step]);
+
     const handleClose = useCallback(() => {
         if (state.step === 'success') {
             // Auto close after success
@@ -233,6 +245,7 @@ const AuthModal = () => {
             hideAuthModal();
         }
     }, [state.step, hideAuthModal]);
+
     // Auto close after success
     useEffect(() => {
         if (state.step === 'success') {
@@ -242,6 +255,7 @@ const AuthModal = () => {
             return () => clearTimeout(timer);
         }
     }, [state.step, hideAuthModal]);
+
     // ============================================
     // RENDER CONTENT
     // ============================================
@@ -350,7 +364,7 @@ const AuthModal = () => {
                             className="w-full h-12 text-base font-semibold"
                             size="lg"
                         >
-                            Lock it in �x�
+                            Lock it in 🔒
                         </Button>
                     </motion.div>
                 )}
@@ -379,7 +393,7 @@ const AuthModal = () => {
                             {state.loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                "Create Account =�"
+                                "Create Account ✨"
                             )}
                         </Button>
                     </motion.div>
@@ -409,7 +423,7 @@ const AuthModal = () => {
                             {state.loading ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                "Unlock ="
+                                "Unlock 🔓"
                             )}
                         </Button>
                         <p className="text-center text-sm text-muted-foreground">
@@ -459,8 +473,9 @@ const AuthModal = () => {
                     </motion.div>
                 )
             }
-        </div >
+        </div>
     );
+
     // ============================================
     // RENDER MODAL/DRAWER
     // ============================================
@@ -487,4 +502,5 @@ const AuthModal = () => {
         </Dialog>
     );
 };
+
 export default AuthModal;
