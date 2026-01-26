@@ -486,38 +486,66 @@ export const studentsService = {
 
 export const leadsService = {
     async getAll(filters?: { converted?: boolean; limit?: number }) {
-        const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+        try {
+            const constraints: QueryConstraint[] = [];
 
-        if (filters?.converted !== undefined) {
-            constraints.push(where("converted", "==", filters.converted));
+            if (filters?.converted !== undefined) {
+                constraints.push(where("converted", "==", filters.converted));
+            }
+
+            if (filters?.limit) {
+                constraints.push(limit(filters.limit));
+            }
+
+            // Try with orderBy first, if it fails (missing index), fall back to unsorted
+            try {
+                const qWithSort = query(collection(db, COLLECTIONS.leads), ...constraints, orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(qWithSort);
+                return snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                        createdAt: toDate(data.createdAt),
+                        convertedAt: toDate(data.convertedAt),
+                    };
+                });
+            } catch (sortError) {
+                console.warn("Leads fetch with orderBy failed (likely missing index), falling back to unsorted:", sortError);
+                const q = query(collection(db, COLLECTIONS.leads), ...constraints);
+                const snapshot = await getDocs(q);
+                const results = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                        createdAt: toDate(data.createdAt),
+                        convertedAt: toDate(data.convertedAt),
+                    };
+                });
+                // Sort client-side if server-side failed
+                return results.sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
+            }
+        } catch (error) {
+            console.error("Error in leadsService.getAll:", error);
+            return [];
         }
-        if (filters?.limit) {
-            constraints.push(limit(filters.limit));
-        }
-
-        const q = query(collection(db, COLLECTIONS.leads), ...constraints);
-        const snapshot = await getDocs(q);
-
-        return snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                ...data,
-                createdAt: toDate(data.createdAt),
-                convertedAt: toDate(data.convertedAt),
-            };
-        });
     },
 
     async getStats() {
-        const snapshot = await getDocs(collection(db, COLLECTIONS.leads));
-        const leads = snapshot.docs.map(doc => doc.data());
+        try {
+            const snapshot = await getDocs(collection(db, COLLECTIONS.leads));
+            const leads = snapshot.docs.map(doc => doc.data());
 
-        return {
-            total: leads.length,
-            converted: leads.filter(l => l.converted).length,
-            abandoned: leads.filter(l => !l.converted).length,
-        };
+            return {
+                total: leads.length,
+                converted: leads.filter(l => l.converted).length,
+                abandoned: leads.filter(l => !l.converted).length,
+            };
+        } catch (error) {
+            console.error("Error in leadsService.getStats:", error);
+            return { total: 0, converted: 0, abandoned: 0 };
+        }
     },
 
     async delete(id: string) {

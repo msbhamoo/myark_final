@@ -140,7 +140,8 @@ const AuthModal = () => {
         if (loginResult.errorCode === 'USER_NOT_FOUND') {
             // New user - go to registration
             // CAPTURE LEAD IMMEDIATELY
-            studentAuthService.captureLead(state.phone);
+            console.log("Capturing lead for:", state.phone);
+            await studentAuthService.captureLead(state.phone);
 
             setState(s => ({
                 ...s,
