@@ -54,8 +54,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { opportunitiesService } from "@/lib/firestore";
-import { OPPORTUNITY_TYPES, type Opportunity, type OpportunityStatus } from "@/types/admin";
+import { opportunitiesService, settingsService } from "@/lib/firestore";
+import { OPPORTUNITY_TYPES, type Opportunity, type OpportunityStatus, type OpportunityTypeConfig } from "@/types/admin";
 
 const statusColors: Record<OpportunityStatus, string> = {
     draft: "bg-yellow-500/20 text-yellow-500",
@@ -67,6 +67,7 @@ const Opportunities = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+    const [opportunityTypes, setOpportunityTypes] = useState<OpportunityTypeConfig[]>(OPPORTUNITY_TYPES);
     const [searchQuery, setSearchQuery] = useState("");
     const [typeFilter, setTypeFilter] = useState<string>("all");
     const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -76,6 +77,15 @@ const Opportunities = () => {
     const [loadingApplicants, setLoadingApplicants] = useState(false);
     const [selectedOpp, setSelectedOpp] = useState<{ id: string, title: string } | null>(null);
     const { toast } = useToast();
+
+    const fetchTypes = async () => {
+        try {
+            const typesData = await settingsService.getOpportunityTypes();
+            setOpportunityTypes(typesData.length > 0 ? typesData : OPPORTUNITY_TYPES);
+        } catch (error) {
+            console.error("Error fetching opportunity types:", error);
+        }
+    };
 
     const fetchOpportunities = async () => {
         setLoading(true);
@@ -91,6 +101,10 @@ const Opportunities = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchTypes();
+    }, []);
 
     useEffect(() => {
         fetchOpportunities();
@@ -152,7 +166,7 @@ const Opportunities = () => {
     };
 
     const getTypeName = (typeId: string) => {
-        const type = OPPORTUNITY_TYPES.find(t => t.id === typeId);
+        const type = opportunityTypes.find(t => t.id === typeId);
         return type?.name || typeId;
     };
 
@@ -208,7 +222,7 @@ const Opportunities = () => {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">All Types</SelectItem>
-                                {OPPORTUNITY_TYPES.map(type => (
+                                {opportunityTypes.map(type => (
                                     <SelectItem key={type.id} value={type.id}>{type.name}</SelectItem>
                                 ))}
                             </SelectContent>

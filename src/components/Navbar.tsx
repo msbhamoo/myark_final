@@ -21,9 +21,6 @@ const Navbar = () => {
   const navLinks = [
     { label: "Explore", href: "/" },
     { label: "Careers", href: "/careers" },
-    { label: "Blog", href: "/blog" },
-    { label: "Rewards", href: "/rewards" },
-    { label: "For Schools", href: "/schools" },
   ];
 
   const handleGetStarted = () => {

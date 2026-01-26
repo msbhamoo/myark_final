@@ -27,26 +27,7 @@ import type { BlogPost } from "@/types/admin";
 // BLOG SCHEMA GENERATOR (GEO/AI Optimized)
 // ============================================
 
-const generateBlogSchema = (blog: BlogPost) => ({
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": blog.title,
-    "image": blog.coverImage || "https://myark.in/og-image.png",
-    "author": {
-        "@type": "Person",
-        "name": blog.author || "Myark Insider"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Myark",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "https://myark.in/logo.png"
-        }
-    },
-    "datePublished": blog.publishedAt,
-    "description": blog.title // Blog post type doesn't have a dedicated short description in many cases, using title
-});
+// Redundant schema generator removed - handled by server-side page.tsx for better SEO
 
 const BlogDetail = () => {
     const params = useParams();
@@ -108,7 +89,6 @@ const BlogDetail = () => {
                 description={`Read ${blog.title} on Myark. Stay ahead with the latest student insights.`}
                 image={blog.coverImage}
                 url={`https://myark.in/blog/${slug}`}
-                schema={generateBlogSchema(blog)}
             />
             <Navbar />
 

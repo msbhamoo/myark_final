@@ -7,8 +7,8 @@ import {
   Trophy, GraduationCap, BookOpen, Lightbulb, Users, Briefcase,
   Wrench, Medal, Globe, Video, Sparkles, Loader2
 } from "lucide-react";
-import { OPPORTUNITY_TYPES } from "@/types/admin";
-import { opportunitiesService } from "@/lib/firestore";
+import { OPPORTUNITY_TYPES, type OpportunityTypeConfig } from "@/types/admin";
+import { opportunitiesService, settingsService } from "@/lib/firestore";
 import type { Opportunity } from "@/types/admin";
 
 // Map string icon names to components
@@ -29,16 +29,22 @@ const ICON_MAP: Record<string, any> = {
 const Categories = () => {
   const router = useRouter();
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [types, setTypes] = useState<OpportunityTypeConfig[]>(OPPORTUNITY_TYPES);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
+        // Fetch opportunity types from settings
+        const typesData = await settingsService.getOpportunityTypes();
+        const currentTypes = typesData.length > 0 ? typesData : OPPORTUNITY_TYPES;
+        setTypes(currentTypes);
+
         const allOpps = await opportunitiesService.getAll({ status: "published" });
         const newCounts: Record<string, number> = {};
 
         // Initialize counts
-        OPPORTUNITY_TYPES.forEach(type => newCounts[type.id] = 0);
+        currentTypes.forEach(type => newCounts[type.id] = 0);
 
         // Count opportunities (safely handling potential type mismatches)
         allOpps.forEach(opp => {
@@ -87,7 +93,7 @@ const Categories = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {OPPORTUNITY_TYPES.filter(type => (counts[type.id] || 0) > 0).map((type, index) => {
+            {types.filter(type => (counts[type.id] || 0) > 0).map((type, index) => {
               const IconComponent = ICON_MAP[type.icon] || Sparkles;
               // Simple color mapping logic since we store tailwind classes like "text-blue-500"
               // but CategoryCard likely expects "primary" | "secondary" | "accent" etc.

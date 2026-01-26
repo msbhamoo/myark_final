@@ -9,11 +9,20 @@ interface TypewriterTextProps {
 
 const TypewriterText = ({ words, className = "", onWordChange }: TypewriterTextProps) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
+  const [displayText, setDisplayText] = useState(words[0] || "");
   const [isDeleting, setIsDeleting] = useState(false);
   const [speed, setSpeed] = useState(100);
 
   useEffect(() => {
+    // Start with the first word displayed, then begin deleting after a delay
+    if (displayText === words[0] && !isDeleting) {
+      const timer = setTimeout(() => {
+        setIsDeleting(true);
+        setSpeed(50);
+      }, 2000); // Wait 2 seconds before starting to delete
+      return () => clearTimeout(timer);
+    }
+
     const handleType = () => {
       const currentWord = words[currentWordIndex];
 
@@ -41,7 +50,7 @@ const TypewriterText = ({ words, className = "", onWordChange }: TypewriterTextP
 
     const timer = setTimeout(handleType, speed);
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, currentWordIndex, words, speed]);
+  }, [displayText, isDeleting, currentWordIndex, words, speed, onWordChange]);
 
   return (
     <span className={className}>

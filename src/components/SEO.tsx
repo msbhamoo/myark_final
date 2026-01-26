@@ -39,6 +39,18 @@ const SEO = ({
             el.setAttribute("content", content);
         };
 
+        // Canonical Link
+        let canonicalEl = document.querySelector('link[rel="canonical"]');
+        if (canonical || url) {
+            const canonicalUrl = canonical || url;
+            if (!canonicalEl) {
+                canonicalEl = document.createElement("link");
+                canonicalEl.setAttribute("rel", "canonical");
+                document.head.appendChild(canonicalEl);
+            }
+            canonicalEl.setAttribute("href", canonicalUrl);
+        }
+
         updateMeta("description", description);
         updateMeta("keywords", keywords.join(", "));
         updateMeta("og:title", fullTitle, "property");
@@ -56,9 +68,18 @@ const SEO = ({
         } else {
             updateMeta("robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
         }
-    }, [title, description, image, url, type, keywords, noIndex]);
+    }, [title, description, image, url, type, keywords, noIndex, canonical]);
 
-    return null;
+    return (
+        <>
+            {schema && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+                />
+            )}
+        </>
+    );
 };
 
 export default SEO;

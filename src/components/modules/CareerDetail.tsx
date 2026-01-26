@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,17 +34,17 @@ import type { Career } from "@/types/admin";
 
 const CareerDetail = () => {
     const params = useParams();
-    const id = params?.id as string;
+    const slug = params?.slug as string;
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [career, setCareer] = useState<Career | null>(null);
 
     useEffect(() => {
         const fetchCareer = async () => {
-            if (!id) return; // Ensure id is available before fetching
+            if (!slug) return; // Ensure slug is available before fetching
             try {
                 setLoading(true);
-                const data = await careersService.getBySlug(id);
+                const data = await careersService.getBySlug(slug);
                 if (data) {
                     setCareer(data);
                 } else {
@@ -57,7 +58,7 @@ const CareerDetail = () => {
             }
         };
         fetchCareer();
-    }, [id]);
+    }, [slug]);
 
     if (loading) {
         return (
@@ -92,6 +93,14 @@ const CareerDetail = () => {
 
     return (
         <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
+            {career && (
+                <SEO
+                    title={career.title}
+                    description={career.shortDescription}
+                    image={career.images?.[0]}
+                    url={`https://myark.in/careers/${slug}`}
+                />
+            )}
             <Navbar />
 
             {/* Immersive Background Elements */}

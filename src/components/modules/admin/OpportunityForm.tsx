@@ -39,7 +39,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { OPPORTUNITY_TYPES, type Opportunity, type OpportunityType, type OpportunityStatus, type Organizer, type OrganizerType } from "@/types/admin";
+import { type Opportunity, type OpportunityType, type OpportunityStatus, type Organizer, type OrganizerType, type OpportunityTypeConfig } from "@/types/admin";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
@@ -99,6 +99,7 @@ const OpportunityForm = () => {
     });
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
     const [availableGrades, setAvailableGrades] = useState<number[]>([]);
+    const [opportunityTypes, setOpportunityTypes] = useState<OpportunityTypeConfig[]>([]);
     const [feeType, setFeeType] = useState<"free" | "paid">("free");
     // Searchable Select State
     const [open, setOpen] = useState(false);
@@ -164,6 +165,9 @@ const OpportunityForm = () => {
             // Load grades from settings
             const gradesData = await settingsService.getGrades();
             setAvailableGrades(gradesData);
+            // Load opportunity types from settings
+            const typesData = await settingsService.getOpportunityTypes();
+            setOpportunityTypes(typesData.length > 0 ? typesData : []);
             // Fetch organizers
             const orgs = await settingsService.getOrganizers();
             setOrganizers(orgs);
@@ -347,7 +351,7 @@ const OpportunityForm = () => {
                                             <SelectValue placeholder="Select type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {OPPORTUNITY_TYPES.map(type => (
+                                            {opportunityTypes.map(type => (
                                                 <SelectItem key={type.id} value={type.id}>
                                                     <span className={type.color}>{type.name}</span>
                                                 </SelectItem>
@@ -969,7 +973,7 @@ const OpportunityForm = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="text-foreground font-mono">+91 {student.phone}</div>
-                                                <div className="text-xs text-muted-foreground">{student.email || 'No email provided'}</div>
+                                                <div className="text-xs text-muted-foreground">ID: {student.id}</div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <Badge variant="secondary" className="bg-muted border-primary/10">Class {student.grade || "N/A"}</Badge>
