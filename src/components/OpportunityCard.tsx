@@ -82,7 +82,10 @@ const OpportunityCard = ({
 
   const isBookmarked = student?.savedOpportunities?.includes(id) || false;
   const router = useRouter();
-  const config = typeConfig[type];
+  const config = typeConfig[type] || {
+    label: "Opportunity",
+    class: "bg-gray-500/20 text-gray-500 border-gray-500/30",
+  };
 
   const handleClick = () => {
     router.push(`/opportunity/${id}`);

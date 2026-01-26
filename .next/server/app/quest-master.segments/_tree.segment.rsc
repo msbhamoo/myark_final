@@ -1,0 +1,2 @@
+:HL["/_next/static/chunks/81054fde8812f6dc.css","style"]
+0:{"buildId":"5TXXUcPRfBrAV-YimP7My","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"quest-master","paramType":null,"paramKey":"quest-master","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

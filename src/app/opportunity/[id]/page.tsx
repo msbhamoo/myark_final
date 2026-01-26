@@ -20,21 +20,21 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         }
 
         // Dynamic metadata based on opportunity data with Gen Z excitement
-        let dynamicTitle = opportunity.title;
+        let dynamicTitle = opportunity?.title || 'Opportunity';
 
         // Add class context if available
-        if (opportunity.class) {
+        if (opportunity?.class) {
             dynamicTitle = `${opportunity.title} for Class ${opportunity.class} Students`;
         }
 
         // Make it Gen Z-friendly and action-oriented
-        if (opportunity.type === 'scholarship') {
+        if (opportunity?.type === 'scholarship') {
             dynamicTitle = `${dynamicTitle} – Apply Smart, Don't Miss Out`;
-        } else if (opportunity.type === 'olympiad') {
+        } else if (opportunity?.type === 'olympiad') {
             dynamicTitle = `${dynamicTitle} – Prep, Apply & Level Up`;
-        } else if (opportunity.type === 'competition') {
+        } else if (opportunity?.type === 'competition') {
             dynamicTitle = `${dynamicTitle} – Win, Learn & Build Your Profile`;
-        } else if (opportunity.type === 'workshop') {
+        } else if (opportunity?.type === 'workshop') {
             dynamicTitle = `${dynamicTitle} – Discover, Learn & Level Up`;
         } else {
             dynamicTitle = `${dynamicTitle} – Discover & Apply Now`;
@@ -42,19 +42,19 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
         const title = `Myark | ${dynamicTitle}`;
 
-        const description = opportunity.seoConfig?.metaDescription ||
-            `${opportunity.shortDescription} Apply now for ${opportunity.category} opportunities. ${opportunity.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
+        const description = opportunity?.seoConfig?.metaDescription ||
+            `${opportunity?.shortDescription || 'Discover this amazing opportunity'} Apply now for ${opportunity?.category || 'student'} opportunities. ${opportunity?.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
 
         return constructMetadata({
             title,
             description,
-            image: opportunity.image,
-            url: `https://myark.in/opportunity/${opportunity.id}`,
-            keywords: opportunity.seoConfig?.keywords || [opportunity.category, 'students', 'opportunities', opportunity.class ? `class ${opportunity.class}` : ''].filter(Boolean),
+            image: opportunity?.image,
+            url: `https://myark.in/opportunity/${opportunity?.id || id}`,
+            keywords: opportunity?.seoConfig?.keywords || [opportunity?.category || 'opportunities', 'students', 'scholarships', opportunity?.class ? `class ${opportunity.class}` : ''].filter(Boolean),
             type: 'article',
-            publishedTime: opportunity.createdAt?.toISOString(),
-            modifiedTime: opportunity.updatedAt?.toISOString(),
-            noIndex: opportunity.seoConfig?.noIndex || false,
+            publishedTime: opportunity?.createdAt?.toISOString(),
+            modifiedTime: opportunity?.updatedAt?.toISOString(),
+            noIndex: opportunity?.seoConfig?.noIndex || false,
         });
     } catch (error) {
         console.error('Error generating metadata:', error);
