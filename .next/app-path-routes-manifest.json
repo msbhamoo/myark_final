@@ -22,6 +22,7 @@
   "/admin/settings/page": "/admin/settings",
   "/admin/students/page": "/admin/students",
   "/admin/users/page": "/admin/users",
+  "/beta/page": "/beta",
   "/blog/[slug]/page": "/blog/[slug]",
   "/blog/page": "/blog",
   "/careers/[slug]/page": "/careers/[slug]",

@@ -198,6 +198,12 @@
       "namedRegex": "^/admin/users(?:/)?$"
     },
     {
+      "page": "/beta",
+      "regex": "^/beta(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/beta(?:/)?$"
+    },
+    {
       "page": "/blog",
       "regex": "^/blog(?:/)?$",
       "routeKeys": {},

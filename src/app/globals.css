@@ -232,6 +232,43 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+
+    /* Safe area insets for mobile devices */
+    .safe-area-inset-top {
+        padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    .safe-area-inset-bottom {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* Inshorts card styles */
+    .inshorts-card {
+        @apply h-screen w-full relative overflow-hidden;
+        touch-action: pan-y;
+    }
+
+    .inshorts-card-image {
+        @apply absolute inset-0 bg-cover bg-center;
+    }
+
+    .inshorts-card-gradient {
+        @apply absolute inset-0;
+        background: linear-gradient(to top,
+                hsl(var(--background)) 0%,
+                hsl(var(--background) / 0.8) 20%,
+                transparent 50%);
+    }
+
+    /* Touch feedback */
+    .touch-feedback {
+        @apply transition-transform active:scale-95;
+    }
+
+    /* Card swipe indicator */
+    .swipe-indicator {
+        @apply w-1 h-20 rounded-full bg-white/20;
+    }
 }
 
 /* Keyframe animations */

@@ -22,6 +22,7 @@
   "/admin/settings/page": "app/admin/settings/page.js",
   "/admin/students/page": "app/admin/students/page.js",
   "/admin/users/page": "app/admin/users/page.js",
+  "/beta/page": "app/beta/page.js",
   "/blog/[slug]/page": "app/blog/[slug]/page.js",
   "/blog/page": "app/blog/page.js",
   "/careers/[slug]/page": "app/careers/[slug]/page.js",

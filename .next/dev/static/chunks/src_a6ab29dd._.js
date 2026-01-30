@@ -772,7 +772,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts
 const COLLECTIONS = {
     studentUsers: "studentUsers",
     studentSessions: "studentSessions",
-    studentLeads: "studentLeads"
+    studentLeads: "studentLeads",
+    userPhones: "userPhones"
 };
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minutes
@@ -901,9 +902,8 @@ const studentAuthService = {
                 };
             }
             // Check if phone already registered
-            const existingQuery = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.studentUsers), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["where"])("phone", "==", cleanPhone));
-            const existingDocs = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])(existingQuery);
-            if (!existingDocs.empty) {
+            const phoneDoc = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.userPhones, cleanPhone));
+            if (phoneDoc.exists()) {
                 return {
                     success: false,
                     error: "This number is already registered. Try logging in!",
@@ -941,6 +941,12 @@ const studentAuthService = {
                 createdAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Timestamp"].fromDate(now),
                 lastLoginAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Timestamp"].fromDate(now)
             });
+            // Create phone lookup for unauthenticated queries
+            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.userPhones, cleanPhone), {
+                phone: cleanPhone,
+                userId: userId,
+                createdAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Timestamp"].fromDate(now)
+            });
             // Convert lead to customer/user
             await this.convertLead(cleanPhone);
             // Create session
@@ -972,17 +978,26 @@ const studentAuthService = {
                     errorCode: 'INVALID_PHONE'
                 };
             }
-            // Find user by phone
-            const userQuery = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.studentUsers), (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["where"])("phone", "==", cleanPhone));
-            const userDocs = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])(userQuery);
-            if (userDocs.empty) {
+            // Find user by phone using phone lookup
+            const phoneDoc = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.userPhones, cleanPhone));
+            if (!phoneDoc.exists()) {
                 return {
                     success: false,
                     error: "No account found with this number. Want to register?",
                     errorCode: 'USER_NOT_FOUND'
                 };
             }
-            const userDoc = userDocs.docs[0];
+            const userId = phoneDoc.data().userId;
+            // Get user data
+            const userDoc = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.studentUsers, userId));
+            if (!userDoc.exists()) {
+                // Inconsistent state, treat as not found
+                return {
+                    success: false,
+                    error: "No account found with this number. Want to register?",
+                    errorCode: 'USER_NOT_FOUND'
+                };
+            }
             const userData = userDoc.data();
             // Check if blocked
             if (userData.isBlocked) {
@@ -1005,7 +1020,7 @@ const studentAuthService = {
             // Verify PIN
             const isValidPin = await verifyPin(pin, userData.pinHash);
             if (!isValidPin) {
-                await this.incrementFailedAttempts(userDoc.id);
+                await this.incrementFailedAttempts(userId);
                 const remaining = MAX_FAILED_ATTEMPTS - (userData.failedLoginAttempts + 1);
                 return {
                     success: false,
@@ -1016,17 +1031,17 @@ const studentAuthService = {
             // Calculate new streak
             const newStreak = calculateNewStreak(userData.lastLoginAt?.toDate(), userData.streakDays || 0);
             // Clear failed attempts and update last login
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.studentUsers, userDoc.id), {
+            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.studentUsers, userId), {
                 failedLoginAttempts: 0,
                 lastLoginAt: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Timestamp"].now(),
                 streakDays: newStreak,
                 xpPoints: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["increment"])(10)
             });
             // Create session
-            const session = await this.createSession(userDoc.id);
+            const session = await this.createSession(userId);
             // Build user object
             const user = {
-                id: userDoc.id,
+                id: userId,
                 phone: userData.phone,
                 name: userData.name,
                 grade: userData.grade,
@@ -3137,7 +3152,8 @@ const AuthModal = ()=>{
             if (loginResult.errorCode === 'USER_NOT_FOUND') {
                 // New user - go to registration
                 // CAPTURE LEAD IMMEDIATELY
-                __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$studentAuthService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["studentAuthService"].captureLead(state.phone);
+                console.log("Capturing lead for:", state.phone);
+                await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$studentAuthService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["studentAuthService"].captureLead(state.phone);
                 setState({
                     "AuthModal.useCallback[handlePhoneSubmit]": (s)=>({
                             ...s,
@@ -3383,7 +3399,7 @@ const AuthModal = ()=>{
                     isActive: showConfetti
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 274,
+                    lineNumber: 275,
                     columnNumber: 30
                 }, ("TURBOPACK compile-time value", void 0)),
                 state.step !== 'phone' && state.step !== 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -3400,12 +3416,12 @@ const AuthModal = ()=>{
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 284,
+                        lineNumber: 285,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 277,
+                    lineNumber: 278,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 isMobile && state.step !== 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3416,12 +3432,12 @@ const AuthModal = ()=>{
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 294,
+                        lineNumber: 295,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 289,
+                    lineNumber: 290,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$auth$2f$MascotFeedback$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3429,7 +3445,7 @@ const AuthModal = ()=>{
                     message: mascotMessage
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 298,
+                    lineNumber: 299,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3448,7 +3464,7 @@ const AuthModal = ()=>{
                             children: config.title
                         }, config.title, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 304,
+                            lineNumber: 305,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -3465,13 +3481,13 @@ const AuthModal = ()=>{
                             children: config.subtitle
                         }, config.subtitle, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 312,
+                            lineNumber: 313,
                             columnNumber: 17
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 303,
+                    lineNumber: 304,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -3505,7 +3521,7 @@ const AuthModal = ()=>{
                                     onSubmit: handlePhoneSubmit
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 332,
+                                    lineNumber: 333,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3517,7 +3533,7 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 347,
+                                        lineNumber: 348,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: [
@@ -3526,20 +3542,20 @@ const AuthModal = ()=>{
                                                 className: "w-4 h-4 ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                                lineNumber: 349,
+                                                lineNumber: 350,
                                                 columnNumber: 44
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 340,
+                                    lineNumber: 341,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "phone", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 325,
+                            lineNumber: 326,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_create' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3570,7 +3586,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinCreate
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 362,
+                                    lineNumber: 363,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3581,13 +3597,13 @@ const AuthModal = ()=>{
                                     children: "Lock it in 🔒"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 370,
+                                    lineNumber: 371,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_create", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 355,
+                            lineNumber: 356,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_confirm' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3618,7 +3634,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinConfirm
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 388,
+                                    lineNumber: 389,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3630,18 +3646,18 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 403,
+                                        lineNumber: 404,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : "Create Account ✨"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 396,
+                                    lineNumber: 397,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_confirm", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 381,
+                            lineNumber: 382,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'pin_login' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3672,7 +3688,7 @@ const AuthModal = ()=>{
                                     onComplete: handlePinLogin
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 418,
+                                    lineNumber: 419,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3684,12 +3700,12 @@ const AuthModal = ()=>{
                                         className: "w-5 h-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                        lineNumber: 433,
+                                        lineNumber: 434,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0)) : "Unlock 🔓"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 426,
+                                    lineNumber: 427,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3702,19 +3718,19 @@ const AuthModal = ()=>{
                                             children: "Get help"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 441,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 438,
+                                    lineNumber: 439,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "pin_login", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 411,
+                            lineNumber: 412,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0)),
                         state.step === 'success' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3748,7 +3764,7 @@ const AuthModal = ()=>{
                                             children: "🎉"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 459,
+                                            lineNumber: 460,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3756,13 +3772,13 @@ const AuthModal = ()=>{
                                             children: "+50 XP"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                            lineNumber: 460,
+                                            lineNumber: 461,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 453,
+                                    lineNumber: 454,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3770,19 +3786,19 @@ const AuthModal = ()=>{
                                     children: state.mode === 'register' ? "Registering your profile... Get ready for a surprise! ✨" : "Welcome back! +10 XP for daily login."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                                    lineNumber: 462,
+                                    lineNumber: 463,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, "success", true, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 447,
+                            lineNumber: 448,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 323,
+                    lineNumber: 324,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 authModalOptions?.message && state.step === 'phone' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3803,18 +3819,18 @@ const AuthModal = ()=>{
                         children: authModalOptions.message
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 479,
+                        lineNumber: 480,
                         columnNumber: 25
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 473,
+                    lineNumber: 474,
                     columnNumber: 21
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 272,
+            lineNumber: 273,
             columnNumber: 9
         }, ("TURBOPACK compile-time value", void 0));
     // ============================================
@@ -3833,24 +3849,24 @@ const AuthModal = ()=>{
                             children: "Authenticate"
                         }, void 0, false, {
                             fileName: "[project]/src/components/auth/AuthModal.tsx",
-                            lineNumber: 496,
+                            lineNumber: 497,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 495,
+                        lineNumber: 496,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0)),
                     renderContent()
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/auth/AuthModal.tsx",
-                lineNumber: 494,
+                lineNumber: 495,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 493,
+            lineNumber: 494,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -3866,24 +3882,24 @@ const AuthModal = ()=>{
                         children: "Authenticate"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/AuthModal.tsx",
-                        lineNumber: 507,
+                        lineNumber: 508,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/auth/AuthModal.tsx",
-                    lineNumber: 506,
+                    lineNumber: 507,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 renderContent()
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/auth/AuthModal.tsx",
-            lineNumber: 505,
+            lineNumber: 506,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/auth/AuthModal.tsx",
-        lineNumber: 504,
+        lineNumber: 505,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -5552,35 +5568,65 @@ const studentsService = {
 };
 const leadsService = {
     async getAll (filters) {
-        const constraints = [
-            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["orderBy"])("createdAt", "desc")
-        ];
-        if (filters?.converted !== undefined) {
-            constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["where"])("converted", "==", filters.converted));
+        try {
+            const constraints = [];
+            if (filters?.converted !== undefined) {
+                constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["where"])("converted", "==", filters.converted));
+            }
+            if (filters?.limit) {
+                constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["limit"])(filters.limit));
+            }
+            // Try with orderBy first, if it fails (missing index), fall back to unsorted
+            try {
+                const qWithSort = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads), ...constraints, (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["orderBy"])("createdAt", "desc"));
+                const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])(qWithSort);
+                return snapshot.docs.map((doc)=>{
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                        createdAt: toDate(data.createdAt),
+                        convertedAt: toDate(data.convertedAt)
+                    };
+                });
+            } catch (sortError) {
+                console.warn("Leads fetch with orderBy failed (likely missing index), falling back to unsorted:", sortError);
+                const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads), ...constraints);
+                const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])(q);
+                const results = snapshot.docs.map((doc)=>{
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                        createdAt: toDate(data.createdAt),
+                        convertedAt: toDate(data.convertedAt)
+                    };
+                });
+                // Sort client-side if server-side failed
+                return results.sort((a, b)=>(b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
+            }
+        } catch (error) {
+            console.error("Error in leadsService.getAll:", error);
+            return [];
         }
-        if (filters?.limit) {
-            constraints.push((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["limit"])(filters.limit));
-        }
-        const q = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["query"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads), ...constraints);
-        const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])(q);
-        return snapshot.docs.map((doc)=>{
-            const data = doc.data();
-            return {
-                id: doc.id,
-                ...data,
-                createdAt: toDate(data.createdAt),
-                convertedAt: toDate(data.convertedAt)
-            };
-        });
     },
     async getStats () {
-        const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads));
-        const leads = snapshot.docs.map((doc)=>doc.data());
-        return {
-            total: leads.length,
-            converted: leads.filter((l)=>l.converted).length,
-            abandoned: leads.filter((l)=>!l.converted).length
-        };
+        try {
+            const snapshot = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDocs"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collection"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads));
+            const leads = snapshot.docs.map((doc)=>doc.data());
+            return {
+                total: leads.length,
+                converted: leads.filter((l)=>l.converted).length,
+                abandoned: leads.filter((l)=>!l.converted).length
+            };
+        } catch (error) {
+            console.error("Error in leadsService.getStats:", error);
+            return {
+                total: 0,
+                converted: 0,
+                abandoned: 0
+            };
+        }
     },
     async delete (id) {
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteDoc"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], COLLECTIONS.leads, id));
