@@ -49,7 +49,7 @@ const Confetti = ({ isActive, duration = 3000 }: ConfettiProps) => {
           }}
           initial={{ y: 0, opacity: 1, rotate: 0 }}
           animate={{
-            y: window.innerHeight + 100,
+            y: typeof window !== 'undefined' ? window.innerHeight + 100 : 1000,
             opacity: [1, 1, 0],
             rotate: piece.rotation + 720,
           }}

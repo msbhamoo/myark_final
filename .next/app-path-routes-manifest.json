@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
   "/admin/badges/page": "/admin/badges",
   "/admin/blog/[id]/page": "/admin/blog/[id]",
   "/admin/blog/new/page": "/admin/blog/new",
@@ -37,5 +38,6 @@
   "/robots.txt/route": "/robots.txt",
   "/schools/page": "/schools",
   "/sitemap.xml/route": "/sitemap.xml",
-  "/terms/page": "/terms"
+  "/terms/page": "/terms",
+  "/verify/page": "/verify"
 }

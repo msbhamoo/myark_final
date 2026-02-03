@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
   "/admin/badges/page": "app/admin/badges/page.js",
   "/admin/blog/[id]/page": "app/admin/blog/[id]/page.js",
   "/admin/blog/new/page": "app/admin/blog/new/page.js",
@@ -37,5 +38,6 @@
   "/robots.txt/route": "app/robots.txt/route.js",
   "/schools/page": "app/schools/page.js",
   "/sitemap.xml/route": "app/sitemap.xml/route.js",
-  "/terms/page": "app/terms/page.js"
+  "/terms/page": "app/terms/page.js",
+  "/verify/page": "app/verify/page.js"
 }

@@ -1,7 +1,3 @@
-"use client";
-
-import Script from "next/script";
-
 const Schema = () => {
     const websiteSchema = {
         "@context": "https://schema.org",
@@ -23,9 +19,9 @@ const Schema = () => {
     const organizationSchema = {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "   GetMyark",
-        "url": "https://getmyark.in",
-        "logo": "https://getmyark.in/logo.png",
+        "name": "Myark",
+        "url": "https://myark.in",
+        "logo": "https://myark.in/logo.png",
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+91-800-123-4567",
@@ -34,21 +30,19 @@ const Schema = () => {
             "availableLanguage": "en"
         },
         "sameAs": [
-            "https://twitter.com/getmyark",
-            "https://www.linkedin.com/company/getmyark",
-            "https://www.instagram.com/getmyark"
+            "https://twitter.com/myark_in",
+            "https://www.linkedin.com/company/myark",
+            "https://www.instagram.com/myark.in"
         ]
     };
 
     return (
         <>
-            <Script
-                id="website-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
             />
-            <Script
-                id="organization-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
             />
