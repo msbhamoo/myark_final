@@ -370,6 +370,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-ssr] (ecmascript) <export default as Zap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/log-out.js [app-ssr] (ecmascript) <export default as LogOut>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame.js [app-ssr] (ecmascript) <export default as Flame>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/rocket.js [app-ssr] (ecmascript) <export default as Rocket>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
@@ -390,7 +391,7 @@ const Navbar = ()=>{
     const navLinks = [
         {
             label: "Explore",
-            href: "/"
+            href: "/explore"
         },
         {
             label: "Careers",
@@ -427,7 +428,13 @@ const Navbar = ()=>{
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 text-xl",
-                                        children: "🐧"
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"], {
+                                            className: "w-6 h-6 text-white fill-current"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/Navbar.tsx",
+                                            lineNumber: 43,
+                                            columnNumber: 15
+                                        }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Navbar.tsx",
                                         lineNumber: 42,
@@ -538,7 +545,13 @@ const Navbar = ()=>{
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-primary-foreground",
-                                                                children: student.name?.[0]?.toUpperCase() || '🎮'
+                                                                children: student.name?.[0]?.toUpperCase() || /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                                    className: "w-4 h-4"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/Navbar.tsx",
+                                                                    lineNumber: 83,
+                                                                    columnNumber: 62
+                                                                }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/Navbar.tsx",
                                                                 lineNumber: 82,
@@ -661,8 +674,17 @@ const Navbar = ()=>{
                                             size: "sm",
                                             onClick: handleGetStarted,
                                             disabled: loading,
-                                            children: "Get Started 🚀"
-                                        }, void 0, false, {
+                                            children: [
+                                                "Get Started ",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__["Rocket"], {
+                                                    className: "w-4 h-4 ml-1"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/Navbar.tsx",
+                                                    lineNumber: 112,
+                                                    columnNumber: 31
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/src/components/Navbar.tsx",
                                             lineNumber: 111,
                                             columnNumber: 17
@@ -852,8 +874,17 @@ const Navbar = ()=>{
                                                     handleGetStarted();
                                                     setIsOpen(false);
                                                 },
-                                                children: "Get Started 🚀"
-                                            }, void 0, false, {
+                                                children: [
+                                                    "Get Started ",
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__["Rocket"], {
+                                                        className: "w-4 h-4 ml-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/Navbar.tsx",
+                                                        lineNumber: 191,
+                                                        columnNumber: 33
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
                                                 fileName: "[project]/src/components/Navbar.tsx",
                                                 lineNumber: 187,
                                                 columnNumber: 19
@@ -908,6 +939,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/phone.js [app-ssr] (ecmascript) <export default as Phone>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/heart.js [app-ssr] (ecmascript) <export default as Heart>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-ssr] (ecmascript) <export default as Zap>");
 "use client";
 ;
 ;
@@ -930,7 +962,13 @@ const Footer = ()=>{
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg",
-                                            children: "🐧"
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"], {
+                                                className: "w-5 h-5 text-white fill-current"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/Footer.tsx",
+                                                lineNumber: 15,
+                                                columnNumber: 17
+                                            }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Footer.tsx",
                                             lineNumber: 14,
@@ -1008,7 +1046,7 @@ const Footer = ()=>{
                                         'Careers',
                                         'Blog',
                                         'Rewards',
-                                        'For Schools'
+                                        'Schools'
                                     ].map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                 href: `/${item.toLowerCase().replace(' ', '-')}`,
@@ -1288,11 +1326,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame.js [app-ssr] (ecmascript) <export default as Flame>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/external-link.js [app-ssr] (ecmascript) <export default as ExternalLink>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$medal$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Medal$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/medal.js [app-ssr] (ecmascript) <export default as Medal>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coins$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coins$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/coins.js [app-ssr] (ecmascript) <export default as Coins>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/graduation-cap.js [app-ssr] (ecmascript) <export default as GraduationCap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tag.js [app-ssr] (ecmascript) <export default as Tag>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$info$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Info$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/info.js [app-ssr] (ecmascript) <export default as Info>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/rocket.js [app-ssr] (ecmascript) <export default as Rocket>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/party-popper.js [app-ssr] (ecmascript) <export default as PartyPopper>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wind$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wind$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wind.js [app-ssr] (ecmascript) <export default as Wind>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-text.js [app-ssr] (ecmascript) <export default as FileText>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/badge.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Confetti$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Confetti.tsx [app-ssr] (ecmascript)");
@@ -1340,18 +1382,22 @@ const EpicCountdown = ({ deadline })=>{
         secs: 0
     });
     const [isUrgent, setIsUrgent] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isExpired, setIsExpired] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const calculate = ()=>{
             const diff = new Date(deadline).getTime() - Date.now();
             if (diff > 0) {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 setIsUrgent(days < 3);
+                setIsExpired(false);
                 setTimeLeft({
                     days,
                     hours: Math.floor(diff / (1000 * 60 * 60) % 24),
                     mins: Math.floor(diff / (1000 * 60) % 60),
                     secs: Math.floor(diff / 1000 % 60)
                 });
+            } else {
+                setIsExpired(true);
             }
         };
         calculate();
@@ -1368,7 +1414,7 @@ const EpicCountdown = ({ deadline })=>{
                     children: String(value).padStart(2, "0")
                 }, void 0, false, {
                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                    lineNumber: 95,
+                    lineNumber: 102,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1376,132 +1422,182 @@ const EpicCountdown = ({ deadline })=>{
                     children: label
                 }, void 0, false, {
                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                    lineNumber: 105,
+                    lineNumber: 112,
                     columnNumber: 13
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-            lineNumber: 94,
+            lineNumber: 101,
             columnNumber: 9
         }, ("TURBOPACK compile-time value", void 0));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex flex-col items-center gap-4",
-        children: [
-            isUrgent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
-                initial: {
-                    opacity: 0,
-                    y: -10
-                },
-                animate: {
-                    opacity: 1,
-                    y: 0
-                },
-                className: "flex items-center gap-2 text-red-400 font-bold text-sm",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
-                        className: "w-4 h-4 animate-pulse"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 119,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        children: "CLOSING SOON!"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 120,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
-                        className: "w-4 h-4 animate-pulse"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 121,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0))
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 114,
-                columnNumber: 17
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2 md:gap-4",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
-                        value: timeLeft.days,
-                        label: "Days"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 125,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xl font-bold text-white/40",
-                        children: ":"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 126,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
-                        value: timeLeft.hours,
-                        label: "Hours"
-                    }, void 0, false, {
+        children: isExpired ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
+            initial: {
+                opacity: 0,
+                scale: 0.9
+            },
+            animate: {
+                opacity: 1,
+                scale: 1
+            },
+            className: "flex flex-col items-center gap-2",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "px-6 py-3 rounded-2xl bg-red-500/20 border-2 border-red-500/50 backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.3)]",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        className: "text-xl md:text-2xl font-black text-red-500 tracking-tight uppercase italic flex items-center gap-2",
+                        children: [
+                            "PAST DEADLINE ",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wind$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wind$3e$__["Wind"], {
+                                className: "w-6 h-6"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                lineNumber: 128,
+                                columnNumber: 43
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
                         lineNumber: 127,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xl font-bold text-white/40",
-                        children: ":"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 128,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
-                        value: timeLeft.mins,
-                        label: "Mins"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 129,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xl font-bold text-white/40 hidden sm:block",
-                        children: ":"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 130,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "hidden sm:block",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
-                            value: timeLeft.secs,
-                            label: "Secs"
+                        columnNumber: 25
+                    }, ("TURBOPACK compile-time value", void 0))
+                }, void 0, false, {
+                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                    lineNumber: 126,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0)),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                    className: "text-xs font-bold text-red-400 uppercase tracking-widest mt-1",
+                    children: "MISSION EXPIRED"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                    lineNumber: 131,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0))
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+            lineNumber: 121,
+            columnNumber: 17
+        }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+            children: [
+                isUrgent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
+                    initial: {
+                        opacity: 0,
+                        y: -10
+                    },
+                    animate: {
+                        opacity: 1,
+                        y: 0
+                    },
+                    className: "flex items-center gap-2 text-red-400 font-bold text-sm",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
+                            className: "w-4 h-4 animate-pulse"
                         }, void 0, false, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 132,
-                            columnNumber: 21
+                            lineNumber: 143,
+                            columnNumber: 29
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            children: "CLOSING SOON!"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 144,
+                            columnNumber: 29
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
+                            className: "w-4 h-4 animate-pulse"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 145,
+                            columnNumber: 29
                         }, ("TURBOPACK compile-time value", void 0))
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 131,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0))
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 124,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0))
-        ]
-    }, void 0, true, {
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                    lineNumber: 138,
+                    columnNumber: 25
+                }, ("TURBOPACK compile-time value", void 0)),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center gap-2 md:gap-4",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
+                            value: timeLeft.days,
+                            label: "Days"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 149,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            className: "text-xl font-bold text-white/40",
+                            children: ":"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 150,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
+                            value: timeLeft.hours,
+                            label: "Hours"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 151,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            className: "text-xl font-bold text-white/40",
+                            children: ":"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 152,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
+                            value: timeLeft.mins,
+                            label: "Mins"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 153,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            className: "text-xl font-bold text-white/40 hidden sm:block",
+                            children: ":"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 154,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "hidden sm:block",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TimeBlock, {
+                                value: timeLeft.secs,
+                                label: "Secs"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                lineNumber: 156,
+                                columnNumber: 29
+                            }, ("TURBOPACK compile-time value", void 0))
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                            lineNumber: 155,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                    lineNumber: 148,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0))
+            ]
+        }, void 0, true)
+    }, void 0, false, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 112,
+        lineNumber: 119,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1526,7 +1622,7 @@ const LiveViewers = ({ count })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module
                         className: "w-4 h-4 text-white/80"
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 150,
+                        lineNumber: 176,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1544,13 +1640,13 @@ const LiveViewers = ({ count })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module
                         }
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 151,
+                        lineNumber: 177,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 149,
+                lineNumber: 175,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1561,13 +1657,13 @@ const LiveViewers = ({ count })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 157,
+                lineNumber: 183,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 144,
+        lineNumber: 170,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 const TrendingBadge = ({ category })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1585,7 +1681,7 @@ const TrendingBadge = ({ category })=>/*#__PURE__*/ (0, __TURBOPACK__imported__m
                 className: "w-3.5 h-3.5 text-white"
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 167,
+                lineNumber: 193,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1596,13 +1692,13 @@ const TrendingBadge = ({ category })=>/*#__PURE__*/ (0, __TURBOPACK__imported__m
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 168,
+                lineNumber: 194,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 162,
+        lineNumber: 188,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 const FloatingHeart = ({ id, x })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1628,12 +1724,12 @@ const FloatingHeart = ({ id, x })=>/*#__PURE__*/ (0, __TURBOPACK__imported__modu
             className: "w-6 h-6 text-rose-500 fill-current"
         }, void 0, false, {
             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-            lineNumber: 183,
+            lineNumber: 209,
             columnNumber: 9
         }, ("TURBOPACK compile-time value", void 0))
     }, id, false, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 175,
+        lineNumber: 201,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 const StoryCard = ({ children, title, icon: Icon, gradient, delay = 0 })=>{
@@ -1662,7 +1758,7 @@ const StoryCard = ({ children, title, icon: Icon, gradient, delay = 0 })=>{
                 className: `absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${gradient}`
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 211,
+                lineNumber: 237,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1674,12 +1770,12 @@ const StoryCard = ({ children, title, icon: Icon, gradient, delay = 0 })=>{
                             className: "w-5 h-5 text-white"
                         }, void 0, false, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 214,
+                            lineNumber: 240,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 213,
+                        lineNumber: 239,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1687,20 +1783,20 @@ const StoryCard = ({ children, title, icon: Icon, gradient, delay = 0 })=>{
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 216,
+                        lineNumber: 242,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 212,
+                lineNumber: 238,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             children
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 204,
+        lineNumber: 230,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1726,7 +1822,7 @@ const RecentActivity = ({ name })=>/*#__PURE__*/ (0, __TURBOPACK__imported__modu
                 children: name[0]
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 230,
+                lineNumber: 256,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1739,7 +1835,7 @@ const RecentActivity = ({ name })=>/*#__PURE__*/ (0, __TURBOPACK__imported__modu
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 234,
+                        lineNumber: 260,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1747,48 +1843,71 @@ const RecentActivity = ({ name })=>/*#__PURE__*/ (0, __TURBOPACK__imported__modu
                         children: "2 minutes ago"
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 235,
+                        lineNumber: 261,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 233,
+                lineNumber: 259,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
                 className: "w-4 h-4 text-yellow-400"
             }, void 0, false, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 237,
+                lineNumber: 263,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 224,
+        lineNumber: 250,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 // Type configurations
-const TYPE_EMOJI = {
-    competition: "🏆",
-    scholarship: "🎓",
-    olympiad: "🥇",
-    workshop: "🛠️",
-    internship: "💼",
-    program: "📚",
-    fellowship: "🤝",
-    course: "🎥",
-    "foreign-exam": "🌐",
-    other: "✨"
+const TYPE_LABELS = {
+    competition: "Competition",
+    scholarship: "Scholarship",
+    olympiad: "Olympiad",
+    workshop: "Workshop",
+    internship: "Internship",
+    program: "Program",
+    fellowship: "Fellowship",
+    course: "Course",
+    "foreign-exam": "Global",
+    other: "Opportunity"
 };
-const formatPrizeWithEmoji = (prize)=>{
+const formatPrize = (prize)=>{
     if (!prize) return null;
     const p = prize.toLowerCase();
-    if (p.includes('certificate')) return `📜 ${prize}`;
-    if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
-    if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
-    return `🎁 ${prize}`;
+    let Icon = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__["Gift"];
+    if (p.includes('certificate')) Icon = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"];
+    else if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) Icon = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coins$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coins$3e$__["Coins"];
+    else if (p.includes('trophy') || p.includes('medal') || p.includes('award')) Icon = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"];
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "flex items-center gap-1.5",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
+                className: "w-4 h-4"
+            }, void 0, false, {
+                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                lineNumber: 291,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                children: prize
+            }, void 0, false, {
+                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                lineNumber: 292,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+        lineNumber: 290,
+        columnNumber: 9
+    }, ("TURBOPACK compile-time value", void 0));
 };
 // ============================================
 // MAIN COMPONENT
@@ -1835,6 +1954,37 @@ const OpportunityDetail = ()=>{
         student,
         id
     ]);
+    const isClosed = opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).getTime() < Date.now() : false;
+    const handleApply = async ()=>{
+        if (isClosed) return;
+        if (!isAuthenticated) {
+            showAuthModal({
+                trigger: "apply",
+                message: "Jump in and earn 40 XP!"
+            });
+            return;
+        }
+        if (isApplied) {
+            // Already applied - just visit again
+            if (opportunity?.link) window.open(opportunity.link, "_blank");
+            toast({
+                title: "Welcome back! 🤝",
+                description: "Taking you to the opportunity page again.",
+                className: "bg-primary text-primary-foreground border-none"
+            });
+            return;
+        }
+        // Not applied - start confirmation flow
+        if (opportunity?.link) {
+            window.open(opportunity.link, "_blank");
+            setWaitingForConfirmation(true);
+            toast({
+                title: "Link Opened! 🚀",
+                description: "Come back here once you've applied to claim your XP!",
+                className: "bg-primary text-primary-foreground border-none"
+            });
+        }
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const names = [
             "Aarav",
@@ -1924,35 +2074,6 @@ const OpportunityDetail = ()=>{
         id
     ]);
     // Handlers
-    const handleApply = async ()=>{
-        if (!isAuthenticated) {
-            showAuthModal({
-                trigger: "apply",
-                message: "🚀 Jump in and earn 40 XP!"
-            });
-            return;
-        }
-        if (isApplied) {
-            // Already applied - just visit again
-            if (opportunity?.link) window.open(opportunity.link, "_blank");
-            toast({
-                title: "Welcome back! 🤝",
-                description: "Taking you to the opportunity page again.",
-                className: "bg-primary text-primary-foreground border-none"
-            });
-            return;
-        }
-        // Not applied - start confirmation flow
-        if (opportunity?.link) {
-            window.open(opportunity.link, "_blank");
-            setWaitingForConfirmation(true);
-            toast({
-                title: "Link Opened! 🚀",
-                description: "Come back here once you've applied to claim your XP!",
-                className: "bg-primary text-primary-foreground border-none"
-            });
-        }
-    };
     const confirmApplication = async ()=>{
         if (!id || isApplied) return;
         try {
@@ -1980,7 +2101,7 @@ const OpportunityDetail = ()=>{
         if (!isAuthenticated) {
             showAuthModal({
                 trigger: "heart",
-                message: "❤️ Show your hype and earn 2 XP!"
+                message: "Show your hype and earn 2 XP!"
             });
             return;
         }
@@ -2037,7 +2158,7 @@ const OpportunityDetail = ()=>{
                 await saveOpportunity(id);
                 setIsBookmarked(true);
                 toast({
-                    title: "+5 XP ⭐",
+                    title: "+5 XP",
                     description: "Saved!",
                     className: "bg-primary text-primary-foreground border-none"
                 });
@@ -2052,8 +2173,8 @@ const OpportunityDetail = ()=>{
         const deadlineStr = opportunity.dates?.registrationEndDescription || (opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD');
         const feeText = opportunity.fees === 0 || !opportunity.fees ? "FREE ✨" : `₹${opportunity.fees}`;
         const xp = opportunity.xpValue || 200;
-        const typeEmoji = TYPE_EMOJI[opportunity.type] || "�";
-        const shareText = `${typeEmoji} *${opportunity.type.toUpperCase()} ALERT: DON'T MISS OUT!* ${typeEmoji}\n\n` + `*${opportunity.title}*\n` + `━━━━━━━━━━━━━━━━━━━━\n` + `🏢 *Host:* ${opportunity.organizer || 'Myark'}\n` + `🏆 *Grand Prize:* ${opportunity.prizes?.first || 'Certificate & Recognition'}\n` + `⚡ *Bonus:* +${xp} XP on Myark\n` + `💰 *Entry Fee:* ${feeText}\n` + `⏳ *Deadline:* ${deadlineStr}\n` + `━━━━━━━━━━━━━━━━━━━━\n\n` + `Hundreds of students are already jumping in! High-aura opportunity to level up your CV and claim rewards. 🐧✨\n\n` + `👇 *Claim your spot before it's gone:* \n${shareUrl}`;
+        const typeEmoji = TYPE_EMOJI[opportunity.type] || "";
+        const shareText = `*${opportunity.type.toUpperCase()} ALERT: DON'T MISS OUT!*\n\n` + `*${opportunity.title}*\n` + `━━━━━━━━━━━━━━━━━━━━\n` + `🏢 *Host:* ${opportunity.organizer || 'Myark'}\n` + `🏆 *Grand Prize:* ${opportunity.prizes?.first || 'Certificate & Recognition'}\n` + `⚡ *Bonus:* +${xp} XP on Myark\n` + `💰 *Entry Fee:* ${feeText}\n` + `⏳ *Deadline:* ${deadlineStr}\n` + `━━━━━━━━━━━━━━━━━━━━\n\n` + `Hundreds of students are already jumping in! High-aura opportunity to level up your CV and claim rewards. 🐧✨\n\n` + `👇 *Claim your spot before it's gone:* \n${shareUrl}`;
         if (navigator.share) {
             try {
                 await navigator.share({
@@ -2088,7 +2209,7 @@ const OpportunityDetail = ()=>{
                         className: "w-12 h-12 animate-spin text-primary mx-auto"
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 529,
+                        lineNumber: 565,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2096,18 +2217,18 @@ const OpportunityDetail = ()=>{
                         children: "Loading adventure..."
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 530,
+                        lineNumber: 566,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 528,
+                lineNumber: 564,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-            lineNumber: 527,
+            lineNumber: 563,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -2121,12 +2242,12 @@ const OpportunityDetail = ()=>{
                     url: `https://myark.in/opportunity/${id}`
                 }, void 0, false, {
                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                    lineNumber: 539,
+                    lineNumber: 575,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                    lineNumber: 544,
+                    lineNumber: 580,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2135,11 +2256,17 @@ const OpportunityDetail = ()=>{
                         className: "glass-card p-12 text-center max-w-md",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "text-6xl mb-4",
-                                children: "🔍"
+                                className: "flex justify-center mb-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$target$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Target$3e$__["Target"], {
+                                    className: "w-16 h-16 text-muted-foreground"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                    lineNumber: 584,
+                                    columnNumber: 29
+                                }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 547,
+                                lineNumber: 583,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -2147,7 +2274,7 @@ const OpportunityDetail = ()=>{
                                 children: "Oops! Not Found"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 548,
+                                lineNumber: 586,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2155,7 +2282,7 @@ const OpportunityDetail = ()=>{
                                 children: "This opportunity may have ended."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 549,
+                                lineNumber: 587,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2164,36 +2291,35 @@ const OpportunityDetail = ()=>{
                                 children: "Explore Others"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 550,
+                                lineNumber: 588,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 546,
+                        lineNumber: 582,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                    lineNumber: 545,
+                    lineNumber: 581,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-            lineNumber: 538,
+            lineNumber: 574,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     }
     const isTrending = (opportunity.hypeCount || 0) > 100 || opportunity.featured;
     const hasDeadline = opportunity.dates?.registrationEnd;
-    const typeEmoji = TYPE_EMOJI[opportunity.type] || "(";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-background selection:bg-primary/20",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 563,
+                lineNumber: 600,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2204,7 +2330,7 @@ const OpportunityDetail = ()=>{
                         isActive: showConfetti
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 565,
+                        lineNumber: 602,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SEO$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2223,7 +2349,7 @@ const OpportunityDetail = ()=>{
                         ]
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 568,
+                        lineNumber: 605,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2233,7 +2359,7 @@ const OpportunityDetail = ()=>{
                         }
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 579,
+                        lineNumber: 616,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2243,14 +2369,14 @@ const OpportunityDetail = ()=>{
                                 className: "absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 584,
+                                lineNumber: 621,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent hidden lg:block"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 585,
+                                lineNumber: 622,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2269,20 +2395,20 @@ const OpportunityDetail = ()=>{
                                                     className: "w-3.5 h-3.5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 595,
+                                                    lineNumber: 632,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "Back"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 596,
+                                                    lineNumber: 633,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 590,
+                                            lineNumber: 627,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2292,31 +2418,31 @@ const OpportunityDetail = ()=>{
                                                     count: liveViewers
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 599,
+                                                    lineNumber: 636,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 isTrending && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TrendingBadge, {
                                                     category: opportunity.tags?.[0]
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 600,
+                                                    lineNumber: 637,
                                                     columnNumber: 48
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 598,
+                                            lineNumber: 635,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 589,
+                                    lineNumber: 626,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 588,
+                                lineNumber: 625,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2343,22 +2469,18 @@ const OpportunityDetail = ()=>{
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                             className: "bg-primary/20 border-primary/30 text-primary text-xs font-black uppercase tracking-widest px-3 py-1.5",
-                                                            children: [
-                                                                typeEmoji,
-                                                                " ",
-                                                                opportunity.type
-                                                            ]
-                                                        }, void 0, true, {
+                                                            children: opportunity.type
+                                                        }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 613,
+                                                            lineNumber: 650,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         opportunity.fees === 0 || !opportunity.fees ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                             className: "bg-emerald-500/20 border-emerald-500/30 text-emerald-400 font-black text-xs px-3 py-1.5",
-                                                            children: "FREE ✨"
+                                                            children: "FREE"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 617,
+                                                            lineNumber: 654,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                             className: "bg-amber-500/20 border-amber-500/30 text-amber-400 font-black text-xs px-3 py-1.5",
@@ -2368,13 +2490,13 @@ const OpportunityDetail = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 619,
+                                                            lineNumber: 656,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 612,
+                                                    lineNumber: 649,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -2387,12 +2509,12 @@ const OpportunityDetail = ()=>{
                                                             ]
                                                         }, i, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 626,
+                                                            lineNumber: 663,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 624,
+                                                    lineNumber: 661,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 opportunity.shortDescription && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2400,7 +2522,7 @@ const OpportunityDetail = ()=>{
                                                     children: opportunity.shortDescription
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 634,
+                                                    lineNumber: 671,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2413,7 +2535,7 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-4 h-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 643,
+                                                                    lineNumber: 680,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2421,13 +2543,13 @@ const OpportunityDetail = ()=>{
                                                                     children: opportunity.organizer
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 644,
+                                                                    lineNumber: 681,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 642,
+                                                            lineNumber: 679,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2437,7 +2559,7 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-4 h-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 648,
+                                                                    lineNumber: 685,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2445,13 +2567,13 @@ const OpportunityDetail = ()=>{
                                                                     children: opportunity.location || "Online"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 649,
+                                                                    lineNumber: 686,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 647,
+                                                            lineNumber: 684,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2461,30 +2583,30 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-4 h-4 text-white/60"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 652,
+                                                                    lineNumber: 689,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-xs font-bold text-white/60",
+                                                                    className: "text-xs font-bold",
                                                                     children: [
                                                                         (opportunity.applicationCount || 0).toLocaleString(),
                                                                         " joined"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 653,
+                                                                    lineNumber: 690,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 651,
+                                                            lineNumber: 688,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 640,
+                                                    lineNumber: 677,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2497,7 +2619,7 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-5 h-5 text-primary"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 660,
+                                                                    lineNumber: 697,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2509,13 +2631,13 @@ const OpportunityDetail = ()=>{
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 661,
+                                                                    lineNumber: 698,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 659,
+                                                            lineNumber: 696,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         opportunity.prizes?.first && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2525,27 +2647,27 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-4 h-4 text-amber-400 shrink-0"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 665,
+                                                                    lineNumber: 702,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     className: "font-bold text-amber-400 text-xs md:text-sm line-clamp-1",
-                                                                    children: formatPrizeWithEmoji(opportunity.prizes.first)
+                                                                    children: formatPrize(opportunity.prizes.first)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 666,
+                                                                    lineNumber: 703,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 664,
+                                                            lineNumber: 701,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 658,
+                                                    lineNumber: 695,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 hasDeadline && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2558,7 +2680,7 @@ const OpportunityDetail = ()=>{
                                                                     className: "w-4 h-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 675,
+                                                                    lineNumber: 712,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2566,26 +2688,26 @@ const OpportunityDetail = ()=>{
                                                                     children: "Registration Closes In"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 676,
+                                                                    lineNumber: 713,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 674,
+                                                            lineNumber: 711,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(EpicCountdown, {
                                                             deadline: opportunity.dates.registrationEnd
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 678,
+                                                            lineNumber: 715,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 673,
+                                                    lineNumber: 710,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2594,16 +2716,27 @@ const OpportunityDetail = ()=>{
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                             size: "lg",
                                                             onClick: handleApply,
-                                                            disabled: isApplied,
+                                                            disabled: isApplied || isClosed,
                                                             className: "h-14 px-8 rounded-2xl font-black text-lg gap-2 shadow-glow-primary",
-                                                            children: isApplied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                            children: isClosed ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                                                        className: "w-5 h-5"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                                        lineNumber: 722,
+                                                                        columnNumber: 56
+                                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                                    " Closed"
+                                                                ]
+                                                            }, void 0, true) : isApplied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
                                                                         className: "w-5 h-5"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 685,
-                                                                        columnNumber: 57
+                                                                        lineNumber: 722,
+                                                                        columnNumber: 110
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     " You're In!"
                                                                 ]
@@ -2614,14 +2747,14 @@ const OpportunityDetail = ()=>{
                                                                         className: "w-5 h-5"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 685,
-                                                                        columnNumber: 115
+                                                                        lineNumber: 722,
+                                                                        columnNumber: 168
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 684,
+                                                            lineNumber: 721,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2637,20 +2770,20 @@ const OpportunityDetail = ()=>{
                                                                             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-5 h-5", isLiked && "fill-current")
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                            lineNumber: 689,
+                                                                            lineNumber: 726,
                                                                             columnNumber: 45
                                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                             children: likes.toLocaleString()
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                            lineNumber: 690,
+                                                                            lineNumber: 727,
                                                                             columnNumber: 45
                                                                         }, ("TURBOPACK compile-time value", void 0))
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 688,
+                                                                    lineNumber: 725,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2659,18 +2792,18 @@ const OpportunityDetail = ()=>{
                                                                             x: h.x
                                                                         }, h.id, false, {
                                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                            lineNumber: 692,
+                                                                            lineNumber: 729,
                                                                             columnNumber: 85
                                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                    lineNumber: 692,
+                                                                    lineNumber: 729,
                                                                     columnNumber: 41
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 687,
+                                                            lineNumber: 724,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2682,12 +2815,12 @@ const OpportunityDetail = ()=>{
                                                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-5 h-5", isBookmarked && "fill-current")
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 695,
+                                                                lineNumber: 732,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 694,
+                                                            lineNumber: 731,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2699,24 +2832,24 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 703,
+                                                                lineNumber: 740,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 697,
+                                                            lineNumber: 734,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 683,
+                                                    lineNumber: 720,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 610,
+                                            lineNumber: 647,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2740,7 +2873,7 @@ const OpportunityDetail = ()=>{
                                                     className: "absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 blur-3xl scale-90"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 716,
+                                                    lineNumber: 753,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2752,14 +2885,14 @@ const OpportunityDetail = ()=>{
                                                             className: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 720,
+                                                            lineNumber: 757,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 725,
+                                                            lineNumber: 762,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2771,19 +2904,19 @@ const OpportunityDetail = ()=>{
                                                                         className: "w-3 h-3 mr-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 731,
+                                                                        lineNumber: 768,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     " HOT"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 730,
+                                                                lineNumber: 767,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 728,
+                                                            lineNumber: 765,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2801,7 +2934,7 @@ const OpportunityDetail = ()=>{
                                                                                         className: "w-4 h-4 text-rose-400"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                        lineNumber: 741,
+                                                                                        lineNumber: 778,
                                                                                         columnNumber: 53
                                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2809,13 +2942,13 @@ const OpportunityDetail = ()=>{
                                                                                         children: likes
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                        lineNumber: 742,
+                                                                                        lineNumber: 779,
                                                                                         columnNumber: 53
                                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                lineNumber: 740,
+                                                                                lineNumber: 777,
                                                                                 columnNumber: 49
                                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2825,7 +2958,7 @@ const OpportunityDetail = ()=>{
                                                                                         className: "w-4 h-4"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                        lineNumber: 745,
+                                                                                        lineNumber: 782,
                                                                                         columnNumber: 53
                                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2833,19 +2966,19 @@ const OpportunityDetail = ()=>{
                                                                                         children: liveViewers
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                        lineNumber: 746,
+                                                                                        lineNumber: 783,
                                                                                         columnNumber: 53
                                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                lineNumber: 744,
+                                                                                lineNumber: 781,
                                                                                 columnNumber: 49
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 739,
+                                                                        lineNumber: 776,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2855,7 +2988,7 @@ const OpportunityDetail = ()=>{
                                                                                 className: "w-2 h-2 rounded-full bg-green-400 animate-pulse"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                lineNumber: 750,
+                                                                                lineNumber: 787,
                                                                                 columnNumber: 49
                                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2863,30 +2996,30 @@ const OpportunityDetail = ()=>{
                                                                                 children: "LIVE"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                                lineNumber: 751,
+                                                                                lineNumber: 788,
                                                                                 columnNumber: 49
                                                                             }, ("TURBOPACK compile-time value", void 0))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 749,
+                                                                        lineNumber: 786,
                                                                         columnNumber: 45
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 738,
+                                                                lineNumber: 775,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 737,
+                                                            lineNumber: 774,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 719,
+                                                    lineNumber: 756,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2901,34 +3034,34 @@ const OpportunityDetail = ()=>{
                                                             ][Math.floor(Math.random() * 4)]
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 760,
+                                                            lineNumber: 797,
                                                             columnNumber: 58
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 759,
+                                                        lineNumber: 796,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 758,
+                                                    lineNumber: 795,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 709,
+                                            lineNumber: 746,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 607,
+                                    lineNumber: 644,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 606,
+                                lineNumber: 643,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2961,31 +3094,31 @@ const OpportunityDetail = ()=>{
                                             children: "Scroll to Explore"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 770,
+                                            lineNumber: 807,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 771,
+                                            lineNumber: 808,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 769,
+                                    lineNumber: 806,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 768,
+                                lineNumber: 805,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 582,
+                        lineNumber: 619,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -3015,7 +3148,7 @@ const OpportunityDetail = ()=>{
                                                     children: opportunity.applicationCount || 0
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 783,
+                                                    lineNumber: 820,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3023,13 +3156,13 @@ const OpportunityDetail = ()=>{
                                                     children: "Participants"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 784,
+                                                    lineNumber: 821,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 782,
+                                            lineNumber: 819,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3057,7 +3190,7 @@ const OpportunityDetail = ()=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 787,
+                                                    lineNumber: 824,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3065,13 +3198,13 @@ const OpportunityDetail = ()=>{
                                                     children: "XP Reward"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 788,
+                                                    lineNumber: 825,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 786,
+                                            lineNumber: 823,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3096,7 +3229,7 @@ const OpportunityDetail = ()=>{
                                                     children: likes
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 791,
+                                                    lineNumber: 828,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3104,13 +3237,13 @@ const OpportunityDetail = ()=>{
                                                     children: "Hearts"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 792,
+                                                    lineNumber: 829,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 790,
+                                            lineNumber: 827,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3135,7 +3268,7 @@ const OpportunityDetail = ()=>{
                                                     children: opportunity.fees ? `₹${opportunity.fees}` : "FREE"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 795,
+                                                    lineNumber: 832,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3143,19 +3276,19 @@ const OpportunityDetail = ()=>{
                                                     children: "Entry Fee"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 796,
+                                                    lineNumber: 833,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 794,
+                                            lineNumber: 831,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 781,
+                                    lineNumber: 818,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3178,12 +3311,12 @@ const OpportunityDetail = ()=>{
                                                 className: "w-8 h-8"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 808,
+                                                lineNumber: 845,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 807,
+                                            lineNumber: 844,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3196,14 +3329,14 @@ const OpportunityDetail = ()=>{
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 812,
+                                                            lineNumber: 849,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         "AI Discovery: Quick Summary"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 811,
+                                                    lineNumber: 848,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3215,19 +3348,19 @@ const OpportunityDetail = ()=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 815,
+                                                    lineNumber: 852,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 810,
+                                            lineNumber: 847,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 801,
+                                    lineNumber: 838,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3240,7 +3373,7 @@ const OpportunityDetail = ()=>{
                                             children: opportunity.type === "competition" ? "🏆 Compete against the best minds and win incredible prizes!" : opportunity.type === "scholarship" ? "🎓 Unlock financial support for your education journey!" : opportunity.type === "olympiad" ? "🥇 Test your knowledge at the highest level - winners are recognized nationwide!" : opportunity.type === "internship" ? "💼 Get real-world experience and kickstart your career!" : opportunity.type === "workshop" ? "🛠️ Learn hands-on skills from industry experts!" : "✨ An amazing opportunity to level up your journey!"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 823,
+                                            lineNumber: 860,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3250,7 +3383,7 @@ const OpportunityDetail = ()=>{
                                                     className: "w-4 h-4 text-orange-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 832,
+                                                    lineNumber: 869,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3260,19 +3393,19 @@ const OpportunityDetail = ()=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 833,
+                                                    lineNumber: 870,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 831,
+                                            lineNumber: 868,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 822,
+                                    lineNumber: 859,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3291,12 +3424,12 @@ const OpportunityDetail = ()=>{
                                                             className: "w-4 h-4 text-cyan-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 842,
+                                                            lineNumber: 879,
                                                             columnNumber: 125
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 842,
+                                                        lineNumber: 879,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3307,13 +3440,13 @@ const OpportunityDetail = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 843,
+                                                        lineNumber: 880,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 841,
+                                                lineNumber: 878,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             opportunity.eligibility?.maxAge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3325,12 +3458,12 @@ const OpportunityDetail = ()=>{
                                                             className: "w-4 h-4 text-cyan-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 848,
+                                                            lineNumber: 885,
                                                             columnNumber: 125
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 848,
+                                                        lineNumber: 885,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3342,13 +3475,13 @@ const OpportunityDetail = ()=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 849,
+                                                        lineNumber: 886,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 847,
+                                                lineNumber: 884,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3360,12 +3493,12 @@ const OpportunityDetail = ()=>{
                                                             className: "w-4 h-4 text-cyan-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 853,
+                                                            lineNumber: 890,
                                                             columnNumber: 121
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 853,
+                                                        lineNumber: 890,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3373,13 +3506,13 @@ const OpportunityDetail = ()=>{
                                                         children: opportunity.location === "Online" || !opportunity.location ? "Participate from anywhere 🌐" : `Located in ${opportunity.location}`
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 854,
+                                                        lineNumber: 891,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 852,
+                                                lineNumber: 889,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             opportunity.eligibility?.requirements && opportunity.eligibility.requirements.length > 0 && opportunity.eligibility.requirements.map((req, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3391,12 +3524,12 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-4 h-4 text-cyan-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 859,
+                                                                lineNumber: 896,
                                                                 columnNumber: 129
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 859,
+                                                            lineNumber: 896,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3404,24 +3537,24 @@ const OpportunityDetail = ()=>{
                                                             children: req
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 860,
+                                                            lineNumber: 897,
                                                             columnNumber: 45
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, i, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 858,
+                                                    lineNumber: 895,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0)))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 839,
+                                        lineNumber: 876,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 838,
+                                    lineNumber: 875,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3441,7 +3574,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-8 h-8 text-amber-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 874,
+                                                                lineNumber: 911,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3451,7 +3584,7 @@ const OpportunityDetail = ()=>{
                                                                         children: "🥇 1st Prize"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 876,
+                                                                        lineNumber: 913,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3459,19 +3592,19 @@ const OpportunityDetail = ()=>{
                                                                         children: opportunity.prizes.first
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 877,
+                                                                        lineNumber: 914,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 875,
+                                                                lineNumber: 912,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 873,
+                                                        lineNumber: 910,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opportunity.prizes?.second && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3481,7 +3614,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-7 h-7 text-gray-300"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 883,
+                                                                lineNumber: 920,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3491,7 +3624,7 @@ const OpportunityDetail = ()=>{
                                                                         children: "🥈 2nd Prize"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 885,
+                                                                        lineNumber: 922,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3499,19 +3632,19 @@ const OpportunityDetail = ()=>{
                                                                         children: opportunity.prizes.second
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 886,
+                                                                        lineNumber: 923,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 884,
+                                                                lineNumber: 921,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 882,
+                                                        lineNumber: 919,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opportunity.prizes?.third && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3521,7 +3654,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-7 h-7 text-orange-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 892,
+                                                                lineNumber: 929,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3531,7 +3664,7 @@ const OpportunityDetail = ()=>{
                                                                         children: "🥉 3rd Prize"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 894,
+                                                                        lineNumber: 931,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3539,19 +3672,19 @@ const OpportunityDetail = ()=>{
                                                                         children: opportunity.prizes.third
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 895,
+                                                                        lineNumber: 932,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 893,
+                                                                lineNumber: 930,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 891,
+                                                        lineNumber: 928,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opportunity.prizes?.other && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3561,7 +3694,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-7 h-7 text-purple-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 901,
+                                                                lineNumber: 938,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3571,7 +3704,7 @@ const OpportunityDetail = ()=>{
                                                                         children: "🎉 Other Rewards"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 903,
+                                                                        lineNumber: 940,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3579,25 +3712,25 @@ const OpportunityDetail = ()=>{
                                                                         children: opportunity.prizes.other
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                        lineNumber: 904,
+                                                                        lineNumber: 941,
                                                                         columnNumber: 49
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 902,
+                                                                lineNumber: 939,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 900,
+                                                        lineNumber: 937,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 871,
+                                                lineNumber: 908,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3610,7 +3743,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-4 h-4 text-primary"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 913,
+                                                                lineNumber: 950,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3622,13 +3755,13 @@ const OpportunityDetail = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 914,
+                                                                lineNumber: 951,
                                                                 columnNumber: 41
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 912,
+                                                        lineNumber: 949,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     opportunity.prizes?.certificates && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3638,7 +3771,7 @@ const OpportunityDetail = ()=>{
                                                                 className: "w-4 h-4 text-emerald-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 918,
+                                                                lineNumber: 955,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3646,30 +3779,30 @@ const OpportunityDetail = ()=>{
                                                                 children: "Certificate ✓"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                                lineNumber: 919,
+                                                                lineNumber: 956,
                                                                 columnNumber: 45
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 917,
+                                                        lineNumber: 954,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 911,
+                                                lineNumber: 948,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 869,
+                                        lineNumber: 906,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 868,
+                                    lineNumber: 905,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3687,7 +3820,7 @@ const OpportunityDetail = ()=>{
                                                         children: "Registration Opens"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 931,
+                                                        lineNumber: 968,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3700,13 +3833,13 @@ const OpportunityDetail = ()=>{
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 932,
+                                                        lineNumber: 969,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 930,
+                                                lineNumber: 967,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             (opportunity.dates?.registrationEnd || opportunity.dates?.registrationEndDescription) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3717,7 +3850,7 @@ const OpportunityDetail = ()=>{
                                                         children: "Registration Closes"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 939,
+                                                        lineNumber: 976,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3730,13 +3863,13 @@ const OpportunityDetail = ()=>{
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 940,
+                                                        lineNumber: 977,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 938,
+                                                lineNumber: 975,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             (opportunity.dates?.eventDate || opportunity.dates?.eventDateDescription) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3747,7 +3880,7 @@ const OpportunityDetail = ()=>{
                                                         children: "Event Date"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 947,
+                                                        lineNumber: 984,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3760,24 +3893,24 @@ const OpportunityDetail = ()=>{
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 948,
+                                                        lineNumber: 985,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 946,
+                                                lineNumber: 983,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 928,
+                                        lineNumber: 965,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 927,
+                                    lineNumber: 964,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 opportunity.tags && opportunity.tags.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3794,17 +3927,17 @@ const OpportunityDetail = ()=>{
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 961,
+                                                lineNumber: 998,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0)))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 959,
+                                        lineNumber: 996,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 958,
+                                    lineNumber: 995,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 opportunity.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3818,12 +3951,12 @@ const OpportunityDetail = ()=>{
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 972,
+                                        lineNumber: 1009,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 971,
+                                    lineNumber: 1008,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 opportunity.eligibility?.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(StoryCard, {
@@ -3837,23 +3970,23 @@ const OpportunityDetail = ()=>{
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 979,
+                                        lineNumber: 1016,
                                         columnNumber: 33
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 978,
+                                    lineNumber: 1015,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 778,
+                            lineNumber: 815,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 777,
+                        lineNumber: 814,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -3863,14 +3996,14 @@ const OpportunityDetail = ()=>{
                                 className: "absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-secondary"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 987,
+                                lineNumber: 1024,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 988,
+                                lineNumber: 1025,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3897,7 +4030,7 @@ const OpportunityDetail = ()=>{
                                                     children: "One Chance."
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 992,
+                                                    lineNumber: 1029,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3905,13 +4038,13 @@ const OpportunityDetail = ()=>{
                                                     children: "Infinite Glory."
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 993,
+                                                    lineNumber: 1030,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 991,
+                                            lineNumber: 1028,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3919,7 +4052,7 @@ const OpportunityDetail = ()=>{
                                             children: "Your future self will thank you. Take the leap!"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 995,
+                                            lineNumber: 1032,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         !isApplied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3928,21 +4061,22 @@ const OpportunityDetail = ()=>{
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                     size: "lg",
                                                     onClick: handleApply,
+                                                    disabled: isApplied || isClosed,
                                                     className: "h-16 md:h-20 px-12 md:px-16 rounded-full bg-white text-primary font-black text-lg md:text-xl hover:scale-105 transition-transform shadow-2xl",
                                                     children: [
-                                                        waitingForConfirmation ? "Aura Check pending..." : "Claim Your Spot",
+                                                        isClosed ? "MISSED THE VIBE ✨" : waitingForConfirmation ? "Aura Check pending..." : "Claim Your Spot",
                                                         " ",
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                                             className: "w-6 h-6 ml-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 999,
-                                                            columnNumber: 112
+                                                            lineNumber: 1036,
+                                                            columnNumber: 145
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 998,
+                                                    lineNumber: 1035,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 waitingForConfirmation && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3951,13 +4085,13 @@ const OpportunityDetail = ()=>{
                                                     children: "I've actually applied!"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1002,
+                                                    lineNumber: 1039,
                                                     columnNumber: 41
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 997,
+                                            lineNumber: 1034,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex flex-col items-center gap-6",
@@ -3975,7 +4109,7 @@ const OpportunityDetail = ()=>{
                                                             className: "w-8 h-8 text-white"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1013,
+                                                            lineNumber: 1050,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3983,13 +4117,13 @@ const OpportunityDetail = ()=>{
                                                             children: "Mission Locked!"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1014,
+                                                            lineNumber: 1051,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1012,
+                                                    lineNumber: 1049,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4002,19 +4136,19 @@ const OpportunityDetail = ()=>{
                                                             className: "w-4 h-4 ml-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1021,
+                                                            lineNumber: 1058,
                                                             columnNumber: 53
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1016,
+                                                    lineNumber: 1053,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1011,
+                                            lineNumber: 1048,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4026,24 +4160,24 @@ const OpportunityDetail = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1025,
+                                            lineNumber: 1062,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 990,
+                                    lineNumber: 1027,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                lineNumber: 989,
+                                lineNumber: 1026,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 986,
+                        lineNumber: 1023,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4052,41 +4186,142 @@ const OpportunityDetail = ()=>{
                             className: "glass-card p-2 backdrop-blur-xl border-white/20 flex items-center gap-2 shadow-2xl rounded-2xl",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    size: "lg",
+                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("flex-1 h-12 md:h-14 rounded-xl md:rounded-2xl text-base md:text-lg font-black group relative overflow-hidden", isApplied ? "bg-emerald-500 hover:bg-emerald-600" : "bg-primary hover:bg-primary/90", isClosed && "bg-muted text-muted-foreground pointer-events-none opacity-50"),
                                     onClick: handleApply,
-                                    className: "flex-1 h-12 rounded-xl font-black text-xs gap-1.5 px-2",
-                                    children: isApplied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__["ExternalLink"], {
-                                                className: "w-3.5 h-3.5"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 1034,
-                                                columnNumber: 45
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            " Visit"
-                                        ]
-                                    }, void 0, true) : waitingForConfirmation ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-[10px]",
-                                        children: "Aura Check 🔒"
+                                    disabled: isApplied && !opportunity?.link || isClosed,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
+                                        mode: "wait",
+                                        children: isClosed ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
+                                            initial: {
+                                                opacity: 0,
+                                                y: 10
+                                            },
+                                            animate: {
+                                                opacity: 1,
+                                                y: 0
+                                            },
+                                            exit: {
+                                                opacity: 0,
+                                                y: -10
+                                            },
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                                    className: "w-5 h-5"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1089,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: "DEADLINE PASSED ✨"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1090,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, "closed", true, {
+                                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                            lineNumber: 1082,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0)) : isApplied ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
+                                            initial: {
+                                                opacity: 0,
+                                                y: 10
+                                            },
+                                            animate: {
+                                                opacity: 1,
+                                                y: 0
+                                            },
+                                            exit: {
+                                                opacity: 0,
+                                                y: -10
+                                            },
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__["ExternalLink"], {
+                                                    className: "w-3.5 h-3.5"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1100,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: "VISIT AGAIN"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1101,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, "applied", true, {
+                                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                            lineNumber: 1093,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0)) : waitingForConfirmation ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].span, {
+                                            initial: {
+                                                opacity: 0,
+                                                y: 10
+                                            },
+                                            animate: {
+                                                opacity: 1,
+                                                y: 0
+                                            },
+                                            exit: {
+                                                opacity: 0,
+                                                y: -10
+                                            },
+                                            className: "text-[10px]",
+                                            children: "AURA CHECK 🔒"
+                                        }, "waiting", false, {
+                                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                            lineNumber: 1104,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
+                                            initial: {
+                                                opacity: 0,
+                                                y: 10
+                                            },
+                                            animate: {
+                                                opacity: 1,
+                                                y: 0
+                                            },
+                                            exit: {
+                                                opacity: 0,
+                                                y: -10
+                                            },
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: "JUMP IN"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1121,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__["Rocket"], {
+                                                    className: "w-3.5 h-3.5"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                                    lineNumber: 1122,
+                                                    columnNumber: 41
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, "jumpin", true, {
+                                            fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
+                                            lineNumber: 1114,
+                                            columnNumber: 37
+                                        }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 1034,
-                                        columnNumber: 124
-                                    }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
-                                        children: [
-                                            "Jump In ",
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rocket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Rocket$3e$__["Rocket"], {
-                                                className: "w-3.5 h-3.5"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 1034,
-                                                columnNumber: 189
-                                            }, ("TURBOPACK compile-time value", void 0))
-                                        ]
-                                    }, void 0, true)
+                                        lineNumber: 1080,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1033,
+                                    lineNumber: 1070,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4104,12 +4339,12 @@ const OpportunityDetail = ()=>{
                                                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-4 h-4", isLiked && "fill-current")
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 1039,
+                                                        lineNumber: 1130,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1038,
+                                                    lineNumber: 1129,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4117,7 +4352,7 @@ const OpportunityDetail = ()=>{
                                                     children: likes > 999 ? "1k" : likes
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1041,
+                                                    lineNumber: 1132,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -4126,18 +4361,18 @@ const OpportunityDetail = ()=>{
                                                             x: h.x
                                                         }, h.id, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1042,
+                                                            lineNumber: 1133,
                                                             columnNumber: 77
                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1042,
+                                                    lineNumber: 1133,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1037,
+                                            lineNumber: 1128,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4149,12 +4384,12 @@ const OpportunityDetail = ()=>{
                                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-4 h-4", isBookmarked && "fill-current")
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 1045,
+                                                lineNumber: 1136,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1044,
+                                            lineNumber: 1135,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4166,29 +4401,29 @@ const OpportunityDetail = ()=>{
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 1048,
+                                                lineNumber: 1139,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1047,
+                                            lineNumber: 1138,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1036,
+                                    lineNumber: 1127,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 1032,
+                            lineNumber: 1069,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 1031,
+                        lineNumber: 1068,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -4209,7 +4444,7 @@ const OpportunityDetail = ()=>{
                                     onClick: ()=>setShowAuraCheck(false)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1058,
+                                    lineNumber: 1149,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -4234,7 +4469,7 @@ const OpportunityDetail = ()=>{
                                             className: "absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1071,
+                                            lineNumber: 1162,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4242,7 +4477,7 @@ const OpportunityDetail = ()=>{
                                             children: "🔒"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1072,
+                                            lineNumber: 1163,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -4250,7 +4485,7 @@ const OpportunityDetail = ()=>{
                                             children: "Aura Check!"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1073,
+                                            lineNumber: 1164,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4258,7 +4493,7 @@ const OpportunityDetail = ()=>{
                                             children: "Did you actually lock it in, or are you just lurking? ✨"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1074,
+                                            lineNumber: 1165,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4270,7 +4505,7 @@ const OpportunityDetail = ()=>{
                                                     children: "Yes, I'm a Legend 👑"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1079,
+                                                    lineNumber: 1170,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4283,7 +4518,7 @@ const OpportunityDetail = ()=>{
                                                     children: "Not yet, take me back 🚀"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1085,
+                                                    lineNumber: 1176,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4295,30 +4530,30 @@ const OpportunityDetail = ()=>{
                                                     children: "Just browsing"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1095,
+                                                    lineNumber: 1186,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1078,
+                                            lineNumber: 1169,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1065,
+                                    lineNumber: 1156,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 1057,
+                            lineNumber: 1148,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 1055,
+                        lineNumber: 1146,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -4342,7 +4577,7 @@ const OpportunityDetail = ()=>{
                                     children: "More Opportunities You Might Like"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1118,
+                                    lineNumber: 1209,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4350,7 +4585,7 @@ const OpportunityDetail = ()=>{
                                     children: "Discover similar scholarships, competitions, and workshops that match your interests."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1121,
+                                    lineNumber: 1212,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4366,12 +4601,12 @@ const OpportunityDetail = ()=>{
                                                         className: "w-6 h-6 text-white"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                        lineNumber: 1130,
+                                                        lineNumber: 1221,
                                                         columnNumber: 41
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1129,
+                                                    lineNumber: 1220,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4381,7 +4616,7 @@ const OpportunityDetail = ()=>{
                                                             children: "Similar Opportunity"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1133,
+                                                            lineNumber: 1224,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4389,29 +4624,29 @@ const OpportunityDetail = ()=>{
                                                             children: "Coming soon..."
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                            lineNumber: 1134,
+                                                            lineNumber: 1225,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                    lineNumber: 1132,
+                                                    lineNumber: 1223,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                            lineNumber: 1128,
+                                            lineNumber: 1219,
                                             columnNumber: 33
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 1127,
+                                        lineNumber: 1218,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1125,
+                                    lineNumber: 1216,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4425,53 +4660,53 @@ const OpportunityDetail = ()=>{
                                                 className: "w-4 h-4 rotate-180"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                                lineNumber: 1146,
+                                                lineNumber: 1237,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                        lineNumber: 1141,
+                                        lineNumber: 1232,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                                    lineNumber: 1140,
+                                    lineNumber: 1231,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                            lineNumber: 1117,
+                            lineNumber: 1208,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 1111,
+                        lineNumber: 1202,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-20 md:hidden"
                     }, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 1152,
+                        lineNumber: 1243,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                        lineNumber: 1153,
+                        lineNumber: 1244,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-                lineNumber: 564,
+                lineNumber: 601,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/modules/OpportunityDetail.tsx",
-        lineNumber: 562,
+        lineNumber: 599,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };

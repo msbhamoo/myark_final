@@ -368,7 +368,7 @@ const Navbar = ()=>{
     const navLinks = [
         {
             label: "Explore",
-            href: "/"
+            href: "/explore"
         },
         {
             label: "Careers",

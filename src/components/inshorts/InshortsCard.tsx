@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Clock, Eye, Bookmark, Share2, Flame, Sparkles, Trophy, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Opportunity } from "@/types/admin";
@@ -166,14 +167,18 @@ const InshortsCard = ({ opportunity, onTap, isActive }: InshortsCardProps) => {
             {/* Image Cover - Takes up 40% of screen */}
             <div className="relative h-[30vh] w-full overflow-hidden">
                 {/* Background Image */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{
-                        backgroundImage: opportunity.image
-                            ? `url(${opportunity.image})`
-                            : `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)`,
-                    }}
-                />
+                {opportunity.image ? (
+                    <Image
+                        src={opportunity.image}
+                        alt={opportunity.title}
+                        fill
+                        priority={isActive}
+                        className="object-cover"
+                        sizes="100vw"
+                    />
+                ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-50" />
+                )}
 
                 {/* Gradient Overlay for readability */}
                 <div className={cn(

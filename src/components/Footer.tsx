@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart, Zap } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 group mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg">
-                🐧
+                <Zap className="w-5 h-5 text-white fill-current" />
               </div>
               <span className="font-display text-lg font-bold italic">Myark</span>
             </Link>
@@ -32,10 +32,10 @@ const Footer = () => {
           <div>
             <h4 className="font-bold mb-6">Quick Links</h4>
             <ul className="space-y-3">
-              {['Explore', 'Careers', 'Blog', 'Rewards', 'For Schools'].map((item) => (
+              {['About', 'Explore', 'Careers', 'Blog', 'Rewards', 'Schools', 'Verify'].map((item) => (
                 <li key={item}>
                   <Link href={`/${item.toLowerCase().replace(' ', '-')}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {item}
+                    {item === 'Verify' ? 'Verification Checklist' : item === 'About' ? 'About Us' : item}
                   </Link>
                 </li>
               ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Calendar, Clock, Sparkles, Loader2 } from "lucide-react";
@@ -82,10 +83,12 @@ const BlogSection = () => {
                                 onClick={() => router.push(`/blog/${blog.slug}`)}
                             >
                                 <div className="relative aspect-[16/10] rounded-[24px] md:rounded-[30px] overflow-hidden mb-4 md:mb-6 shadow-lg">
-                                    <img
+                                    <Image
                                         src={blog.coverImage || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop"}
                                         alt={blog.title}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                                     />
                                     <div className="absolute top-4 left-4">
                                         <Badge className="bg-white/20 backdrop-blur-md text-white border-white/50 hover:bg-white/30">

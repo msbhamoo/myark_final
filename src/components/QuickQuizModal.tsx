@@ -40,73 +40,73 @@ interface QuickQuizModalProps {
 const QUIZ_STEPS = [
     {
         id: "grade",
-        title: "Which class are you in? 🎓",
+        title: "Which class are you in?",
         options: [
-            { value: 8, label: "Class 8", emoji: "8️⃣" },
-            { value: 9, label: "Class 9", emoji: "9️⃣" },
-            { value: 10, label: "Class 10", emoji: "🔟" },
-            { value: 11, label: "Class 11", emoji: "1️⃣1️⃣" },
-            { value: 12, label: "Class 12", emoji: "🎓" },
-            { value: 13, label: "College+", emoji: "🏛️" },
+            { value: 8, label: "Class 8", emoji: "" },
+            { value: 9, label: "Class 9", emoji: "" },
+            { value: 10, label: "Class 10", emoji: "" },
+            { value: 11, label: "Class 11", emoji: "" },
+            { value: 12, label: "Class 12", emoji: "" },
+            { value: 13, label: "College+", emoji: "" },
         ],
-        mascot: "Hey there! Let's get started. Which grade are you currently crushing? ✨"
+        mascot: "Hey there! Let's get started. Which grade are you currently crushing?"
     },
     {
         id: "interests",
-        title: "What are you interested in right now? 🌈",
+        title: "What are you interested in right now?",
         multi: true,
         options: [
-            { value: "Scholarships", label: "Scholarships", emoji: "✨" },
-            { value: "Olympiads", label: "Olympiads", emoji: "🧬" },
-            { value: "AI", label: "AI & Tech", emoji: "🤖" },
-            { value: "Sports", label: "Sports", emoji: "⚽" },
-            { value: "Art", label: "Art & Design", emoji: "🎨" },
-            { value: "Math", label: "Math & STEM", emoji: "📐" },
-            { value: "Science", label: "Science", emoji: "🧪" },
-            { value: "Writing", label: "Storytelling", emoji: "📚" },
+            { value: "Scholarships", label: "Scholarships", icon: GraduationCap },
+            { value: "Olympiads", label: "Olympiads", icon: Medal },
+            { value: "AI", label: "AI & Tech", icon: Zap },
+            { value: "Sports", label: "Sports", icon: Trophy },
+            { value: "Art", label: "Art & Design", icon: Sparkles },
+            { value: "Math", label: "Math & STEM", icon: Target },
+            { value: "Science", label: "Science", icon: Flame },
+            { value: "Writing", label: "Storytelling", icon: Star },
         ],
-        mascot: "Ooh, choices! Tap the stuff that makes you go 'Whoa!'. Pick as many as you like. 🎒"
+        mascot: "Ooh, choices! Tap the stuff that makes you go 'Whoa!'. Pick as many as you like."
     },
     {
         id: "personaGoal",
-        title: "What's your goal vibe? 🎯",
+        title: "What's your goal vibe?",
         options: [
-            { value: "top_college", label: "Top College 🎓", icon: GraduationCap },
-            { value: "skills", label: "Boss Skills 💡", icon: Lightbulb },
-            { value: "recognition", label: "Total Fame 🏆", icon: Trophy },
-            { value: "exploring", label: "Still Exploring 🔍", icon: Search },
+            { value: "top_college", label: "Top College", icon: GraduationCap },
+            { value: "skills", label: "Boss Skills", icon: Lightbulb },
+            { value: "recognition", label: "Total Fame", icon: Trophy },
+            { value: "exploring", label: "Still Exploring", icon: Search },
         ],
-        mascot: "What's the dream, legend? Where do you want to see yourself next? 💡"
+        mascot: "What's the dream, legend? Where do you want to see yourself next?"
     },
     {
         id: "competitiveness",
-        title: "How competitive are you feeling? 🔥",
+        title: "How competitive are you feeling?",
         options: [
-            { value: "chill", label: "Chill Vibes Only 🌊", color: "bg-blue-500" },
-            { value: "balanced", label: "Balanced & Ready ⚖️", color: "bg-primary" },
-            { value: "beast_mode", label: "Full Beast Mode! 🔥", color: "bg-orange-500" },
+            { value: "chill", label: "Chill Vibes Only", color: "bg-blue-500", icon: Globe },
+            { value: "balanced", label: "Balanced & Ready", color: "bg-primary", icon: Target },
+            { value: "beast_mode", label: "Full Beast Mode!", color: "bg-orange-500", icon: Flame },
         ],
-        mascot: "How hard do you want to play? No pressure, just vibes! 🔥"
+        mascot: "How hard do you want to play? No pressure, just vibes!"
     },
     {
         id: "weeklyTimeCommitment",
-        title: "How much time can you give weekly? ⏱️",
+        title: "How much time can you give weekly?",
         options: [
-            { value: "1_2_hours", label: "1-2 Hours", emoji: "⌛" },
-            { value: "3_5_hours", label: "3-5 Hours", emoji: "📅" },
-            { value: "5_plus_hours", label: "5+ Hours", emoji: "🔥" },
+            { value: "1_2_hours", label: "1-2 Hours", icon: Clock },
+            { value: "3_5_hours", label: "3-5 Hours", icon: Star },
+            { value: "5_plus_hours", label: "5+ Hours", icon: Zap },
         ],
-        mascot: "Gotta manage that stamina! How much time can you spare from your side-quests? ⏱️"
+        mascot: "Gotta manage that stamina! How much time can you spare from your side-quests?"
     },
     {
         id: "deliveryPreference",
-        title: "Online or offline opportunities? 🌐📍",
+        title: "Online or offline opportunities?",
         options: [
-            { value: "online", label: "Digital World 🌐", icon: Globe },
-            { value: "offline", label: "In-Person 📍", icon: Target },
-            { value: "both", label: "Give me Both! ✨", icon: Sparkles },
+            { value: "online", label: "Digital World", icon: Globe },
+            { value: "offline", label: "In-Person", icon: Target },
+            { value: "both", label: "Give me Both!", icon: Sparkles },
         ],
-        mascot: "Almost there! Do you prefer the matrix or the real world? 📍"
+        mascot: "Almost there! Do you prefer the matrix or the real world?"
     }
 ];
 
@@ -168,7 +168,7 @@ const QuickQuizModal = ({ open, onOpenChange }: { open: boolean; onOpenChange: (
 
             setShowCelebration(true);
             toast({
-                title: "QUEST COMPLETE! 🏆",
+                title: "QUEST COMPLETE!",
                 description: "You've earned 150 XP and the Pathfinder badge!",
                 className: "bg-success text-white border-none"
             });
@@ -274,7 +274,7 @@ const QuickQuizModal = ({ open, onOpenChange }: { open: boolean; onOpenChange: (
                                                         animate={{ opacity: 1, x: 0 }}
                                                         className="text-[10px] text-primary font-black uppercase tracking-widest mt-0.5"
                                                     >
-                                                        Selected ✅
+                                                        Selected
                                                     </motion.span>
                                                 )}
                                             </div>

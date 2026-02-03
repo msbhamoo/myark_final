@@ -75,50 +75,59 @@ const Categories = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
-        <div className="text-center mb-8 md:mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            What's Your <span className="gradient-text-secondary">Vibe?</span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Pick a category and see what's trending. Real opportunities, updated live.
-          </p>
+        <div className="flex items-end justify-between mb-6 md:mb-10">
+          <div className="text-left">
+            <h2 className="font-display text-3xl md:text-5xl font-bold mb-2">
+              What's Your <span className="gradient-text-secondary">Vibe?</span>
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground max-w-xl">
+              Pick a category and see what's trending. Updated live.
+            </p>
+          </div>
+          <div className="hidden md:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground animate-pulse">
+            <span>Slide to see more</span>
+            <div className="flex gap-1">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+              <div className="w-1 h-1 rounded-full bg-primary/60" />
+              <div className="w-1 h-1 rounded-full bg-primary/30" />
+            </div>
+          </div>
         </div>
 
         {/* Category grid */}
-        {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="h-40 rounded-3xl bg-muted/50 animate-pulse border border-white/5" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {types.filter(type => (counts[type.id] || 0) > 0).map((type, index) => {
-              const IconComponent = ICON_MAP[type.icon] || Sparkles;
-              // Simple color mapping logic since we store tailwind classes like "text-blue-500"
-              // but CategoryCard likely expects "primary" | "secondary" | "accent" etc.
-              // We'll normalize it or update CategoryCard. 
-              // For now, let's assume CategoryCard accepts the raw color string or map it.
-              // Looking at previous file content, it expected variants. Let's pass a safe default or map dynamically.
+        <div className="relative group">
+          {/* Faded Edges for Scroll Hint */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none md:block hidden" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
 
-              // Quick mapping ensuring visual variety based on index if exact map isn't compatible
-              const variants = ['primary', 'secondary', 'accent', 'success'] as const;
-              const colorVariant = variants[index % variants.length];
+          {loading ? (
+            <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 overflow-y-hidden">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="h-32 w-[150px] md:w-[180px] shrink-0 rounded-2xl bg-muted/50 animate-pulse border border-white/5" />
+              ))}
+            </div>
+          ) : (
+            <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 overflow-y-hidden scroll-smooth">
+              {types.filter(type => (counts[type.id] || 0) > 0).map((type, index) => {
+                const IconComponent = ICON_MAP[type.icon] || Sparkles;
+                const variants = ['primary', 'secondary', 'accent', 'success'] as const;
+                const colorVariant = variants[index % variants.length];
 
-              return (
-                <div key={type.id} onClick={() => handleCategoryClick(type.id)} className="cursor-pointer">
-                  <CategoryCard
-                    icon={<IconComponent className="w-full h-full" />}
-                    title={type.name}
-                    count={counts[type.id] || 0}
-                    color={colorVariant}
-                    delay={index * 50}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
+                return (
+                  <div key={type.id} onClick={() => handleCategoryClick(type.id)} className="cursor-pointer">
+                    <CategoryCard
+                      icon={<IconComponent className="w-full h-full" />}
+                      title={type.name}
+                      count={counts[type.id] || 0}
+                      color={colorVariant}
+                      delay={index * 50}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, Rocket, Trophy, Zap, Star, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import TypewriterText from "./TypewriterText";
 
@@ -73,7 +74,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-12 md:py-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-28 pb-12 md:py-20">
       {/* Background glow effects */}
       <div className="absolute inset-0 bg-hero-glow pointer-events-none" />
       <motion.div
@@ -201,8 +202,9 @@ const Hero = () => {
             className="text-center group cursor-pointer"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="text-3xl md:text-4xl font-bold font-display text-success">
-              🏆 {count.scholarships}Cr+
+            <div className="text-3xl md:text-4xl font-bold font-display text-success flex items-center justify-center gap-2">
+              <Trophy className="w-6 h-6 md:w-8 md:h-8" />
+              <span>{count.scholarships}Cr+</span>
             </div>
             <div className="text-sm text-muted-foreground mt-1">Scholarships Won</div>
           </motion.div>
@@ -226,15 +228,14 @@ const Hero = () => {
                   className="relative group"
                 >
                   <div className="w-12 h-12 rounded-full border-4 border-background overflow-hidden relative transition-transform group-hover:scale-110 group-hover:z-50 group-hover:border-primary/50 shadow-lg bg-muted">
-                    <img
+                    <Image
                       src={url}
                       alt={`Student ${i + 1}`}
+                      width={48}
+                      height={48}
                       className="w-full h-full object-cover"
-                      loading="eager"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`;
-                      }}
+                      priority
+                      unoptimized={url.includes('unsplash')} // Unsplash URLs are already optimized but next/image helps with formatting
                     />
                   </div>
                 </motion.div>

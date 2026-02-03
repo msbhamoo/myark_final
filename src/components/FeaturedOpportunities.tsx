@@ -31,7 +31,7 @@ const FeaturedOpportunities = () => {
     if (!isAuthenticated) {
       showAuthModal({
         trigger: "manual",
-        message: "⭐ Sign in to save your results and earn 150 XP!"
+        message: "Sign in to save your results and earn 150 XP!"
       });
       return;
     }
@@ -48,6 +48,13 @@ const FeaturedOpportunities = () => {
         setLoading(true);
         // Fetch published opportunities
         let data = await opportunitiesService.getAll({ status: "published" });
+
+        // Filter out closed opportunities (deadlines in the past)
+        const now = Date.now();
+        data = data.filter(opp => {
+          if (!opp.dates?.registrationEnd) return true;
+          return new Date(opp.dates.registrationEnd).getTime() >= now;
+        });
 
         if (isForYou && student) {
           // Curate opportunities based on student interests and grade

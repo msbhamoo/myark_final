@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sparkles, Menu, X, User, Zap, LogOut, Flame } from "lucide-react";
+import { Sparkles, Menu, X, User, Zap, LogOut, Flame, Rocket } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -19,7 +19,7 @@ const Navbar = () => {
   const { student, isAuthenticated, showAuthModal, logout, loading } = useStudentAuth();
 
   const navLinks = [
-    { label: "Explore", href: "/" },
+    { label: "Explore", href: "/explore" },
     { label: "Careers", href: "/careers" },
   ];
 
@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 text-xl">
-              🐧
+              <Zap className="w-6 h-6 text-white fill-current" />
             </div>
             <span className="font-display text-xl font-bold italic tracking-tight underline decoration-primary/30 decoration-4 underline-offset-4">Myark</span>
           </Link>
@@ -80,7 +80,7 @@ const Navbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="gap-2 pl-2">
                       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-primary-foreground">
-                        {student.name?.[0]?.toUpperCase() || '🎮'}
+                        {student.name?.[0]?.toUpperCase() || <User className="w-4 h-4" />}
                       </div>
                       <span className="hidden sm:inline">{student.name || 'Explorer'}</span>
                     </Button>
@@ -109,7 +109,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Button variant="default" size="sm" onClick={handleGetStarted} disabled={loading}>
-                  Get Started 🚀
+                  Get Started <Rocket className="w-4 h-4 ml-1" />
                 </Button>
               </>
             )}
@@ -188,7 +188,7 @@ const Navbar = () => {
                     handleGetStarted();
                     setIsOpen(false);
                   }}>
-                    Get Started 🚀
+                    Get Started <Rocket className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </>

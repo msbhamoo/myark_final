@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import Image from "next/image";
 import {
     ArrowLeft,
     Bookmark,
@@ -43,6 +44,9 @@ import {
     Info,
     Rocket,
     PartyPopper,
+    X,
+    Wind,
+    FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -70,6 +74,7 @@ import type { Opportunity } from "@/types/admin";
 const EpicCountdown = ({ deadline }: { deadline: string }) => {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
     const [isUrgent, setIsUrgent] = useState(false);
+    const [isExpired, setIsExpired] = useState(false);
 
     useEffect(() => {
         const calculate = () => {
@@ -77,12 +82,15 @@ const EpicCountdown = ({ deadline }: { deadline: string }) => {
             if (diff > 0) {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 setIsUrgent(days < 3);
+                setIsExpired(false);
                 setTimeLeft({
                     days,
                     hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
                     mins: Math.floor((diff / (1000 * 60)) % 60),
                     secs: Math.floor((diff / 1000) % 60),
                 });
+            } else {
+                setIsExpired(true);
             }
         };
         calculate();
@@ -110,28 +118,47 @@ const EpicCountdown = ({ deadline }: { deadline: string }) => {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            {isUrgent && (
+            {isExpired ? (
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-red-400 font-bold text-sm"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center gap-2"
                 >
-                    <Flame className="w-4 h-4 animate-pulse" />
-                    <span>CLOSING SOON!</span>
-                    <Flame className="w-4 h-4 animate-pulse" />
+                    <div className="px-6 py-3 rounded-2xl bg-red-500/20 border-2 border-red-500/50 backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+                        <span className="text-xl md:text-2xl font-black text-red-500 tracking-tight uppercase italic flex items-center gap-2">
+                            PAST DEADLINE <Wind className="w-6 h-6" />
+                        </span>
+                    </div>
+                    <span className="text-xs font-bold text-red-400 uppercase tracking-widest mt-1">
+                        MISSION EXPIRED
+                    </span>
                 </motion.div>
+            ) : (
+                <>
+                    {isUrgent && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center gap-2 text-red-400 font-bold text-sm"
+                        >
+                            <Flame className="w-4 h-4 animate-pulse" />
+                            <span>CLOSING SOON!</span>
+                            <Flame className="w-4 h-4 animate-pulse" />
+                        </motion.div>
+                    )}
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <TimeBlock value={timeLeft.days} label="Days" />
+                        <span className="text-xl font-bold text-white/40">:</span>
+                        <TimeBlock value={timeLeft.hours} label="Hours" />
+                        <span className="text-xl font-bold text-white/40">:</span>
+                        <TimeBlock value={timeLeft.mins} label="Mins" />
+                        <span className="text-xl font-bold text-white/40 hidden sm:block">:</span>
+                        <div className="hidden sm:block">
+                            <TimeBlock value={timeLeft.secs} label="Secs" />
+                        </div>
+                    </div>
+                </>
             )}
-            <div className="flex items-center gap-2 md:gap-4">
-                <TimeBlock value={timeLeft.days} label="Days" />
-                <span className="text-xl font-bold text-white/40">:</span>
-                <TimeBlock value={timeLeft.hours} label="Hours" />
-                <span className="text-xl font-bold text-white/40">:</span>
-                <TimeBlock value={timeLeft.mins} label="Mins" />
-                <span className="text-xl font-bold text-white/40 hidden sm:block">:</span>
-                <div className="hidden sm:block">
-                    <TimeBlock value={timeLeft.secs} label="Secs" />
-                </div>
-            </div>
         </div>
     );
 };
@@ -239,26 +266,46 @@ const RecentActivity = ({ name }: { name: string }) => (
 );
 
 // Type configurations
+const TYPE_LABELS: Record<string, string> = {
+    competition: "Competition",
+    scholarship: "Scholarship",
+    olympiad: "Olympiad",
+    workshop: "Workshop",
+    internship: "Internship",
+    program: "Program",
+    fellowship: "Fellowship",
+    course: "Course",
+    "foreign-exam": "Global",
+    other: "Opportunity",
+};
+
 const TYPE_EMOJI: Record<string, string> = {
     competition: "🏆",
-    scholarship: "🎓",
-    olympiad: "🥇",
+    scholarship: "💰",
+    olympiad: "🧠",
     workshop: "🛠️",
     internship: "💼",
     program: "📚",
     fellowship: "🤝",
-    course: "🎥",
-    "foreign-exam": "🌐",
+    course: "📖",
+    "foreign-exam": "🌎",
     other: "✨",
 };
 
-const formatPrizeWithEmoji = (prize?: string) => {
+const formatPrize = (prize?: string) => {
     if (!prize) return null;
     const p = prize.toLowerCase();
-    if (p.includes('certificate')) return `📜 ${prize}`;
-    if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
-    if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
-    return `🎁 ${prize}`;
+    let Icon = Gift;
+    if (p.includes('certificate')) Icon = FileText;
+    else if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) Icon = Coins;
+    else if (p.includes('trophy') || p.includes('medal') || p.includes('award')) Icon = Trophy;
+
+    return (
+        <div className="flex items-center gap-1.5">
+            <Icon className="w-4 h-4" />
+            <span>{prize}</span>
+        </div>
+    );
 };
 
 // ============================================
@@ -308,6 +355,30 @@ const OpportunityDetail = () => {
             setIsApplied(student.appliedOpportunities?.includes(id) || false);
         }
     }, [student, id]);
+
+    const isClosed = opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).getTime() < Date.now() : false;
+
+    const handleApply = async () => {
+        if (isClosed) return;
+        if (!isAuthenticated) {
+            showAuthModal({ trigger: "apply", message: "Jump in and earn 40 XP!" });
+            return;
+        }
+
+        if (isApplied) {
+            // Already applied - just visit again
+            if (opportunity?.link) window.open(opportunity.link, "_blank");
+            toast({ title: "Welcome back! 🤝", description: "Taking you to the opportunity page again.", className: "bg-primary text-primary-foreground border-none" });
+            return;
+        }
+
+        // Not applied - start confirmation flow
+        if (opportunity?.link) {
+            window.open(opportunity.link, "_blank");
+            setWaitingForConfirmation(true);
+            toast({ title: "Link Opened! 🚀", description: "Come back here once you've applied to claim your XP!", className: "bg-primary text-primary-foreground border-none" });
+        }
+    };
 
     useEffect(() => {
         const names = ["Aarav", "Priya", "Rohan", "Sneha", "Vikram", "Ananya"];
@@ -394,27 +465,6 @@ const OpportunityDetail = () => {
     }, [id]);
 
     // Handlers
-    const handleApply = async () => {
-        if (!isAuthenticated) {
-            showAuthModal({ trigger: "apply", message: "🚀 Jump in and earn 40 XP!" });
-            return;
-        }
-
-        if (isApplied) {
-            // Already applied - just visit again
-            if (opportunity?.link) window.open(opportunity.link, "_blank");
-            toast({ title: "Welcome back! 🤝", description: "Taking you to the opportunity page again.", className: "bg-primary text-primary-foreground border-none" });
-            return;
-        }
-
-        // Not applied - start confirmation flow
-        if (opportunity?.link) {
-            window.open(opportunity.link, "_blank");
-            setWaitingForConfirmation(true);
-            toast({ title: "Link Opened! 🚀", description: "Come back here once you've applied to claim your XP!", className: "bg-primary text-primary-foreground border-none" });
-        }
-    };
-
     const confirmApplication = async () => {
         if (!id || isApplied) return;
         try {
@@ -433,7 +483,7 @@ const OpportunityDetail = () => {
 
     const handleLike = async () => {
         if (!isAuthenticated) {
-            showAuthModal({ trigger: "heart", message: "❤️ Show your hype and earn 2 XP!" });
+            showAuthModal({ trigger: "heart", message: "Show your hype and earn 2 XP!" });
             return;
         }
         setIsLiked(true);
@@ -473,7 +523,7 @@ const OpportunityDetail = () => {
             try {
                 await saveOpportunity(id);
                 setIsBookmarked(true);
-                toast({ title: "+5 XP ⭐", description: "Saved!", className: "bg-primary text-primary-foreground border-none" });
+                toast({ title: "+5 XP", description: "Saved!", className: "bg-primary text-primary-foreground border-none" });
             } catch (error) {
                 console.error("Save failed:", error);
             }
@@ -487,7 +537,7 @@ const OpportunityDetail = () => {
         const deadlineStr = opportunity.dates?.registrationEndDescription || (opportunity.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD');
         const feeText = opportunity.fees === 0 || !opportunity.fees ? "FREE ✨" : `₹${opportunity.fees}`;
         const xp = opportunity.xpValue || 200;
-        const typeEmoji = TYPE_EMOJI[opportunity.type] || "�";
+        const typeEmoji = TYPE_EMOJI[opportunity.type] || "";
 
         const shareText =
             `${typeEmoji} *${opportunity.type.toUpperCase()} ALERT: DON'T MISS OUT!* ${typeEmoji}\n\n` +
@@ -544,7 +594,9 @@ const OpportunityDetail = () => {
                 <Navbar />
                 <div className="flex items-center justify-center min-h-[80vh] px-4">
                     <div className="glass-card p-12 text-center max-w-md">
-                        <div className="text-6xl mb-4">🔍</div>
+                        <div className="flex justify-center mb-4">
+                            <Target className="w-16 h-16 text-muted-foreground" />
+                        </div>
                         <h1 className="text-2xl font-black mb-2">Oops! Not Found</h1>
                         <p className="text-muted-foreground mb-6">This opportunity may have ended.</p>
                         <Button onClick={() => router.push("/")} className="w-full">Explore Others</Button>
@@ -556,7 +608,6 @@ const OpportunityDetail = () => {
 
     const isTrending = (opportunity.hypeCount || 0) > 100 || opportunity.featured;
     const hasDeadline = opportunity.dates?.registrationEnd;
-    const typeEmoji = TYPE_EMOJI[opportunity.type] || "(";
 
     return (
         <div className="min-h-screen bg-background selection:bg-primary/20">
@@ -611,10 +662,10 @@ const OpportunityDetail = () => {
                                 {/* Type Badges */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <Badge className="bg-primary/20 border-primary/30 text-primary text-xs font-black uppercase tracking-widest px-3 py-1.5">
-                                        {typeEmoji} {opportunity.type}
+                                        {opportunity.type}
                                     </Badge>
                                     {opportunity.fees === 0 || !opportunity.fees ? (
-                                        <Badge className="bg-emerald-500/20 border-emerald-500/30 text-emerald-400 font-black text-xs px-3 py-1.5">FREE ✨</Badge>
+                                        <Badge className="bg-emerald-500/20 border-emerald-500/30 text-emerald-400 font-black text-xs px-3 py-1.5">FREE</Badge>
                                     ) : (
                                         <Badge className="bg-amber-500/20 border-amber-500/30 text-amber-400 font-black text-xs px-3 py-1.5">₹{opportunity.fees}</Badge>
                                     )}
@@ -650,7 +701,7 @@ const OpportunityDetail = () => {
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <Users className="w-4 h-4 text-white/60" />
-                                        <span className="text-xs font-bold text-white/60">{(opportunity.applicationCount || 0).toLocaleString()} joined</span>
+                                        <span className="text-xs font-bold">{(opportunity.applicationCount || 0).toLocaleString()} joined</span>
                                     </div>
                                 </div>
 
@@ -663,7 +714,7 @@ const OpportunityDetail = () => {
                                     {opportunity.prizes?.first && (
                                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-amber-500/20 border border-amber-500/30 max-w-full">
                                             <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
-                                            <span className="font-bold text-amber-400 text-xs md:text-sm line-clamp-1">{formatPrizeWithEmoji(opportunity.prizes.first)}</span>
+                                            <div className="font-bold text-amber-400 text-xs md:text-sm line-clamp-1">{formatPrize(opportunity.prizes.first)}</div>
                                         </div>
                                     )}
                                 </div>
@@ -681,8 +732,8 @@ const OpportunityDetail = () => {
 
                                 {/* Desktop CTAs */}
                                 <div className="hidden md:flex items-center gap-4 pt-4">
-                                    <Button size="lg" onClick={handleApply} disabled={isApplied} className="h-14 px-8 rounded-2xl font-black text-lg gap-2 shadow-glow-primary">
-                                        {isApplied ? (<><Check className="w-5 h-5" /> You're In!</>) : (<>Jump In <Rocket className="w-5 h-5" /></>)}
+                                    <Button size="lg" onClick={handleApply} disabled={isApplied || isClosed} className="h-14 px-8 rounded-2xl font-black text-lg gap-2 shadow-glow-primary">
+                                        {isClosed ? (<><X className="w-5 h-5" /> Closed</>) : isApplied ? (<><Check className="w-5 h-5" /> You're In!</>) : (<>Jump In <Rocket className="w-5 h-5" /></>)}
                                     </Button>
                                     <div className="relative">
                                         <Button variant="outline" size="lg" onClick={handleLike} className={cn("h-14 px-6 rounded-2xl font-bold gap-2 border-white/20 bg-white/5 hover:bg-white/10", isLiked && "text-rose-500 border-rose-500/30")}>
@@ -717,10 +768,13 @@ const OpportunityDetail = () => {
 
                                 {/* Image container */}
                                 <div className="relative aspect-video sm:aspect-square md:aspect-[4/5] rounded-[32px] md:rounded-[48px] overflow-hidden border-2 border-white/10 shadow-2xl group">
-                                    <img
+                                    <Image
                                         src={opportunity.image || "https://images.unsplash.com/photo-1523240715632-d984cfd96058?q=80&w=2070"}
                                         alt={opportunity.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        priority
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
@@ -995,8 +1049,8 @@ const OpportunityDetail = () => {
                             <p className="text-lg md:text-xl text-white/70 max-w-lg mx-auto">Your future self will thank you. Take the leap!</p>
                             {!isApplied ? (
                                 <div className="flex flex-col items-center gap-4">
-                                    <Button size="lg" onClick={handleApply} className="h-16 md:h-20 px-12 md:px-16 rounded-full bg-white text-primary font-black text-lg md:text-xl hover:scale-105 transition-transform shadow-2xl">
-                                        {waitingForConfirmation ? "Aura Check pending..." : "Claim Your Spot"} <ChevronRight className="w-6 h-6 ml-2" />
+                                    <Button size="lg" onClick={handleApply} disabled={isApplied || isClosed} className="h-16 md:h-20 px-12 md:px-16 rounded-full bg-white text-primary font-black text-lg md:text-xl hover:scale-105 transition-transform shadow-2xl">
+                                        {isClosed ? "MISSED THE VIBE ✨" : waitingForConfirmation ? "Aura Check pending..." : "Claim Your Spot"} <ChevronRight className="w-6 h-6 ml-2" />
                                     </Button>
                                     {waitingForConfirmation && (
                                         <button
@@ -1030,8 +1084,62 @@ const OpportunityDetail = () => {
                 {/* ===== MOBILE STICKY BAR ===== */}
                 <div className="fixed bottom-0 left-0 right-0 z-50 p-3 md:hidden">
                     <div className="glass-card p-2 backdrop-blur-xl border-white/20 flex items-center gap-2 shadow-2xl rounded-2xl">
-                        <Button onClick={handleApply} className="flex-1 h-12 rounded-xl font-black text-xs gap-1.5 px-2">
-                            {isApplied ? (<><ExternalLink className="w-3.5 h-3.5" /> Visit</>) : waitingForConfirmation ? (<span className="text-[10px]">Aura Check 🔒</span>) : (<>Jump In <Rocket className="w-3.5 h-3.5" /></>)}
+                        <Button
+                            size="lg"
+                            className={cn(
+                                "flex-1 h-12 md:h-14 rounded-xl md:rounded-2xl text-base md:text-lg font-black group relative overflow-hidden",
+                                isApplied ? "bg-emerald-500 hover:bg-emerald-600" : "bg-primary hover:bg-primary/90",
+                                isClosed && "bg-muted text-muted-foreground pointer-events-none opacity-50"
+                            )}
+                            onClick={handleApply}
+                            disabled={isApplied && !opportunity?.link || isClosed}
+                        >
+                            <AnimatePresence mode="wait">
+                                {isClosed ? (
+                                    <motion.div
+                                        key="closed"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <X className="w-5 h-5" />
+                                        <span>DEADLINE PASSED ✨</span>
+                                    </motion.div>
+                                ) : isApplied ? (
+                                    <motion.div
+                                        key="applied"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <ExternalLink className="w-3.5 h-3.5" />
+                                        <span>VISIT AGAIN</span>
+                                    </motion.div>
+                                ) : waitingForConfirmation ? (
+                                    <motion.span
+                                        key="waiting"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="text-[10px]"
+                                    >
+                                        AURA CHECK 🔒
+                                    </motion.span>
+                                ) : (
+                                    <motion.div
+                                        key="jumpin"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <span>JUMP IN</span>
+                                        <Rocket className="w-3.5 h-3.5" />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </Button>
                         <div className="flex items-center gap-1">
                             <div className="relative">

@@ -3,17 +3,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Clock, Users, ChevronRight, Bookmark, Eye, TrendingUp } from "lucide-react";
+import {
+  Clock, Users, ChevronRight, Bookmark, Eye, TrendingUp,
+  Heart, Zap,
+  MessageCircle, Share2, FileText, Gift, Coins, Wind, Trophy
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Zap } from "lucide-react";
-import { gamificationService } from "@/lib/gamificationService";
 import { useAuth } from "@/lib/auth";
 import { useStudentAuth } from "@/lib/studentAuth";
 import { useToast } from "@/hooks/use-toast";
-import { MessageCircle, Share2 } from "lucide-react";
 
 interface OpportunityCardProps {
   id: string;
@@ -28,6 +29,7 @@ interface OpportunityCardProps {
   delay?: number;
   views?: number;
   hypes?: number;
+  isClosed?: boolean;
 }
 
 const typeConfig = {
@@ -49,13 +51,20 @@ const typeConfig = {
   },
 };
 
-const formatPrizeWithEmoji = (prize?: string) => {
+const formatPrize = (prize?: string) => {
   if (!prize) return null;
   const p = prize.toLowerCase();
-  if (p.includes('certificate')) return `📜 ${prize}`;
-  if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) return `💰 ${prize}`;
-  if (p.includes('trophy') || p.includes('medal') || p.includes('award')) return `🏆 ${prize}`;
-  return `🎁 ${prize}`;
+  let Icon = Gift;
+  if (p.includes('certificate')) Icon = FileText;
+  else if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) Icon = Coins;
+  else if (p.includes('trophy') || p.includes('medal') || p.includes('award')) Icon = Trophy;
+
+  return (
+    <div className="flex items-center gap-1.5 font-bold uppercase tracking-tight">
+      <Icon className="w-4 h-4" />
+      <span>{prize}</span>
+    </div>
+  );
 };
 
 const OpportunityCard = ({
@@ -70,6 +79,7 @@ const OpportunityCard = ({
   delay = 0,
   views: initialViews,
   hypes: initialHypes = 0,
+  isClosed = false,
 }: OpportunityCardProps) => {
   const [mounted, setMounted] = useState(false);
   const [views, setViews] = useState(initialViews || 0);
@@ -108,7 +118,7 @@ const OpportunityCard = ({
     if (!isAuthenticated) {
       showAuthModal({
         trigger: 'heart',
-        message: "❤️ Heart this opportunity to show your support and earn 2 XP!",
+        message: "Heart this opportunity to show your support and earn 2 XP!",
       });
       return;
     }
@@ -154,7 +164,7 @@ const OpportunityCard = ({
         toast({ title: "Removed", description: "Opportunity removed from saved", className: "bg-muted text-foreground border-none" });
       } else {
         await saveOpportunity(id);
-        toast({ title: "+5 XP ⭐", description: "Opportunity saved!", className: "bg-primary text-primary-foreground border-none" });
+        toast({ title: "+5 XP", description: "Opportunity saved!", className: "bg-primary text-primary-foreground border-none" });
       }
     } catch (error) {
       console.error("Bookmark toggle failed:", error);
@@ -191,8 +201,13 @@ const OpportunityCard = ({
         transition={{ duration: 0.3 }}
       />
 
-      {/* Featured badge */}
-      {featured && (
+      {isClosed ? (
+        <div className="absolute top-4 right-4 z-20">
+          <Badge className="bg-red-500/90 text-white border-none backdrop-blur-sm shadow-lg shadow-red-500/20 font-black">
+            PAST DEADLINE <Wind className="w-3 h-3 ml-1" />
+          </Badge>
+        </div>
+      ) : featured && (
         <div className="absolute top-4 right-4 z-20">
           <Badge className="bg-secondary text-secondary-foreground border-none animate-pulse">
             <TrendingUp className="w-3 h-3 mr-1" />
@@ -275,7 +290,7 @@ const OpportunityCard = ({
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 mb-4"
             animate={{ scale: isHovered ? 1.05 : 1 }}
           >
-            <span className="text-sm font-medium text-accent">{formatPrizeWithEmoji(prize)}</span>
+            <div className="text-sm font-medium text-accent">{formatPrize(prize)}</div>
           </motion.div>
         )}
 
@@ -296,8 +311,15 @@ const OpportunityCard = ({
         </div>
 
         {/* Action button */}
-        <Button variant="ghost" className="w-full group/btn justify-between hover:bg-primary/10">
-          <span>Explore</span>
+        <Button
+          variant="ghost"
+          className={cn(
+            "w-full group/btn justify-between hover:bg-primary/10",
+            isClosed && "opacity-50 grayscale pointer-events-none"
+          )}
+          disabled={isClosed}
+        >
+          <span>{isClosed ? "DEADLINE PASSED" : "Explore"}</span>
           <motion.div
             animate={{ x: isHovered ? 5 : 0 }}
             transition={{ duration: 0.2 }}
