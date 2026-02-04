@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         let dynamicTitle = opportunity?.title || 'Opportunity';
 
         // Add class context if available
-        if (opportunity?.class) {
-            dynamicTitle = `${opportunity.title} for Class ${opportunity.class} Students`;
+        if (opportunity?.eligibility?.grades && opportunity.eligibility.grades.length > 0) {
+            dynamicTitle = `${opportunity.title} for Class ${opportunity.eligibility.grades.join(', ')} Students`;
         }
 
         // Make it Gen Z-friendly and action-oriented
@@ -43,14 +43,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         const title = `Myark | ${dynamicTitle}`;
 
         const description = opportunity?.seoConfig?.metaDescription ||
-            `${opportunity?.shortDescription || 'Discover this amazing opportunity'} Apply now for ${opportunity?.category || 'student'} opportunities. ${opportunity?.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
+            `${opportunity?.shortDescription || 'Discover this amazing opportunity'} Apply now for ${opportunity?.type || 'student'} opportunities. ${opportunity?.location ? `Location: ${opportunity.location}.` : ''} Deadline: ${opportunity?.dates?.registrationEnd ? new Date(opportunity.dates.registrationEnd).toLocaleDateString() : 'TBD'}.`;
 
         return constructMetadata({
             title,
             description,
             image: opportunity?.image,
             url: `https://myark.in/opportunity/${opportunity?.id || id}`,
-            keywords: opportunity?.seoConfig?.keywords || [opportunity?.category || 'opportunities', 'students', 'scholarships', opportunity?.class ? `class ${opportunity.class}` : ''].filter(Boolean),
+            keywords: opportunity?.seoConfig?.keywords || [opportunity?.type || 'opportunities', 'students', 'scholarships', opportunity?.eligibility?.grades ? `class ${opportunity.eligibility.grades.join(', ')}` : ''].filter(Boolean),
             type: 'article',
             publishedTime: opportunity?.createdAt?.toISOString(),
             modifiedTime: opportunity?.updatedAt?.toISOString(),

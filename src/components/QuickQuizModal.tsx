@@ -26,7 +26,8 @@ import {
     Search,
     Flame,
     Gem,
-    Star
+    Star,
+    Medal
 } from "lucide-react";
 import { useStudentAuth } from "@/lib/studentAuth";
 import { useToast } from "@/hooks/use-toast";
