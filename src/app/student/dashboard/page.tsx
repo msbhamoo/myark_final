@@ -4,6 +4,14 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { EditProfile } from './EditProfile';
+import { Opportunity } from '@/lib/types';
+
+interface StudentView {
+  id: string;
+  opportunity_id: string;
+  created_at: string;
+  opportunity: Opportunity;
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -51,7 +59,8 @@ export default async function StudentDashboard() {
     .limit(30);
 
   // Group views to avoid duplicates in the list
-  const uniqueViews = views?.reduce((acc: any[], current) => {
+  // Group views to avoid duplicates in the list
+  const uniqueViews = (views as unknown as StudentView[] || []).reduce((acc: StudentView[], current: StudentView) => {
     const x = acc.find(item => item.opportunity_id === current.opportunity_id);
     if (!x) {
       return acc.concat([current]);
@@ -127,7 +136,7 @@ export default async function StudentDashboard() {
                   ))
                 ) : (
                   <div className="bg-white border border-dashed border-[#d1d5db] rounded-2xl p-12 text-center text-[#6b7280]">
-                    <p className="text-sm mb-4">You haven't shown interest in any opportunities yet.</p>
+                    <p className="text-sm mb-4">You haven&apos;t shown interest in any opportunities yet.</p>
                     <Link href="/opportunities" className="btn btn-primary bg-primary text-white px-6">Explore now</Link>
                   </div>
                 )}
@@ -158,7 +167,7 @@ export default async function StudentDashboard() {
                   ))
                 ) : (
                   <div className="md:col-span-2 bg-white border border-dashed border-[#d1d5db] rounded-2xl p-8 text-center text-[#6b7280]">
-                    <p className="text-sm">You haven't saved any opportunities for later yet.</p>
+                    <p className="text-sm">You haven&apos;t saved any opportunities for later yet.</p>
                   </div>
                 )}
               </div>
@@ -175,7 +184,7 @@ export default async function StudentDashboard() {
               
               <div className="space-y-4">
                 {uniqueViews && uniqueViews.length > 0 ? (
-                  uniqueViews.map((view) => (
+                  uniqueViews.map((view: StudentView) => (
                     <Link key={view.id} href={`/opportunities/${view.opportunity?.slug}`} className="block bg-white border border-[#e5e7eb] rounded-xl p-4 hover:bg-[#f9fafb] transition-colors">
                       <h4 className="font-bold text-sm text-heading truncate mb-1">{view.opportunity?.title}</h4>
                       <div className="flex items-center justify-between text-[11px] text-[#9ca3af]">

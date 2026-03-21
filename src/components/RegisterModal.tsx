@@ -122,7 +122,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
           <h2 className="text-h2 mb-2 text-heading">Before you continue</h2>
           <p className="text-sm text-muted">
             Tell us about yourself to proceed to the registration page for <strong className="text-heading font-semibold">{opportunity.title}</strong>. 
-            We'll save this so you don't have to enter it again.
+            We&apos;ll save this so you don&apos;t have to enter it again.
           </p>
         </div>
 

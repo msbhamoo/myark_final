@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { updateStudentProfile } from '../actions';
 import { useRouter } from 'next/navigation';
+import { Student } from '@/lib/types';
 
-export function EditProfile({ student }: { student: any }) {
+export function EditProfile({ student }: { student: Student }) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();

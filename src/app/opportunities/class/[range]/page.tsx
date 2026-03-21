@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
@@ -10,8 +10,7 @@ import { SITE_NAME, CLASS_RANGES } from '@/lib/constants';
 export const revalidate = 3600;
 
 export async function generateMetadata(
-  { params }: { params: { range: string } },
-  parent: ResolvingMetadata
+  { params }: { params: { range: string } }
 ): Promise<Metadata> {
   const rangeConfig = CLASS_RANGES.find(r => r.slug === params.range);
   

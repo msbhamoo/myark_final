@@ -1,5 +1,5 @@
 import { Opportunity } from '@/lib/types';
-import { formatClassRange, getDeadlineUrgency } from '@/lib/utils';
+import { formatClassRange, getDeadlineUrgency, getDaysUntilDeadline } from '@/lib/utils';
 import Link from 'next/link';
 import { BookmarkIcon } from './icons/BookmarkIcon';
 
@@ -24,7 +24,7 @@ function getCategoryTagStyle(categoryLabel: string) {
 export function OpportunityCard({ opportunity }: OpportunityCardProps) {
   const organiserName = opportunity.organiser?.name || 'Organiser';
   // Use the formatting utility but we'll strip the background styling for the new design
-  let { label } = getDeadlineUrgency(opportunity.deadline, opportunity.is_ongoing);
+  const { label } = getDeadlineUrgency(opportunity.deadline, opportunity.is_ongoing);
   
   // Custom text adjustments for the exact mockup rendering
   let deadlineText = label.replace('Closes in ', '').replace(' left', ' days left');
@@ -33,14 +33,17 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
   if (label.includes('Urgent')) deadlineText = 'Closing soon — apply now';
 
   // Force specific text based on days for exact mockup matching if possible, but dynamic is better
-  const daysLeft = Math.ceil((new Date(opportunity.deadline).getTime() - new Date().getTime()) / 86400000);
-  if (!opportunity.is_ongoing && daysLeft > 0) {
+  const daysLeft = getDaysUntilDeadline(opportunity.deadline);
+  
+  if (!opportunity.is_ongoing && daysLeft !== null && daysLeft > 0) {
     if (daysLeft <= 7) deadlineText = `${daysLeft} days left — apply now`;
     else deadlineText = `Open — ${daysLeft} days`;
   } else if (opportunity.is_ongoing) {
     deadlineText = 'Ongoing';
-  } else {
+  } else if (daysLeft !== null && daysLeft <= 0) {
     deadlineText = 'Closed';
+  } else {
+    deadlineText = 'Open registration';
   }
 
   const levelTag = 'International';

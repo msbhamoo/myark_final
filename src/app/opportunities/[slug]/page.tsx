@@ -1,8 +1,8 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
-import { formatClassRange, formatDate } from '@/lib/utils';
+import { formatClassRange, formatDate, getDaysUntilDeadline } from '@/lib/utils';
 import { generateMetaDescription, generateEventJsonLd, generateFaqJsonLd, opportunityPageTitle } from '@/lib/seo';
 import { Opportunity } from '@/lib/types';
 import { ApplyButtonWrapper } from './ApplyButton';
@@ -12,8 +12,7 @@ import { cookies } from 'next/headers';
 export const revalidate = 3600;
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata
+  { params }: { params: { slug: string } }
 ): Promise<Metadata> {
   const supabase = createServerClient();
   const { data } = await supabase
@@ -74,8 +73,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
   const catStyle = getCategoryTagStyle(opportunity.category?.label || 'General');
 
   // Calculate Days Left
-  const deadlineDate = opportunity.deadline ? new Date(opportunity.deadline) : new Date();
-  const daysLeft = Math.ceil((deadlineDate.getTime() - new Date().getTime()) / 86400000);
+  const daysLeft = getDaysUntilDeadline(opportunity.deadline);
   const isFree = opportunity.fee_text.toLowerCase().includes('free');
 
   // Check if student already registered
@@ -166,7 +164,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
               </div>
 
               {/* Imminent Deadline Banner (Mockup Yellow Alert) */}
-              {!opportunity.is_ongoing && daysLeft > 0 && daysLeft <= 14 && (
+              {!opportunity.is_ongoing && daysLeft !== null && daysLeft > 0 && daysLeft <= 14 && (
                 <div className="bg-[#fffbeb] border border-[#fde68a] rounded-lg p-4 mb-8 flex items-center gap-3">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#fbbf24] shrink-0"></div>
                   <p className="text-[13px] font-medium text-[#b45309]">
@@ -189,7 +187,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                 </div>
                 <div>
                   <h4 className="text-[10px] tracking-widest uppercase font-bold text-[#6b7280] mb-1">Deadline</h4>
-                  <p className={`text-[14px] font-medium ${daysLeft <= 7 ? 'text-[#dc2626]' : 'text-heading'}`}>
+                  <p className={`text-[14px] font-medium ${(daysLeft !== null && daysLeft <= 7) ? 'text-[#dc2626]' : 'text-heading'}`}>
                     {formatDate(opportunity.deadline)}
                   </p>
                 </div>
@@ -228,7 +226,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                   </div>
                   <div className="flex justify-between py-3 border-b border-[#f3f4f6]">
                     <span className="text-[13px] text-[#4b5563]">Submission deadline</span>
-                    <span className="text-[13px] font-medium text-[#dc2626]">{formatDate(opportunity.deadline)} <span className="text-[11px]">({daysLeft} days left)</span></span>
+                    <span className="text-[13px] font-medium text-[#dc2626]">{formatDate(opportunity.deadline)} {daysLeft !== null && <span className="text-[11px]">({daysLeft} days left)</span>}</span>
                   </div>
                 </div>
               </div>
@@ -299,8 +297,8 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
             <div className="w-full lg:w-[320px] shrink-0 sticky top-24 space-y-6">
 
               <div className="bg-surface border border-[#e5e7eb] rounded-2xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-center">
-                <h2 className="text-4xl font-heading font-medium text-[#dc2626] mb-1">{daysLeft} days</h2>
-                <p className="text-[12px] font-medium text-[#6b7280] mb-6 tracking-wide">left to apply • {formatDate(opportunity.deadline)}</p>
+                <h2 className="text-4xl font-heading font-medium text-[#dc2626] mb-1">{daysLeft !== null ? `${daysLeft} days` : 'Open'}</h2>
+                <p className="text-[12px] font-medium text-[#6b7280] mb-6 tracking-wide">{daysLeft !== null ? 'left to apply • ' : ''}{formatDate(opportunity.deadline)}</p>
 
                 <ApplyButtonWrapper 
                   opportunity={opportunity} 

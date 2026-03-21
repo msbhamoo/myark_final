@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
@@ -10,8 +10,7 @@ import { SITE_NAME } from '@/lib/constants';
 export const revalidate = 3600;
 
 export async function generateMetadata(
-  { params }: { params: { category: string } },
-  parent: ResolvingMetadata
+  { params }: { params: { category: string } }
 ): Promise<Metadata> {
   const supabase = createServerClient();
   const { data } = await supabase

@@ -18,8 +18,8 @@ export function SidebarFilter({ categories, categoryCounts }: SidebarFilterProps
   
   const currentCategory = searchParams.get('category') || 'all';
   const currentClass = searchParams.get('class') || 'all';
-  const currentFee = searchParams.get('fee') || 'all';
-  const currentDeadline = searchParams.get('deadline') || 'all';
+  // const currentFee = searchParams.get('fee') || 'all';
+  // const currentDeadline = searchParams.get('deadline') || 'all';
 
   const createQueryString = useCallback(
     (name: string, value: string) => {

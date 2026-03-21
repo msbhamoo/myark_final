@@ -106,7 +106,7 @@ export default async function OpportunitiesPage({
               <div className="bg-surface border border-default rounded-xl p-12 text-center shadow-sm">
                 <h3 className="text-h2 mb-2">No opportunities found</h3>
                 <p className="text-muted text-sm mb-6 max-w-md mx-auto">
-                  Try adjusting your filters or search terms to find what you're looking for.
+                  Try adjusting your filters or search terms to find what you&apos;re looking for.
                 </p>
                 <Link href="/opportunities" className="btn btn-outline text-sm">
                   Clear all filters

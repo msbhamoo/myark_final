@@ -16,7 +16,7 @@ export default async function RegistrationsPage() {
       <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-1">Registration Leads</h1>
-          <p className="text-gray-500 text-sm pb-0">View all captured student details when they clicked 'Register Now'.</p>
+          <p className="text-gray-500 text-sm pb-0">View all captured student details when they clicked&apos;Register Now&apos;.</p>
         </div>
       </div>
 

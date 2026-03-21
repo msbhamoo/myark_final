@@ -1,6 +1,5 @@
 import {
   getDeadlineUrgency,
-  DeadlineUrgency,
   cn,
 } from '@/lib/utils';
 import { CalendarIcon } from './icons/CalendarIcon';

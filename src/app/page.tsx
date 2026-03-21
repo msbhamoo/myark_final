@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabase-server';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { HeroSearch } from '@/components/HeroSearch';
 import { Category, Opportunity } from '@/lib/types';
+import { getDaysUntilDeadline } from '@/lib/utils';
 
 export const revalidate = 3600;
 
@@ -110,14 +111,16 @@ export default async function Home() {
                 </div>
                 <div className="space-y-4">
                   {closingSoon.map((item, i) => {
-                    const daysLeft = Math.ceil((new Date(item.deadline).getTime() - new Date().getTime()) / 86400000);
-                    const isUrgent = daysLeft <= 7;
+                    const daysLeft = getDaysUntilDeadline(item.deadline as string);
+                    const isUrgent = daysLeft !== null && daysLeft <= 7;
                     return (
                       <Link key={i} href={`/opportunities/${item.slug}`} className="flex flex-col gap-1.5 group border-b border-[#fde68a]/50 pb-4 last:border-0 last:pb-0">
                         <span className="text-[14px] font-medium text-heading group-hover:underline leading-snug">{item.title}</span>
-                        <span className={`self-start text-[11px] font-medium px-2 py-0.5 rounded-md ${isUrgent ? 'bg-[#fee2e2] text-[#b91c1c]' : 'bg-[#fef3c7] text-[#92400e]'}`}>
-                          {daysLeft} days left
-                        </span>
+                        {daysLeft !== null && (
+                          <span className={`self-start text-[11px] font-medium px-2 py-0.5 rounded-md ${isUrgent ? 'bg-[#fee2e2] text-[#b91c1c]' : 'bg-[#fef3c7] text-[#92400e]'}`}>
+                            {daysLeft} days left
+                          </span>
+                        )}
                       </Link>
                     );
                   })}
