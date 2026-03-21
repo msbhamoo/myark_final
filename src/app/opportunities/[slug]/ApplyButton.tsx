@@ -47,7 +47,7 @@ export function ApplyButtonWrapper({
     }
     const result = await toggleSaveOpportunity(opportunity.id);
     if (!result.error) {
-      setIsSaved(result.saved);
+      setIsSaved(!!result.saved);
     } else {
       setModalOpen(true);
     }

@@ -26,7 +26,7 @@ export async function generateMetadata(
 
   return {
     title: opportunityPageTitle(data.title),
-    description: generateMetaDescription(data as Opportunity),
+    description: generateMetaDescription(data as unknown as Opportunity),
   };
 }
 
