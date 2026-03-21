@@ -1,55 +1,84 @@
 import { MetadataRoute } from 'next';
-import { opportunitiesService, blogsService, careersService } from '@/lib/firestore';
+import { createServerClient } from '@/lib/supabase-server';
+import { SITE_URL } from '@/lib/constants';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://myark.in';
+  const supabase = createServerClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
 
-    // Static Pages
-    const staticUrls: MetadataRoute.Sitemap = [
-        { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
-        { url: `${baseUrl}/explore`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-        { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 }, // High signal page
-        { url: `${baseUrl}/verify`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 }, // Trust signal page
-        { url: `${baseUrl}/careers`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-        { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
-        { url: `${baseUrl}/schools`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-        { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
-        { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
-        { url: `${baseUrl}/rewards`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
-        { url: `${baseUrl}/quest-master`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-    ];
+  // 1. Fetch published opportunities
+  const { data: opps } = await supabase
+    .from('opportunities')
+    .select('slug, updated_at, deadline')
+    .eq('is_published', true);
 
-    try {
-        // Dynamic Opportunities
-        const opportunities = await opportunitiesService.getAll({ status: 'published' });
-        const opportunityUrls = (opportunities || []).map(opp => ({
-            url: `${baseUrl}/opportunity/${opp.id}`,
-            lastModified: opp.updatedAt || new Date(),
-            changeFrequency: 'weekly' as const,
-            priority: 0.8,
-        }));
+  // 2. Fetch categories
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('slug');
 
-        // Dynamic Blogs
-        const blogs = await blogsService.getAll({ status: 'published' });
-        const blogUrls = (blogs || []).map(post => ({
-            url: `${baseUrl}/blog/${post.slug}`,
-            lastModified: post.updatedAt || new Date(),
-            changeFrequency: 'monthly' as const,
-            priority: 0.7,
-        }));
+  const sitemapEntries: MetadataRoute.Sitemap = [];
 
-        // Dynamic Careers
-        const careers = await careersService.getAll();
-        const careerUrls = (careers || []).map(career => ({
-            url: `${baseUrl}/careers/${career.slug}`,
-            lastModified: career.updatedAt || new Date(),
-            changeFrequency: 'monthly' as const,
-            priority: 0.6,
-        }));
+  // Static: Homepage
+  sitemapEntries.push({
+    url: `${siteUrl}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 1.0,
+  });
 
-        return [...staticUrls, ...opportunityUrls, ...blogUrls, ...careerUrls];
-    } catch (error) {
-        console.error('Sitemap Generation Error:', error);
-        return staticUrls;
-    }
+  // Static: Master Directory
+  sitemapEntries.push({
+    url: `${siteUrl}/opportunities`,
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 0.9,
+  });
+
+  // Dynamic: Category Pages
+  if (categories) {
+    categories.forEach((cat) => {
+      sitemapEntries.push({
+        url: `${siteUrl}/opportunities/category/${cat.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      });
+    });
+  }
+
+  // Static: Class Pages
+  const classRanges = ['class-1-5', 'class-6-8', 'class-9-10', 'class-11-12'];
+  classRanges.forEach((range) => {
+    sitemapEntries.push({
+      url: `${siteUrl}/opportunities/class/${range}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    });
+  });
+
+  // Dynamic: Detail Pages
+  if (opps) {
+    opps.forEach((opp) => {
+      // Determine update frequency based on deadline urgency
+      let freq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never" = 'weekly';
+      
+      if (opp.deadline) {
+        const daysUntilDeadline = Math.ceil((new Date(opp.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        if (daysUntilDeadline > 0 && daysUntilDeadline <= 14) {
+          freq = 'daily'; // Update daily if deadline approaching
+        }
+      }
+
+      sitemapEntries.push({
+        url: `${siteUrl}/opportunities/${opp.slug}`,
+        lastModified: opp.updated_at ? new Date(opp.updated_at) : new Date(),
+        changeFrequency: freq,
+        priority: 0.7,
+      });
+    });
+  }
+
+  return sitemapEntries;
 }

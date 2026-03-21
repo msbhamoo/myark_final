@@ -1,343 +1,116 @@
-"use client";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
-import {
-  Clock, Users, ChevronRight, Bookmark, Eye, TrendingUp,
-  Heart, Zap,
-  MessageCircle, Share2, FileText, Gift, Coins, Wind, Trophy
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/lib/auth";
-import { useStudentAuth } from "@/lib/studentAuth";
-import { useToast } from "@/hooks/use-toast";
+import { Opportunity } from '@/lib/types';
+import { formatClassRange, getDeadlineUrgency } from '@/lib/utils';
+import Link from 'next/link';
+import { BookmarkIcon } from './icons/BookmarkIcon';
 
 interface OpportunityCardProps {
-  id: string;
-  title: string;
-  organization: string;
-  type: "competition" | "scholarship" | "olympiad" | "workshop";
-  deadline: string;
-  participants: number;
-  prize?: string;
-  image?: string;
-  featured?: boolean;
-  delay?: number;
-  views?: number;
-  hypes?: number;
-  isClosed?: boolean;
+  opportunity: Opportunity;
 }
 
-const typeConfig = {
-  competition: {
-    label: "Competition",
-    class: "bg-primary/20 text-primary border-primary/30",
-  },
-  scholarship: {
-    label: "Scholarship",
-    class: "bg-accent/20 text-accent border-accent/30",
-  },
-  olympiad: {
-    label: "Olympiad",
-    class: "bg-success/20 text-success border-success/30",
-  },
-  workshop: {
-    label: "Workshop",
-    class: "bg-secondary/20 text-secondary border-secondary/30",
-  },
-};
+// Light color generation for dynamic categories to match mockup
+function getCategoryTagStyle(categoryLabel: string) {
+  const defaults = [
+    { bg: '#fdf2f8', text: '#be185d' }, // pink
+    { bg: '#eff6ff', text: '#1d4ed8' }, // blue
+    { bg: '#f0fdf4', text: '#15803d' }, // green
+    { bg: '#fef3c7', text: '#92400e' }, // yellow
+    { bg: '#f3e8ff', text: '#7e22ce' }, // purple
+    { bg: '#f3f4f6', text: '#4b5563' }, // gray
+  ];
+  const index = categoryLabel.length % defaults.length;
+  return defaults[index];
+}
 
-const formatPrize = (prize?: string) => {
-  if (!prize) return null;
-  const p = prize.toLowerCase();
-  let Icon = Gift;
-  if (p.includes('certificate')) Icon = FileText;
-  else if (p.includes('money') || p.includes('cash') || p.includes('₹') || p.includes('rs') || /^\d+$/.test(prize)) Icon = Coins;
-  else if (p.includes('trophy') || p.includes('medal') || p.includes('award')) Icon = Trophy;
+export function OpportunityCard({ opportunity }: OpportunityCardProps) {
+  const organiserName = opportunity.organiser?.name || 'Organiser';
+  // Use the formatting utility but we'll strip the background styling for the new design
+  let { label } = getDeadlineUrgency(opportunity.deadline, opportunity.is_ongoing);
+  
+  // Custom text adjustments for the exact mockup rendering
+  let deadlineText = label.replace('Closes in ', '').replace(' left', ' days left');
+  if (label.includes('Registration Open')) deadlineText = 'Open — ' + label.replace('Registration Open - ', '');
+  if (label.includes('Closes in')) deadlineText = label.replace('Closes in ', '') + ' days left — apply now';
+  if (label.includes('Urgent')) deadlineText = 'Closing soon — apply now';
 
-  return (
-    <div className="flex items-center gap-1.5 font-bold uppercase tracking-tight">
-      <Icon className="w-4 h-4" />
-      <span>{prize}</span>
-    </div>
-  );
-};
+  // Force specific text based on days for exact mockup matching if possible, but dynamic is better
+  const daysLeft = Math.ceil((new Date(opportunity.deadline).getTime() - new Date().getTime()) / 86400000);
+  if (!opportunity.is_ongoing && daysLeft > 0) {
+    if (daysLeft <= 7) deadlineText = `${daysLeft} days left — apply now`;
+    else deadlineText = `Open — ${daysLeft} days`;
+  } else if (opportunity.is_ongoing) {
+    deadlineText = 'Ongoing';
+  } else {
+    deadlineText = 'Closed';
+  }
 
-const OpportunityCard = ({
-  id,
-  title,
-  organization,
-  type,
-  deadline,
-  participants,
-  prize,
-  featured = false,
-  delay = 0,
-  views: initialViews,
-  hypes: initialHypes = 0,
-  isClosed = false,
-}: OpportunityCardProps) => {
-  const [mounted, setMounted] = useState(false);
-  const [views, setViews] = useState(initialViews || 0);
-  const [viewingNow, setViewingNow] = useState(10);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
+  const levelTag = 'International';
+  const catStyle = getCategoryTagStyle(opportunity.category?.label || 'General');
 
-  useEffect(() => {
-    setMounted(true);
-    if (!initialViews) {
-      setViews(Math.floor(Math.random() * 10000) + 1000);
-    }
-    setViewingNow(Math.floor(Math.random() * 50) + 10);
-  }, [initialViews]);
-  const [hypeCount, setHypeCount] = useState(initialHypes);
-  const [floatingHearts, setFloatingHearts] = useState<{ id: number; x: number }[]>([]);
-  const { user } = useAuth();
-  const { isAuthenticated, showAuthModal, student, saveOpportunity, unsaveOpportunity, addXPWithPersist } = useStudentAuth();
-  const { toast } = useToast();
-
-  const isBookmarked = student?.savedOpportunities?.includes(id) || false;
-  const router = useRouter();
-  const config = typeConfig[type] || {
-    label: "Opportunity",
-    class: "bg-gray-500/20 text-gray-500 border-gray-500/30",
-  };
-
-  const handleClick = () => {
-    router.push(`/opportunity/${id}`);
-  };
-
-  const handleHype = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    // Gate behind student auth
-    if (!isAuthenticated) {
-      showAuthModal({
-        trigger: 'heart',
-        message: "Heart this opportunity to show your support and earn 2 XP!",
-      });
-      return;
-    }
-
-    if (isLiked) return; // Only allow one hype per session
-
-    // UI Feedback
-    setIsLiked(true);
-    setHypeCount(prev => prev + 1);
-    const newHeart = { id: Date.now(), x: Math.random() * 40 - 20 };
-    setFloatingHearts(prev => [...prev, newHeart]);
-    setTimeout(() => {
-      setFloatingHearts(prev => prev.filter(h => h.id !== newHeart.id));
-    }, 1000);
-
-    // Gamification Logic
-    try {
-      await addXPWithPersist(2);
-      toast({
-        title: "+2 XP ⭐",
-        description: "Thanks for the hype!",
-        className: "bg-primary text-primary-foreground border-none"
-      });
-    } catch (error) {
-      console.error("Hype error:", error);
-    }
-  };
-
-  const handleBookmark = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // Gate behind student auth
-    if (!isAuthenticated) {
-      showAuthModal({
-        trigger: 'save',
-        message: "⭐ Save this opportunity to your list and earn 5 XP!",
-      });
-      return;
-    }
-
-    try {
-      if (isBookmarked) {
-        await unsaveOpportunity(id);
-        toast({ title: "Removed", description: "Opportunity removed from saved", className: "bg-muted text-foreground border-none" });
-      } else {
-        await saveOpportunity(id);
-        toast({ title: "+5 XP", description: "Opportunity saved!", className: "bg-primary text-primary-foreground border-none" });
-      }
-    } catch (error) {
-      console.error("Bookmark toggle failed:", error);
-      toast({ title: "Error", description: "Something went wrong", variant: "destructive" });
-    }
-  };
-
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const shareUrl = `${window.location.origin}/opportunity/${id}`;
-    const text = `*🔥 New Opportunity on Myark! 🔥*\n\n*Title:* ${title}\n*Organizer:* ${organization}\n*Reward:* ${prize || 'Certificate'}\n*Deadline:* ${deadline}\n\nCheck it out and apply here:\n${shareUrl}\n\n#Myark #StudentOpportunities`;
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    window.open(whatsappUrl, '_blank');
-  };
+  // Pricing
+  const theFee = opportunity.fee_text.toLowerCase().includes('free') ? 'Free to enter' : opportunity.fee_text;
+  const shortFee = opportunity.fee_text.toLowerCase().includes('free') ? 'Free' : 'Paid';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: delay * 0.001 }}
-      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      onClick={handleClick}
-      className={cn(
-        "group glass-card overflow-hidden cursor-pointer relative",
-        featured && "ring-2 ring-primary/50"
-      )}
-    >
-      {/* Animated glow on hover */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 opacity-0 pointer-events-none"
-        animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-      />
-
-      {isClosed ? (
-        <div className="absolute top-4 right-4 z-20">
-          <Badge className="bg-red-500/90 text-white border-none backdrop-blur-sm shadow-lg shadow-red-500/20 font-black">
-            PAST DEADLINE <Wind className="w-3 h-3 ml-1" />
-          </Badge>
-        </div>
-      ) : featured && (
-        <div className="absolute top-4 right-4 z-20">
-          <Badge className="bg-secondary text-secondary-foreground border-none animate-pulse">
-            <TrendingUp className="w-3 h-3 mr-1" />
-            Trending
-          </Badge>
-        </div>
-      )}
-
-      {/* Card content */}
-      <div className="p-6 relative">
-        {/* Type badge & bookmark */}
-        <div className="flex items-center justify-between mb-4">
-          <Badge variant="outline" className={cn("text-xs font-medium", config.class)}>
-            {config.label}
-          </Badge>
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <button
-                onClick={handleHype}
-                className={cn(
-                  "p-2 rounded-lg transition-all duration-300 hover:scale-125 bg-rose-500/10 text-rose-500 active:scale-90",
-                  "group/hype relative"
-                )}
-              >
-                <Heart className="w-4 h-4 group-hover/hype:fill-current" />
-                <AnimatePresence>
-                  {floatingHearts.map(heart => (
-                    <motion.div
-                      key={heart.id}
-                      initial={{ y: 0, opacity: 1, scale: 0.5 }}
-                      animate={{ y: -50, opacity: 0, scale: 1.5, x: heart.x }}
-                      exit={{ opacity: 0 }}
-                      className="absolute top-0 left-0 text-rose-500 pointer-events-none"
-                    >
-                      <Heart className="w-4 h-4 fill-current" />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </button>
-              {hypeCount > 0 && (
-                <span className="absolute -bottom-1 -right-1 text-[10px] font-black bg-rose-500 text-white px-1 rounded-sm">
-                  {hypeCount}
-                </span>
-              )}
-            </div>
-
-            <button
-              onClick={handleBookmark}
-              className={cn(
-                "p-2 rounded-lg transition-all duration-300 hover:scale-110",
-                isBookmarked
-                  ? "bg-secondary/20 text-secondary"
-                  : "bg-muted text-muted-foreground hover:text-foreground"
-              )}
+    <div className="card p-5 flex flex-col h-full group bg-surface hover:bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+      
+      {/* Top Row: Tags (Left) + Deadline (Right) */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap gap-2">
+          {opportunity.category && (
+            <span 
+              className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium" 
+              style={{ backgroundColor: catStyle.bg, color: catStyle.text }}
             >
-              <Bookmark
-                className={cn("w-4 h-4 transition-all", isBookmarked && "fill-current")}
-              />
-            </button>
-
-            <button
-              onClick={handleShare}
-              className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 transition-all duration-300 hover:scale-110 hover:bg-emerald-500/20"
-              title="Share on WhatsApp"
-            >
-              <MessageCircle className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Title & org */}
-        <h3 className="font-display text-xl font-bold mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-          {title}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">{organization}</p>
-
-        {/* Prize/Reward */}
-        {prize && (
-          <motion.div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 mb-4"
-            animate={{ scale: isHovered ? 1.05 : 1 }}
-          >
-            <div className="text-sm font-medium text-accent">{formatPrize(prize)}</div>
-          </motion.div>
-        )}
-
-        {/* Meta info */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-          <div className="flex items-center gap-1">
-            <Clock className="w-4 h-4" />
-            <span>{deadline}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Users className="w-4 h-4" />
-            <span suppressHydrationWarning>{mounted ? participants.toLocaleString() : participants}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Eye className="w-4 h-4" />
-            <span suppressHydrationWarning>{mounted ? views.toLocaleString() : views}</span>
-          </div>
-        </div>
-
-        {/* Action button */}
-        <Button
-          variant="ghost"
-          className={cn(
-            "w-full group/btn justify-between hover:bg-primary/10",
-            isClosed && "opacity-50 grayscale pointer-events-none"
+              {opportunity.category.label}
+            </span>
           )}
-          disabled={isClosed}
-        >
-          <span>{isClosed ? "DEADLINE PASSED" : "Explore"}</span>
-          <motion.div
-            animate={{ x: isHovered ? 5 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronRight className="w-4 h-4" />
-          </motion.div>
-        </Button>
+          <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium bg-[#f3f4f6] text-[#4b5563]">
+            {levelTag}
+          </span>
+        </div>
+        
+        <div className="text-[11px] font-medium text-heading whitespace-nowrap shrink-0">
+          {deadlineText}
+        </div>
       </div>
 
-      {/* Live viewers indicator */}
-      <div className="absolute bottom-4 left-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-        <span className="text-xs text-muted-foreground" suppressHydrationWarning>
-          {mounted ? viewingNow : 10} viewing
+      {/* Main Content Area */}
+      {/* Title block with bookmark on the right */}
+      <div className="flex justify-between items-start gap-4 mb-2">
+        <Link href={`/opportunities/${opportunity.slug}`} className="flex-1 outline-none">
+          <h3 className="font-heading font-medium text-[16px] sm:text-[18px] text-heading leading-[1.3] group-hover:underline decoration-primary transition-all cursor-pointer">
+            {opportunity.title}
+          </h3>
+        </Link>
+        <button aria-label="Save for later" className="shrink-0 text-[#9ca3af] hover:text-[#4b5563] transition-colors -mt-1">
+          <BookmarkIcon className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]" />
+        </button>
+      </div>
+
+      {/* Description block with "Free to enter" on the right */}
+      <div className="flex justify-between items-end gap-4 mb-5 flex-grow">
+        <div className="flex-1">
+          <p className="text-[13px] text-body leading-[1.6] line-clamp-2 pr-4">
+            {opportunity.description}
+          </p>
+        </div>
+        <div className="text-[11px] font-medium text-[#6b7280] text-right whitespace-nowrap shrink-0">
+          {theFee}
+        </div>
+      </div>
+
+      {/* Bottom Footer Tags */}
+      <div className="flex flex-wrap gap-2 mt-auto">
+        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium">
+          {formatClassRange(opportunity.eligibility_classes).replace('Classes', 'Class').trim()}
+        </span>
+        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium">
+          {shortFee}
+        </span>
+        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium max-w-[150px] truncate">
+          {organiserName}
         </span>
       </div>
-    </motion.div>
+    </div>
   );
-};
-
-export default OpportunityCard;
+}

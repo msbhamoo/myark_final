@@ -1,203 +1,88 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Sparkles, Menu, X, User, Zap, LogOut, Flame, Rocket } from "lucide-react";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useStudentAuth } from "@/lib/studentAuth";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { student, isAuthenticated, showAuthModal, logout, loading } = useStudentAuth();
+export function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [hasProfile, setHasProfile] = useState(false);
 
-  const navLinks = [
-    { label: "Explore", href: "/explore" },
-    { label: "Careers", href: "/careers" },
-  ];
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const isStudent = document.cookie.includes('myark_student=');
+      setHasProfile(isStudent);
+    }
+  }, []);
 
-  const handleGetStarted = () => {
-    showAuthModal({ mode: 'login' });
-  };
+  // Protect admin routes visually? Not really needed for rendering standard Navbar.
+  if (pathname.startsWith('/admin')) {
+    return null; // Admin has its own layout
+  }
 
-  const handleLogout = async () => {
-    await logout();
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/opportunities?q=${encodeURIComponent(searchQuery)}`);
+    }
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-xl border-b border-border/50" />
-
-      <div className="relative max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <nav className="sticky top-0 z-50 w-full bg-surface border-b border-default">
+      <div className="container-main">
+        <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
+          
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 text-xl">
-              <Zap className="w-6 h-6 text-white fill-current" />
-            </div>
-            <span className="font-display text-xl font-bold italic tracking-tight underline decoration-primary/30 decoration-4 underline-offset-4">Myark</span>
+          <Link href="/" className="shrink-0 group flex items-center gap-1.5 focus:outline-none">
+            <span className="font-heading font-extrabold text-2xl tracking-tight text-heading">
+              My<span className="text-primary">ark</span>
+            </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
-              </Link>
-            ))}
+          {/* Search Bar Desktop */}
+          <div className="hidden md:flex flex-1 max-w-xl mx-8">
+            <form onSubmit={handleSearch} className="relative w-full">
+              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+              <input 
+                type="text" 
+                placeholder="coding competition"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-surface border border-[#e5e5e5] hover:border-[#d1d1d1] focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-2.5 pl-10 pr-4 text-sm outline-none transition-colors text-heading"
+              />
+            </form>
           </div>
 
-          {/* Desktop actions */}
-          <div className="hidden md:flex items-center gap-3">
-            {isAuthenticated && student ? (
-              <>
-                {/* Streak Badge */}
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20">
-                  <Flame className="w-4 h-4 text-orange-500" />
-                  <span className="text-sm font-bold text-orange-500">{student.streakDays || 0}</span>
-                </div>
+          {/* Action Buttons (Desktop) */}
+          <div className="hidden sm:flex items-center gap-3">
+            <Link href="/opportunities" className="btn btn-outline border-none text-[15px] font-medium text-heading hover:bg-[#f3f4f6]">
+              Explore
+            </Link>
+            {hasProfile ? (
+              <Link href="/student/dashboard" className="btn bg-[#1b5e28] text-white hover:bg-[#14461e] text-[15px] font-medium px-5">
+                My Profile
+              </Link>
+            ) : null}
+          </div>
 
-                {/* XP Badge */}
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-                  <Zap className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-bold text-primary">{student.xpPoints} XP</span>
-                </div>
-
-                {/* Profile Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-2 pl-2">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-primary-foreground">
-                        {student.name?.[0]?.toUpperCase() || <User className="w-4 h-4" />}
-                      </div>
-                      <span className="hidden sm:inline">{student.name || 'Explorer'}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem asChild>
-                      <Link href="/profile" className="flex items-center gap-2">
-                        <User className="w-4 h-4" />
-                        My Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="text-destructive">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <>
-                <Link href="/profile">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <User className="w-4 h-4" />
-                    Profile
-                  </Button>
-                </Link>
-                <Button variant="default" size="sm" onClick={handleGetStarted} disabled={loading}>
-                  Get Started <Rocket className="w-4 h-4 ml-1" />
-                </Button>
-              </>
+          {/* Mobile Actions */}
+          <div className="sm:hidden flex items-center gap-2">
+            <Link href="/opportunities" className="text-sm font-medium border border-[#e5e7eb] text-heading rounded-lg px-3 py-1.5 bg-white shadow-sm">
+              Explore
+            </Link>
+            {hasProfile && (
+              <Link href="/student/dashboard" className="text-sm font-medium bg-[#1b5e28] text-white rounded-lg px-4 py-1.5 shadow-sm">
+                Profile
+              </Link>
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        <div
-          className={cn(
-            "md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border transition-all duration-300 overflow-hidden",
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          )}
-        >
-          <div className="px-4 py-4 space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            {isAuthenticated && student ? (
-              <>
-                {/* Streak & XP display for mobile */}
-                <div className="flex items-center gap-3 py-2">
-                  <div className="flex items-center gap-1">
-                    <Flame className="w-4 h-4 text-orange-500" />
-                    <span className="text-sm font-bold">{student.streakDays || 0}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Zap className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-bold">{student.xpPoints} XP</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">• Level {student.level}</span>
-                </div>
-                <Link
-                  href="/profile"
-                  className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  My Profile
-                </Link>
-                <div className="flex gap-3 pt-3 border-t border-border">
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => {
-                    handleLogout();
-                    setIsOpen(false);
-                  }}>
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/profile"
-                  className="block py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  My Profile
-                </Link>
-                <div className="flex gap-3 pt-3 border-t border-border">
-                  <Button variant="default" size="sm" className="flex-1" onClick={() => {
-                    handleGetStarted();
-                    setIsOpen(false);
-                  }}>
-                    Get Started <Rocket className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
         </div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

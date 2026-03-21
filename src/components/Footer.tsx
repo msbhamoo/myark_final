@@ -1,94 +1,81 @@
-"use client";
+import Link from 'next/link';
+import { CURRENT_YEAR, SITE_NAME, SITE_TAGLINE } from '@/lib/constants';
 
-import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart, Zap } from "lucide-react";
-
-const Footer = () => {
+export function Footer() {
   return (
-    <footer className="bg-muted/30 border-t border-white/5 pt-10 md:pt-16 pb-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 group mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg">
-                <Zap className="w-5 h-5 text-white fill-current" />
-              </div>
-              <span className="font-display text-lg font-bold italic">Myark</span>
+    <footer className="w-full bg-surface border-t border-default py-12">
+      <div className="container-main">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          {/* Brand Column */}
+          <div className="md:col-span-2">
+            <Link href="/" className="flex items-center gap-2 text-dark mb-4">
+              <span className="font-heading font-extrabold text-2xl tracking-tighter">
+                myark
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1"></span>
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Empowering students to discover their potential through scholarships, competitions, and career guidance.
+            <p className="text-body max-w-sm mb-6">
+              {SITE_TAGLINE} India's first professional identity and opportunity discovery platform for K-12 students.
             </p>
-            <div className="flex gap-4">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <Link key={i} href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all duration-300">
-                  <Icon className="w-4 h-4" />
+            <p className="text-sm text-hint">
+              Curated with purpose by Mahendra Bhamu.
+            </p>
+          </div>
+
+          {/* Links Column 1 */}
+          <div>
+            <h3 className="eyebrow mb-4 text-dark">Directory</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/opportunities" className="text-body hover:text-primary transition-colors">
+                  All Opportunities
                 </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-bold mb-6">Quick Links</h4>
-            <ul className="space-y-3">
-              {['About', 'Explore', 'Careers', 'Blog', 'Rewards', 'Schools', 'Verify'].map((item) => (
-                <li key={item}>
-                  <Link href={`/${item.toLowerCase().replace(' ', '-')}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {item === 'Verify' ? 'Verification Checklist' : item === 'About' ? 'About Us' : item}
-                  </Link>
-                </li>
-              ))}
+              </li>
+              <li>
+                <Link href="/opportunities/category/olympiad" className="text-body hover:text-primary transition-colors">
+                  Olympiads
+                </Link>
+              </li>
+              <li>
+                <Link href="/opportunities/category/scholarship" className="text-body hover:text-primary transition-colors">
+                  Scholarships
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Opportunities */}
+          {/* Links Column 2 */}
           <div>
-            <h4 className="font-bold mb-6">Opportunities</h4>
+            <h3 className="eyebrow mb-4 text-dark">Platform</h3>
             <ul className="space-y-3">
-              {['Scholarships', 'Competitions', 'Workshops', 'Olympiads', 'Internships'].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/admin" className="text-body hover:text-primary transition-colors">
+                  School Admin Login
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="text-body hover:text-primary transition-colors">
+                  Contact Organiser
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-body hover:text-primary transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
-          </div>
-
-          {/* Contact */}
-          <div className="space-y-4">
-            <h4 className="font-bold mb-6">Support</h4>
-            <div className="flex items-start gap-3 text-sm text-muted-foreground">
-              <Mail className="w-4 h-4 mt-0.5" />
-              <span>support@myark.in</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm text-muted-foreground">
-              <Phone className="w-4 h-4 mt-0.5" />
-              <span>+91 (800) 123-4567</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm text-muted-foreground">
-              <MapPin className="w-4 h-4 mt-0.5" />
-              <span>Global Business Hub, Pune, Maharashtra</span>
-            </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Myark. All rights reserved.
+        <div className="pt-8 border-t border-default flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted">
+            &copy; {CURRENT_YEAR} {SITE_NAME}. All rights reserved. Not affiliated with any government body.
           </p>
-          <div className="flex gap-6 text-xs text-muted-foreground">
-            <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
-            <div className="flex items-center gap-1">
-              Made with <Heart className="w-3 h-3 text-rose-500 fill-current" /> for Students
-            </div>
+          <div className="flex items-center gap-1 text-sm text-muted">
+            Built for 🇮🇳 students
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

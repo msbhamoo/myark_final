@@ -1,5 +1,114 @@
 {
-  "node": {},
+  "node": {
+    "05706d4169bfd89a76a86b89e7657b4d479578e9": {
+      "workers": {
+        "app/admin/organisers/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Corganisers%5C%5Cactions.ts%22%2C%5B%22deleteOrganiser%22%2C%22createOrganiser%22%5D%5D%5D&__client_imported__=true!",
+        "app/admin/organisers/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Corganisers%5C%5Cactions.ts%22%2C%5B%22deleteOrganiser%22%2C%22createOrganiser%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/admin/organisers/page": "action-browser",
+        "app/admin/organisers/new/page": "rsc"
+      }
+    },
+    "ca1e11a4c17818018ed5be8031a2f65f33317912": {
+      "workers": {
+        "app/admin/organisers/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Corganisers%5C%5Cactions.ts%22%2C%5B%22deleteOrganiser%22%2C%22createOrganiser%22%5D%5D%5D&__client_imported__=true!",
+        "app/admin/organisers/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Corganisers%5C%5Cactions.ts%22%2C%5B%22deleteOrganiser%22%2C%22createOrganiser%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/admin/organisers/page": "action-browser",
+        "app/admin/organisers/new/page": "rsc"
+      }
+    },
+    "a595ceb85edb2b457ff96ce2a937ec761dc6517c": {
+      "workers": {
+        "app/admin/categories/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccategories%5C%5Cactions.ts%22%2C%5B%22deleteCategory%22%2C%22createCategory%22%5D%5D%5D&__client_imported__=true!",
+        "app/admin/categories/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccategories%5C%5Cactions.ts%22%2C%5B%22deleteCategory%22%2C%22createCategory%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/admin/categories/page": "action-browser",
+        "app/admin/categories/new/page": "rsc"
+      }
+    },
+    "eb337994e240f57743fadd3eae1a670d6ace022b": {
+      "workers": {
+        "app/admin/categories/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccategories%5C%5Cactions.ts%22%2C%5B%22deleteCategory%22%2C%22createCategory%22%5D%5D%5D&__client_imported__=true!",
+        "app/admin/categories/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccategories%5C%5Cactions.ts%22%2C%5B%22deleteCategory%22%2C%22createCategory%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/admin/categories/page": "action-browser",
+        "app/admin/categories/new/page": "rsc"
+      }
+    },
+    "67ae6506dea188a527e65ec8073df8bee3af29ac": {
+      "workers": {
+        "app/admin/opportunities/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Copportunities%5C%5Cactions.ts%22%2C%5B%22deleteOpportunity%22%2C%22createOpportunity%22%5D%5D%5D&__client_imported__=!",
+        "app/admin/opportunities/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Copportunities%5C%5Cactions.ts%22%2C%5B%22deleteOpportunity%22%2C%22createOpportunity%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/admin/opportunities/new/page": "rsc",
+        "app/admin/opportunities/page": "action-browser"
+      }
+    },
+    "6cd04025e577e9b38310ebe41aac79ed603cfe4a": {
+      "workers": {
+        "app/admin/opportunities/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Copportunities%5C%5Cactions.ts%22%2C%5B%22deleteOpportunity%22%2C%22createOpportunity%22%5D%5D%5D&__client_imported__=!",
+        "app/admin/opportunities/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Copportunities%5C%5Cactions.ts%22%2C%5B%22deleteOpportunity%22%2C%22createOpportunity%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/admin/opportunities/new/page": "rsc",
+        "app/admin/opportunities/page": "action-browser"
+      }
+    },
+    "aff2d0c58399a1de51407eeb95239fd2b4b9732c": {
+      "workers": {
+        "app/opportunities/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!",
+        "app/student/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/opportunities/[slug]/page": "action-browser",
+        "app/student/dashboard/page": "action-browser"
+      }
+    },
+    "fec3676fa326e14854f9199c66c911613e35b3a9": {
+      "workers": {
+        "app/opportunities/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!",
+        "app/student/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/opportunities/[slug]/page": "action-browser",
+        "app/student/dashboard/page": "action-browser"
+      }
+    },
+    "474df49365a0d17ab85cfa1b2c3e4c496b44ad44": {
+      "workers": {
+        "app/student/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cdashboard%5C%5Cpage.tsx%22%2C%5B%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/student/dashboard/page": "rsc"
+      }
+    },
+    "2608dfde4ab421abc6903939497fa732e564a0a2": {
+      "workers": {
+        "app/opportunities/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!",
+        "app/student/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/opportunities/[slug]/page": "action-browser",
+        "app/student/dashboard/page": "action-browser"
+      }
+    },
+    "65e92d3fb9ead1426d36c3903aecc0443b1103b1": {
+      "workers": {
+        "app/opportunities/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!",
+        "app/student/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Cmahendra.singh%5C%5Cmyark%5C%5Csrc%5C%5Capp%5C%5Cstudent%5C%5Cactions.ts%22%2C%5B%22updateStudentProfile%22%2C%22toggleSaveOpportunity%22%2C%22logOpportunityView%22%2C%22updateRegistrationFeedback%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/opportunities/[slug]/page": "action-browser",
+        "app/student/dashboard/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
-  "encryptionKey": "o9KRVSLtuJuaMWpEovb085+B82yFcyyO/N0UUhAqJlQ="
+  "encryptionKey": "s9CSfXR825yamENGFGnSIVOfJeRfMpdFhJ0W704kRzg="
 }
