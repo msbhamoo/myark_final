@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CURRENT_YEAR, SITE_NAME, SITE_TAGLINE } from '@/lib/constants';
+import { CURRENT_YEAR, SITE_NAME } from '@/lib/constants';
 
 export function Footer() {
   return (
