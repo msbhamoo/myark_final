@@ -9,9 +9,9 @@ export const CLASS_RANGES: ClassRange[] = [
 
 export const SITE_NAME = 'Myark';
 export const SITE_URL = 'https://myark.in';
-export const SITE_TAGLINE = 'Make your Mark.';
+export const SITE_TAGLINE = 'Discover your next big opportunity.';
 export const SITE_DESCRIPTION =
-  "India's most comprehensive directory of K-12 competitions, scholarships, olympiads, and exchange programs. Discover what you're eligible for — before the deadline passes.";
+  "India's premier platform for K-12 students to discover verified scholarships, olympiads, and competitions. Build your professional student identity and never miss an opportunity.";
 
 export const CURRENT_YEAR = 2026;
 

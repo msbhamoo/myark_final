@@ -15,7 +15,7 @@ export function Footer() {
               <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1"></span>
             </Link>
             <p className="text-body max-w-sm mb-6">
-              {SITE_TAGLINE} India&apos;s first professional identity and opportunity discovery platform for K-12 students.
+              The premier discovery and building platform for school students across India. Explore verified scholarships, olympiads, and competitions.
             </p>
             <p className="text-sm text-hint">
               Curated with purpose by Mahendra Bhamu.
