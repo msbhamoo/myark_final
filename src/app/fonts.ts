@@ -1,15 +1,21 @@
-import { Syne, Inter } from 'next/font/google';
+import { Bricolage_Grotesque, DM_Sans } from 'next/font/google';
 
-export const syne = Syne({
+export const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['700', '800'],
-  variable: '--font-syne',
+  weight: ['600', '700', '800'],
+  variable: '--font-bricolage',
   display: 'swap',
 });
 
-export const inter = Inter({
+export const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  variable: '--font-inter',
+  style: ['normal', 'italic'],
+  variable: '--font-dmsans',
   display: 'swap',
 });
+
+// For backward compatibility with existing tailwind classes if needed, 
+// though we will update globals.css to point the variables correctly.
+export const syne = bricolage; 
+export const inter = dmSans;

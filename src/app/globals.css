@@ -11,25 +11,30 @@
 @layer base {
   :root {
     /* Brand Colors */
-    --color-primary: #1b5e28;     /* Forest Green */
+    --color-primary: #1b5e28;
+    /* Forest Green */
     --color-primary-hover: #14461e;
-    --color-accent: #4ade80;      /* Accent Green */
-    
+    --color-accent: #4ade80;
+    /* Accent Green */
+
     /* Backgrounds */
-    --color-bg: #fdfdfc;          /* Off-white page background */
-    --color-surface: #ffffff;     /* Pure white cards */
-    --color-surface-dark: #f9f9f9; /* Light grey instead of black for contrast boxes */
-    
+    --color-bg: #fdfdfc;
+    /* Off-white page background */
+    --color-surface: #ffffff;
+    /* Pure white cards */
+    --color-surface-dark: #f9f9f9;
+    /* Light grey instead of black for contrast boxes */
+
     /* Text */
     --color-heading: #111110;
     --color-body: #3d3d3a;
     --color-muted: #6a6a64;
     --color-hint: #8a8a84;
-    
+
     /* Borders */
-    --color-border-default: rgba(17,17,16,0.1);
-    --color-border-hover: rgba(17,17,16,0.2);
-    
+    --color-border-default: rgba(17, 17, 16, 0.1);
+    --color-border-hover: rgba(17, 17, 16, 0.2);
+
     /* Deadlines - Semantic */
     --color-urgent-bg: #fee2e2;
     --color-urgent-text: #b91c1c;
@@ -49,10 +54,12 @@
     --space-2: 0.5rem;
     --space-3: 0.75rem;
     --space-4: 1rem;
-    --space-5: 20px; /* Kept original as it was not in the new list */
+    --space-5: 20px;
+    /* Kept original as it was not in the new list */
     --space-6: 1.5rem;
     --space-8: 2rem;
-    --space-10: 40px; /* Kept original as it was not in the new list */
+    --space-10: 40px;
+    /* Kept original as it was not in the new list */
     --space-12: 3rem;
     --space-16: 4rem;
 
@@ -64,20 +71,59 @@
     --radius-pill: 9999px;
 
     /* ── Typography ──────────────────────────────────────── */
-    --font-heading: var(--font-syne), 'Syne', sans-serif;
-    --font-body: var(--font-inter), 'Inter', sans-serif;
+    --font-heading: var(--font-bricolage), 'Bricolage Grotesque', system-ui;
+    --font-display: 'Bricolage Grotesque', system-ui;
+    --font-body: 'DM Sans', system-ui;
+  }
+
+  /* ── Dark Mode (class-based toggle) ─────────────────────── */
+  .dark {
+    --color-primary: #22c55e;
+    --color-primary-hover: #16a34a;
+    --color-accent: #4ade80;
+
+    --color-bg: #0a0a0a;
+    --color-surface: #161616;
+    --color-surface-dark: #1e1e1e;
+
+    --color-heading: #f0ede5;
+    --color-body: #a8a8a0;
+    --color-muted: #6a6a64;
+    --color-hint: #555550;
+
+    --color-border-default: rgba(255, 255, 255, 0.08);
+    --color-border-hover: rgba(255, 255, 255, 0.15);
+
+    --color-urgent-bg: rgba(185, 28, 28, 0.15);
+    --color-urgent-text: #fca5a5;
+    --color-warning-bg: rgba(194, 65, 12, 0.15);
+    --color-warning-text: #fdba74;
+    --color-standard-bg: rgba(255, 255, 255, 0.06);
+    --color-standard-text: #9ca3af;
+    --color-ongoing-bg: rgba(22, 163, 74, 0.15);
+    --color-ongoing-text: #86efac;
+
+    --color-cat-bg: rgba(255, 255, 255, 0.06);
+    --color-cat-text: #d1d5db;
   }
 
   body {
     background-color: var(--color-bg);
     color: var(--color-body);
-    font-family: var(--font-body); /* Changed to var(--font-body) to match existing structure */
+    font-family: var(--font-body);
+    /* Changed to var(--font-body) to match existing structure */
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--color-heading);
-    font-family: var(--font-heading); /* Changed to var(--font-heading) to match existing structure */
+    font-family: var(--font-heading);
+    /* Changed to var(--font-heading) to match existing structure */
     letter-spacing: -0.02em;
   }
 }
@@ -144,52 +190,58 @@ html {
 
 /* ── Card Base ─────────────────────────────────────────────── */
 .card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 .card:hover {
   transform: translateY(-2px);
-  border-color: var(--color-border-hover); /* Updated to new var */
+  border-color: var(--color-border-hover);
+  /* Updated to new var */
   box-shadow: 0 4px 12px rgba(17, 17, 16, 0.06);
 }
 
 /* ── Button Base ───────────────────────────────────────────── */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 0.875rem;
-    transition: all 0.15s ease-in-out;
-    cursor: pointer;
-    font-family: var(--font-body); /* Changed to var(--font-body) to match existing structure */
-    gap: var(--space-2); /* Kept original gap */
-    border: none; /* Kept original border */
-    text-decoration: none; /* Kept original text-decoration */
-  }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  font-family: var(--font-body);
+  /* Changed to var(--font-body) to match existing structure */
+  gap: var(--space-2);
+  /* Kept original gap */
+  border: none;
+  /* Kept original border */
+  text-decoration: none;
+  /* Kept original text-decoration */
+}
 
 .btn:active {
   transform: scale(0.98);
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
-    border: 1px solid transparent;
-  }
+  background-color: var(--color-primary);
+  color: white;
+  border: 1px solid transparent;
+}
 
 .btn-primary:hover {
-    background-color: var(--color-primary-hover);
-  }
+  background-color: var(--color-primary-hover);
+}
 
 .btn-accent {
   background: var(--color-accent);
-  color: var(--color-dark); /* Kept original color-dark as it was not in the new instruction */
+  color: var(--color-dark);
+  /* Kept original color-dark as it was not in the new instruction */
 }
 
 .btn-accent:hover {
@@ -197,10 +249,10 @@ html {
 }
 
 .btn-outline {
-    background-color: transparent;
-    border: 1px solid var(--color-border-default);
-    color: var(--color-heading);
-  }
+  background-color: transparent;
+  border: 1px solid var(--color-border-default);
+  color: var(--color-heading);
+}
 
 .btn-outline:hover {
   border-color: var(--color-primary);
@@ -263,17 +315,20 @@ html {
 
 /* ── Skeleton Animation ────────────────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--border-default) 25%,
-    rgba(17, 17, 16, 0.04) 50%,
-    var(--border-default) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--border-default) 25%,
+      rgba(17, 17, 16, 0.04) 50%,
+      var(--border-default) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius-sm);
@@ -317,8 +372,102 @@ html {
   }
 }
 
-/* ── Focus Visible ─────────────────────────────────────────── */
-*:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+/* ── Logo System ─────────────────────────────────────────── */
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.logo .my {
+  color: var(--color-heading);
+}
+
+.logo .ark {
+  color: var(--color-primary);
+}
+
+/* On dark backgrounds */
+.logo-on-dark .my {
+  color: #f0ede5;
+}
+
+.logo-on-dark .ark {
+  color: var(--color-accent);
+}
+
+/* Pulse Animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-core {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.pulse-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  margin-top: 2px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.pulse-ring-el {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+.pulse-core-el {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: pulse-core 1.8s ease-in-out infinite;
+}
+
+.pulse-ring-el-dark {
+  background: rgba(74, 222, 128, 0.4);
+}
+
+.pulse-core-el-dark {
+  background: var(--color-accent);
+}
+
+.pulse-ring-el-light {
+  background: rgba(17, 17, 16, 0.1);
+}
+
+.pulse-core-el-light {
+  background: var(--color-primary);
+}
+
+.font-extrabold {
+  font-weight: 600 !important;
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase-browser';
+import { Logo } from '@/components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -34,9 +35,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center surface-dark p-4">
       <div className="w-full max-w-md bg-surface p-8 rounded-xl shadow-2xl">
-        <div className="text-center mb-8">
-          <h1 className="font-heading font-extrabold text-3xl text-dark mb-2 tracking-tight">myark admin</h1>
-          <p className="text-muted">Sign in to manage the platform</p>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Logo size="lg" />
+          <span className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">Admin Panel</span>
+          <p className="text-muted mt-3">Sign in to manage the platform</p>
         </div>
 
         {error && (

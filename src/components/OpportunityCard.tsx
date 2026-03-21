@@ -7,15 +7,14 @@ interface OpportunityCardProps {
   opportunity: Opportunity;
 }
 
-// Light color generation for dynamic categories to match mockup
-function getCategoryTagStyle(categoryLabel: string) {
+function getCategoryTagClass(categoryLabel: string) {
   const defaults = [
-    { bg: '#fdf2f8', text: '#be185d' }, // pink
-    { bg: '#eff6ff', text: '#1d4ed8' }, // blue
-    { bg: '#f0fdf4', text: '#15803d' }, // green
-    { bg: '#fef3c7', text: '#92400e' }, // yellow
-    { bg: '#f3e8ff', text: '#7e22ce' }, // purple
-    { bg: '#f3f4f6', text: '#4b5563' }, // gray
+    'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
+    'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
+    'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
+    'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+    'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
   ];
   const index = categoryLabel.length % defaults.length;
   return defaults[index];
@@ -47,27 +46,26 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
   }
 
   const levelTag = 'International';
-  const catStyle = getCategoryTagStyle(opportunity.category?.label || 'General');
+  const catClass = getCategoryTagClass(opportunity.category?.label || 'General');
 
   // Pricing
   const theFee = opportunity.fee_text.toLowerCase().includes('free') ? 'Free to enter' : opportunity.fee_text;
   const shortFee = opportunity.fee_text.toLowerCase().includes('free') ? 'Free' : 'Paid';
 
   return (
-    <div className="card p-5 flex flex-col h-full group bg-surface hover:bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+    <div className="card p-5 flex flex-col h-full group bg-surface hover:bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-none">
       
       {/* Top Row: Tags (Left) + Deadline (Right) */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-wrap gap-2">
           {opportunity.category && (
             <span 
-              className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium" 
-              style={{ backgroundColor: catStyle.bg, color: catStyle.text }}
+              className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold ${catClass}`} 
             >
               {opportunity.category.label}
             </span>
           )}
-          <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium bg-[#f3f4f6] text-[#4b5563]">
+          <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300">
             {levelTag}
           </span>
         </div>
@@ -81,7 +79,7 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
       {/* Title block with bookmark on the right */}
       <div className="flex justify-between items-start gap-4 mb-2">
         <Link href={`/opportunities/${opportunity.slug}`} className="flex-1 outline-none">
-          <h3 className="font-heading font-medium text-[16px] sm:text-[18px] text-heading leading-[1.3] group-hover:underline decoration-primary transition-all cursor-pointer">
+          <h3 className="font-heading font-extrabold text-[16px] sm:text-[18px] text-heading leading-[1.3] group-hover:underline decoration-primary transition-all cursor-pointer">
             {opportunity.title}
           </h3>
         </Link>
@@ -104,13 +102,13 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
 
       {/* Bottom Footer Tags */}
       <div className="flex flex-wrap gap-2 mt-auto">
-        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium">
+        <span className="px-2.5 py-1 bg-gray-50 dark:bg-white/5 border border-[var(--color-border-default)] rounded-md text-[11px] text-muted font-medium">
           {formatClassRange(opportunity.eligibility_classes).replace('Classes', 'Class').trim()}
         </span>
-        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium">
+        <span className="px-2.5 py-1 bg-gray-50 dark:bg-white/5 border border-[var(--color-border-default)] rounded-md text-[11px] text-muted font-medium">
           {shortFee}
         </span>
-        <span className="px-2.5 py-1 bg-white border border-[#e5e7eb] rounded-md text-[11px] text-[#6b7280] font-medium max-w-[150px] truncate">
+        <span className="px-2.5 py-1 bg-gray-50 dark:bg-white/5 border border-[var(--color-border-default)] rounded-md text-[11px] text-muted font-medium max-w-[150px] truncate">
           {organiserName}
         </span>
       </div>

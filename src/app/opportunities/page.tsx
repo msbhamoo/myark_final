@@ -67,7 +67,7 @@ export default async function OpportunitiesPage({
   const opportunities: Opportunity[] = opportunitiesData || [];
 
   return (
-    <div className="min-h-[80vh] bg-[#fdfdfc] py-8 border-t border-[#e5e5e5]">
+    <div className="min-h-[80vh] bg-[var(--color-bg)] py-8 border-t border-[var(--color-border-default)]">
       <div className="container-main max-w-[1200px]">
         
         <div className="flex flex-col lg:flex-row gap-10 items-start">

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CURRENT_YEAR, SITE_NAME } from '@/lib/constants';
+import { Logo } from './Logo';
 
 export function Footer() {
   return (
@@ -8,11 +9,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand Column */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 text-dark mb-4">
-              <span className="font-heading font-extrabold text-2xl tracking-tighter">
-                myark
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1"></span>
+            <Link href="/" className="block mb-4">
+              <Logo size="md" />
             </Link>
             <p className="text-body max-w-sm mb-6">
               The premier discovery and building platform for school students across India. Explore verified scholarships, olympiads, and competitions.
@@ -72,7 +70,7 @@ export function Footer() {
             &copy; {CURRENT_YEAR} {SITE_NAME}. All rights reserved. Not affiliated with any government body.
           </p>
           <div className="flex items-center gap-1 text-sm text-muted">
-            Built for 🇮🇳 students
+            Made with ♥ in India, for every student.
           </div>
         </div>
       </div>

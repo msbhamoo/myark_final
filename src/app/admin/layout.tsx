@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase-server';
+import { Logo } from '@/components/Logo';
 
 export default async function AdminLayout({
   children,
@@ -21,8 +22,9 @@ export default async function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 flex flex-col hidden md:flex shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-gray-800">
-          <Link href="/admin" className="flex items-center gap-2 text-white">
-            <span className="font-bold text-xl tracking-tight">myark admin</span>
+          <Link href="/admin" className="flex items-center gap-2">
+            <Logo size="md" variant="dark" />
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
           </Link>
         </div>
         
@@ -62,7 +64,10 @@ export default async function AdminLayout({
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-16 bg-gray-900 border-b border-gray-800 md:hidden flex items-center justify-between px-4">
-          <span className="font-bold text-white tracking-tight">myark admin</span>
+          <Link href="/admin" className="flex items-center gap-2">
+            <Logo size="sm" variant="dark" />
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
+          </Link>
         </header>
         <div className="p-6 md:p-8 flex-1 overflow-auto bg-gray-50 text-gray-900">
           {children}

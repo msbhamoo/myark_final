@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -38,9 +39,12 @@ const config: Config = {
         xl: "var(--radius-xl)",
         pill: "var(--radius-pill)",
       },
+      fontWeight: {
+        extrabold: "600",
+      },
       fontFamily: {
-        heading: ["var(--font-syne)", "Syne", "sans-serif"],
-        body: ["var(--font-inter)", "Inter", "sans-serif"],
+        heading: ["var(--font-bricolage)", "Bricolage Grotesque", "sans-serif"],
+        body: ["var(--font-dmsans)", "DM Sans", "sans-serif"],
       },
     },
   },

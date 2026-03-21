@@ -8,12 +8,14 @@ export function ApplyButtonWrapper({
   opportunity, 
   initialHasApplied = false,
   initialFeedbackStatus = 'pending',
-  initialIsSaved = false
+  initialIsSaved = false,
+  daysLeft = null
 }: { 
   opportunity: Opportunity, 
   initialHasApplied?: boolean,
   initialFeedbackStatus?: string,
-  initialIsSaved?: boolean
+  initialIsSaved?: boolean,
+  daysLeft?: number | null
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [hasApplied, setHasApplied] = useState(initialHasApplied);
@@ -127,17 +129,41 @@ export function ApplyButtonWrapper({
       </div>
 
       {/* Mobile Sticky Bar - Positioned above BottomNav (64px) */}
-      <div className="lg:hidden fixed bottom-[64px] left-0 right-0 bg-white border-t border-[#e5e7eb] p-4 pb-safe z-[45] flex gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div className="lg:hidden fixed bottom-[64px] left-0 right-0 bg-[var(--color-surface)] border-t border-[var(--color-border-default)] py-2.5 px-4 pb-safe z-[45] flex items-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] transition-colors">
         <button 
           onClick={handleSave}
-          className={`flex-[0.25] flex items-center justify-center border border-[#e5e7eb] rounded-xl text-heading ${isSaved ? 'bg-primary/5 border-primary/20' : ''}`}
+          className={`flex-shrink-0 w-11 h-11 flex items-center justify-center border border-[var(--color-border-default)] rounded-xl text-[var(--color-heading)] ${isSaved ? 'bg-primary/5 border-primary/20' : ''} transition-colors`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={isSaved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isSaved ? "text-primary" : ""}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill={isSaved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isSaved ? "text-primary" : ""}>
             <path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 0 0 1 2 2v16z"></path>
           </svg>
         </button>
-        <div className="flex-1">
-          <PrimaryButton />
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="flex items-center justify-between mb-1.5 px-0.5">
+            <span className="text-[10px] font-bold text-[var(--color-muted)] uppercase tracking-wider">
+               Official Website
+            </span>
+             {daysLeft !== null && (
+               <span className={`text-[10px] font-bold ${daysLeft <= 7 ? 'text-[#dc2626] dark:text-red-400' : 'text-[#16a34a] dark:text-green-400'}`}>
+                 {daysLeft} days left
+               </span>
+             )}
+          </div>
+          <button 
+            onClick={handleApplyClick}
+            className={`w-full py-2.5 text-[13px] text-white font-bold rounded-xl transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 ${
+              hasApplied ? 'bg-[#1b5e28] hover:bg-[#14461e]' : 'bg-[#dc2626] hover:bg-[#b01e1e]'
+            }`}
+          >
+            {hasApplied ? (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Go to Website
+              </>
+            ) : (
+              <>Apply Now</>
+            )}
+          </button>
         </div>
       </div>
 

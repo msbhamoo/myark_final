@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { syne, inter } from './fonts';
+import { bricolage, dmSans } from './fonts';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { BottomNav } from '@/components/BottomNav';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 // Provide absolute URL for metadata images
 let siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
@@ -123,7 +124,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${syne.variable} ${inter.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -135,10 +136,12 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col min-h-screen pb-[64px] md:pb-0">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <BottomNav />
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <BottomNav />
+        </ThemeProvider>
       </body>
     </html>
   );
