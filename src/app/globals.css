@@ -191,7 +191,7 @@ html {
 /* ── Card Base ─────────────────────────────────────────────── */
 .card {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border-default);
+  border: 2px solid var(--color-border-default);
   border-radius: var(--radius-lg);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -466,6 +466,43 @@ html {
 
 .pulse-core-el-light {
   background: var(--color-primary);
+}
+
+/* ── Floating Animation ─────────────────────────────────── */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* ── Marquee Animation ─────────────────────────────────── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* ── Scrollbar Hide ──────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .font-extrabold {

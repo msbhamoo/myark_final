@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
 import { DeleteButton } from './DeleteButton';
+import { BulkImportOrganisersModal } from './BulkImportOrganisersModal';
 
 export default async function OrganisersPage() {
   const supabase = createServerClient();
@@ -17,9 +18,12 @@ export default async function OrganisersPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-1">Manage Organisers</h1>
           <p className="text-gray-500 text-sm pb-0">Add, edit, or remove opportunity organisers.</p>
         </div>
-        <Link href="/admin/organisers/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
-          + Add Organiser
-        </Link>
+        <div className="flex gap-3">
+          <BulkImportOrganisersModal />
+          <Link href="/admin/organisers/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
+            + Add Organiser
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">

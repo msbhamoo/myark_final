@@ -11,24 +11,32 @@ export async function logOpportunityView(opportunityId: string) {
   const cookieStore = cookies();
   const studentId = cookieStore.get('myark_student')?.value;
 
-  if (!studentId) return;
-
   const supabase = createServerClient();
   
-  // Check if we already logged this view recently (optional but good for noise reduction)
-  const { data: existing } = await supabase
-    .from('student_views')
-    .select('id')
-    .eq('student_id', studentId)
-    .eq('opportunity_id', opportunityId)
-    .gte('created_at', new Date(Date.now() - 3600000).toISOString()) // 1 hour
-    .maybeSingle();
+  if (studentId) {
+    // Check if we already logged this view recently for this student
+    const { data: existing } = await supabase
+      .from('student_views')
+      .select('id')
+      .eq('student_id', studentId)
+      .eq('opportunity_id', opportunityId)
+      .gte('created_at', new Date(Date.now() - 3600000).toISOString()) // 1 hour
+      .maybeSingle();
 
-  if (!existing) {
-    await supabase.from('student_views').insert({
-      student_id: studentId,
-      opportunity_id: opportunityId
-    });
+    if (!existing) {
+      await supabase.from('student_views').insert({
+        student_id: studentId,
+        opportunity_id: opportunityId
+      });
+    }
+  } else {
+    // Log anonymous view (try-catch allows fail gracefully if DB schema enforces NOT NULL on student_id)
+    try {
+      await supabase.from('student_views').insert({
+        opportunity_id: opportunityId,
+        student_id: null
+      });
+    } catch {}
   }
 }
 
@@ -78,16 +86,22 @@ export async function updateStudentProfile(formData: FormData) {
 
   const supabase = createServerClient();
   
-  const { error } = await supabase
+  const { error, data } = await supabase
     .from('students')
     .update({ 
       name,
       student_class: studentClass,
       school_name: schoolName 
     })
-    .eq('id', studentId);
+    .eq('id', studentId)
+    .select();
 
   if (error) return { error: error.message };
+  
+  if (!data || data.length === 0) {
+    // If we get here, RLS (Row Level Security) might be blocking the update, or the student ID is completely invalid.
+    return { error: 'Failed to update profile. It may be restricted by database security rules or the account is missing.' };
+  }
   
   revalidatePath('/student/dashboard');
   return { success: true };

@@ -1,84 +1,53 @@
 import { MetadataRoute } from 'next';
 import { createServerClient } from '@/lib/supabase-server';
-import { SITE_URL } from '@/lib/constants';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createServerClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
+  const baseUrl = 'https://myark.in';
 
-  // 1. Fetch published opportunities
-  const { data: opps } = await supabase
-    .from('opportunities')
-    .select('slug, updated_at, deadline')
-    .eq('is_published', true);
-
-  // 2. Fetch categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('slug');
-
-  const sitemapEntries: MetadataRoute.Sitemap = [];
-
-  // Static: Homepage
-  sitemapEntries.push({
-    url: `${siteUrl}`,
+  // Core static routes
+  const staticRoutes = [
+    '',
+    '/opportunities',
+    '/opportunities/category/scholarship',
+    '/opportunities/category/olympiad',
+    '/opportunities/category/coding-ai',
+    '/opportunities/category/robotics',
+    '/about',
+    '/how-it-works',
+    '/for-schools',
+    '/for-organisers',
+    '/campus-ambassador',
+    '/contact',
+    '/privacy',
+    '/terms',
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: 1.0,
-  });
+    changeFrequency: 'weekly' as const,
+    priority: route === '' ? 1 : 0.8,
+  }));
 
-  // Static: Master Directory
-  sitemapEntries.push({
-    url: `${siteUrl}/opportunities`,
-    lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: 0.9,
-  });
+  // Fetch dynamic opportunity routes
+  let dynamicRoutes: MetadataRoute.Sitemap = [];
+  
+  try {
+    const { data: opportunities } = await supabase
+      .from('opportunities')
+      .select('slug, updated_at')
+      .eq('is_published', true);
 
-  // Dynamic: Category Pages
-  if (categories) {
-    categories.forEach((cat) => {
-      sitemapEntries.push({
-        url: `${siteUrl}/opportunities/category/${cat.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily',
+    if (opportunities) {
+      dynamicRoutes = opportunities.map((opp) => ({
+        url: `${baseUrl}/opportunities/${opp.slug}`,
+        lastModified: new Date(opp.updated_at || new Date()),
+        changeFrequency: 'weekly' as const,
         priority: 0.9,
-      });
-    });
+      }));
+    }
+  } catch (error) {
+    console.error('Sitemap generic fetch error:', error);
   }
 
-  // Static: Class Pages
-  const classRanges = ['class-1-5', 'class-6-8', 'class-9-10', 'class-11-12'];
-  classRanges.forEach((range) => {
-    sitemapEntries.push({
-      url: `${siteUrl}/opportunities/class/${range}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
-  });
-
-  // Dynamic: Detail Pages
-  if (opps) {
-    opps.forEach((opp) => {
-      // Determine update frequency based on deadline urgency
-      let freq: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never" = 'weekly';
-      
-      if (opp.deadline) {
-        const daysUntilDeadline = Math.ceil((new Date(opp.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-        if (daysUntilDeadline > 0 && daysUntilDeadline <= 14) {
-          freq = 'daily'; // Update daily if deadline approaching
-        }
-      }
-
-      sitemapEntries.push({
-        url: `${siteUrl}/opportunities/${opp.slug}`,
-        lastModified: opp.updated_at ? new Date(opp.updated_at) : new Date(),
-        changeFrequency: freq,
-        priority: 0.7,
-      });
-    });
-  }
-
-  return sitemapEntries;
+  return [...staticRoutes, ...dynamicRoutes];
 }

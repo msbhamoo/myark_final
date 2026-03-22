@@ -33,3 +33,42 @@ export async function deleteOrganiser(id: string) {
   if (error) throw new Error(error.message);
   revalidatePath('/admin/organisers');
 }
+
+export interface BulkOrganiserRow {
+  name: string;
+  slug: string;
+  description: string;
+  website_url: string;
+}
+
+export interface BulkOrganiserResult {
+  success: number;
+  failed: number;
+  errors: { row: number; message: string }[];
+}
+
+export async function bulkImportOrganisers(rows: BulkOrganiserRow[]): Promise<BulkOrganiserResult> {
+  const supabase = createServerClient();
+  const result: BulkOrganiserResult = { success: 0, failed: 0, errors: [] };
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const rowNum = i + 2;
+
+    if (!row.name?.trim()) { result.errors.push({ row: rowNum, message: 'Name is required' }); result.failed++; continue; }
+    if (!row.slug?.trim()) { result.errors.push({ row: rowNum, message: 'Slug is required' }); result.failed++; continue; }
+
+    const { error } = await supabase.from('organisers').insert({
+      name: row.name.trim(),
+      slug: row.slug.trim(),
+      description: row.description?.trim() || null,
+      website_url: row.website_url?.trim() || null,
+    });
+
+    if (error) { result.errors.push({ row: rowNum, message: error.message }); result.failed++; }
+    else { result.success++; }
+  }
+
+  revalidatePath('/admin/organisers');
+  return result;
+}

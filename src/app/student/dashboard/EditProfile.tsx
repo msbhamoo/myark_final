@@ -54,11 +54,11 @@ export function EditProfile({ student }: { student: Student }) {
             <label className="block text-[13px] font-bold text-muted uppercase tracking-wider mb-2">Class</label>
             <select 
               name="student_class" 
-              defaultValue={student.student_class} 
-              className="w-full bg-[#f9fafb] dark:bg-white/5 border border-[var(--color-border-default)] rounded-xl px-4 py-3 outline-none focus:border-[var(--color-primary)] transition-colors text-heading"
+              defaultValue={(student.student_class || '').includes('Class') ? student.student_class : `Class ${student.student_class || ''}`} 
+              className="w-full bg-[#f9fafb] dark:bg-white/5 border border-[var(--color-border-default)] rounded-xl px-4 py-3 outline-none focus:border-[var(--color-primary)] transition-colors text-heading appearance-none cursor-pointer"
             >
               {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
-                <option key={num} value={num.toString()}>Class {num}</option>
+                <option key={num} value={`Class ${num}`}>Class {num}</option>
               ))}
             </select>
           </div>

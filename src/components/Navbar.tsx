@@ -59,7 +59,11 @@ export function Navbar() {
               <Link href="/student/dashboard" className="btn bg-primary text-white hover:bg-[var(--color-primary-hover)] text-[15px] font-medium px-5">
                 My Profile
               </Link>
-            ) : null}
+            ) : (
+              <Link href="/student/auth" className="btn bg-primary text-white hover:bg-[var(--color-primary-hover)] text-[15px] font-medium px-5">
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Actions */}
@@ -79,9 +83,13 @@ export function Navbar() {
             <Link href="/opportunities" className="text-sm font-medium border border-[var(--color-border-default)] text-heading rounded-lg px-3 py-1.5 bg-surface shadow-sm">
               Explore
             </Link>
-            {hasProfile && (
+            {hasProfile ? (
               <Link href="/student/dashboard" className="text-sm font-medium bg-primary text-white rounded-lg px-4 py-1.5 shadow-sm">
                 Profile
+              </Link>
+            ) : (
+              <Link href="/student/auth" className="text-sm font-medium bg-primary text-white rounded-lg px-4 py-1.5 shadow-sm">
+                Login
               </Link>
             )}
           </div>

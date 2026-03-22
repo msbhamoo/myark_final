@@ -8,6 +8,7 @@ import { Opportunity } from '@/lib/types';
 import { ApplyButtonWrapper } from './ApplyButton';
 import { ViewTracker } from './ViewTracker';
 import { cookies } from 'next/headers';
+import { ShareWidget } from './ShareWidget';
 
 export const revalidate = 3600;
 
@@ -341,13 +342,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                 </div>
 
                 {/* Share This */}
-                <div className="py-6">
-                  <h4 className="text-[11px] tracking-widest uppercase font-bold text-muted mb-3">Share This</h4>
-                  <div className="flex gap-2">
-                    <button className="flex-1 py-1.5 border border-[var(--color-border-default)] rounded-md text-[12px] font-medium text-heading hover:bg-[#f9fafb] dark:hover:bg-white/5 transition-colors">WhatsApp</button>
-                    <button className="flex-1 py-1.5 border border-[var(--color-border-default)] rounded-md text-[12px] font-medium text-heading hover:bg-[#f9fafb] dark:hover:bg-white/5 transition-colors">Copy link</button>
-                  </div>
-                </div>
+                <ShareWidget title={opportunity.title} slug={opportunity.slug} />
 
                 {/* Never miss a deadline widget */}
                 <div className="bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/10 dark:border-green-800/50 rounded-xl p-4">

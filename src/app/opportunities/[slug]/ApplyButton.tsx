@@ -24,14 +24,25 @@ export function ApplyButtonWrapper({
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(initialFeedbackStatus !== 'pending' && initialHasApplied);
 
   const handleApplyClick = () => {
-    if (opportunity.registration_url) {
-      window.open(opportunity.registration_url, '_blank', 'noopener,noreferrer');
-      if (hasApplied) {
+    const hasCookie = typeof document !== 'undefined' && document.cookie.includes('myark_student=');
+
+    if (hasCookie || hasApplied) {
+      // They are logged in OR have already applied. Open URL immediately.
+      if (opportunity.registration_url) {
+        window.open(opportunity.registration_url, '_blank', 'noopener,noreferrer');
+      }
+
+      if (!hasApplied) {
+        // They are logged in but doing this opportunity for the first time.
+        // Triggering the modal sets it off so its useEffect quietly logs the registration 
+        // to Supabase in the background, then triggers onClose() which shows feedback.
+        setModalOpen(true);
+      } else {
         setShowFeedback(true);
       }
-    }
-    
-    if (!hasApplied) {
+    } else {
+      // Completely unregistered user. DO NOT open URL yet.
+      // Launch form. User submits form, which creates account AND opens the URL.
       setModalOpen(true);
     }
   };

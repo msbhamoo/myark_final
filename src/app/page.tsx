@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { HeroSearch } from '@/components/HeroSearch';
+import { HeroFloatingCards } from '@/components/HeroFloatingCards';
 import { Logo } from '@/components/Logo';
 import { Category, Opportunity } from '@/lib/types';
 import { getDaysUntilDeadline } from '@/lib/utils';
@@ -61,73 +62,109 @@ export default async function Home() {
     <div className="flex flex-col items-center">
 
       {/* ═══════════════════════════════════════════════════════════
-          HERO SECTION — Dark gradient with green mesh accent
+          HERO SECTION — Split layout with floating cards
          ═══════════════════════════════════════════════════════════ */}
       <section className="w-full bg-[#0a0f0a] relative overflow-hidden">
-        {/* Background gradient mesh */}
-        <div className="absolute inset-0 opacity-30" style={{
-          background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34,197,94,0.15), transparent), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(74,222,128,0.08), transparent)'
+        {/* Aurora gradient blobs */}
+        <div className="absolute inset-0">
+          <div className="absolute top-[-30%] left-[50%] w-[700px] h-[700px] rounded-full bg-[#22c55e]/[0.07] blur-[120px]"></div>
+          <div className="absolute bottom-[-20%] right-[10%] w-[500px] h-[500px] rounded-full bg-[#4ade80]/[0.05] blur-[100px]"></div>
+          <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-emerald-600/[0.04] blur-[80px]"></div>
+        </div>
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)',
+          backgroundSize: '32px 32px'
         }}></div>
-        {/* Subtle grid */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-          backgroundSize: '64px 64px'
-        }}></div>
 
-        <div className="relative container-main max-w-[1000px] text-center px-4 pt-14 pb-10 md:pt-10 md:pb-14">
-          {/* Eyebrow */}
-          <div className="hidden md:inline-flex items-center gap-2 bg-white/[0.06] border border-white/[0.08] rounded-full px-3 py-0.5 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"></span>
-            <span className="text-[11px] font-medium text-[#a8a8a0] tracking-wide uppercase">Updated daily — {activeOppCount} active opportunities</span>
-          </div>
+        <div className="relative container-main max-w-[1200px] px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4 items-center min-h-[420px] md:min-h-[520px] py-12 md:py-16 lg:py-20">
+            
+            {/* ─── LEFT: Text + Search ────────────────────── */}
+            <div className="flex flex-col items-start text-left max-w-xl">
+              {/* Eyebrow pill */}
+              <div className="hidden md:inline-flex items-center gap-2 bg-white/[0.06] border border-white/[0.08] rounded-full px-3.5 py-1 mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"></span>
+                <span className="text-[11px] font-medium text-[#a8a8a0] tracking-wide uppercase">Updated daily — {activeOppCount} active opportunities</span>
+              </div>
 
-          {/* Headline */}
-          <h1 className="text-[21px] sm:text-[32px] md:text-[42px] lg:text-[52px] font-heading font-extrabold leading-[1.15] text-[#f0ede5] tracking-tight mb-3">
-            Every scholarship. {' '}
-            <br className="hidden sm:block" />
-            Every olympiad. {' '}
-            <br className="hidden sm:block" />
-            <span className="text-[#4ade80]">One platform.</span>
-          </h1>
+              {/* Headline */}
+              <h1 className="text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-heading font-extrabold leading-[1.1] text-[#f0ede5] tracking-tight mb-4 md:mb-5">
+                Every scholarship.
+                <br />
+                Every olympiad.
+                <br />
+                <span className="text-[#4ade80]">One platform.</span>
+              </h1>
 
-          {/* Sub-headline */}
-          <p className="hidden md:block text-[14px] md:text-[16px] text-[#a8a8a0] max-w-2xl mx-auto mb-5 leading-relaxed font-medium">
-            India&apos;s most trusted opportunity directory for school students. Verified. Free. Always.
-          </p>
+              {/* Subheadline */}
+              <p className="text-[14px] md:text-[17px] text-[#8a8a84] max-w-md mb-6 md:mb-8 leading-relaxed">
+                India&apos;s most trusted directory of scholarships, olympiads &amp; competitions for school students. Verified. Free. Always.
+              </p>
 
-          {/* Search */}
-          <HeroSearch />
+              {/* Search Bar */}
+              <div className="w-full max-w-lg mb-5">
+                <HeroSearch />
+              </div>
 
-          {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-10 mt-4">
-            <div className="flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <span className="text-[11px] md:text-[13px] text-[#a8a8a0] font-bold">100% Free</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <span className="text-[11px] md:text-[13px] text-[#a8a8a0] font-bold">Verified Daily</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <span className="text-[11px] md:text-[13px] text-[#a8a8a0] font-bold">Parent Trusted</span>
-            </div>
-          </div>
+              {/* Floating Category Ticker */}
+              <div className="w-full max-w-lg overflow-hidden mb-5 relative">
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0f0a] to-transparent z-10"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0a0f0a] to-transparent z-10"></div>
+                <div className="flex gap-2.5 animate-marquee hover:[animation-play-state:paused]">
+                  {[...categories, ...categories].map((cat, i) => (
+                    <Link
+                      key={`${cat.id}-${i}`}
+                      href={`/opportunities/category/${cat.slug}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.07] text-[11px] font-medium text-[#8a8a84] hover:bg-white/[0.1] hover:border-[#4ade80]/30 hover:text-[#f0ede5] transition-all whitespace-nowrap shrink-0"
+                    >
+                      <span className="text-[13px]">{cat.icon_name}</span>
+                      {cat.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
 
-          {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-2 md:gap-16 mt-6 pt-6 border-t border-white/[0.06] divide-x divide-white/[0.06]">
-            <div className="text-center px-1">
-              <p className="text-[18px] sm:text-[28px] md:text-[36px] font-heading font-extrabold text-[#f0ede5] mb-1">{activeOppCount}+</p>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] text-[#6a6a64] font-bold uppercase tracking-[0.05em] md:tracking-[0.1em]">Active Programs</p>
+              {/* Trust Badges */}
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                <div className="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  <span className="text-[12px] text-[#a8a8a0] font-semibold">100% Free</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  <span className="text-[12px] text-[#a8a8a0] font-semibold">Verified Daily</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  <span className="text-[12px] text-[#a8a8a0] font-semibold">Parent Trusted</span>
+                </div>
+              </div>
+
+              {/* Stats Row */}
+              <div className="flex items-center gap-6 md:gap-10 mt-8 pt-6 border-t border-white/[0.06] w-full max-w-md">
+                <div>
+                  <p className="text-[24px] md:text-[32px] font-heading font-extrabold text-[#f0ede5] leading-none mb-1">{activeOppCount}+</p>
+                  <p className="text-[10px] text-[#6a6a64] font-bold uppercase tracking-[0.08em]">Programs</p>
+                </div>
+                <div className="w-px h-8 bg-white/[0.08]"></div>
+                <div>
+                  <p className="text-[24px] md:text-[32px] font-heading font-extrabold text-[#f0ede5] leading-none mb-1">{activeCatCount}+</p>
+                  <p className="text-[10px] text-[#6a6a64] font-bold uppercase tracking-[0.08em]">Categories</p>
+                </div>
+                <div className="w-px h-8 bg-white/[0.08]"></div>
+                <div>
+                  <p className="text-[24px] md:text-[32px] font-heading font-extrabold text-[#4ade80] leading-none mb-1">FREE</p>
+                  <p className="text-[10px] text-[#6a6a64] font-bold uppercase tracking-[0.08em]">Forever</p>
+                </div>
+              </div>
             </div>
-            <div className="text-center px-1">
-              <p className="text-[18px] sm:text-[28px] md:text-[36px] font-heading font-extrabold text-[#f0ede5] mb-1">{activeCatCount}+</p>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] text-[#6a6a64] font-bold uppercase tracking-[0.05em] md:tracking-[0.1em]">Categories</p>
+
+            {/* ─── RIGHT: Floating Cards ──────────────────── */}
+            <div className="hidden lg:block">
+              <HeroFloatingCards />
             </div>
-            <div className="text-center px-1">
-              <p className="text-[18px] sm:text-[28px] md:text-[36px] font-heading font-extrabold text-[#4ade80] mb-1">FREE</p>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] text-[#6a6a64] font-bold uppercase tracking-[0.05em] md:tracking-[0.1em]">FOREVER</p>
-            </div>
+
           </div>
         </div>
       </section>

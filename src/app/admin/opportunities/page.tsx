@@ -1,6 +1,8 @@
 import { createServerClient } from '@/lib/supabase-server';
 import { formatDate } from '@/lib/utils';
 import { DeleteButton } from './DeleteButton';
+import Link from 'next/link';
+import { BulkImportModal } from './BulkImportModal';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,9 +21,12 @@ export default async function OpportunitiesPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-1">Opportunities</h1>
           <p className="text-gray-500 text-sm pb-0">View all opportunities in the platform.</p>
         </div>
-        <a href="/admin/opportunities/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
-          + Add Opportunity
-        </a>
+        <div className="flex gap-3">
+          <BulkImportModal />
+          <a href="/admin/opportunities/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
+            + Add Opportunity
+          </a>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -73,7 +78,7 @@ export default async function OpportunitiesPage() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-3 items-center">
-                      <button className="text-[#1b5e28] hover:text-[#14461e] font-medium" disabled title="Coming soon">Edit</button>
+                      <Link href={`/admin/opportunities/${opp.id}/edit`} className="text-[#1b5e28] hover:text-[#14461e] font-medium">Edit</Link>
                       <span className="text-gray-300">|</span>
                       <DeleteButton id={opp.id} />
                     </div>

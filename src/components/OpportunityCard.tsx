@@ -89,13 +89,13 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
       </div>
 
       {/* Description block with "Free to enter" on the right */}
-      <div className="flex justify-between items-end gap-4 mb-5 flex-grow">
-        <div className="flex-1">
+      <div className="flex justify-between items-start gap-4 mb-5 flex-grow">
+        <div className="flex-1 min-w-0">
           <p className="text-[13px] text-body leading-[1.6] line-clamp-2 pr-4">
             {opportunity.description}
           </p>
         </div>
-        <div className="text-[11px] font-medium text-[#6b7280] text-right whitespace-nowrap shrink-0">
+        <div className="text-[11px] font-medium text-[#6b7280] text-right sm:max-w-[40%] leading-relaxed">
           {theFee}
         </div>
       </div>
