@@ -42,8 +42,8 @@ export async function Footer() {
           </div>
         </div>
 
-        {/* Main 4-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+        {/* Main 6-Column Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-16">
           
           {/* Brand & SEO Description */}
           <div className="lg:col-span-1">
@@ -51,16 +51,8 @@ export async function Footer() {
               <Logo size="md" />
             </Link>
             <p className="text-[13px] text-muted leading-relaxed mb-6">
-              India&apos;s most complete educational directory. Discover verified <strong className="font-medium text-heading">scholarships</strong>, <strong className="font-medium text-heading">olympiads</strong>, <strong className="font-medium text-heading">coding competitions</strong>, <strong className="font-medium text-heading">robotics challenges</strong>, <strong className="font-medium text-heading">exchange programs</strong>, and more. A free opportunity discovery platform for K-12 school students.
+              India&apos;s most complete educational directory. Discover verified <strong className="font-medium text-heading">scholarships</strong>, <strong className="font-medium text-heading">olympiads</strong>, <strong className="font-medium text-heading">careers</strong>, and more. A free discovery platform for K-12 school students.
             </p>
-            <div className="flex flex-col gap-3">
-              <h4 className="text-xs font-bold text-heading uppercase tracking-wider">Connect With Us</h4>
-              <div className="flex items-center gap-4">
-                <a href="https://instagram.com/myarkin" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted hover:text-[#E1306C] transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-                <a href="https://linkedin.com/company/myarkin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted hover:text-[#0A66C2] transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                <a href="https://t.me/myarkin" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-muted hover:text-[#229ED9] transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></a>
-              </div>
-            </div>
           </div>
 
           {/* Opportunities Links */}
@@ -68,15 +60,33 @@ export async function Footer() {
             <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">Opportunities</h3>
             <ul className="space-y-3.5 text-[14px]">
               <li><Link href="/opportunities" className="text-muted hover:text-primary transition-colors">All Opportunities</Link></li>
-              <li><Link href="/opportunities/category/olympiad" className="text-muted hover:text-primary transition-colors">Olympiads</Link></li>
               <li><Link href="/opportunities/category/scholarship" className="text-muted hover:text-primary transition-colors">Scholarships</Link></li>
               <li><Link href="/opportunities/category/coding-ai" className="text-muted hover:text-primary transition-colors">Coding &amp; AI</Link></li>
               <li><Link href="/opportunities/category/robotics" className="text-muted hover:text-primary transition-colors">Robotics</Link></li>
-              <li><Link href="/opportunities/category/exchange" className="text-muted hover:text-primary transition-colors">Exchange Programs</Link></li>
-              <li><Link href="/opportunities/category/writing" className="text-muted hover:text-primary transition-colors">Writing &amp; Essay</Link></li>
-              <li><Link href="/opportunities/category/quiz" className="text-muted hover:text-primary transition-colors">Quiz &amp; GK</Link></li>
               <li><Link href="/opportunities/category/innovation" className="text-muted hover:text-primary transition-colors">Innovation</Link></li>
-              <li><Link href="/opportunities/category/art" className="text-muted hover:text-primary transition-colors">Art &amp; Design</Link></li>
+            </ul>
+          </div>
+
+          {/* Olympiads Links */}
+          <div>
+            <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">Olympiads</h3>
+            <ul className="space-y-3.5 text-[14px]">
+              <li><Link href="/olympiads" className="text-muted hover:text-primary transition-colors">All Olympiads</Link></li>
+              <li><Link href="/olympiads/science" className="text-muted hover:text-primary transition-colors">Science</Link></li>
+              <li><Link href="/olympiads/mathematics" className="text-muted hover:text-primary transition-colors">Maths</Link></li>
+              <li><Link href="/olympiads/hbcse" className="text-muted hover:text-primary transition-colors font-bold text-primary">HBCSE</Link></li>
+            </ul>
+          </div>
+
+          {/* Careers Links */}
+          <div>
+            <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">Careers</h3>
+            <ul className="space-y-3.5 text-[14px]">
+              <li><Link href="/careers" className="text-muted hover:text-primary transition-colors">All Careers</Link></li>
+              <li><Link href="/careers/stream/science-pcm" className="text-muted hover:text-primary transition-colors">After Science</Link></li>
+              <li><Link href="/careers/stream/commerce" className="text-muted hover:text-primary transition-colors">After Commerce</Link></li>
+              <li><Link href="/careers/stream/arts" className="text-muted hover:text-primary transition-colors">After Arts</Link></li>
+              <li><Link href="/careers/category/unusual-careers" className="text-muted hover:text-primary transition-colors font-bold text-[#4ade80]">Unusual Careers</Link></li>
             </ul>
           </div>
 
@@ -95,15 +105,10 @@ export async function Footer() {
           <div>
             <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">Platform</h3>
             <ul className="space-y-3.5 text-[14px]">
-              <li><Link href="/about" className="text-muted hover:text-primary transition-colors">About Myark</Link></li>
-              <li><Link href="/how-it-works" className="text-muted hover:text-primary transition-colors">How It Works</Link></li>
-              <li><Link href="/for-schools" className="text-muted hover:text-primary transition-colors">For Schools</Link></li>
-              <li><Link href="/for-organisers" className="text-muted hover:text-primary transition-colors">For Organisers</Link></li>
-              <li><Link href="/campus-ambassador" className="text-muted hover:text-primary transition-colors">Campus Ambassador</Link></li>
-              <li><Link href="/submit-opportunity" className="text-muted hover:text-primary transition-colors font-medium">Submit Opportunity</Link></li>
-              <li><Link href="/contact" className="text-muted hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link href="/privacy" className="text-muted hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-muted hover:text-primary transition-colors">Terms of Use</Link></li>
+              <li><Link href="/about" className="text-muted hover:text-primary transition-colors">About</Link></li>
+              <li><Link href="/submit-opportunity" className="text-muted hover:text-primary transition-colors font-medium">Submit</Link></li>
+              <li><Link href="/contact" className="text-muted hover:text-primary transition-colors">Contact</Link></li>
+              <li><Link href="/privacy" className="text-muted hover:text-primary transition-colors">Privacy</Link></li>
             </ul>
           </div>
 
@@ -112,17 +117,14 @@ export async function Footer() {
         {/* Bottom Copyright & Footer Bar */}
         <div className="pt-8 border-t border-default flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
           <p className="text-[13px] text-muted font-medium">
-            &copy; {CURRENT_YEAR} {SITE_NAME} <span className="mx-1.5 hidden sm:inline">•</span><br className="sm:hidden" /> Free for all students <span className="mx-1.5 hidden sm:inline">•</span><br className="sm:hidden" /> Not affiliated with any government body
+            &copy; {CURRENT_YEAR} {SITE_NAME} <span className="mx-1.5 hidden sm:inline">•</span><br className="sm:hidden" /> Free for all students
           </p>
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-1.5 text-[13px] text-muted font-medium">
-            <span>Made with <span className="text-red-500">♥</span> in India, for every student</span>
+          <div className="flex flex-col sm:flex-row items-center gap-2 text-[13px] text-muted font-medium">
+            <span>Made with <span className="text-red-500">♥</span> in India</span>
             <span className="hidden sm:inline mx-1.5 text-default">•</span>
-            <div className="flex gap-3 sm:gap-1.5 mt-2 sm:mt-0">
+            <div className="flex gap-3">
               <a href="https://instagram.com/myarkin" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">Instagram</a>
-              <span className="hidden sm:inline mx-1.5 text-default">•</span>
               <a href="https://linkedin.com/company/myarkin" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">LinkedIn</a>
-              <span className="hidden sm:inline mx-1.5 text-default">•</span>
-              <a href="https://t.me/myarkin" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">Telegram</a>
             </div>
           </div>
         </div>

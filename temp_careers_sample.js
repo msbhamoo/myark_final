@@ -1,0 +1,63 @@
+const careers = [
+    // Medicine & Healthcare
+    {
+        name: "MBBS — General Physician",
+        slug: "mbbs-general-physician",
+        category: "Medicine & Healthcare",
+        subcategory: "Primary Care",
+        stream_required: "Science PCB",
+        short_description: "The primary medical degree for becoming a doctor in India.",
+        full_description: "MBBS is the entry-level medical degree in India. It prepares students to become General Physicians who can treat a wide variety of medical conditions. The path involves 4.5 years of study followed by a 1-year mandatory internship.",
+        what_you_do: "You'll spend your day examining patients, diagnosing illnesses, prescribing medications, and guiding people towards better health. If you work in a hospital, your Tuesdays might involve continuous rounds and emergency cases. If in a private clinic, it's about building long-term trust with families.",
+        is_this_for_you: "- You'll love this if you have deep empathy for people, like biology, and can remain calm under extreme pressure.\n- This might not be for you if you seek a 9-to-5 job or have a low tolerance for seeing blood or medical conditions.",
+        how_to_prepare_in_school: "- Master Biology, Physics, and Chemistry (NCERT is key).\n- Start solving NEET mock papers from Class 11.\n- Volunteer at a local clinic to see the reality of the profession.",
+        salary_entry: "₹8–12 LPA",
+        salary_mid: "₹15–25 LPA",
+        salary_senior: "₹30–80 LPA",
+        salary_global: "$100k–$300k",
+        entrance_exams: ["NEET"],
+        degree_required: "MBBS",
+        duration: "5.5 years",
+        colleges_india: ["AIIMS Delhi", "JIPMER Puducherry", "CMC Vellore"],
+        colleges_global: ["Harvard Medical School", "Oxford University", "Johns Hopkins"],
+        top_employers: ["AIIMS", "Apollo Hospitals", "Fortis Healthcare", "State Health Departments"],
+        skills_needed: ["Empathy", "Analytical Diagnostics", "Medical Knowledge", "Public Health"],
+        rarity_level: "Common",
+        demand_level: "High",
+        competition_level: "High",
+        tags: ["doctor", "medicine", "biology", "healthcare"],
+        related_careers: ["Neurosurgeon", "Radiologist", "Dermatologist"]
+    },
+    {
+        name: "Neurosurgeon",
+        slug: "neurosurgeon",
+        category: "Medicine & Healthcare",
+        subcategory: "Surgery",
+        stream_required: "Science PCB",
+        short_description: "A highly specialized surgeon who operates on the brain, spine, and nervous system.",
+        full_description: "Neurosurgeons handle cases ranging from brain tumors and aneurysms to spinal trauma. It is one of the most intellectually and physically demanding careers in medicine, requiring years of specialized training after MBBS.",
+        what_you_do: "Your Tuesday might involve a 12-hour complex surgery under a microscope. You'll use lasers and robotic navigation to navigate the most delicate parts of the human body. Precision is your only friend.",
+        is_this_for_you: "- You'll love this if you have rock-steady hands, a phenomenal memory for anatomy, and a drive to solve the 'impossible' cases.\n- This might not be for you if you cannot handle long surgeries or the emotional toll of high-risk cases.",
+        how_to_prepare_in_school: "- Focus on Zoology and Human Anatomy.\n- Improve your fine motor skills (hobbies like drawing or model building are helpful).\n- Score exceptionally well in NEET.",
+        salary_entry: "₹40–60 LPA",
+        salary_mid: "₹60–120 LPA",
+        salary_senior: "₹120–250 LPA",
+        salary_global: "$400k–$800k",
+        entrance_exams: ["NEET", "NEET SS", "INI SS"],
+        degree_required: "MBBS + MS/MD + MCh/DM in Neurosurgery",
+        duration: "13+ years",
+        colleges_india: ["AIIMS Delhi", "PGI Chandigarh", "NIMHANS Bangalore"],
+        colleges_global: ["Mayo Clinic", "Stanford Medicine", "UCSF Health"],
+        top_employers: ["Medanta", "Apollo Hospitals", "Max Healthcare", "Research Hospitals"],
+        skills_needed: ["Manual Dexterity", "Surgical Precision", "Advanced Anatomy", "Stress Management"],
+        rarity_level: "Rare",
+        demand_level: "High",
+        competition_level: "Very High",
+        tags: ["surgery", "brain", "specialist"],
+        related_careers: ["Cardiologist", "Neurologist"]
+    },
+    // I will generate the full 150+ list in the script
+    // ...
+];
+
+console.log(JSON.stringify(careers, null, 2));

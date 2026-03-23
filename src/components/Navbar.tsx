@@ -2,96 +2,94 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Logo } from './Logo';
 import { useTheme } from './ThemeProvider';
 
 export function Navbar() {
   const pathname = usePathname();
-    const [hasProfile, setHasProfile] = useState(false);
+  const [hasProfile] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const isStudent = document.cookie.includes('myark_student=');
-      setHasProfile(isStudent);
-    }
-  }, []);
-
-  // Protect admin routes visually? Not really needed for rendering standard Navbar.
   if (pathname.startsWith('/admin')) {
-    return null; // Admin has its own layout
+    return null;
   }
 
-
+  const isHome = pathname === '/';
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-surface border-b border-default">
-      <div className="container-main">
-        <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
+    <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      isHome 
+        ? 'bg-[#0a0f0a]/90 backdrop-blur-xl border-b border-white/[0.05]' 
+        : 'bg-surface/90 backdrop-blur-xl border-b border-default/50'
+    }`}>
+      <div className="container-main max-w-[1240px]">
+        <div className="flex items-center justify-between h-16 lg:h-20 gap-8">
 
           {/* Logo */}
-          <Link href="/" className="shrink-0 focus:outline-none block">
-            <Logo size="md" showPulse={true} />
+          <Link href="/" className="shrink-0 focus:outline-none block transition-transform active:scale-95">
+            <Logo size="md" showPulse={false} variant={isHome ? 'dark' : 'light'} />
           </Link>
 
 
 
-          {/* Action Buttons (Desktop) */}
-          <div className="hidden sm:flex items-center gap-2">
+          {/* Desktop Navigation & Actions */}
+          <div className="hidden md:flex items-center gap-6">
+            <nav className="flex items-center gap-8 mr-4">
+               {[
+                 { label: 'Explore', href: '/opportunities' },
+                 { label: 'Scholarships', href: '/opportunities?category=scholarship' },
+                 { label: 'Olympiads', href: '/opportunities?category=olympiad' },
+               ].map((link) => (
+                 <Link 
+                   key={link.label}
+                   href={link.href}
+                   className={`text-[14px] font-bold tracking-tight transition-all hover:opacity-100 ${
+                     isHome ? 'text-white/60 hover:text-white' : 'text-muted hover:text-primary'
+                   }`}
+                 >
+                   {link.label}
+                 </Link>
+               ))}
+            </nav>
+
+            <div className="h-4 w-[1px] bg-white/10 mx-2"></div>
+
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle dark mode"
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-muted hover:text-heading hover:bg-[var(--color-bg)] transition-colors"
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                isHome 
+                  ? 'text-white/40 hover:text-white hover:bg-white/5' 
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
+              }`}
             >
               {theme === 'dark' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
               )}
             </button>
-
-            <Link href="/opportunities" className="btn btn-outline border-none text-[15px] font-medium text-heading hover:bg-[var(--color-bg)]">
-              Explore
-            </Link>
             {hasProfile ? (
-              <Link href="/student/dashboard" className="btn bg-primary text-white hover:bg-[var(--color-primary-hover)] text-[15px] font-medium px-5">
+              <Link href="/student/dashboard" className="h-11 px-6 rounded-xl bg-primary text-white font-bold text-[14px] flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-[1.03] active:scale-95 transition-all">
                 My Profile
               </Link>
             ) : (
-              <Link href="/student/auth" className="btn bg-primary text-white hover:bg-[var(--color-primary-hover)] text-[15px] font-medium px-5">
-                Login
+              <Link href="/student/auth" className="h-11 px-6 rounded-xl bg-primary text-white font-bold text-[14px] flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-[1.03] active:scale-95 transition-all">
+                Sign In
               </Link>
             )}
           </div>
 
-          {/* Mobile Actions */}
-          <div className="sm:hidden flex items-center gap-2">
-            {/* Dark Mode Toggle Mobile */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle dark mode"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-muted hover:text-heading transition-colors"
-            >
-              {theme === 'dark' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              )}
-            </button>
-            <Link href="/opportunities" className="text-sm font-medium border border-[var(--color-border-default)] text-heading rounded-lg px-3 py-1.5 bg-surface shadow-sm">
-              Explore
-            </Link>
-            {hasProfile ? (
-              <Link href="/student/dashboard" className="text-sm font-medium bg-primary text-white rounded-lg px-4 py-1.5 shadow-sm">
-                Profile
-              </Link>
-            ) : (
-              <Link href="/student/auth" className="text-sm font-medium bg-primary text-white rounded-lg px-4 py-1.5 shadow-sm">
-                Login
-              </Link>
-            )}
+          {/* Simple Mobile Menu Trigger or Minimal Icons */}
+          <div className="md:hidden flex items-center gap-3">
+             <button onClick={toggleTheme} className={`w-9 h-9 rounded-lg flex items-center justify-center ${isHome ? 'text-white/50' : 'text-muted'}`}>
+                {theme === 'dark' ? '☀' : '🌙'}
+             </button>
+             <Link href="/opportunities" className={`h-9 px-4 rounded-lg font-bold text-[13px] flex items-center ${isHome ? 'bg-white/10 text-white' : 'bg-primary/5 text-primary'}`}>
+                Explore
+             </Link>
           </div>
 
         </div>

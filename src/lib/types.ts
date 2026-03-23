@@ -78,3 +78,71 @@ export interface ClassRange {
   label: string;
   classes: number[];
 }
+
+export interface Olympiad {
+  id: string;
+  name: string;
+  short_name: string;
+  slug: string;
+  organiser: string;
+  type: string;
+  eligibility_classes: string;
+  eligibility_age: string | null;
+  registration_month: string | null;
+  exam_month: string | null;
+  fee: string | null;
+  prizes: string | null;
+  website: string;
+  level: string;
+  pathway: string | null;
+  stage: string | null;
+  description: string;
+  short_description: string;
+  registration_process: string | null;
+  tags: string[];
+  subject: string | null;
+  is_school_registration: boolean;
+  is_individual_registration: boolean;
+  is_online: boolean;
+  is_free: boolean;
+  is_government: boolean;
+  is_international: boolean;
+  difficulty: string | null;
+  organiser_group: string | null;
+  related_opportunity_slug: string | null;
+  is_published: boolean;
+  created_at: string;
+}
+
+export interface Career {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  subcategory: string | null;
+  stream_required: string;
+  short_description: string;
+  full_description: string;
+  what_you_do: string;
+  is_this_for_you: string;
+  how_to_prepare_in_school: string;
+  salary_entry: string;
+  salary_mid: string;
+  salary_senior: string;
+  salary_global: string | null;
+  entrance_exams: string[];
+  degree_required: string;
+  duration: string;
+  colleges_india: string[];
+  colleges_global: string[];
+  top_employers: string[];
+  skills_needed: string[];
+  rarity_level: string;
+  demand_level: string;
+  competition_level: string;
+  tags: string[];
+  related_careers: string[];
+  is_published: boolean;
+  created_at: string;
+  salary_range?: string; // Virtual property if needed
+}
