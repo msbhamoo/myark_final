@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/supabase-server';
 import Link from 'next/link';
 import { updateOpportunity } from '../../actions';
 import { notFound } from 'next/navigation';
+import { OrganiserSelector } from '@/components/admin/OrganiserSelector';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,12 +56,10 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
 
               <div>
                 <label className="block text-sm font-medium text-gray-900 mb-1">Organiser</label>
-                <select name="organiser_id" required className="input" defaultValue={opportunity.organiser_id}>
-                  <option value="">Select Organiser</option>
-                  {organisers?.map((org) => (
-                    <option key={org.id} value={org.id}>{org.name}</option>
-                  ))}
-                </select>
+                <OrganiserSelector 
+                  initialOrganisers={organisers || []} 
+                  defaultId={opportunity.organiser_id}
+                />
               </div>
             </div>
 

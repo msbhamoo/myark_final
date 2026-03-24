@@ -7,7 +7,7 @@ export function CareerCard({ career }: { career: Career }) {
   // Salary display
   const salaryRange = career.salary_entry && career.salary_senior 
     ? `${career.salary_entry} → ${career.salary_senior}`
-    : career.salary_range || 'Salary Data Coming Soon';
+    : 'Salary Data Coming Soon';
 
   return (
     <Link href={`/careers/${career.slug}`} className="group block h-full">

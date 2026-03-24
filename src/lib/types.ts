@@ -144,5 +144,4 @@ export interface Career {
   related_careers: string[];
   is_published: boolean;
   created_at: string;
-  salary_range?: string; // Virtual property if needed
 }

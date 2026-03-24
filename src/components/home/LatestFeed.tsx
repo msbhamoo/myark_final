@@ -6,6 +6,7 @@ import { Opportunity } from '@/lib/types';
 import { useState, useEffect } from 'react';
 import { RegisterModal } from '@/components/RegisterModal';
 import Image from 'next/image';
+import { LogoCloud } from '@/components/home/LogoCloud';
 
 interface LatestFeedProps {
    latest: Opportunity[];
@@ -171,15 +172,16 @@ export function LatestFeed({ latest, activeOppCount }: LatestFeedProps) {
                                  className="relative h-12 w-12 md:h-20 md:w-20 lg:h-28 lg:w-28 rounded-full border-[3px] md:border-[6px] border-[var(--color-bg)] bg-slate-200 dark:bg-slate-800 overflow-hidden shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-700"
                                  style={{ animationDelay: `${i * 150}ms` }}
                               >
-                                 <Image 
-                                src={`https://i.pravatar.cc/150?u=${i + 10}`} 
-                                alt="Student user" 
-                                width={120}
-                                height={120}
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                             />
+                                 <Image
+                                    src={`https://i.pravatar.cc/150?u=${i + 10}`}
+                                    alt="Student user"
+                                    width={120}
+                                    height={120}
+                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                 />
                               </div>
                            ))}
+
                         </div>
                         {/* Decorative Star/Icon */}
                         <div className="absolute -top-4 -right-2 md:-top-10 md:-right-6 text-2xl md:text-5xl animate-bounce">
@@ -197,10 +199,19 @@ export function LatestFeed({ latest, activeOppCount }: LatestFeedProps) {
                   <p className="text-[14px] md:text-[18px] font-bold text-muted tracking-tight">
                      Join <span className="text-heading font-black italic">high-achieving students</span> applying this week.
                   </p>
-                  <Link href="/opportunities" className="inline-flex items-center gap-2 mt-4 text-[13px] font-black text-primary hover:underline group">
+                  <Link href="/opportunities" className="inline-flex items-center gap-2 mt-12 text-[13px] font-black text-primary hover:underline group">
                      Start your journey today
                      <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </Link>
+
+                  <div className="mt-12 max-w-4xl mx-auto border-t border-gray-100 dark:border-white/5 pt-10">
+                     <h3 className="text-[14px] md:text-[16px] font-heading font-extrabold text-[#111827] dark:text-[#f3f4f6] mb-6 tracking-tight">
+                        Trusted by <span className="text-primary italic">Schools & Organisers</span>
+                     </h3>
+                     <LogoCloud />
+                  </div>
+
+
                </div>
             </div>
 
