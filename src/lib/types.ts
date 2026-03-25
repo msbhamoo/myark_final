@@ -35,7 +35,11 @@ export interface Opportunity {
   eligibility_text: string;
   registration_url: string;
   registration_opens: string | null;
+  registration_opens_tentative: string | null;
   deadline: string | null;
+  deadline_tentative: string | null;
+  event_date: string | null;
+  event_date_tentative: string | null;
   is_ongoing: boolean;
   fee_text: string;
   prize_text: string | null;

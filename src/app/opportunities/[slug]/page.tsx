@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
-import { formatClassRange, formatDate, getDaysUntilDeadline } from '@/lib/utils';
+import { formatClassRange, formatDate, getDaysUntilDeadline, renderMarkdown, formatStatusDate } from '@/lib/utils';
 import { generateMetaDescription, generateEventJsonLd, generateFaqJsonLd, opportunityPageTitle } from '@/lib/seo';
 import { Opportunity } from '@/lib/types';
 import { ApplyButtonWrapper } from './ApplyButton';
@@ -189,12 +189,14 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                 <div>
                   <h4 className="text-[10px] tracking-widest uppercase font-bold text-muted mb-1">Deadline</h4>
                   <p className={`text-[14px] font-medium ${(daysLeft !== null && daysLeft <= 7) ? 'text-[#dc2626] dark:text-red-400' : 'text-heading'}`}>
-                    {formatDate(opportunity.deadline)}
+                    {formatStatusDate(opportunity.deadline, opportunity.deadline_tentative)}
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-[10px] tracking-widest uppercase font-bold text-muted mb-1">Prizes</h4>
-                  <p className="text-[14px] font-medium text-heading">Recognition</p>
+                  <h4 className="text-[10px] tracking-widest uppercase font-bold text-muted mb-1">Exam/Event Date</h4>
+                  <p className="text-[14px] font-medium text-heading">
+                    {formatStatusDate(opportunity.event_date, opportunity.event_date_tentative)}
+                  </p>
                 </div>
                 <div>
                   <h4 className="text-[10px] tracking-widest uppercase font-bold text-muted mb-1">Mode</h4>
@@ -209,12 +211,13 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
               {/* Full Description / About */}
               <div className="mb-12">
                 <h3 className="text-[15px] font-extrabold font-heading text-heading mb-4">About this competition</h3>
-                <div className="text-[14px] leading-relaxed text-body whitespace-pre-wrap space-y-4 font-body block [&_p]:mb-4">
-                  {opportunity.description}
-                  {opportunity.eligibility_text && (
-                    <p className="mt-4">{opportunity.eligibility_text}</p>
-                  )}
-                </div>
+                <div 
+                  className="text-[14px] leading-relaxed text-body space-y-4 font-body block [&_p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(opportunity.description) }}
+                />
+                {opportunity.eligibility_text && (
+                  <p className="mt-4 text-[14px] text-body">{opportunity.eligibility_text}</p>
+                )}
               </div>
 
               {/* Important Dates Table Mockup style */}
@@ -223,12 +226,18 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                 <div className="border-t border-[var(--color-border-default)]">
                   <div className="flex justify-between py-3 border-b border-[var(--color-border-default)]">
                     <span className="text-[13px] text-muted">Competition opens</span>
-                    <span className="text-[13px] font-medium text-heading">{formatDate(opportunity.registration_opens)}</span>
+                    <span className="text-[13px] font-medium text-heading">{formatStatusDate(opportunity.registration_opens, opportunity.registration_opens_tentative)}</span>
                   </div>
                   <div className="flex justify-between py-3 border-b border-[var(--color-border-default)]">
                     <span className="text-[13px] text-muted">Submission deadline</span>
-                    <span className="text-[13px] font-medium text-[#dc2626] dark:text-red-400">{formatDate(opportunity.deadline)} {daysLeft !== null && <span className="text-[11px] ml-1">({daysLeft} days left)</span>}</span>
+                    <span className="text-[13px] font-medium text-[#dc2626] dark:text-red-400">{formatStatusDate(opportunity.deadline, opportunity.deadline_tentative)} {daysLeft !== null && <span className="text-[11px] ml-1">({daysLeft} days left)</span>}</span>
                   </div>
+                  {opportunity.event_date && (
+                    <div className="flex justify-between py-3 border-b border-[var(--color-border-default)]">
+                      <span className="text-[13px] text-muted">Event/Exam Date</span>
+                      <span className="text-[13px] font-medium text-heading">{formatStatusDate(opportunity.event_date, opportunity.event_date_tentative)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -242,7 +251,10 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                         <div className="w-6 h-6 shrink-0 rounded-full bg-primary text-white flex justify-center items-center text-[12px] font-bold mt-0.5">
                           {i + 1}
                         </div>
-                        <p className="text-[14px] leading-relaxed text-[#374151] pt-0.5">{step}</p>
+                        <div 
+                          className="text-[14px] leading-relaxed text-[#374151] pt-0.5"
+                          dangerouslySetInnerHTML={{ __html: renderMarkdown(step) }}
+                        />
                       </div>
                     ))}
                   </div>

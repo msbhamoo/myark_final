@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { updateOpportunity } from '../../actions';
 import { notFound } from 'next/navigation';
 import { OrganiserSelector } from '@/components/admin/OrganiserSelector';
+import { ClassSelector } from '@/components/admin/ClassSelector';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,8 +66,8 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
             </div>
 
             <div className="mt-6">
-              <label className="block text-sm font-medium text-gray-900 mb-1">Brief Description</label>
-              <textarea name="description" rows={3} className="input resize-y" defaultValue={opportunity.description}></textarea>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Description</label>
+              <RichTextEditor name="description" defaultValue={opportunity.description} />
             </div>
           </div>
 
@@ -80,20 +82,7 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
               
               <div>
                 <label className="block text-sm font-medium text-gray-900 mb-2">Applicable Classes</label>
-                <div className="grid grid-cols-6 gap-3">
-                  {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
-                    <label key={num} className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 border border-gray-200 p-2 rounded cursor-pointer hover:bg-gray-100">
-                      <input
-                        type="checkbox"
-                        name="eligibility_classes"
-                        value={num}
-                        defaultChecked={opportunity.eligibility_classes?.includes(num)}
-                        className="rounded text-primary focus:ring-primary"
-                      />
-                      Class {num}
-                    </label>
-                  ))}
-                </div>
+                <ClassSelector initialClasses={opportunity.eligibility_classes} />
               </div>
             </div>
           </div>
@@ -108,13 +97,33 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Exact)</label>
                 <input type="date" name="registration_opens" className="input" defaultValue={opportunity.registration_opens || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Deadline</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Tentative)</label>
+                <input type="text" name="registration_opens_tentative" className="input" defaultValue={opportunity.registration_opens_tentative || ''} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Exact Deadline (if known)</label>
                 <input type="date" name="deadline" className="input" defaultValue={opportunity.deadline || ''} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Tentative Deadline (if exact is unknown)</label>
+                <input type="text" name="deadline_tentative" className="input" defaultValue={opportunity.deadline_tentative || ''} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Exact)</label>
+                <input type="date" name="event_date" className="input" defaultValue={opportunity.event_date || ''} />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Tentative)</label>
+                <input type="text" name="event_date_tentative" className="input" defaultValue={opportunity.event_date_tentative || ''} />
               </div>
 
               <div className="col-span-2">
@@ -145,8 +154,8 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">How to Apply</label>
-                <textarea name="how_to_apply" rows={5} className="input resize-y font-mono text-sm" defaultValue={opportunity.how_to_apply}></textarea>
+                <label className="block text-sm font-medium text-gray-900 mb-2">How to Apply</label>
+                <RichTextEditor name="how_to_apply" defaultValue={opportunity.how_to_apply} />
               </div>
             </div>
           </div>

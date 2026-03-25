@@ -2,6 +2,8 @@ import { createServerClient } from '@/lib/supabase-server';
 import Link from 'next/link';
 import { createOpportunity } from '../actions';
 import { OrganiserSelector } from '@/components/admin/OrganiserSelector';
+import { ClassSelector } from '@/components/admin/ClassSelector';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,8 +59,8 @@ export default async function NewOpportunityPage() {
             </div>
 
             <div className="mt-6">
-              <label className="block text-sm font-medium text-gray-900 mb-1">Brief Description</label>
-              <textarea name="description" rows={3} className="input resize-y" placeholder="Short summary of what this is..."></textarea>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Description</label>
+              <RichTextEditor name="description" placeholder="Summarize the opportunity, benefits, and key details..." />
             </div>
           </div>
 
@@ -73,14 +75,7 @@ export default async function NewOpportunityPage() {
               
               <div>
                 <label className="block text-sm font-medium text-gray-900 mb-2">Applicable Classes</label>
-                <div className="grid grid-cols-6 gap-3">
-                  {[1,2,3,4,5,6,7,8,9,10,11,12].map(num => (
-                    <label key={num} className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 border border-gray-200 p-2 rounded cursor-pointer hover:bg-gray-100">
-                      <input type="checkbox" name="eligibility_classes" value={num} className="rounded text-primary focus:ring-primary" />
-                      Class {num}
-                    </label>
-                  ))}
-                </div>
+                <ClassSelector />
               </div>
             </div>
           </div>
@@ -95,13 +90,33 @@ export default async function NewOpportunityPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Exact)</label>
                 <input type="date" name="registration_opens" className="input" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Deadline</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Tentative)</label>
+                <input type="text" name="registration_opens_tentative" className="input" placeholder="e.g. Mid July 2025" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Exact Deadline (if known)</label>
                 <input type="date" name="deadline" className="input" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Tentative Deadline (if exact is unknown)</label>
+                <input type="text" name="deadline_tentative" className="input" placeholder="e.g. Late Nov 2025" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Exact)</label>
+                <input type="date" name="event_date" className="input" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Tentative)</label>
+                <input type="text" name="event_date_tentative" className="input" placeholder="e.g. Late Dec 2025" />
               </div>
 
               <div className="col-span-2">
@@ -132,8 +147,8 @@ export default async function NewOpportunityPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">How to Apply (Markdown formatting supported)</label>
-                <textarea name="how_to_apply" rows={5} className="input resize-y font-mono text-sm" placeholder="1. Go to website...&#10;2. Register..."></textarea>
+                <label className="block text-sm font-medium text-gray-900 mb-2">How to Apply</label>
+                <RichTextEditor name="how_to_apply" rows={6} placeholder="Step by step instructions... Use bold, italic or bullet lists if needed." />
               </div>
             </div>
           </div>

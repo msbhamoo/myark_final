@@ -58,12 +58,41 @@ export function getDeadlineUrgency(
 }
 
 export function formatDate(dateStr: string | null): string {
-  if (!dateStr) return 'TBA';
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  if (!dateStr || dateStr === 'TBA') return 'TBA';
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr; // Return as is if it's already a string like "Late Nov"
+    return date.toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+/** 
+ * Smartly formats date info, prioritizing exact but falling back to tentative.
+ */
+export function formatStatusDate(exact: string | null, tentative: string | null): string {
+  if (exact) return formatDate(exact);
+  if (tentative) return tentative;
+  return 'TBA';
+}
+
+/**
+ * Very basic Markdown to HTML converter for Bold and Italic
+ */
+export function renderMarkdown(text: string | null): string {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '<br/><br/>')
+    .replace(/\n- (.*?)/g, '<li>$1</li>')
+    .replace(/(<li>.*?<\/li>)/g, '<ul class="list-disc ml-5 my-2">$1</ul>')
+    .replace(/<\/ul><ul.*?>/g, ''); // Merge internal ULs (crude but works for basic case)
 }
 
 export function generateSlug(title: string, year?: number): string {

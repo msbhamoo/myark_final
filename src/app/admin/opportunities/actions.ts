@@ -16,7 +16,11 @@ export async function createOpportunity(formData: FormData) {
   const eligibility_classes = formData.getAll('eligibility_classes').map(c => parseInt(c as string, 10)).filter(n => !isNaN(n));
   const registration_url = formData.get('registration_url') as string;
   const registration_opens = formData.get('registration_opens') as string;
+  const registration_opens_tentative = formData.get('registration_opens_tentative') as string;
   const deadline = formData.get('deadline') as string;
+  const deadline_tentative = formData.get('deadline_tentative') as string;
+  const event_date = formData.get('event_date') as string;
+  const event_date_tentative = formData.get('event_date_tentative') as string;
   const is_ongoing = formData.get('is_ongoing') === 'on';
   const fee_text = formData.get('fee_text') as string;
   const prize_text = formData.get('prize_text') as string;
@@ -30,7 +34,11 @@ export async function createOpportunity(formData: FormData) {
     eligibility_text, eligibility_classes,
     registration_url,
     registration_opens: registration_opens || null,
+    registration_opens_tentative: registration_opens_tentative || null,
     deadline: deadline || null,
+    deadline_tentative: deadline_tentative || null,
+    event_date: event_date || null,
+    event_date_tentative: event_date_tentative || null,
     is_ongoing, fee_text, prize_text, how_to_apply,
     is_featured, is_verified, is_published,
     faqs: []
@@ -57,7 +65,11 @@ export async function updateOpportunity(id: string, formData: FormData) {
   const eligibility_classes = formData.getAll('eligibility_classes').map(c => parseInt(c as string, 10)).filter(n => !isNaN(n));
   const registration_url = formData.get('registration_url') as string;
   const registration_opens = formData.get('registration_opens') as string;
+  const registration_opens_tentative = formData.get('registration_opens_tentative') as string;
   const deadline = formData.get('deadline') as string;
+  const deadline_tentative = formData.get('deadline_tentative') as string;
+  const event_date = formData.get('event_date') as string;
+  const event_date_tentative = formData.get('event_date_tentative') as string;
   const is_ongoing = formData.get('is_ongoing') === 'on';
   const fee_text = formData.get('fee_text') as string;
   const prize_text = formData.get('prize_text') as string;
@@ -71,7 +83,11 @@ export async function updateOpportunity(id: string, formData: FormData) {
     eligibility_text, eligibility_classes,
     registration_url,
     registration_opens: registration_opens || null,
+    registration_opens_tentative: registration_opens_tentative || null,
     deadline: deadline || null,
+    deadline_tentative: deadline_tentative || null,
+    event_date: event_date || null,
+    event_date_tentative: event_date_tentative || null,
     is_ongoing, fee_text, prize_text, how_to_apply,
     is_featured, is_verified, is_published,
   }).eq('id', id);
@@ -103,6 +119,7 @@ export interface BulkImportRow {
   registration_url: string;
   registration_opens: string;
   deadline: string;
+  deadline_tentative: string;
   is_ongoing: string;
   fee_text: string;
   prize_text: string;
@@ -157,6 +174,7 @@ export async function bulkImportOpportunities(rows: BulkImportRow[]): Promise<Bu
       registration_url: row.registration_url.trim(),
       registration_opens: row.registration_opens?.trim() || null,
       deadline: row.deadline?.trim() || null,
+      deadline_tentative: row.deadline_tentative?.trim() || null,
       is_ongoing: row.is_ongoing?.toLowerCase() === 'true' || row.is_ongoing === '1',
       fee_text: row.fee_text?.trim() || 'Free',
       prize_text: row.prize_text?.trim() || null,
