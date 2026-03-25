@@ -16,10 +16,10 @@ export default async function OpportunitiesPage() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+      <div className="flex justify-between items-center bg-white dark:bg-[#161616] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm transition-colors">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Opportunities</h1>
-          <p className="text-gray-500 text-sm pb-0">View all opportunities in the platform.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Opportunities</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm pb-0">View all opportunities in the platform.</p>
         </div>
         <div className="flex gap-3">
           <BulkImportModal />
@@ -29,10 +29,10 @@ export default async function OpportunitiesPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden transition-colors">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-medium uppercase text-xs tracking-wider">
+            <thead className="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-gray-500 dark:text-gray-400 font-medium uppercase text-xs tracking-wider">
               <tr>
                 <th className="px-6 py-4">Title</th>
                 <th className="px-6 py-4">Category</th>
@@ -42,12 +42,12 @@ export default async function OpportunitiesPage() {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-white/5">
               {opportunities?.map((opp) => (
                 <tr key={opp.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="font-bold text-gray-900 text-base max-w-[300px] truncate" title={opp.title}>{opp.title}</div>
-                    <div className="text-xs text-gray-500 mt-1">{opp.slug}</div>
+                    <div className="font-bold text-gray-900 dark:text-white text-base max-w-[300px] truncate" title={opp.title}>{opp.title}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{opp.slug}</div>
                   </td>
                   <td className="px-6 py-4">
                     <span className="bg-gray-50 px-2.5 py-1 rounded-md text-xs border border-gray-200">
@@ -67,9 +67,9 @@ export default async function OpportunitiesPage() {
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
                       {opp.is_published ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 border border-green-200">Published</span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-100/10 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-400/20">Published</span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">Draft</span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-200 dark:border-white/10">Draft</span>
                       )}
                       {opp.is_verified && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">Verified</span>

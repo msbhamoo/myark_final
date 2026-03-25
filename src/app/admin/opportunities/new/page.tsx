@@ -22,18 +22,18 @@ export default async function NewOpportunityPage() {
         <Link href="/admin/opportunities" className="hover:text-primary">← Back to Opportunities</Link>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Create New Opportunity</h1>
+      <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden p-8 transition-colors">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Create New Opportunity</h1>
         
         <form action={createOpportunity} className="space-y-8">
           
           {/* Section 1: Basic Info */}
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Basic Information</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-100 dark:border-white/5">Basic Information</h2>
             <div className="grid grid-cols-2 gap-6">
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-900 mb-1">Title</label>
-                <input type="text" name="title" required className="input" placeholder="e.g. National Science Olympiad" />
+                <label className="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-1">Title</label>
+                <input type="text" name="title" required className="input bg-white dark:bg-white/5 dark:border-white/10 dark:text-white focus:ring-primary" placeholder="e.g. National Science Olympiad" />
               </div>
               
               <div>

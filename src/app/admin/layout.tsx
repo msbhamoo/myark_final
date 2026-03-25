@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase-server';
 import { Logo } from '@/components/Logo';
+import { AdminThemeToggle } from '@/components/admin/AdminThemeToggle';
 
 export default async function AdminLayout({
   children,
@@ -18,7 +19,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-[#0a0a0a] font-sans transition-colors">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 flex flex-col hidden md:flex shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-gray-800">
@@ -68,7 +69,8 @@ export default async function AdminLayout({
           </Link>
         </nav>
         
-        <div className="p-4 border-t border-gray-800">
+        <div className="p-4 border-t border-gray-800 space-y-2">
+          <AdminThemeToggle />
           <form action="/auth/signout" method="post">
             <button type="submit" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-colors w-full text-left">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -85,8 +87,11 @@ export default async function AdminLayout({
             <Logo size="sm" variant="dark" />
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
           </Link>
+          <div className="w-40">
+            <AdminThemeToggle />
+          </div>
         </header>
-        <div className="p-6 md:p-8 flex-1 overflow-auto bg-gray-50 text-gray-900">
+        <div className="p-6 md:p-8 flex-1 overflow-auto bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 transition-colors">
           {children}
         </div>
       </main>
