@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { OrganiserSelector } from '@/components/admin/OrganiserSelector';
 import { ClassSelector } from '@/components/admin/ClassSelector';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
+import { TitleInputWithCheck } from '@/components/admin/TitleInputWithCheck';
+import { TagSelector } from '@/components/admin/TagSelector';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,32 +25,41 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-        <Link href="/admin/opportunities" className="hover:text-primary">← Back to Opportunities</Link>
+      <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-6 group">
+        <Link href="/admin/opportunities" className="group-hover:text-primary transition-colors flex items-center gap-2">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+           Back to Dashboard
+        </Link>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Edit Opportunity</h1>
-        
-        <form action={updateWithId} className="space-y-8">
+      <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden p-6 md:p-10 transition-all">
+        <header className="mb-10 text-center md:text-left">
+          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Edit Entry</h1>
+          <p className="text-gray-500 dark:text-gray-400 font-medium italic">Refine and update this opportunity listing.</p>
+        </header>
+
+        <form action={updateWithId} className="space-y-12">
           
           {/* Section 1: Basic Info */}
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Basic Information</h2>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-900 mb-1">Title</label>
-                <input type="text" name="title" required className="input" defaultValue={opportunity.title} />
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-3 uppercase tracking-[0.2em]">
+              <span className="w-8 h-[1px] bg-gray-200 dark:bg-white/10"></span>
+              Core Details
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="md:col-span-2">
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Full Title</label>
+                <TitleInputWithCheck defaultValue={opportunity.title} excludeId={opportunity.id} />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Slug</label>
-                <input type="text" name="slug" required className="input" defaultValue={opportunity.slug} />
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Custom URL Slug</label>
+                <input type="text" name="slug" required className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.slug} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Category</label>
-                <select name="category_id" required className="input" defaultValue={opportunity.category_id}>
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Category</label>
+                <select name="category_id" required className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.category_id}>
                   <option value="">Select Category</option>
                   {categories?.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.label}</option>
@@ -56,82 +67,93 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Organiser</label>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Organiser</label>
                 <OrganiserSelector 
                   initialOrganisers={organisers || []} 
                   defaultId={opportunity.organiser_id}
                 />
               </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Search Tags / Topics</label>
+                <TagSelector name="tags" initialTags={opportunity.tags} placeholder="e.g. STEM, Robotics, Scholarship..." />
+              </div>
             </div>
 
-            <div className="mt-6">
-              <label className="block text-sm font-medium text-gray-900 mb-2">Description</label>
+            <div className="mt-8">
+              <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">Official Description</label>
               <RichTextEditor name="description" defaultValue={opportunity.description} />
             </div>
           </div>
 
           {/* Section 2: Eligibility */}
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Eligibility</h2>
-            <div className="space-y-6">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-3 uppercase tracking-[0.2em]">
+              <span className="w-8 h-[1px] bg-gray-200 dark:bg-white/10"></span>
+              Audience & Criteria
+            </h2>
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Eligibility Text</label>
-                <input type="text" name="eligibility_text" className="input" defaultValue={opportunity.eligibility_text} />
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Eligibility Summary</label>
+                <input type="text" name="eligibility_text" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.eligibility_text} />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">Applicable Classes</label>
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">Eligible Classes</label>
                 <ClassSelector initialClasses={opportunity.eligibility_classes} />
               </div>
             </div>
           </div>
 
           {/* Section 3: Dates & Links */}
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Dates &amp; Links</h2>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-900 mb-1">Registration/Official URL</label>
-                <input type="url" name="registration_url" required className="input" defaultValue={opportunity.registration_url} />
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+             <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-3 uppercase tracking-[0.2em]">
+              <span className="w-8 h-[1px] bg-gray-200 dark:bg-white/10"></span>
+              Timeline & Access
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="md:col-span-2">
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Official Portal URL</label>
+                <input type="url" name="registration_url" required className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.registration_url} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Exact)</label>
-                <input type="date" name="registration_opens" className="input" defaultValue={opportunity.registration_opens || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Reg. Start (Fixed)</label>
+                <input type="date" name="registration_opens" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.registration_opens || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Registration Opens (Tentative)</label>
-                <input type="text" name="registration_opens_tentative" className="input" defaultValue={opportunity.registration_opens_tentative || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Reg. Start (Approx)</label>
+                <input type="text" name="registration_opens_tentative" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.registration_opens_tentative || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Exact Deadline (if known)</label>
-                <input type="date" name="deadline" className="input" defaultValue={opportunity.deadline || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Deadline (Fixed)</label>
+                <input type="date" name="deadline" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.deadline || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Tentative Deadline (if exact is unknown)</label>
-                <input type="text" name="deadline_tentative" className="input" defaultValue={opportunity.deadline_tentative || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Deadline (Approx)</label>
+                <input type="text" name="deadline_tentative" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.deadline_tentative || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Exact)</label>
-                <input type="date" name="event_date" className="input" defaultValue={opportunity.event_date || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Event Date (Fixed)</label>
+                <input type="date" name="event_date" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.event_date || ''} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Event/Exam Date (Tentative)</label>
-                <input type="text" name="event_date_tentative" className="input" defaultValue={opportunity.event_date_tentative || ''} />
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-1.5 ml-1">Event Date (Approx)</label>
+                <input type="text" name="event_date_tentative" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.event_date_tentative || ''} />
               </div>
 
-              <div className="col-span-2">
-                <label className="flex items-center gap-3 w-fit p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer">
-                  <input type="checkbox" name="is_ongoing" defaultChecked={opportunity.is_ongoing} className="w-5 h-5 rounded text-primary focus:ring-primary" />
-                  <div className="text-sm">
-                    <span className="font-bold text-gray-900 block">Is Ongoing?</span>
-                    <span className="text-gray-500">Check if open year-round without a strict deadline.</span>
+              <div className="md:col-span-2">
+                <label className="flex items-center gap-4 w-fit p-5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl cursor-pointer hover:bg-white dark:hover:bg-white/[0.08] transition-all group">
+                  <input type="checkbox" name="is_ongoing" defaultChecked={opportunity.is_ongoing} className="w-6 h-6 rounded-lg text-primary focus:ring-primary dark:bg-white/10 dark:border-white/20" />
+                  <div>
+                    <span className="font-black text-gray-900 dark:text-white block text-sm uppercase tracking-wider">Permanent / Ongoing</span>
+                    <span className="text-gray-500 dark:text-gray-400 text-xs font-medium">Check if open indefinitely.</span>
                   </div>
                 </label>
               </div>
@@ -140,48 +162,51 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
 
           {/* Section 4: Details & Rewards */}
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Details &amp; Rewards</h2>
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+            <h2 className="text-sm font-black text-gray-400 dark:text-gray-500 mb-6 flex items-center gap-3 uppercase tracking-[0.2em]">
+              <span className="w-8 h-[1px] bg-gray-200 dark:bg-white/10"></span>
+              Rewards & Fees
+            </h2>
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">Fee Text</label>
-                  <input type="text" name="fee_text" className="input" defaultValue={opportunity.fee_text} />
+                  <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Registration Fee</label>
+                  <input type="text" name="fee_text" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.fee_text} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">Prize Text</label>
-                  <input type="text" name="prize_text" className="input" defaultValue={opportunity.prize_text || ''} />
+                  <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Primary Prize/Award</label>
+                  <input type="text" name="prize_text" className="input bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-xl focus:ring-primary h-12" defaultValue={opportunity.prize_text || ''} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">How to Apply</label>
+                <label className="block text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">Application Guide</label>
                 <RichTextEditor name="how_to_apply" defaultValue={opportunity.how_to_apply} />
               </div>
             </div>
           </div>
 
           {/* Section 5: Status */}
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Visibility &amp; Status</h2>
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="is_published" defaultChecked={opportunity.is_published} className="w-4 h-4 rounded text-primary focus:ring-primary" />
-                <span className="text-sm font-medium text-gray-900">Published</span>
+          <div className="bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl p-8">
+            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6">Launch Settings</h2>
+            <div className="flex flex-wrap gap-8">
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input type="checkbox" name="is_published" defaultChecked={opportunity.is_published} className="w-5 h-5 rounded-lg text-primary focus:ring-primary dark:bg-white/10 border-gray-300 dark:border-white/20" />
+                <span className="text-sm font-black text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">LIVE STATUS</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="is_featured" defaultChecked={opportunity.is_featured} className="w-4 h-4 rounded text-primary focus:ring-primary" />
-                <span className="text-sm font-medium text-gray-900">Featured</span>
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input type="checkbox" name="is_featured" defaultChecked={opportunity.is_featured} className="w-5 h-5 rounded-lg text-primary focus:ring-primary dark:bg-white/10 border-gray-300 dark:border-white/20" />
+                <span className="text-sm font-black text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">FEATURED</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="is_verified" defaultChecked={opportunity.is_verified} className="w-4 h-4 rounded text-primary focus:ring-primary" />
-                <span className="text-sm font-medium text-gray-900">Verified by Myark</span>
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input type="checkbox" name="is_verified" defaultChecked={opportunity.is_verified} className="w-5 h-5 rounded-lg text-primary focus:ring-primary dark:bg-white/10 border-gray-300 dark:border-white/20" />
+                <span className="text-sm font-black text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">VERIFIED SEAL</span>
               </label>
             </div>
           </div>
 
-          <div className="pt-6 mt-8 border-t border-gray-200 flex justify-end gap-3">
-            <Link href="/admin/opportunities" className="btn btn-outline text-gray-700 bg-white">Cancel</Link>
-            <button type="submit" className="btn btn-primary px-8 bg-[#1b5e28] hover:bg-[#14461e] text-white font-medium">Save Changes</button>
+          <div className="pt-10 mt-10 border-t border-gray-100 dark:border-white/5 flex flex-col-reverse md:flex-row justify-end gap-4">
+            <Link href="/admin/opportunities" className="px-8 h-12 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-widest">Discard</Link>
+            <button type="submit" className="px-10 h-14 bg-[#1b5e28] hover:bg-[#14461e] text-white font-black rounded-2xl shadow-xl shadow-green-900/10 transition-all uppercase tracking-widest text-xs">Save Changes</button>
           </div>
         </form>
       </div>

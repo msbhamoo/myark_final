@@ -1,217 +1,196 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { RegisterModal } from '@/components/RegisterModal';
+import { LogoCloud } from '@/components/home/LogoCloud';
+import Image from 'next/image';
 import Link from 'next/link';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { Opportunity } from '@/lib/types';
-import { useState, useEffect } from 'react';
-import { RegisterModal } from '@/components/RegisterModal';
-import Image from 'next/image';
-import { LogoCloud } from '@/components/home/LogoCloud';
 
 interface LatestFeedProps {
    latest: Opportunity[];
    activeOppCount: number;
 }
 
+interface CategoryGroup {
+   label: string;
+   items: Opportunity[];
+}
+
 export function LatestFeed({ latest, activeOppCount }: LatestFeedProps) {
    const [count, setCount] = useState(0);
    const [authOpp, setAuthOpp] = useState<Opportunity | null>(null);
-   const targetCount = 12400;
+   const targetCount = 1000;
 
    useEffect(() => {
       let startTime: number;
-      const duration = 2500; // 2.5 seconds
-
+      const duration = 2500;
       const animate = (currentTime: number) => {
          if (!startTime) startTime = currentTime;
          const progress = Math.min((currentTime - startTime) / duration, 1);
          setCount(Math.floor(progress * targetCount));
-
-         if (progress < 1) {
-            requestAnimationFrame(animate);
-         }
+         if (progress < 1) requestAnimationFrame(animate);
       };
-
       requestAnimationFrame(animate);
    }, []);
 
    if (!latest || latest.length === 0) return null;
 
+   // Group opportunities by category
+   const categoriesMap: Record<string, Opportunity[]> = {};
+   latest.forEach(opp => {
+      const catLabel = opp.category?.label || 'Other';
+      if (!categoriesMap[catLabel]) categoriesMap[catLabel] = [];
+      categoriesMap[catLabel].push(opp);
+   });
+
+   const categoryGroups: CategoryGroup[] = Object.keys(categoriesMap).map(label => ({
+      label,
+      items: categoriesMap[label]
+   }));
+
+   // Select top 4 for Featured Spotlight
+   const featuredItems = latest.slice(0, 4);
+
    return (
-      <section className="w-full bg-[var(--color-bg)] py-12 md:py-24 relative overflow-hidden">
-         {/* Decorative Grid Overlay */}
-         <div className="absolute inset-0 grid-pattern opacity-[0.3] pointer-events-none"></div>
+      <section className="w-full bg-[var(--color-bg)] py-20 md:py-32 relative overflow-hidden">
+         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-white/10 to-transparent"></div>
 
-         {/* Background radial glow */}
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/[0.02] rounded-full blur-[140px] pointer-events-none"></div>
+         <div className="container-main max-w-[1440px] px-6 md:px-10 relative z-10">
 
-         <div className="container-main max-w-[1240px] px-4 relative z-10">
-
-            {/* HEADER — Exact style from image */}
-            <div className="flex items-center justify-between mb-8">
-               <h2 className="text-[18px] md:text-[20px] font-bold text-heading">
-                  Latest opportunities
-               </h2>
-               <Link href="/opportunities" className="text-[14px] font-bold text-primary hover:underline flex items-center gap-1">
-                  See all <span className="text-[18px]">→</span>
-               </Link>
-            </div>
-
-            {/* DESKTOP: BENTO GRID LAYOUT (3 Columns, Perfect Balance) */}
-            <div className="hidden md:grid grid-cols-3 gap-6 lg:gap-8 mb-16">
-               {/* Main Featured (Spans 2 columns, 2 rows) */}
-               <div className="lg:col-span-2 lg:row-span-2 group/bento">
-                  <OpportunityCard
-                     opportunity={latest[0]}
-                     variant="featured"
-                     badgeType="new"
-                     onAuthNeeded={setAuthOpp}
-                  />
+            {/* UPGRADED HEADER: MINIMAL & ELEGANT */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20 px-4">
+               <div className="max-w-xl">
+                  <div className="flex items-center gap-2 mb-4">
+                     <span className="w-12 h-[3px] bg-primary rounded-full"></span>
+                     <span className="text-[11px] font-black uppercase tracking-[0.25em] text-primary">Discover Excellence</span>
+                  </div>
+                  <h2 className="text-[36px] md:text-[56px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] tracking-tighter leading-[0.9]">
+                     Unlock Your <span className="text-primary italic">Career!</span>
+                  </h2>
                </div>
 
-               {/* Items to fill the side of Featured (2 items) */}
-               {latest.slice(1, 3).map((opp: Opportunity) => (
-                  <div key={opp.id} className="group/bento hover-lift">
-                     <OpportunityCard
-                        opportunity={opp}
-                        variant="default"
-                        badgeType="new"
-                        onAuthNeeded={setAuthOpp}
-                     />
+               <div className="flex items-center gap-8 bg-slate-50 dark:bg-white/5 p-6 rounded-[24px] border border-black/[0.03] dark:border-white/[0.03]">
+                  <div className="text-right">
+                     <div className="text-[24px] font-black text-heading leading-none">{activeOppCount}+</div>
+                     <div className="text-[9px] font-bold text-muted uppercase tracking-widest mt-1">Verified Programs</div>
                   </div>
-               ))}
-
-               {/* Row 3 (3 full cards) */}
-               {latest.slice(3, 6).map((opp: Opportunity) => (
-                  <div key={opp.id} className="group/bento hover-lift">
-                     <OpportunityCard
-                        opportunity={opp}
-                        variant="default"
-                        onAuthNeeded={setAuthOpp}
-                     />
+                  <div className="w-px h-8 bg-slate-200 dark:bg-white/10"></div>
+                  <div className="text-right">
+                     <div className="text-[24px] font-black text-primary leading-none">2k+</div>
+                     <div className="text-[9px] font-bold text-muted uppercase tracking-widest mt-1">Active Students</div>
                   </div>
-               ))}
-
-               {/* Row 4 (2 cards + 1 CTA card) */}
-               {latest.slice(6, 8).map((opp: Opportunity) => (
-                  <div key={opp.id} className="group/bento hover-lift">
-                     <OpportunityCard
-                        opportunity={opp}
-                        variant="default"
-                        badgeType="hot"
-                        onAuthNeeded={setAuthOpp}
-                     />
-                  </div>
-               ))}
-
-               {/* DESKTOP CTA CARD — Sits in the final cell */}
-               <Link
-                  href="/opportunities"
-                  className="flex flex-col items-center justify-center p-8 rounded-[32px] bg-emerald-500/[0.03] border-2 border-dashed border-primary/10 hover:border-primary/30 transition-all hover:bg-emerald-500/[0.05] group/cta relative overflow-hidden min-h-[250px] cursor-pointer"
-               >
-                  <div className="absolute inset-0 grid-pattern opacity-[0.1] -rotate-12 scale-150"></div>
-                  <div className="relative z-10 flex flex-col items-center">
-                     <div className="text-4xl mb-6 transform group-hover/cta:scale-125 transition-transform duration-500">✨</div>
-                     <h3 className="text-[18px] font-heading font-extrabold text-heading mb-3 text-center">Looking for something specific?</h3>
-                     <p className="text-[12px] text-muted text-center mb-6 font-medium">
-                        Explore our full directory of {activeOppCount} active programs.
-                     </p>
-                     <div className="btn bg-primary text-white h-12 px-8 rounded-xl font-bold text-[14px] shadow-lg shadow-primary/20">
-                        View All Feed →
-                     </div>
-                  </div>
-               </Link>
+               </div>
             </div>
 
-            {/* MOBILE: VERTICAL LIST LAYOUT (As per current request) */}
-            <div className="flex md:hidden flex-col gap-6 mb-12">
-               {latest.slice(0, 8).map((opp: Opportunity, i: number) => (
-                  <div key={opp.id} className="w-full">
+            {/* 1. FEATURED SPOTLIGHT RAIL (POSTER CARDS) */}
+            <div className="mb-32">
+               <div className="flex items-center justify-between mb-8 px-4">
+                  <h3 className="text-[12px] font-black text-muted uppercase tracking-[0.3em]">Featured Spotlight</h3>
+                  <div className="flex gap-2">
+                     <div className="w-8 h-1 bg-primary rounded-full"></div>
+                     <div className="w-2 h-1 bg-slate-200 dark:bg-white/10 rounded-full"></div>
+                     <div className="w-2 h-1 bg-slate-200 dark:bg-white/10 rounded-full"></div>
+                  </div>
+               </div>
+               <div className="flex gap-8 overflow-x-auto scrollbar-hide pb-10 px-4 snap-x snap-mandatory">
+                  {featuredItems.map((opp) => (
                      <OpportunityCard
+                        key={`featured-${opp.id}`}
                         opportunity={opp}
-                        variant="default"
-                        badgeType={i < 3 ? 'new' : (i > 5 ? 'hot' : null)}
-                        onAuthNeeded={setAuthOpp}
+                        variant="poster"
                      />
-                  </div>
-               ))}
-               {/* MOBILE CTA CARD */}
-               <Link
-                  href="/opportunities"
-                  className="flex flex-col items-center justify-center p-8 rounded-[32px] bg-emerald-500/[0.03] border-2 border-dashed border-primary/10 hover:border-primary/30 transition-all hover:bg-emerald-500/[0.05] group/cta relative overflow-hidden min-h-[250px] cursor-pointer"
-               >
-                  <div className="absolute inset-0 grid-pattern opacity-[0.1] -rotate-12 scale-150"></div>
-                  <div className="relative z-10 flex flex-col items-center">
-                     <div className="text-3xl mb-4 transform group-hover/cta:scale-125 transition-transform duration-500">✨</div>
-                     <h3 className="text-[18px] font-heading font-extrabold text-heading mb-2 text-center">Looking for something specific?</h3>
-                     <p className="text-[13px] text-muted text-center mb-6 font-medium">
-                        Explore our full directory of {activeOppCount} opportunities.
-                     </p>
-                     <div className="btn bg-primary text-white h-12 w-full rounded-2xl font-bold text-[14px] shadow-lg shadow-primary/20">
-                        Explore Full Feed →
-                     </div>
-                  </div>
-               </Link>
+                  ))}
+               </div>
             </div>
 
-            {/* STYLIZED TICKER — Image Style */}
-            <div className="mt-20 flex flex-col items-center justify-center space-y-4">
-               <div className="relative inline-flex items-center">
-                  {/* Main Text */}
-                  <div className="flex items-baseline font-heading font-black tracking-tighter transition-all duration-300">
-                     <span className="text-[48px] md:text-[72px] lg:text-[100px] text-primary tabular-nums">
-                        {(count / 1000).toFixed(1).replace('.', ',')}
-                     </span>
-
-                     {/* Avatars Integrated into '00' or around it */}
-                     <div className="relative flex items-center px-4 -mb-2 md:-mb-4">
-                        <div className="flex -space-x-4 md:-space-x-8">
-                           {[1, 2, 3].map((i) => (
-                              <div
-                                 key={i}
-                                 className="relative h-12 w-12 md:h-20 md:w-20 lg:h-28 lg:w-28 rounded-full border-[3px] md:border-[6px] border-[var(--color-bg)] bg-slate-200 dark:bg-slate-800 overflow-hidden shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-700"
-                                 style={{ animationDelay: `${i * 150}ms` }}
-                              >
-                                 <Image
-                                    src={`https://i.pravatar.cc/150?u=${i + 10}`}
-                                    alt="Student user"
-                                    width={120}
-                                    height={120}
-                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                                 />
-                              </div>
-                           ))}
-
+            {/* 2. CATEGORY DISCOVERY RAILS */}
+            <div className="space-y-32">
+               {categoryGroups.map((group) => (
+                  <div key={group.label} className="relative group/rail">
+                     <div className="flex items-center justify-between mb-10 px-4">
+                        <div className="flex flex-col">
+                           <h3 className="text-[28px] md:text-[32px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] tracking-tight group-hover/rail:text-primary transition-colors">
+                              {group.label}s
+                           </h3>
+                           <p className="text-[12px] text-muted font-medium">Explore the latest {group.label.toLowerCase()} opportunities</p>
                         </div>
-                        {/* Decorative Star/Icon */}
-                        <div className="absolute -top-4 -right-2 md:-top-10 md:-right-6 text-2xl md:text-5xl animate-bounce">
-                           ⭐
-                        </div>
+                        <Link
+                           href={`/opportunities/category/${group.items[0].category?.slug || ''}`}
+                           className="group/link flex items-center gap-2 text-[11px] font-black text-primary uppercase tracking-[0.2em]"
+                        >
+                           Show All <span className="text-lg group-hover/link:translate-x-1 transition-transform">→</span>
+                        </Link>
                      </div>
 
-                     <span className="text-[48px] md:text-[72px] lg:text-[100px] text-heading">
-                        0+
-                     </span>
+                     <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-10 px-4 snap-x snap-mandatory grayscale-[0.2] hover:grayscale-0 transition-all duration-500">
+                        {group.items.map((opp) => (
+                           <OpportunityCard
+                              key={opp.id}
+                              opportunity={opp}
+                              variant="horizontal"
+                           />
+                        ))}
+                     </div>
+                  </div>
+               ))}
+            </div>
+
+            {/* REFINED TRUST STRIP */}
+            <div className="mt-48 pt-24 border-t border-black/[0.04] dark:border-white/5">
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center px-6">
+                  <div className="space-y-10">
+                     <div className="space-y-4">
+                        <h3 className="text-[32px] md:text-[42px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] tracking-tighter leading-none">
+                           Trusted by <span className="text-primary italic">10k +</span> Students.
+                        </h3>
+                        <p className="text-[17px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-md">
+                           Join a global community of high-achievers from over 1,500+ top-tier schools and universities.
+                        </p>
+                     </div>
+                     <div className="flex items-center -space-x-4">
+                        {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                           <div key={i} className="h-14 w-14 rounded-full border-4 border-[var(--color-bg)] bg-slate-100 overflow-hidden shadow-lg hover:-translate-y-2 transition-transform relative z-0 hover:z-10 cursor-pointer">
+                              <Image 
+                                 src={`https://i.pravatar.cc/150?u=${i + 70}`} 
+                                 alt="Student" 
+                                 width={56} 
+                                 height={56} 
+                                 className="w-full h-full object-cover grayscale hover:grayscale-0" 
+                              />
+                           </div>
+                        ))}
+                     </div>
+                  </div>
+
+                  <div className="relative p-10 rounded-[48px] bg-slate-50 dark:bg-white/5 border border-black/[0.03] dark:border-white/5 overflow-hidden group/stats">
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 group-hover/stats:scale-125 transition-transform duration-1000"></div>
+                     <div className="relative z-10 grid grid-cols-2 gap-10">
+                        <div>
+                           <span className="text-[48px] md:text-[64px] font-heading font-black text-heading leading-none tabular-nums drop-shadow-sm">
+                              {(count / 1000).toFixed(1).replace('.', ',')}K
+                           </span>
+                           <p className="text-primary font-black text-[11px] uppercase tracking-widest mt-2">Active Students</p>
+                        </div>
+                        <div>
+                           <span className="text-[48px] md:text-[64px] font-heading font-black text-heading leading-none tabular-nums drop-shadow-sm">500+</span>
+                           <p className="text-primary font-black text-[11px] uppercase tracking-widest mt-2">Opportunities</p>
+                        </div>
+                        <div>
+                           <span className="text-[48px] md:text-[64px] font-heading font-black text-heading leading-none tabular-nums drop-shadow-sm">50+</span>
+                           <p className="text-primary font-black text-[11px] uppercase tracking-widest mt-2">Top School</p>
+                        </div>
+                        <div>
+                           <span className="text-[48px] md:text-[64px] font-heading font-black text-heading leading-none tabular-nums drop-shadow-sm">200+</span>
+                           <p className="text-primary font-black text-[11px] uppercase tracking-widest mt-2">Organizations</p>
+                        </div>
+                     </div>
                   </div>
                </div>
 
-               <div className="text-center">
-                  <p className="text-[14px] md:text-[18px] font-bold text-muted tracking-tight">
-                     Join <span className="text-heading font-black italic">high-achieving students</span> applying this week.
-                  </p>
-                  <Link href="/opportunities" className="inline-flex items-center gap-2 mt-12 text-[13px] font-black text-primary hover:underline group">
-                     Start your journey today
-                     <span className="group-hover:translate-x-1 transition-transform">→</span>
-                  </Link>
-
-                  <div className="mt-12 max-w-4xl mx-auto border-t border-gray-100 dark:border-white/5 pt-10">
-                     <h3 className="text-[14px] md:text-[16px] font-heading font-extrabold text-[#111827] dark:text-[#f3f4f6] mb-6 tracking-tight">
-                        Trusted by <span className="text-primary italic">Schools & Organisers</span>
-                     </h3>
-                     <LogoCloud />
-                  </div>
-
-
+               <div className="mt-32 w-full opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 duration-700">
+                  <LogoCloud />
                </div>
             </div>
 

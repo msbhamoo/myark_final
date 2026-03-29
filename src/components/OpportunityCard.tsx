@@ -5,190 +5,230 @@ import { formatClassRange, getDeadlineUrgency, getDaysUntilDeadline } from '@/li
 import Link from 'next/link';
 import { BookmarkIcon } from './icons/BookmarkIcon';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
-  variant?: 'default' | 'featured';
+  variant?: 'default' | 'featured' | 'small' | 'journey-node' | 'minimal' | 'horizontal' | 'poster';
   badgeType?: 'new' | 'hot' | null;
-  onAuthNeeded?: (opp: Opportunity) => void;
+  index?: number;
 }
 
-function getCategoryTagClass(categoryLabel: string) {
-  const defaults = [
-    'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
-    'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
-    'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
-    'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-    'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
-    'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
-  ];
-  const index = categoryLabel.length % defaults.length;
-  return defaults[index];
+function getCategoryTheme(categoryLabel: string) {
+  const normalized = categoryLabel?.toLowerCase().trim() || 'program';
+  
+  const themes: Record<string, { bg: string, border: string, text: string, dot: string, accent: string, gradient: string }> = {
+    'scholarship': { 
+      bg: 'bg-emerald-50 dark:bg-emerald-950/20', 
+      border: 'border-emerald-200/60 dark:border-emerald-800/40', 
+      text: 'text-emerald-700 dark:text-emerald-400',
+      dot: 'bg-emerald-500',
+      accent: 'emerald',
+      gradient: 'from-emerald-400 to-emerald-600'
+    },
+    'competition': { 
+      bg: 'bg-blue-50 dark:bg-blue-950/20', 
+      border: 'border-blue-200/60 dark:border-blue-800/40', 
+      text: 'text-blue-700 dark:text-blue-400',
+      dot: 'bg-blue-500',
+      accent: 'blue',
+      gradient: 'from-blue-400 to-blue-600'
+    },
+    'olympiad': { 
+      bg: 'bg-purple-50 dark:bg-purple-950/20', 
+      border: 'border-purple-200/60 dark:border-purple-800/40', 
+      text: 'text-purple-700 dark:text-purple-400',
+      dot: 'bg-purple-500',
+      accent: 'purple',
+      gradient: 'from-purple-400 to-purple-600'
+    },
+    'hackathon': { 
+      bg: 'bg-rose-50 dark:bg-rose-950/20', 
+      border: 'border-rose-200/60 dark:border-rose-800/40', 
+      text: 'text-rose-700 dark:text-rose-400',
+      dot: 'bg-rose-500',
+      accent: 'rose',
+      gradient: 'from-rose-400 to-rose-600'
+    },
+    'internship': { 
+      bg: 'bg-indigo-50 dark:bg-indigo-950/20', 
+      border: 'border-indigo-200/60 dark:border-indigo-800/40', 
+      text: 'text-indigo-700 dark:text-indigo-400',
+      dot: 'bg-indigo-500',
+      accent: 'indigo',
+      gradient: 'from-indigo-400 to-indigo-600'
+    },
+    'program': { 
+      bg: 'bg-amber-50 dark:bg-amber-950/20', 
+      border: 'border-amber-200/60 dark:border-amber-800/40', 
+      text: 'text-amber-700 dark:text-amber-400',
+      dot: 'bg-amber-400',
+      accent: 'amber',
+      gradient: 'from-amber-400 to-amber-600'
+    },
+    'innovation': { 
+      bg: 'bg-cyan-50 dark:bg-cyan-950/20', 
+      border: 'border-cyan-200/60 dark:border-cyan-800/40', 
+      text: 'text-cyan-700 dark:text-cyan-400',
+      dot: 'bg-cyan-400',
+      accent: 'cyan',
+      gradient: 'from-cyan-400 to-cyan-600'
+    },
+  };
+  
+  return themes[normalized] || { 
+    bg: 'bg-slate-50 dark:bg-slate-900/40', 
+    border: 'border-slate-200/60 dark:border-white/10', 
+    text: 'text-slate-600 dark:text-slate-400',
+    dot: 'bg-slate-400',
+    accent: 'slate',
+    gradient: 'from-slate-400 to-slate-600'
+  };
 }
 
 export function OpportunityCard({ 
   opportunity, 
-  variant = 'default', 
+  variant = 'minimal', 
   badgeType = null,
-  onAuthNeeded 
 }: OpportunityCardProps) {
   const [isSaved, setIsSaved] = useState(false);
   const organiserName = opportunity.organiser?.name || 'Organiser';
   const { label } = getDeadlineUrgency(opportunity.deadline, opportunity.is_ongoing);
   
-  let deadlineText = label.replace('Closes in ', '').replace(' left', ' days left');
+  let deadlineText = label.replace('Closes in ', '').replace(' left', ' d left');
   if (label.includes('Registration Open')) deadlineText = 'Open — ' + label.replace('Registration Open - ', '');
-  if (label.includes('Closes in')) deadlineText = label.replace('Closes in ', '') + ' days left — apply now';
-  if (label.includes('Urgent')) deadlineText = 'Closing soon — apply now';
+  if (label.includes('Closes in')) deadlineText = label.replace('Closes in ', '') + ' d';
+  if (label.includes('Urgent')) deadlineText = 'Closing soon';
+  if (label.includes('Today')) deadlineText = 'Today';
 
   const daysLeft = getDaysUntilDeadline(opportunity.deadline);
   
   if (!opportunity.is_ongoing && daysLeft !== null && daysLeft > 0) {
-    if (daysLeft <= 7) deadlineText = `${daysLeft} days left — apply now`;
-    else deadlineText = `Open — ${daysLeft} days`;
+    if (daysLeft <= 7) deadlineText = `${daysLeft} d left`;
+    else deadlineText = `In ${daysLeft} d`;
   } else if (opportunity.is_ongoing) {
     deadlineText = 'Ongoing';
   } else if (daysLeft !== null && daysLeft <= 0) {
     deadlineText = 'Closed';
-  } else {
-    deadlineText = 'Open registration';
   }
 
-  const theFee = opportunity.fee_text.toLowerCase().includes('free') ? 'Free to enter' : opportunity.fee_text;
-  if (variant === 'featured') {
-    return (
-      <div className="group relative flex flex-col h-full rounded-[32px] bg-white dark:bg-[#161616] border-2 border-primary/10 hover:border-primary px-8 py-10 md:px-12 md:py-14 transition-all overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-        {/* Background glow decorator */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-40 -mt-40 blur-[80px] pointer-events-none"></div>
-        
-        <div className="flex flex-col h-full relative z-10">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-primary text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">Featured</span>
-              {opportunity.category && (
-                <span className={`px-3 py-1 rounded-full text-[12px] font-bold ${getCategoryTagClass(opportunity.category.label)}`}>
-                  {opportunity.category.label}
-                </span>
-              )}
-            </div>
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setIsSaved(!isSaved);
-              }}
-              aria-label="Save for later" 
-              className={`transition-all ${isSaved ? 'text-primary scale-110' : 'text-[#9ca3af] hover:text-primary active:scale-90'}`}
-            >
-              <BookmarkIcon className={`w-8 h-8 ${isSaved ? 'fill-current' : ''}`} />
-            </button>
-          </div>
+  const theTheme = getCategoryTheme(opportunity.category?.label || '');
 
-          <Link href={`/opportunities/${opportunity.slug}`} className="block mb-8 group">
-            <h3 className="text-[32px] md:text-[44px] font-heading font-extrabold text-[#1a1c1e] dark:text-white leading-[1.05] tracking-tight group-hover:text-primary transition-colors cursor-pointer">
-              {opportunity.title}
-            </h3>
-          </Link>
+  // POSTER VARIANT: HIGH IMPACT VISUAL CARDS
+  if (variant === 'poster') {
+     return (
+        <motion.div 
+           whileHover={{ y: -8, scale: 1.02 }}
+           className="relative w-[280px] md:w-[320px] aspect-[5/6] rounded-[32px] overflow-hidden group/poster shrink-0 shadow-2xl"
+        >
+           {/* Visual Background (Gradient-based Poster) */}
+           <div className={`absolute inset-0 bg-gradient-to-br ${theTheme.gradient} opacity-90 transition-transform duration-700 group-hover/poster:scale-110`}></div>
+           <div className="absolute inset-0 bg-black/20 group-hover/poster:bg-black/10 transition-colors"></div>
+           
+           {/* Decorative Design Elements */}
+           <div className="absolute top-0 right-0 p-8 opacity-20">
+              <div className="w-24 h-24 border-8 border-white rounded-full"></div>
+           </div>
+           <div className="absolute bottom-[-20%] left-[-10%] p-8 opacity-10">
+              <div className="w-40 h-40 bg-white rounded-full blur-3xl"></div>
+           </div>
 
-          <p className="text-[17px] text-muted font-medium leading-relaxed line-clamp-4 mb-auto max-w-[90%]">
-             Discover one of the most prestigious opportunities in our database. This program offers exceptional resources and support for high-achieving students across the country. Join many others in applying today.
-          </p>
+           {/* Content Overlay */}
+           <div className="absolute inset-0 p-5 md:p-6 flex flex-col z-10">
+              <div className="flex justify-between items-start mb-auto">
+                 <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-[10px] font-black text-white uppercase tracking-widest">
+                    {opportunity.category?.label || 'Program'}
+                 </span>
+                 <button onClick={() => setIsSaved(!isSaved)} className={`p-2 rounded-full backdrop-blur-md transition-colors ${isSaved ? 'bg-primary text-white' : 'bg-white/10 text-white/60 hover:text-white'}`}>
+                    <BookmarkIcon className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
+                 </button>
+              </div>
 
-          <div className="pt-10 mt-10 border-t border-[#f3f4f6] dark:border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
-             <div className="flex flex-wrap items-center gap-4">
-                <div className="px-5 py-2.5 bg-slate-50 dark:bg-white/5 rounded-2xl border border-[var(--color-border-default)]">
-                   <span className="text-[14px] font-black text-heading">{formatClassRange(opportunity.eligibility_classes)}</span>
-                </div>
-                <div className="px-5 py-2.5 bg-primary/5 rounded-2xl border border-primary/10">
-                   <span className="text-[14px] font-black text-primary">{theFee}</span>
-                </div>
-                <div className="text-[13px] font-bold text-muted ml-1">
-                   {deadlineText}
-                </div>
-             </div>
-             <Link href={`/opportunities/${opportunity.slug}`} className="btn bg-primary text-white h-14 px-10 rounded-[20px] font-bold text-[16px] shadow-xl shadow-primary/20">
-                View Details &rarr;
-             </Link>
-          </div>
-        </div>
-      </div>
-    );
+              <div className="space-y-2">
+                 <h3 className="text-[20px] md:text-[24px] font-heading font-black text-white leading-tight tracking-tight drop-shadow-lg">
+                    {opportunity.title}
+                 </h3>
+                 <div className="flex items-center gap-3 text-white/80 text-[12px] font-bold">
+                    <span className="px-2 py-0.5 rounded bg-white/10">Classes {formatClassRange(opportunity.eligibility_classes)}</span>
+                    <span className="px-2 py-0.5 rounded bg-white/10 uppercase">{deadlineText}</span>
+                 </div>
+                 
+                 <div className="pt-4 flex items-center justify-between">
+                    <span className="text-[11px] font-black text-white/60 uppercase tracking-widest truncate max-w-[120px]">
+                       {organiserName}
+                    </span>
+                    <Link href={`/opportunities/${opportunity.slug}`} className="h-10 w-10 rounded-full bg-white text-heading flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                       <span className="text-xl">→</span>
+                    </Link>
+                 </div>
+              </div>
+           </div>
+        </motion.div>
+     );
   }
 
+  // MINIMAL / HORIZONTAL VARIANT (USED IN RAILS)
   return (
-    <>
-      <div className="bg-white dark:bg-[#161616] border border-[#e5e7eb] dark:border-white/10 rounded-[20px] p-6 flex flex-col group transition-all hover:shadow-md relative h-full">
-        
-        {/* 1. TOP ROW: Tag + Badge + Bookmark */}
-        <div className="flex justify-between items-center mb-5">
+    <motion.div 
+      whileHover={{ y: -4 }}
+      className={`group relative flex flex-col h-full ${variant === 'horizontal' ? 'w-[320px] md:w-[360px] shrink-0' : 'w-full'} rounded-[24px] ${theTheme.bg} border-2 ${theTheme.border} p-5 md:p-6 transition-all duration-300 decoration-none overflow-hidden`}
+    >
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Header row */}
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            {opportunity.category && (
-              <span className={`px-3 py-1 rounded-full text-[12px] font-bold ${getCategoryTagClass(opportunity.category.label)}`}>
-                {opportunity.category.label}
+            <span className={`text-[10px] font-black uppercase tracking-[0.18em] ${theTheme.text} px-3 py-1 bg-white/80 dark:bg-black/40 rounded-lg shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] backdrop-blur-sm`}>
+              {opportunity.category?.label || 'Program'}
+            </span>
+            {badgeType && (
+              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg text-white ${badgeType === 'new' ? 'bg-emerald-500 shadow-md shadow-emerald-500/10' : 'bg-orange-500 shadow-md shadow-orange-500/10'}`}>
+                {badgeType}
               </span>
-            )}
-            {badgeType === 'new' && (
-              <span className="bg-emerald-500 text-white px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-tighter shadow-lg shadow-emerald-500/20">NEW</span>
-            )}
-            {badgeType === 'hot' && (
-              <span className="bg-orange-500 text-white px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-tighter shadow-lg shadow-orange-500/20">HOT</span>
             )}
           </div>
           <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              // Check if user is logged in (Demo check via cookie)
-            const isStudent = document.cookie.includes('myark_student=');
-            if (!isStudent && onAuthNeeded) {
-               onAuthNeeded(opportunity);
-               return;
-            }
-  
-              setIsSaved(!isSaved);
-            }}
-            aria-label="Save for later" 
-            className={`transition-all ${isSaved ? 'text-primary scale-110' : 'text-[#9ca3af] hover:text-primary active:scale-90'}`}
+            onClick={(e) => { e.preventDefault(); setIsSaved(!isSaved); }}
+            className={`p-2 rounded-xl transition-all ${isSaved ? 'bg-primary text-white shadow-md' : 'text-slate-400 hover:text-primary bg-white/80 dark:bg-white/5 border border-black/[0.03] active:scale-95 shadow-sm'}`}
           >
-            <BookmarkIcon className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
+            <BookmarkIcon className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
           </button>
         </div>
 
-        {/* 2. TITLE */}
+        {/* Title */}
         <Link href={`/opportunities/${opportunity.slug}`} className="block mb-4">
-          <h3 className="text-[18px] md:text-[20px] font-bold text-[#1a1c1e] dark:text-[#f0ede5] leading-tight group-hover:text-primary transition-colors cursor-pointer">
+          <h3 className="text-[17px] md:text-[20px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] leading-[1.2] group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
             {opportunity.title}
           </h3>
         </Link>
 
-        {/* 3. DETAILS (Inline) */}
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 text-[14px] text-[#6b7280] dark:text-[#a8a8a0] font-medium">
-          <span>{formatClassRange(opportunity.eligibility_classes)}</span>
-          <span className="text-[#d1d5db]">·</span>
-          <span>{theFee}</span>
-          <span className="text-[#d1d5db]">·</span>
-          <span>International</span>
+        {/* Metadata Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-5">
+           <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Eligibility</span>
+              <span className="text-[13px] font-bold text-slate-600 dark:text-slate-400">Class {formatClassRange(opportunity.eligibility_classes).replace('Class', '').trim()}</span>
+           </div>
+           <div className="flex flex-col gap-0.5 items-end">
+              <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Deadline</span>
+              <span className={`text-[13px] font-bold ${deadlineText.includes('Closed') ? 'text-slate-400' : theTheme.text}`}>{deadlineText}</span>
+           </div>
         </div>
 
-        {/* 4. DEADLINE/URGENCY */}
-        <div className={`text-[14px] font-bold mb-6 ${deadlineText.includes('apply now') ? 'text-amber-600 dark:text-amber-500' : 'text-primary'}`}>
-          {deadlineText}
-        </div>
-
-        {/* 5. FOOTER */}
-        <div className="pt-5 mt-auto border-t border-[#f3f4f6] dark:border-white/5 flex items-center justify-between">
-          <span className="text-[13px] font-medium text-[#9ca3af] truncate pr-4">
-            {organiserName}
-          </span>
-          <Link 
-            href={`/opportunities/${opportunity.slug}`}
-            className="text-[14px] font-bold text-primary hover:underline flex items-center gap-1 shrink-0"
-          >
-            View details <span>→</span>
-          </Link>
+        {/* Footer Card */}
+        <div className="mt-auto pt-4 border-t border-black/[0.03] dark:border-white/5 flex items-center justify-between">
+           <div className="flex items-center gap-2 min-w-0">
+              <div className={`w-7 h-7 rounded-full ${theTheme.bg} flex items-center justify-center border ${theTheme.border} shadow-sm flex-shrink-0 bg-white dark:bg-slate-800`}>
+                 <span className="text-[12px] leading-none select-none">🏛️</span>
+              </div>
+              <span className="text-[10px] font-black text-slate-400 truncate pr-1 uppercase tracking-tight">{organiserName}</span>
+           </div>
+           <Link 
+             href={`/opportunities/${opportunity.slug}`} 
+             className={`h-9 px-4 rounded-xl bg-white dark:bg-white/5 border border-black/[0.03] dark:border-white/5 text-[11px] font-black ${theTheme.text} hover:scale-105 transition-transform active:scale-95 shadow-sm flex items-center`}
+           >
+              Apply
+           </Link>
         </div>
       </div>
-    </>
+    </motion.div>
   );
 }

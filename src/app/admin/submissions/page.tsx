@@ -60,8 +60,8 @@ export default async function SubmissionsPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Opportunity Submissions</h1>
-            <p className="text-sm text-gray-500 mt-1">Review, approve, or reject external listings submitted by organizers.</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Opportunity Submissions</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Review, approve, or reject external listings submitted by organizers.</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-lg text-xs font-bold leading-none">
@@ -73,49 +73,49 @@ export default async function SubmissionsPage() {
 
         {/* Database Warning Banner */}
         {usingMock && (
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6">
+          <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-900/30 p-4 rounded-xl mb-6">
             <div className="flex items-start gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               <div>
-                <h4 className="text-sm font-bold text-blue-900">Demo Mode Active</h4>
-                <p className="text-sm text-blue-800 mt-1">This dashboard is currently showing mock data. To make submissions functional, please run the SQL migration I provided to create the <code className="bg-blue-100 px-1 rounded text-blue-900">submitted_opportunities</code> table.</p>
+                <h4 className="text-sm font-bold text-blue-900 dark:text-blue-400">Demo Mode Active</h4>
+                <p className="text-sm text-blue-800 dark:text-blue-300 mt-1">This dashboard is currently showing mock data. To make submissions functional, please run the SQL migration I provided to create the <code className="bg-blue-100 dark:bg-blue-900/40 px-1 rounded text-blue-900 dark:text-blue-200">submitted_opportunities</code> table.</p>
               </div>
             </div>
           </div>
         )}
 
         {/* Submissions Table */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white dark:bg-[#161616] rounded-xl shadow-sm border border-gray-200 dark:border-white/10 overflow-hidden transition-colors">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Organizer</th>
-                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Opportunity Title</th>
-                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                <tr className="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 transition-colors">
+                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Organizer</th>
+                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Opportunity Title</th>
+                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                  <th className="py-4 px-6 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-white/5">
                 {submissions.map((sub: Submission) => (
-                  <tr key={sub.id} className="hover:bg-gray-50 transition-colors group">
+                  <tr key={sub.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="py-4 px-6 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{new Date(sub.created_at).toLocaleDateString()}</div>
-                      <div className="text-xs text-gray-500">{new Date(sub.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{new Date(sub.created_at).toLocaleDateString()}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{new Date(sub.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
                     </td>
                     <td className="py-4 px-6">
-                      <div className="text-sm font-bold text-gray-900">{sub.organizer_name || sub.orgName}</div>
-                      <div className="text-xs text-blue-600 hover:underline cursor-pointer">{sub.contact_email || sub.email}</div>
-                      {sub.contact_mobile && <div className="text-xs text-gray-500 mt-0.5">{sub.contact_mobile}</div>}
+                      <div className="text-sm font-bold text-gray-900 dark:text-white">{sub.organizer_name || sub.orgName}</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">{sub.contact_email || sub.email}</div>
+                      {sub.contact_mobile && <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{sub.contact_mobile}</div>}
                     </td>
                     <td className="py-4 px-6">
-                      <a href={sub.registration_link} target="_blank" rel="noopener noreferrer" title="View external link" className="text-sm font-bold text-blue-600 hover:underline mb-0.5 truncate block max-w-[200px] lg:max-w-[300px]">
+                      <a href={sub.registration_link} target="_blank" rel="noopener noreferrer" title="View external link" className="text-sm font-bold text-blue-600 dark:text-blue-400 hover:underline mb-0.5 truncate block max-w-[200px] lg:max-w-[300px]">
                         {sub.title}
                       </a>
                       <div className="flex gap-2">
-                         <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">{sub.category}</span>
-                         <span className="text-[10px] bg-red-50 text-red-600 px-1.5 py-0.5 rounded">Due: {new Date(sub.deadline).toLocaleDateString()}</span>
+                         <span className="text-[10px] bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded">{sub.category}</span>
+                         <span className="text-[10px] bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-1.5 py-0.5 rounded">Due: {new Date(sub.deadline).toLocaleDateString()}</span>
                       </div>
                     </td>
                     <td className="py-4 px-6 whitespace-nowrap">
@@ -148,7 +148,7 @@ export default async function SubmissionsPage() {
             </table>
           </div>
           {submissions.length === 0 && (
-            <div className="p-12 text-center text-gray-500">
+            <div className="p-12 text-center text-gray-500 dark:text-gray-400">
               No new submissions pending review.
             </div>
           )}

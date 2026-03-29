@@ -24,15 +24,15 @@ export function ClassSelector({ initialClasses = [] }: ClassSelectorProps) {
         <button 
           type="button" 
           onClick={selectAll}
-          className="text-[11px] font-bold text-primary hover:underline uppercase tracking-wider"
+          className="text-[11px] font-bold text-primary hover:text-primary/80 hover:underline uppercase tracking-wider transition-colors"
         >
           Select All
         </button>
-        <span className="text-gray-300">|</span>
+        <span className="text-gray-300 dark:text-white/10">|</span>
         <button 
           type="button" 
           onClick={clearAll}
-          className="text-[11px] font-bold text-gray-400 hover:text-gray-600 hover:underline uppercase tracking-wider"
+          className="text-[11px] font-bold text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:underline uppercase tracking-wider transition-colors"
         >
           Clear
         </button>
@@ -44,8 +44,8 @@ export function ClassSelector({ initialClasses = [] }: ClassSelectorProps) {
             key={num} 
             className={`flex items-center justify-center gap-2 text-sm p-3 rounded-xl border transition-all cursor-pointer ${
               selected.includes(num) 
-                ? 'bg-primary/5 border-primary text-primary font-bold' 
-                : 'bg-white border-gray-100 text-gray-500 hover:border-gray-300'
+                ? 'bg-primary/5 dark:bg-primary/10 border-primary text-primary font-bold' 
+                : 'bg-white dark:bg-white/5 border-gray-100 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20'
             }`}
           >
             <input 

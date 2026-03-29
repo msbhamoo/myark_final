@@ -1,0 +1,43 @@
+﻿
+> myark@0.1.0 build
+> next build
+
+  Γû▓ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\mahendra.singh\AppData ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecif 
+   ied: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCom 
+   mandError
+ 
+Failed to compile.
+
+./src/app/page.tsx
+12:10  Error: 'JourneySection' is 
+defined but never used.  
+@typescript-eslint/no-unused-vars
+13:10  Error: 'TrustSection' is defined 
+but never used.  
+@typescript-eslint/no-unused-vars
+
+./src/components/home/HomeHero.tsx
+5:10  Error: 'HeroFloatingCards' is 
+defined but never used.  
+@typescript-eslint/no-unused-vars
+8:8  Error: 'Image' is defined but 
+never used.  
+@typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint 
+rules? Learn more here: https://nextjs.o
+rg/docs/basic-features/eslint#disabling-
+rules

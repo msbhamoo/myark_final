@@ -567,3 +567,10 @@ html {
 .hover-lift:hover {
   transform: translateY(-8px) scale(1.02);
 }
+.text-glow {
+  text-shadow: 0 0 20px rgba(17, 17, 16, 0.05);
+}
+
+.dark .text-glow {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}

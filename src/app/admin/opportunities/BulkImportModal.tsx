@@ -156,9 +156,10 @@ export function BulkImportModal() {
     return (
       <button
         onClick={() => { reset(); setIsOpen(true); }}
-        className="btn bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-50"
+        className="h-14 px-8 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 font-black shadow-lg shadow-black/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-all rounded-2xl text-xs uppercase tracking-widest flex items-center justify-center gap-2"
       >
-        📥 Bulk Import
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Bulk Import
       </button>
     );
   }
@@ -167,133 +168,148 @@ export function BulkImportModal() {
     <>
       <button
         onClick={() => { reset(); setIsOpen(true); }}
-        className="btn bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-50"
+        className="h-14 px-8 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 font-black shadow-lg shadow-black/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-all rounded-2xl text-xs uppercase tracking-widest flex items-center justify-center gap-2"
       >
-        📥 Bulk Import
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Bulk Import
       </button>
 
       {/* Overlay */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setIsOpen(false)}>
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-sm p-4 animate-in fade-in transition-all" onClick={() => setIsOpen(false)}>
+        <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col border border-gray-200 dark:border-white/10 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
           
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">
-              {step === 'upload' && '📥 Bulk Import Opportunities'}
-              {step === 'preview' && '👀 Preview & Validate'}
-              {step === 'result' && '✅ Import Results'}
+          <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 dark:border-white/5">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <span className="p-2 bg-gray-50 dark:bg-white/5 rounded-xl uppercase tracking-widest text-[10px] text-gray-500 font-black">Step {step === 'upload' ? '1' : step === 'preview' ? '2' : '3'}</span>
+              {step === 'upload' && 'Bulk Import'}
+              {step === 'preview' && 'Preview & Validate'}
+              {step === 'result' && 'Import Results'}
             </h2>
-            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600 text-2xl font-light">&times;</button>
+            <button onClick={() => setIsOpen(false)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/5 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-all text-2xl font-light">&times;</button>
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-auto p-6">
+          <div className="flex-1 overflow-auto p-8">
             
             {/* STEP 1: Upload */}
             {step === 'upload' && (
               <div className="space-y-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                  <h3 className="text-sm font-bold text-blue-900 mb-2">How it works</h3>
-                  <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
-                    <li>Download the CSV template below</li>
-                    <li>Fill in your opportunity data (one row per opportunity)</li>
-                    <li>Upload the file — we&apos;ll validate before importing</li>
-                    <li><strong>Category</strong> and <strong>Organiser</strong> must match existing names exactly</li>
+                <div className="bg-indigo-50/50 dark:bg-indigo-500/5 border border-indigo-100 dark:border-indigo-500/10 rounded-2xl p-6">
+                  <h3 className="text-sm font-bold text-indigo-900 dark:text-indigo-300 mb-3 flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Import Guidelines
+                  </h3>
+                  <ol className="text-sm text-indigo-800 dark:text-indigo-400 space-y-2 list-decimal list-inside font-medium leading-relaxed">
+                    <li>Download the official CSV template</li>
+                    <li>Ensure <strong>Title</strong> and <strong>Slug</strong> are unique</li>
+                    <li><strong>Category</strong> and <strong>Organiser</strong> names must exist in the database</li>
+                    <li>Dates should be in <code>YYYY-MM-DD</code> format</li>
                   </ol>
                 </div>
 
-                <button onClick={downloadTemplate} className="btn bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-50">
-                  📄 Download CSV Template
-                </button>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <button onClick={downloadTemplate} className="btn bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-white/10 transition-all px-6 py-3 rounded-xl text-sm flex-1 flex items-center justify-center gap-2">
+                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                     CSV Template
+                  </button>
+                  
+                  <div className="flex-1" />
+                </div>
 
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-[#1b5e28] hover:bg-green-50/30 transition-colors cursor-pointer"
+                <div className="group relative border-2 border-dashed border-gray-200 dark:border-white/10 rounded-2xl p-12 text-center hover:border-primary/50 hover:bg-primary/[0.02] transition-all cursor-pointer overflow-hidden"
                   onClick={() => fileRef.current?.click()}
                 >
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                   <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleFile} />
-                  <div className="text-4xl mb-3">📁</div>
-                  <p className="text-sm font-bold text-gray-900 mb-1">Click to upload your CSV file</p>
-                  <p className="text-xs text-gray-500">or drag and drop (CSV only)</p>
+                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">📄</div>
+                  <p className="text-base font-bold text-gray-900 dark:text-white mb-1">Upload Your File</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 font-medium tracking-wide">CLICK TO BROWSE OR DRAG CSV HERE</p>
                 </div>
               </div>
             )}
 
             {/* STEP 2: Preview */}
             {step === 'preview' && (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* Validation Summary */}
                 {validationErrors.length > 0 && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                    <h3 className="text-sm font-bold text-red-800 mb-2">⚠️ Validation Issues ({validationErrors.length})</h3>
-                    <ul className="text-xs text-red-700 space-y-0.5 max-h-32 overflow-auto">
-                      {validationErrors.map((err, i) => <li key={i}>• {err}</li>)}
+                  <div className="bg-red-50 dark:bg-red-500/5 border border-red-200 dark:border-red-500/10 rounded-2xl p-6 animate-in slide-in-from-top-2">
+                    <h3 className="text-sm font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                      Validation Errors ({validationErrors.length})
+                    </h3>
+                    <ul className="text-xs text-red-700 dark:text-red-400/80 space-y-1 max-h-40 overflow-auto font-medium pr-2">
+                      {validationErrors.map((err, i) => <li key={i} className="flex gap-2"><span>•</span> {err}</li>)}
                     </ul>
                   </div>
                 )}
 
                 {validationErrors.length === 0 && (
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                    <p className="text-sm font-bold text-green-800">✅ All {rows.length} row(s) passed validation</p>
+                  <div className="bg-green-50 dark:bg-green-500/5 border border-green-200 dark:border-green-500/10 rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                      <p className="text-base font-bold text-green-800 dark:text-green-400">All Checks Passed</p>
+                      <p className="text-xs text-green-700/70 dark:text-green-400/60 font-medium">Ready to import {rows.length} records into the database.</p>
+                    </div>
+                    <div className="w-10 h-10 bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-xl">✓</div>
                   </div>
                 )}
 
                 {/* Preview Table */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="overflow-x-auto max-h-[360px]">
-                    <table className="w-full text-xs whitespace-nowrap">
-                      <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
+                <div className="border border-gray-100 dark:border-white/5 rounded-2xl overflow-hidden shadow-sm">
+                  <div className="overflow-x-auto max-h-[380px]">
+                    <table className="w-full text-[11px] whitespace-nowrap">
+                      <thead className="bg-gray-50 dark:bg-white/5 border-b border-gray-100 dark:border-white/5 sticky top-0 z-10">
                         <tr>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">#</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Title</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Slug</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Category</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Organiser</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Deadline</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Fee</th>
-                          <th className="px-3 py-2 text-left font-medium text-gray-500">Published</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">ID</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">Title</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">Category</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">Organiser</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">Deadline</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-500 uppercase tracking-widest text-[9px]">Pub</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100">
+                      <tbody className="divide-y divide-gray-50 dark:divide-white/5">
                         {rows.map((row, i) => (
-                          <tr key={i} className="hover:bg-gray-50">
-                            <td className="px-3 py-2 text-gray-400">{i + 1}</td>
-                            <td className="px-3 py-2 font-medium text-gray-900 max-w-[200px] truncate">{row.title}</td>
-                            <td className="px-3 py-2 text-gray-500">{row.slug}</td>
-                            <td className="px-3 py-2">{row.category}</td>
-                            <td className="px-3 py-2">{row.organiser}</td>
-                            <td className="px-3 py-2">{row.deadline || '—'}</td>
-                            <td className="px-3 py-2">{row.fee_text || 'Free'}</td>
-                            <td className="px-3 py-2">{row.is_published === 'false' || row.is_published === '0' ? '❌' : '✅'}</td>
+                          <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                            <td className="px-4 py-3 text-gray-400 font-mono italic">{i + 1}</td>
+                            <td className="px-4 py-3 font-bold text-gray-900 dark:text-white max-w-[200px] truncate">{row.title}</td>
+                            <td className="px-4 py-3 text-gray-600 dark:text-gray-400 font-medium">{row.category}</td>
+                            <td className="px-4 py-3 text-gray-500 dark:text-gray-500">{row.organiser}</td>
+                            <td className="px-4 py-3 text-gray-900 dark:text-gray-300 font-mono">{row.deadline || '—'}</td>
+                            <td className="px-4 py-3">{row.is_published === 'false' || row.is_published === '0' ? '🌑' : '🌕'}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
-
-                <p className="text-xs text-gray-500">Showing {rows.length} row(s) ready to import.</p>
               </div>
             )}
 
             {/* STEP 3: Result */}
             {step === 'result' && importResult && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-                    <p className="text-3xl font-bold text-green-700">{importResult.success}</p>
-                    <p className="text-sm text-green-600 font-medium">Imported successfully</p>
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl p-8 text-center transition-all hover:scale-[1.02]">
+                    <div className="text-4xl font-black text-green-600 dark:text-green-400 mb-1">{importResult.success}</div>
+                    <p className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Successful</p>
                   </div>
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-                    <p className="text-3xl font-bold text-red-700">{importResult.failed}</p>
-                    <p className="text-sm text-red-600 font-medium">Failed</p>
+                  <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl p-8 text-center transition-all hover:scale-[1.02]">
+                    <div className="text-4xl font-black text-red-600 dark:text-red-400 mb-1">{importResult.failed}</div>
+                    <p className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Failed</p>
                   </div>
                 </div>
 
                 {importResult.errors.length > 0 && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                    <h3 className="text-sm font-bold text-red-800 mb-2">Error Details</h3>
-                    <ul className="text-xs text-red-700 space-y-0.5 max-h-40 overflow-auto">
+                  <div className="bg-red-50 dark:bg-red-500/5 border border-red-200 dark:border-red-500/10 rounded-2xl p-6">
+                    <h3 className="text-sm font-bold text-red-800 dark:text-red-400 mb-4 uppercase tracking-widest">Detailed Failure Report</h3>
+                    <ul className="text-xs text-red-700 dark:text-red-400/70 space-y-2 max-h-48 overflow-auto font-medium pr-2">
                       {importResult.errors.map((err, i) => (
-                        <li key={i}>• Row {err.row}: {err.message}</li>
+                        <li key={i} className="flex gap-3 items-start border-b border-red-100 dark:border-red-500/10 pb-2 last:border-0">
+                           <span className="bg-red-100 dark:bg-red-500/20 px-1.5 rounded font-bold">R{err.row}</span>
+                           <span className="flex-1">{err.message}</span>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -303,8 +319,11 @@ export function BulkImportModal() {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
-            <button onClick={() => { if (step === 'preview') { reset(); } else { setIsOpen(false); } }} className="btn bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-50">
+          <div className="flex items-center justify-between px-8 py-6 border-t border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-white/[0.02]">
+            <button 
+              onClick={() => { if (step === 'preview') { reset(); } else { setIsOpen(false); } }} 
+              className="px-6 h-12 bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 font-bold rounded-xl text-sm hover:shadow-lg transition-all"
+            >
               {step === 'preview' ? '← Back' : 'Close'}
             </button>
 
@@ -312,15 +331,20 @@ export function BulkImportModal() {
               <button
                 onClick={handleImport}
                 disabled={isImporting || validationErrors.some(e => e.startsWith('Missing'))}
-                className="btn btn-primary bg-[#1b5e28] text-white hover:bg-[#14461e] disabled:opacity-50 disabled:cursor-not-allowed px-8"
+                className="px-8 h-12 bg-[#1b5e28] text-white font-bold rounded-xl text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#14461e] shadow-xl hover:shadow-[#1b5e28]/20 transition-all flex items-center justify-center gap-2"
               >
-                {isImporting ? 'Importing...' : `Import ${rows.length} Opportunities`}
+                {isImporting ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Importing...
+                  </span>
+                ) : `Process ${rows.length} Items`}
               </button>
             )}
 
             {step === 'result' && (
-              <button onClick={() => { reset(); setIsOpen(false); window.location.reload(); }} className="btn btn-primary bg-[#1b5e28] text-white hover:bg-[#14461e] px-8">
-                Done
+              <button onClick={() => { reset(); setIsOpen(false); window.location.reload(); }} className="px-8 h-12 bg-primary text-white font-bold rounded-xl text-sm shadow-xl transition-all">
+                Done & Refresh
               </button>
             )}
           </div>

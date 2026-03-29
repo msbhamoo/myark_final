@@ -72,3 +72,12 @@ export async function bulkImportOrganisers(rows: BulkOrganiserRow[]): Promise<Bu
   revalidatePath('/admin/organisers');
   return result;
 }
+
+export async function checkDuplicateOrganiser(name: string, excludeId?: string) {
+  if (!name || name.length < 3) return { exists: false, matches: [] };
+  const supabase = createServerClient();
+  let query = supabase.from('organisers').select('id, name').ilike('name', `%${name.trim()}%`).limit(3);
+  if (excludeId) query = query.neq('id', excludeId);
+  const { data } = await query;
+  return { exists: (data || []).length > 0, matches: data || [] };
+}

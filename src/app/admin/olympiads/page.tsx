@@ -13,10 +13,10 @@ export default async function AdminOlympiadsPage() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+      <div className="flex justify-between items-center bg-white dark:bg-[#161616] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm transition-colors">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Olympiad Directory</h1>
-          <p className="text-gray-500 text-sm pb-0">Manage the evergreen olympiad landscape.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Olympiad Directory</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm pb-0">Manage the evergreen olympiad landscape.</p>
         </div>
         <div className="flex gap-3">
           <Link href="/admin/olympiads/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e] px-4 py-2 rounded-lg font-bold">
@@ -25,10 +25,10 @@ export default async function AdminOlympiadsPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-xl shadow-sm overflow-hidden transition-colors">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-medium uppercase text-xs tracking-wider">
+            <thead className="bg-gray-50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-gray-500 dark:text-gray-400 font-medium uppercase text-xs tracking-wider transition-colors">
               <tr>
                 <th className="px-6 py-4">Olympiad Name</th>
                 <th className="px-6 py-4">Organiser</th>
@@ -37,28 +37,28 @@ export default async function AdminOlympiadsPage() {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 text-gray-900">
+            <tbody className="divide-y divide-gray-200 dark:divide-white/5 text-gray-900 dark:text-gray-100">
               {olympiads?.map((olym) => (
-                <tr key={olym.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={olym.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="font-bold text-gray-900 text-base">{olym.name}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{olym.slug}</div>
+                    <div className="font-bold text-gray-900 dark:text-white text-base">{olym.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{olym.slug}</div>
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-500">
+                  <td className="px-6 py-4 font-medium text-gray-500 dark:text-gray-400">
                     {olym.organiser}
                   </td>
                   <td className="px-6 py-4">
-                    <span className="bg-gray-50 px-2.5 py-1 rounded-md text-xs border border-gray-200">
+                    <span className="bg-gray-50 dark:bg-white/5 px-2.5 py-1 rounded-md text-xs border border-gray-200 dark:border-white/10 transition-colors">
                         {olym.type}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md text-xs border border-indigo-100 font-bold uppercase tracking-wider">
+                    <span className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 px-2.5 py-1 rounded-md text-xs border border-indigo-100 dark:border-indigo-900/30 font-bold uppercase tracking-wider transition-colors">
                         {olym.level}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-3 items-center font-bold text-[#1b5e28]">
+                    <div className="flex justify-end gap-3 items-center font-bold text-[#1b5e28] dark:text-green-400 hover:text-green-500 transition-colors">
                         <Link href={`/admin/olympiads/${olym.id}/edit`}>Edit</Link>
                     </div>
                   </td>

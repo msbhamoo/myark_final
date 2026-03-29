@@ -126,8 +126,8 @@ export function AuthDrawer({ isOpen, onClose }: AuthDrawerProps) {
         onClick={onClose} 
       />
       <div 
-        className={`fixed inset-x-0 bottom-0 z-[110] bg-white dark:bg-[#0a0a0a] rounded-t-[40px] p-8 pb-10 transition-transform duration-500 transform ${
-          isOpen ? 'translate-y-0' : 'translate-y-full invisible sm:visible'
+        className={`fixed inset-x-0 bottom-0 z-[110] bg-white dark:bg-[#0a0a0a] rounded-t-[40px] p-8 pb-10 transition-all duration-500 transform ${
+          isOpen ? 'translate-y-0 opacity-100 visible' : 'translate-y-[120%] opacity-0 invisible'
         } ${!isOpen && 'pointer-events-none'} max-w-lg mx-auto sm:mb-8 sm:rounded-[32px] sm:inset-x-4 max-h-[90vh] overflow-y-auto no-scrollbar`}
       >
         <div className="w-12 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full mx-auto mb-8 sm:hidden" />

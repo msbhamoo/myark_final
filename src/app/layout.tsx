@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { bricolage, dmSans } from './fonts';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
@@ -6,6 +7,8 @@ import { Footer } from '@/components/Footer';
 import { BottomNav } from '@/components/BottomNav';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { ClientShell } from '@/components/ClientShell';
+import { PageTransitionLoader } from '@/components/PageTransitionLoader';
 
 // Provide absolute URL for metadata images
 let siteUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
@@ -152,10 +155,16 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col min-h-screen pb-[64px] md:pb-0">
         <ThemeProvider>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <BottomNav />
+          <Suspense fallback={null}>
+            <PageTransitionLoader />
+          </Suspense>
+          <ClientShell
+            navbar={<Navbar />}
+            footer={<Footer />}
+            bottomNav={<BottomNav />}
+          >
+            {children}
+          </ClientShell>
         </ThemeProvider>
       </body>
     </html>

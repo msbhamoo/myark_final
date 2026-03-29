@@ -28,6 +28,7 @@ export async function createOpportunity(formData: FormData) {
   const is_featured = formData.get('is_featured') === 'on';
   const is_verified = formData.get('is_verified') === 'on';
   const is_published = formData.get('is_published') === 'on';
+  const tags = (formData.get('tags') as string || "").split(',').map(t => t.trim()).filter(Boolean);
 
   const { error } = await supabase.from('opportunities').insert({
     title, slug, category_id, organiser_id, description,
@@ -41,12 +42,13 @@ export async function createOpportunity(formData: FormData) {
     event_date_tentative: event_date_tentative || null,
     is_ongoing, fee_text, prize_text, how_to_apply,
     is_featured, is_verified, is_published,
+    tags,
     faqs: []
   });
 
   if (error) {
     console.error('Error creating opportunity:', error);
-    throw new Error('Failed to create opportunity');
+    throw new Error(`Failed to create opportunity: ${error.message}`);
   }
 
   revalidatePath('/admin/opportunities');
@@ -77,6 +79,7 @@ export async function updateOpportunity(id: string, formData: FormData) {
   const is_featured = formData.get('is_featured') === 'on';
   const is_verified = formData.get('is_verified') === 'on';
   const is_published = formData.get('is_published') === 'on';
+  const tags = (formData.get('tags') as string || "").split(',').map(t => t.trim()).filter(Boolean);
 
   const { error } = await supabase.from('opportunities').update({
     title, slug, category_id, organiser_id, description,
@@ -90,11 +93,12 @@ export async function updateOpportunity(id: string, formData: FormData) {
     event_date_tentative: event_date_tentative || null,
     is_ongoing, fee_text, prize_text, how_to_apply,
     is_featured, is_verified, is_published,
+    tags,
   }).eq('id', id);
 
   if (error) {
     console.error('Error updating opportunity:', error);
-    throw new Error('Failed to update opportunity');
+    throw new Error(`Failed to update opportunity: ${error.message}`);
   }
 
   revalidatePath('/admin/opportunities');
@@ -126,6 +130,7 @@ export interface BulkImportRow {
   how_to_apply: string;
   is_published: string;
   is_verified: string;
+  tags: string;
 }
 
 export interface BulkImportResult {
@@ -182,6 +187,7 @@ export async function bulkImportOpportunities(rows: BulkImportRow[]): Promise<Bu
       is_published: row.is_published?.toLowerCase() !== 'false' && row.is_published !== '0',
       is_verified: row.is_verified?.toLowerCase() === 'true' || row.is_verified === '1',
       is_featured: false,
+      tags: (row.tags || '').split(',').map(t => t.trim()).filter(Boolean),
       faqs: [],
     });
 
@@ -191,4 +197,29 @@ export async function bulkImportOpportunities(rows: BulkImportRow[]): Promise<Bu
 
   revalidatePath('/admin/opportunities');
   return result;
+}
+
+/**
+ * Checks if an opportunity with a similar title already exists
+ */
+export async function checkDuplicateOpportunity(title: string, excludeId?: string) {
+  if (!title || title.length < 3) return { exists: false, matches: [] };
+  
+  const supabase = createServerClient();
+  let query = supabase
+    .from('opportunities')
+    .select('id, title, registration_url')
+    .ilike('title', `%${title.trim()}%`)
+    .limit(3);
+
+  if (excludeId) {
+    query = query.neq('id', excludeId);
+  }
+
+  const { data } = await query;
+
+  return {
+    exists: (data || []).length > 0,
+    matches: data || []
+  };
 }

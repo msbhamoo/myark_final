@@ -25,7 +25,7 @@ export default async function Home() {
     { count: oppCount }
   ] = await Promise.all([
     supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-    supabase.from('opportunities').select('*, category:categories(*), organiser:organisers(*)').eq('is_published', true).order('created_at', { ascending: false }).limit(6),
+    supabase.from('opportunities').select('*, category:categories(*), organiser:organisers(*)').eq('is_published', true).order('created_at', { ascending: false }).limit(20),
     supabase.from('career_directory').select('*').eq('is_published', true).order('rarity_level', { ascending: false }).limit(4),
     supabase.from('opportunities').select('id', { count: 'exact', head: true }).eq('is_published', true)
   ]);

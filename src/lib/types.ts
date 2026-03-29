@@ -49,6 +49,7 @@ export interface Opportunity {
   is_featured: boolean;
   is_verified: boolean;
   is_published: boolean;
+  tags: string[] | null;
   created_at: string;
   updated_at: string;
   // Joined relations
@@ -149,3 +150,125 @@ export interface Career {
   is_published: boolean;
   created_at: string;
 }
+
+export interface QuizSubject {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  icon: string | null;
+  colour: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  subject_id: string;
+  question: string;
+  option_a: string;
+  option_b: string;
+  option_c: string;
+  option_d: string;
+  correct_option: string;
+  explanation: string | null;
+  difficulty: string;
+  class_level: string | null;
+  tags: string[] | null;
+  times_shown: number;
+  times_correct: number;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface Quiz {
+  id: string;
+  title: string;
+  slug: string;
+  subject_id: string;
+  description: string | null;
+  quiz_type: string;
+  cadence: string | null;
+  questions_per_attempt: number;
+  time_limit_seconds: number;
+  total_questions_in_bank: number;
+  start_time: string | null;
+  end_time: string | null;
+  is_active: boolean;
+  show_leaderboard_at: string | null;
+  leaderboard_revealed: boolean;
+  prize_description: string | null;
+  badge_name: string | null;
+  created_at: string;
+
+  // Joined relation
+  subject?: QuizSubject;
+}
+
+export interface QuizPeriod {
+  id: string;
+  quiz_id: string;
+  period_number: number;
+  period_label: string;
+  start_time: string;
+  end_time: string;
+  questions_used: string[] | null;
+  leaderboard_revealed: boolean;
+  total_participants: number;
+  created_at: string;
+}
+
+export interface QuizAttempt {
+  id: string;
+  quiz_id: string;
+  period_id: string;
+  session_id: string;
+  student_name: string | null;
+  student_class: string | null;
+  school: string | null;
+  city: string | null;
+  questions_shown: string[];
+  answers: Record<string, string>;
+  score: number;
+  total_questions: number;
+  correct_answers: number;
+  wrong_answers: number;
+  skipped_answers: number;
+  time_taken_seconds: number;
+  speed_bonus: number;
+  final_score: number;
+  rank: number | null;
+  percentile: number | null;
+  completed_at: string;
+}
+
+export interface QuizLeaderboard {
+  id: string;
+  quiz_id: string;
+  period_id: string;
+  attempt_id: string;
+  rank: number;
+  student_name: string | null;
+  student_class: string | null;
+  school: string | null;
+  city: string | null;
+  score: number | null;
+  correct_answers: number | null;
+  time_taken_seconds: number | null;
+  final_score: number | null;
+  badge_earned: string | null;
+  created_at: string;
+}
+
+export interface QuizBadge {
+  id: string;
+  name: string;
+  description: string | null;
+  icon: string | null;
+  colour: string | null;
+  criteria: string | null;
+  quiz_id: string | null;
+  created_at: string;
+}
+

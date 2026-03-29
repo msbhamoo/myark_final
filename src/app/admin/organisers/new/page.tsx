@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createOrganiser } from '../actions';
+import { NameInputWithCheckOrganiser } from '@/components/admin/NameInputWithCheckOrganiser';
 
 export default function NewOrganiserPage() {
   return (
@@ -15,7 +16,7 @@ export default function NewOrganiserPage() {
           <div className="grid grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-1">Organiser Name</label>
-              <input type="text" name="name" required className="input" placeholder="e.g. Science Olympiad Foundation (SOF)" />
+              <NameInputWithCheckOrganiser name="name" className="input" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-1">Slug</label>

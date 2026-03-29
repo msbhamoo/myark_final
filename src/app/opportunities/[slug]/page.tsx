@@ -212,7 +212,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
               <div className="mb-12">
                 <h3 className="text-[15px] font-extrabold font-heading text-heading mb-4">About this competition</h3>
                 <div 
-                  className="text-[14px] leading-relaxed text-body space-y-4 font-body block [&_p]:mb-4"
+                  className="text-[14px] leading-relaxed text-body font-body block [&_p]:mb-4 [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:mb-4 [&_h2]:text-xl [&_h2]:font-black [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:text-heading [&_h3]:text-lg [&_h3]:font-black [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-heading [&_a]:text-primary [&_a]:underline [&_strong]:font-black [&_strong]:text-heading"
                   dangerouslySetInnerHTML={{ __html: renderMarkdown(opportunity.description) }}
                 />
                 {opportunity.eligibility_text && (
@@ -252,7 +252,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                           {i + 1}
                         </div>
                         <div 
-                          className="text-[14px] leading-relaxed text-[#374151] pt-0.5"
+                          className="text-[14px] leading-relaxed text-[#374151] dark:text-gray-300 pt-0.5 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:ml-4 [&_a]:text-primary [&_a]:underline font-medium"
                           dangerouslySetInnerHTML={{ __html: renderMarkdown(step) }}
                         />
                       </div>

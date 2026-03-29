@@ -19,17 +19,17 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-[#0a0a0a] font-sans transition-colors">
+    <div className="flex h-screen bg-gray-50 dark:bg-[#0a0a0a] font-sans transition-colors overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 flex flex-col hidden md:flex shrink-0">
-        <div className="h-16 flex items-center px-6 border-b border-gray-800">
+      <aside className="w-64 bg-gray-900 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 border-r border-gray-800">
+        <div className="h-16 flex items-center px-6 border-b border-gray-800 shrink-0">
           <Link href="/admin" className="flex items-center gap-2">
             <Logo size="md" variant="dark" />
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
           </Link>
         </div>
         
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
           <Link href="/admin" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
             Dashboard
@@ -67,9 +67,13 @@ export default async function AdminLayout({
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
             Brand Logos
           </Link>
+          <Link href="/admin/quiz" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Quizzes
+          </Link>
         </nav>
         
-        <div className="p-4 border-t border-gray-800 space-y-2">
+        <div className="p-4 border-t border-gray-800 mt-auto shrink-0 space-y-2">
           <AdminThemeToggle />
           <form action="/auth/signout" method="post">
             <button type="submit" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-colors w-full text-left">

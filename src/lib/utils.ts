@@ -81,18 +81,14 @@ export function formatStatusDate(exact: string | null, tentative: string | null)
   return 'TBA';
 }
 
+import { marked } from 'marked';
+
 /**
- * Very basic Markdown to HTML converter for Bold and Italic
+ * Modern Markdown to HTML converter using 'marked' library
  */
 export function renderMarkdown(text: string | null): string {
   if (!text) return '';
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n\n/g, '<br/><br/>')
-    .replace(/\n- (.*?)/g, '<li>$1</li>')
-    .replace(/(<li>.*?<\/li>)/g, '<ul class="list-disc ml-5 my-2">$1</ul>')
-    .replace(/<\/ul><ul.*?>/g, ''); // Merge internal ULs (crude but works for basic case)
+  return marked.parse(text, { breaks: true }) as string;
 }
 
 export function generateSlug(title: string, year?: number): string {
