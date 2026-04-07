@@ -1,14 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { OlympiadCard } from '@/components/OlympiadCard';
 import { Olympiad } from '@/lib/types';
+import { generateBreadcrumbJsonLd } from '@/lib/seo';
+import { SITE_URL } from '@/lib/constants';
 
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
-  title: "The HBCSE Olympiads Pathway Guide 2026 — IMO, IPhO, IChO, IBO | Myark",
-  description: "Complete roadmap for the Homi Bhabha Centre for Science Education (HBCSE) olympiads. From NSEs to representing India at International Olympiads.",
+  title: "HBCSE Olympiad Pathway 2025–26 — Stage 1 to 5 Explained | Myark",
+  description: "Complete roadmap for the Homi Bhabha Centre for Science Education (HBCSE) olympiads. NSEP, NSEC, NSEB, NSEA, NSEJS - the only path to represent India globally.",
+  alternates: {
+    canonical: `${SITE_URL}/olympiads/hbcse`,
+  },
+  openGraph: {
+    title: "Official HBCSE Olympiad Pathway Guide | Myark",
+    description: "The 5-stage official Indian national olympiad journey explained from NSE to International.",
+    url: `${SITE_URL}/olympiads/hbcse`,
+    type: 'article',
+  },
 };
 
 export default async function HBCSEPathwayPage() {
@@ -23,8 +35,18 @@ export default async function HBCSEPathwayPage() {
 
   const olympiads: Olympiad[] = olympiadsData || [];
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Olympiads', href: '/olympiads' },
+    { name: 'HBCSE Pathway', href: '/olympiads/hbcse' },
+  ]);
+
   return (
     <div className="bg-[var(--color-bg)] min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Hero Section */}
       <section className="bg-[#0a0f0a] text-white py-20 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

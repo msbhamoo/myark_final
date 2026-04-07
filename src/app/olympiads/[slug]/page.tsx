@@ -4,19 +4,22 @@ import { notFound } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase-server';
 import { Olympiad } from '@/lib/types';
 import { OlympiadCard } from '@/components/OlympiadCard';
+import { generateOlympiadMetadata, generateBreadcrumbJsonLd } from '@/lib/seo';
+import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
-export const revalidate = 86400; // 24 hours
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
+const subjects = [
+    'mathematics', 'science', 'english', 'computer-science', 
+    'astronomy', 'general-knowledge'
+];
 
 interface PageProps {
   params: {
     slug: string;
   };
 }
-
-const subjects = [
-    'mathematics', 'science', 'english', 'computer-science', 
-    'astronomy', 'general-knowledge'
-];
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const supabase = createServerClient();
@@ -25,25 +28,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // If it's a subject
   if (subjects.includes(slug)) {
     const title = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const path = `/olympiads/${slug}`;
+    
     return {
-      title: `${title} Olympiad for School Students India 2026 — Complete List | Myark`,
-      description: `Complete list of all ${title} olympiads available to school students in India. Verified, updated daily.`,
+      title: `${title} Olympiad for School Students India 2025–26 — Complete List | ${SITE_NAME}`,
+      description: `Complete list of all ${title} olympiads available for school students in India (Class 1–12). Compare registration dates, fees, and eligibility.`,
+      alternates: { canonical: `${SITE_URL}${path}` },
+      openGraph: {
+        title: `${title} Olympiads for Indian Students | ${SITE_NAME}`,
+        description: `Compare all ${title} olympiads from SOF, Silverzone, HBCSE and more.`,
+        url: `${SITE_URL}${path}`,
+        type: 'website',
+      }
     };
   }
 
   // If it's an olympiad
   const { data: olympiad } = await supabase
     .from('olympiad_directory')
-    .select('name')
+    .select('name, slug, short_description')
     .eq('slug', params.slug)
     .single();
 
   if (!olympiad) return { title: 'Not Found' };
 
-  return {
-    title: `${olympiad.name} 2026 — Eligibility, Registration, Dates & How to Apply | Myark`,
-    description: `Complete guide to ${olympiad.name}. Learn about eligibility, registration process, important dates, and preparation tips for school students.`,
-  };
+  return generateOlympiadMetadata(olympiad.name, olympiad.slug, olympiad.short_description);
 }
 
 export default async function GenericOlympiadsPage({ params }: PageProps) {
@@ -96,8 +105,16 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
     }))
   };
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Olympiads', href: '/olympiads' },
+    { name: subjectTitle, href: `/olympiads/${slug}` },
+  ]);
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -162,8 +179,16 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
   // Pathway steps
   const pathwaySteps = olympiad.pathway ? olympiad.pathway.split(' → ').map(s => s.trim()) : [];
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Olympiads', href: '/olympiads' },
+    { name: olympiad.subject || 'Subject', href: `/olympiads/${olympiad.subject?.toLowerCase().replace(' ', '-')}` },
+    { name: olympiad.short_name, href: `/olympiads/${olympiad.slug}` },
+  ]);
+
   return (
     <div className="bg-[var(--color-bg)] min-h-screen py-10 md:py-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="container-main max-w-[1200px] px-4">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-8 text-[13px] md:text-[14px] font-medium text-muted">

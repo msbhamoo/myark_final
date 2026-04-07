@@ -22,25 +22,25 @@ export function CareerExplorerHome({ featuredCareers }: CareerExplorerHomeProps)
       }}></div>
 
       <div className="container-main max-w-[1240px] px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 bg-[#4ade80]/10 border border-[#4ade80]/20 rounded-full px-3 py-1 mb-6 shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"></span>
-              <span className="text-[10px] font-black text-[#4ade80] uppercase tracking-[0.15em]">New: Career Explorer</span>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 md:mb-20">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-[#4ade80]/10 border border-[#4ade80]/20 rounded-full px-4 py-2 mb-8 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#4ade80] animate-pulse shadow-[0_0_8px_#4ade80]"></span>
+              <span className="text-[11px] font-black text-[#4ade80] uppercase tracking-[0.18em]">Career Navigator</span>
             </div>
-            <h2 className="text-[28px] md:text-[42px] lg:text-[52px] font-heading font-extrabold text-white leading-[1.1] tracking-tighter mb-6">
-              Discover your future.<br />
-              <span className="text-[#4ade80] italic">Beyond doctor & engineer.</span>
+            <h2 className="text-[32px] md:text-[48px] lg:text-[62px] font-heading font-black text-white leading-[1.05] tracking-tight mb-8">
+              Explore your future.<br />
+              <span className="text-[#4ade80]">Beyond doctor & engineer.</span>
             </h2>
-            <p className="text-[16px] md:text-[17px] text-gray-400 font-medium leading-relaxed max-w-lg">
-              Honest data on 150+ careers. From rare specializations to mainstream paths, find educational pathways and salary insights vetted by experts.
+            <p className="text-[18px] md:text-[20px] text-gray-400 font-medium leading-relaxed max-w-xl">
+              Handpicked data on 150+ career paths. From rare specializations to high-impact roles, find your true calling with Myark.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4">
-             <Link href="/careers" className="btn bg-white text-black hover:bg-gray-200 h-16 px-12 rounded-2xl font-black text-[15px] shadow-2xl transition-all hover:scale-[1.05] active:scale-[0.98] shrink-0">
-               Explore 150+ Careers 
-               <span className="ml-2">→</span>
+          <div className="flex shrink-0">
+             <Link href="/careers" className="group h-16 px-10 flex items-center justify-center rounded-[20px] bg-[#4ade80] text-black font-black text-[16px] shadow-[0_6px_0_0_#1b5e28] active:shadow-none active:translate-y-[4px] transition-all hover:brightness-110">
+               Explore all paths 
+               <span className="ml-3 group-hover:translate-x-1 transition-transform">→</span>
              </Link>
           </div>
         </div>

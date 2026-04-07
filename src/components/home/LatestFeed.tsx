@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { RegisterModal } from '@/components/RegisterModal';
 import { LogoCloud } from '@/components/home/LogoCloud';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +19,6 @@ interface CategoryGroup {
 
 export function LatestFeed({ latest, activeOppCount }: LatestFeedProps) {
    const [count, setCount] = useState(0);
-   const [authOpp, setAuthOpp] = useState<Opportunity | null>(null);
    const targetCount = 1000;
 
    useEffect(() => {
@@ -196,13 +194,6 @@ export function LatestFeed({ latest, activeOppCount }: LatestFeedProps) {
 
          </div>
 
-         {authOpp && (
-            <RegisterModal
-               opportunity={authOpp}
-               isOpen={true}
-               onClose={() => setAuthOpp(null)}
-            />
-         )}
       </section>
    );
 }

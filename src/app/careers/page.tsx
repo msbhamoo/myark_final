@@ -1,14 +1,22 @@
 import type { Metadata } from 'next';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { CareerCard } from '@/components/CareerCard';
 import { Career } from '@/lib/types';
 import { CareerFilters } from '@/components/careers/CareerFilters';
 
-export const revalidate = 86400; // 24 hours
-
 export const metadata: Metadata = {
-  title: "Careers After Class 12 — The Complete Guide | Myark",
-  description: "150+ careers across 12 fields — with honest salary data, entrance exams, top colleges, and exactly how to prepare.",
+  title: "150+ Career Paths After Class 12 India — Salary, Exams & Guide | Myark",
+  description: "Examine 150+ careers across 12 fields. Compare realistic salary data, entrance exams, and top colleges. Learn exactly how to prepare for your professional future.",
+  alternates: {
+    canonical: 'https://myark.in/careers',
+  },
+  openGraph: {
+    title: "The Complete Career Guide After Class 12 Students | Myark",
+    description: "Honest salary data, top colleges, entrance exams, and real roadmaps for 150+ careers.",
+    url: 'https://myark.in/careers',
+    type: 'website',
+  },
 };
 
 export default async function CareersHubPage({

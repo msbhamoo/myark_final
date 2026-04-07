@@ -1,13 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+import { supabase } from '@/lib/supabase';
 import { CareerCard } from '@/components/CareerCard';
 import { notFound } from 'next/navigation';
+import { generateBreadcrumbJsonLd } from '@/lib/seo';
 
-export const revalidate = 86400; // 24 hours
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const { data: careers } = await supabase
+    .from('career_directory')
+    .select('slug')
+    .eq('is_published', true)
+    .limit(100);
+
+  return (careers || []).map((c) => ({
+    slug: c.slug,
+  }));
+}
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const supabase = createServerClient();
   const { data: career } = await supabase
     .from('career_directory')
     .select('name, short_description')
@@ -59,6 +72,17 @@ export default async function CareerDetailPage({ params }: { params: { slug: str
             "educationalCredentialAwarded": career.degree_required,
             "timeToComplete": career.duration
           })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateBreadcrumbJsonLd([
+            { name: 'Home', href: '/' },
+            { name: 'Careers', href: '/careers' },
+            { name: career.category, href: `/careers?category=${encodeURIComponent(career.category)}` },
+            { name: career.name, href: `/careers/${career.slug}` },
+          ]))
         }}
       />
       

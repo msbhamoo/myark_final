@@ -4,12 +4,66 @@ import { Opportunity } from '@/lib/types';
 import { formatClassRange, getDeadlineUrgency, getDaysUntilDeadline } from '@/lib/utils';
 import Link from 'next/link';
 import { BookmarkIcon } from './icons/BookmarkIcon';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+// Compact Running Timer Component
+function RunningTimer({ deadline, isOngoing }: { deadline: string | null; isOngoing: boolean }) {
+  const [timeLeft, setTimeLeft] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
+
+  useEffect(() => {
+    if (isOngoing || !deadline) return;
+
+    const calculateTime = () => {
+      const now = new Date().getTime();
+      const target = new Date(deadline).getTime();
+      const diff = target - now;
+
+      if (diff <= 0) return null;
+
+      return {
+        d: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        h: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        m: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        s: Math.floor((diff % (1000 * 60)) / 1000),
+      };
+    };
+
+    setTimeLeft(calculateTime());
+    const timer = setInterval(() => {
+       const newTime = calculateTime();
+       setTimeLeft(newTime);
+       if (!newTime) clearInterval(timer);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [deadline, isOngoing]);
+
+  if (isOngoing) return <span>Ongoing</span>;
+  if (!timeLeft) return <span className="text-slate-400">Closed</span>;
+
+  const isUrgent = timeLeft.d === 0 && timeLeft.h < 24;
+
+  return (
+    <div className={`inline-flex items-center gap-1.5 ${isUrgent ? 'text-rose-500' : ''}`}>
+      {timeLeft.d > 0 && <span>{timeLeft.d}d</span>}
+      <span>{timeLeft.h}h</span>
+      <span>{timeLeft.m}m</span>
+      <span className="w-[2ch] tabular-nums">{timeLeft.s}s</span>
+      {isUrgent && (
+         <motion.span 
+            animate={{ scale: [1, 1.2, 1] }} 
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="w-1.5 h-1.5 rounded-full bg-rose-500 ml-1"
+         />
+      )}
+    </div>
+  );
+}
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
-  variant?: 'default' | 'featured' | 'small' | 'journey-node' | 'minimal' | 'horizontal' | 'poster';
+  variant?: 'default' | 'featured' | 'small' | 'journey-node' | 'minimal' | 'horizontal' | 'poster' | 'duo';
   badgeType?: 'new' | 'hot' | null;
   index?: number;
 }
@@ -167,11 +221,123 @@ export function OpportunityCard({
      );
   }
 
+  // DUO VARIANT (Inspired by Duolingo / Modern Education Apps)
+  if (variant === 'duo') {
+      return (
+         <motion.div 
+            whileHover={{ y: -6 }}
+            onClick={() => {
+               const event = new CustomEvent('openQuickViewModal', { detail: opportunity });
+               window.dispatchEvent(event);
+            }}
+            className={`group relative flex flex-col w-full rounded-[28px] bg-white dark:bg-[#1a1c1e] border-[3px] ${theTheme.border.replace('/60', '')} p-5 md:p-6 transition-all duration-300 cursor-pointer shadow-[0_6px_0_0_rgba(0,0,0,0.05)] active:translate-y-[4px] active:shadow-none hover:border-primary/60`}
+         >
+            <div className="flex justify-between items-start mb-4 md:mb-5">
+               <div className={`px-2.5 md:px-3 py-1 rounded-xl bg-white dark:bg-white/5 border-2 ${theTheme.border.replace('/60', '')} flex items-center gap-1.5 shadow-sm`}>
+                  <span className="text-[14px] md:text-[16px]">{opportunity.category?.icon_name || '✨'}</span>
+                  <span className={`text-[9px] md:text-[11px] font-black uppercase tracking-wider ${theTheme.text}`}>
+                     {opportunity.category?.label || 'Program'}
+                  </span>
+               </div>
+               <div className="flex gap-2">
+                  <button 
+                     onClick={(e) => {
+                        e.stopPropagation();
+                        const classes = formatClassRange(opportunity.eligibility_classes).replace('Class', '').trim();
+                        const link = `${window.location.origin}/opportunities/${opportunity.slug}`;
+                        const title = opportunity.title;
+                        
+                        const templates = [
+                           `🔥 *Don't Miss Out!*\n\nI found this amazing opportunity: "*${title}*" on Myark.in.\n\nPerfect for Class ${classes} students! Check it out before the deadline:\n\n🔗 ${link}\n\n✨ *Simplify discovery with Myark.*`,
+                           `🚀 *Student Alert!*\n\nFound this top-tier scholarship/olympiad: "*${title}*" on Myark.\n\nGreat fit for Class ${classes} students. Check details here:\n\n🔗 ${link}\n\n🙌 *Helping students make their mark!*`,
+                           `🔔 *Urgent Update: Class ${classes}*\n\nThe "*${title}*" is currently trending on Myark.in!\n\nIf you're in Class ${classes}, don't miss this one:\n\n🔗 ${link}\n\n🎯 *Quality opportunities at your fingertips.*`,
+                           `Hey! Thought of you when I saw this: "*${title}*" on Myark.\n\nIt's specifically for Class ${classes} students. Worth checked out:\n\n🔗 ${link}\n\n✨ *Curated for Indian students.*`,
+                           `🌟 *Opportunity of the week!*\n\nCheck out "*${title}*" on Myark.in. \n\nPerfect for students in Class ${classes}. Apply before it's too late:\n\n🔗 ${link}\n\n🏆 *Your journey to excellence starts here.*`,
+                           `👨‍🎓 *Attention Students!* (Class ${classes})\n\nJust discovered this on Myark: "*${title}*".\n\nHigh impact opportunity for Class ${classes}. Check it out:\n\n🔗 ${link}\n\n💪 *Build your profile with Myark.*`,
+                           `📢 *Parent Alert!* (Class ${classes})\n\nFound a great program for students: "*${title}*" on Myark.in.\n\nHighly recommended for Class ${classes}. Details here:\n\n🔗 ${link}\n\n👨‍👩‍👧 *Helping parents find the best for their kids.*`,
+                           `💎 *Hidden Gem Found!*\n\n"*${title}*" is now live on Myark.\n\nIf you know anyone in Class ${classes}, share this with them:\n\n🔗 ${link}\n\n✨ *Exclusive opportunities for Indian students.*`,
+                           `🎯 *Targeting Scholarships?*\n\nYou must check out "*${title}*" on Myark.in.\n\nDesigned for Class ${classes} excellence. More info:\n\n🔗 ${link}\n\n⚡️ *Fast, clear, and verified.*`,
+                           `🔥 *Trending Now: Class ${classes}*\n\nEveryone is talking about "*${title}*" on Myark!\n\nDeadline approaching. See more:\n\n🔗 ${link}\n\n✨ *Discovery made simple.*`,
+                           `🌈 *Bright Futures Start Here!*\n\nDiscovery: "*${title}*" on Myark.in.\n\nPerfect for Class ${classes} dreamers. 🔗 ${link}\n\n✨ *Myark - Make your mark!*`,
+                           `👋 *Quick Recommendation!*\n\nCheck out "*${title}*" on the Myark platform.\n\nTop pick for Class ${classes} this month. 🔗 ${link}\n\n🙌 *Share with a student who needs this!*`,
+                           `⌛ *Deadline Approaching!*\n\nDon't let the "*${title}*" slip away. \n\nFound on Myark.in for Class ${classes}. 🔗 ${link}\n\n🚀 *Apply today!*`,
+                           `🎉 *Big Opportunity Alert!*\n\n"*${title}*" is a must-see for all Class ${classes} students.\n\nFound via Myark.in. Check it out: 🔗 ${link}\n\n🌟 *Unlock your potential.*`,
+                           `⚡ *Flash News!*\n\nNew verified opportunity found: "*${title}*".\n\nCurated for Class ${classes} on Myark.in. 🔗 ${link}\n\n✨ *Discovery without the noise.*`
+                        ];
+
+                        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+                        window.open(`https://wa.me/?text=${encodeURIComponent(randomTemplate)}`, '_blank');
+                     }}
+                     title="Share on WhatsApp"
+                     className="p-2 md:p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 active:scale-95 transition-all"
+                  >
+                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="md:w-[18px] md:h-[18px]"><path d="M12.031 2c-5.511 0-9.997 4.486-9.997 9.998 0 1.761.458 3.411 1.258 4.846l-1.292 4.717 4.827-1.266c1.392.756 2.979 1.196 4.67 1.196 5.511 0 9.998-4.487 9.998-9.998 0-5.511-4.487-9.998-9.998-9.998zm0 18.286c-1.579 0-3.045-.436-4.301-1.191l-.307-.181-2.859.749.762-2.784-.198-.315c-.838-1.328-1.314-2.899-1.314-4.566 0-4.569 3.717-8.286 8.286-8.286 4.568 0 8.286 3.717 8.286 8.286s-3.718 8.286-8.286 8.286zM15.54 13.91c-.191-.096-1.13-.559-1.304-.623-.175-.064-.301-.096-.427.096-.127.191-.493.623-.604.752-.111.127-.223.143-.414.048-.191-.096-.807-.297-1.537-.95-.568-.507-.951-1.135-1.063-1.326-.111-.191-.012-.294.084-.39s.191-.223.286-.335c.096-.111.127-.191.191-.319.064-.127.032-.239-.016-.335-.048-.096-.427-1.031-.585-1.411-.154-.373-.323-.322-.442-.322l-.377-.008c-.131 0-.342.049-.523.242-.181.193-.69.674-.69 1.644 0 .97.705 1.905.803 2.039.098.134 1.388 2.119 3.363 2.973.47.203.836.324 1.122.415.471.15.9.129 1.239.078.378-.057 1.13-.462 1.289-.908.159-.447.159-.831.111-.911-.048-.08-.175-.127-.366-.223z"/></svg>
+                  </button>
+                  <button 
+                     onClick={(e) => { e.stopPropagation(); setIsSaved(!isSaved); }}
+                     className={`p-2 md:p-2.5 rounded-xl transition-all ${isSaved ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 text-slate-400 hover:text-primary active:scale-95'}`}
+                  >
+                     <BookmarkIcon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isSaved ? 'fill-current' : ''}`} />
+                  </button>
+               </div>
+            </div>
+
+            <h3 className="text-[18px] md:text-[24px] font-heading font-black text-heading leading-[1.1] mb-5 md:mb-6 group-hover:text-primary transition-colors line-clamp-2">
+               {opportunity.title}
+            </h3>
+
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-6">
+               <div className="flex flex-col gap-1">
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Eligibility</span>
+                  <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold text-[12px] md:text-[14px]">
+                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></div>
+                     Class {formatClassRange(opportunity.eligibility_classes).replace('Class', '').trim()}
+                  </div>
+               </div>
+
+               <div className="flex flex-col gap-1">
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Deadline</span>
+                  <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold text-[12px] md:text-[14px] tabular-nums">
+                     <div className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.3)] ${deadlineText.includes('Closed') ? 'bg-slate-300' : 'bg-amber-500'}`}></div>
+                     <RunningTimer deadline={opportunity.deadline} isOngoing={opportunity.is_ongoing} />
+                  </div>
+               </div>
+
+               <div className="hidden sm:flex flex-col gap-1 min-w-0">
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Provider</span>
+                  <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold text-[14px] truncate">
+                     <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.3)] flex-shrink-0"></div>
+                     <span className="truncate">{organiserName}</span>
+                  </div>
+               </div>
+            </div>
+
+            <div className="mt-auto flex items-center gap-4">
+               <div 
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-1"
+               >
+                  <Link 
+                     href={`/opportunities/${opportunity.slug}`}
+                     className={`w-full h-11 md:h-12 flex items-center justify-center rounded-[16px] md:rounded-[18px] bg-primary text-white font-black text-[13px] md:text-[14px] shadow-[0_3px_0_0_#14461e] active:shadow-none active:translate-y-[2px] transition-all hover:brightness-110`}
+                  >
+                     See Details
+                  </Link>
+               </div>
+            </div>
+         </motion.div>
+      );
+  }
+
   // MINIMAL / HORIZONTAL VARIANT (USED IN RAILS)
   return (
     <motion.div 
       whileHover={{ y: -4 }}
-      className={`group relative flex flex-col h-full ${variant === 'horizontal' ? 'w-[320px] md:w-[360px] shrink-0' : 'w-full'} rounded-[24px] ${theTheme.bg} border-2 ${theTheme.border} p-5 md:p-6 transition-all duration-300 decoration-none overflow-hidden`}
+      onClick={() => {
+         const event = new CustomEvent('openQuickViewModal', { detail: opportunity });
+         window.dispatchEvent(event);
+      }}
+      className={`group relative flex flex-col h-full ${variant === 'horizontal' ? 'w-[320px] md:w-[360px] shrink-0' : 'w-full'} rounded-[24px] ${theTheme.bg} border-2 ${theTheme.border} p-5 md:p-6 transition-all duration-300 decoration-none overflow-hidden cursor-pointer`}
     >
       <div className="relative z-10 flex flex-col h-full">
         {/* Header row */}
@@ -187,7 +353,7 @@ export function OpportunityCard({
             )}
           </div>
           <button 
-            onClick={(e) => { e.preventDefault(); setIsSaved(!isSaved); }}
+            onClick={(e) => { e.stopPropagation(); setIsSaved(!isSaved); }}
             className={`p-2 rounded-xl transition-all ${isSaved ? 'bg-primary text-white shadow-md' : 'text-slate-400 hover:text-primary bg-white/80 dark:bg-white/5 border border-black/[0.03] active:scale-95 shadow-sm'}`}
           >
             <BookmarkIcon className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
@@ -195,11 +361,11 @@ export function OpportunityCard({
         </div>
 
         {/* Title */}
-        <Link href={`/opportunities/${opportunity.slug}`} className="block mb-4">
-          <h3 className="text-[17px] md:text-[20px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] leading-[1.2] group-hover:text-primary transition-colors cursor-pointer line-clamp-2">
+        <div className="block mb-4">
+          <h3 className="text-[17px] md:text-[20px] font-heading font-black text-[#111827] dark:text-[#f3f4f6] leading-[1.2] group-hover:text-primary transition-colors line-clamp-2">
             {opportunity.title}
           </h3>
-        </Link>
+        </div>
 
         {/* Metadata Grid */}
         <div className="grid grid-cols-2 gap-4 mb-5">
@@ -221,12 +387,17 @@ export function OpportunityCard({
               </div>
               <span className="text-[10px] font-black text-slate-400 truncate pr-1 uppercase tracking-tight">{organiserName}</span>
            </div>
-           <Link 
-             href={`/opportunities/${opportunity.slug}`} 
-             className={`h-9 px-4 rounded-xl bg-white dark:bg-white/5 border border-black/[0.03] dark:border-white/5 text-[11px] font-black ${theTheme.text} hover:scale-105 transition-transform active:scale-95 shadow-sm flex items-center`}
-           >
-              Apply
-           </Link>
+           <div 
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center"
+            >
+               <Link 
+                 href={`/opportunities/${opportunity.slug}`} 
+                 className={`h-9 px-4 rounded-xl bg-white dark:bg-white/5 border border-black/[0.03] dark:border-white/5 text-[11px] font-black ${theTheme.text} hover:scale-105 transition-transform active:scale-95 shadow-sm flex items-center`}
+               >
+                  Apply
+               </Link>
+            </div>
         </div>
       </div>
     </motion.div>

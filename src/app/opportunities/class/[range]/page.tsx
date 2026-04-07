@@ -2,12 +2,20 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { Opportunity } from '@/lib/types';
-import { classPageTitle } from '@/lib/seo';
+import { classPageTitle, generateBreadcrumbJsonLd } from '@/lib/seo';
 import { SITE_NAME, CLASS_RANGES } from '@/lib/constants';
 
 export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return CLASS_RANGES.map((range) => ({
+    range: range.slug,
+  }));
+}
 
 export async function generateMetadata(
   { params }: { params: { range: string } }
@@ -41,8 +49,15 @@ export default async function ClassRangePage({ params }: { params: { range: stri
 
   const opportunities: Opportunity[] = (oppsData as Opportunity[]) || [];
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Opportunities', href: '/opportunities' },
+    { name: rangeConfig.label, href: `/opportunities/class/${rangeConfig.slug}` },
+  ]);
+
   return (
     <div className="min-h-[80vh] bg-bg py-12 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="container-main">
         <div className="flex items-center gap-2 mb-6 text-sm text-[rgba(17,17,16,0.6)]">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>

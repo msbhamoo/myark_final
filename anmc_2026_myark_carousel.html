@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myark | ANMC 2026 Carousel Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;600;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            /* BRAND PALETTE */
+            --p-deep: #064e3b;
+            --p-main: #10b981;
+            --p-vibe: #34d399;
+            --secondary: #facc15;
+            --accent-pink: #f472b6;
+            --accent-blue: #38bdf8;
+            
+            /* UI COLORS */
+            --canvas: #09090b;
+            --sheet: #18181b;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+            --text-main: #fafafa;
+            --text-dim: #a1a1aa;
+            
+            /* SLIDE BASICS */
+            --sw: 420px;
+            --sh: 525px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--canvas);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* NAVIGATION HIGHLIGHT */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.04em;
+            color: var(--p-main);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: auto 340px;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 80px;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* INSTAGRAM FRAME                                                            */
+        /* -------------------------------------------------------------------------- */
+        
+        .ig-frame {
+            width: var(--sw);
+            background: #fff;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+            position: relative;
+            transform: translateZ(0);
+        }
+
+        .ig-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: #fff;
+            color: #000;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .user-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .inner-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--p-deep);
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .handle-box .user-name {
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .verified-badge {
+            color: #3897f0;
+            width: 12px;
+            height: 12px;
+        }
+
+        .user-loc {
+            font-size: 11px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* CAROUSEL SLIDES                                                            */
+        /* -------------------------------------------------------------------------- */
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+
+        .carousel:active { cursor: grabbing; }
+        .carousel::-webkit-scrollbar { display: none; }
+
+        .slide {
+            min-width: var(--sw);
+            height: var(--sh);
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        /* THEME 1: BOLD GREEN (Title) */
+        .slide.theme-hero {
+            background: linear-gradient(135deg, #064e3b 0%, #064e3b 100%);
+            color: #fff;
+        }
+        .slide.theme-hero::after {
+            content: ''; position: absolute; bottom: -10%; right: -10%;
+            width: 300px; height: 300px; background: var(--p-main);
+            filter: blur(60px); opacity: 0.2; border-radius: 50%;
+        }
+
+        /* THEME 2: CLEAN WHITE (Info) */
+        .slide.theme-clean { background: #fafafa; color: #111; }
+        .slide.theme-clean h1 { color: #064e3b; }
+
+        /* THEME 3: DARK MODE (Intensity) */
+        .slide.theme-dark { background: #0c0c0c; color: #fff; }
+
+        /* THEME 4: GRADIENT POP (CTA) */
+        .slide.theme-pop {
+            background: linear-gradient(160deg, #10b981 0%, #047857 100%);
+            color: #fff;
+        }
+
+        /* CONTENT ELEMENTS */
+        .pill {
+            display: inline-flex;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            align-self: flex-start;
+        }
+
+        .slide.theme-hero .pill { background: rgba(255, 255, 255, 0.1); color: var(--p-vibe); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .slide.theme-clean .pill { background: rgba(16, 185, 129, 0.1); color: var(--p-deep); border: 1px solid rgba(16, 185, 129, 0.1); }
+        .slide.theme-dark .pill { background: #222; color: #aaa; border: 1px solid #333; }
+
+        h1 {
+            font-family: 'Bricolage Grotesque';
+            font-size: 44px;
+            line-height: 0.95;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 20px;
+        }
+
+        .highlight { color: var(--p-main); }
+        .slide.theme-hero .highlight { color: var(--secondary); }
+
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+        .slide.theme-dark .feature-card { background: #1a1a1a; border-color: #333; }
+        .slide.theme-pop .feature-card { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.1); }
+
+        .icon-circle {
+            width: 32px; height: 32px; border-radius: 10px;
+            background: var(--p-main); display: flex; align-items: center;
+            justify-content: center; color: #fff;
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* INTERACTIVE ELEMENTS                                                       */
+        /* -------------------------------------------------------------------------- */
+
+        .progress-bar {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .segment {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        .slide.theme-hero .segment, .slide.theme-dark .segment, .slide.theme-pop .segment { background: rgba(255, 255, 255, 0.15); }
+
+        .fill {
+            height: 100%;
+            background: var(--p-main);
+            width: 0%;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide.theme-hero .fill, .slide.theme-dark .fill, .slide.theme-pop .fill { background: #fff; }
+
+        .scroll-hint {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.3;
+            animation: bounceRight 2s infinite;
+        }
+
+        @keyframes bounceRight {
+            0%, 20%, 50%, 80%, 100% {transform: translate(0, -50%)}
+            40% {transform: translate(-10px, -50%)}
+            60% {transform: translate(-5px, -50%)}
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* CONTROL PANEL                                                              */
+        /* -------------------------------------------------------------------------- */
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--sheet);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .card h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: var(--text-dim); }
+
+        .btn {
+            background: var(--p-main);
+            border: none;
+            color: #000;
+            padding: 16px;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn:hover { transform: scale(1.02); background: var(--p-vibe); }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            box-shadow: none;
+            margin-top: 10px;
+        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+
+        .footer-credit {
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-dim);
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .export-status {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 200;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; justify-items: center; margin-top: 100px; }
+            .controls { width: 420px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="top-nav">
+        <div class="logo">
+            <div class="icon-circle" style="width:24px; height:24px; border-radius: 6px;">M</div>
+            myark.design
+        </div>
+        <div style="font-size: 13px; color: var(--text-dim);">ANMC 2026 Engine</div>
+    </nav>
+
+    <div class="container">
+        <!-- PREVIEW SECTION -->
+        <div class="ig-wrapper">
+            <div class="ig-frame" id="export-frame">
+                <div class="ig-header">
+                    <div class="user-block">
+                        <div class="user-avatar"><div class="inner-avatar">M</div></div>
+                        <div class="handle-box">
+                            <div class="user-name">myark.in <i data-lucide="badge-check" class="verified-badge"></i></div>
+                            <div class="user-loc">Bhubaneswar, Odisha</div>
+                        </div>
+                    </div>
+                    <i data-lucide="more-horizontal" style="width:20px; color:#666;"></i>
+                </div>
+
+                <div class="carousel" id="carousel">
+                    <!-- SLIDE 1: HERO -->
+                    <div class="slide theme-hero" data-index="0">
+                        <div class="pill">Now Open</div>
+                        <h1>Are you India's next<br><span class="highlight">Maths Genius?</span></h1>
+                        <p>₹3 Lakhs in prizes. National recognition. A certificate that opens doors. One competition changes everything.</p>
+                        <div class="progress-bar">
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div></div></div><div class="segment"><div></div></div>
+                            <div class="segment"><div></div></div><div class="segment"><div></div></div>
+                        </div>
+                        <div class="scroll-hint"><i data-lucide="chevron-right"></i></div>
+                    </div>
+
+                    <!-- SLIDE 2: THE PROBLEM -->
+                    <div class="slide theme-clean" data-index="1">
+                        <div class="pill">Reality Check</div>
+                        <h1>Most students <br>miss this.</h1>
+                        <div class="feature-card" style="background:#fff1f2; border-color:#fecdd3;">
+                            <div class="icon-circle" style="background:#e11d48;"><i data-lucide="alert-triangle" style="width:18px"></i></div>
+                            Missed Scholarships (₹3L+)
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-circle"><i data-lucide="file-text" style="width:18px"></i></div>
+                            Blank CVs vs Top Universities
+                        </div>
+                        <p style="margin-top:20px; font-size: 14px; color:#666;">ANMC 2026 is your national shortcut.</p>
+                        <div class="progress-bar">
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div></div></div><div class="segment"><div></div></div><div class="segment"><div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 3: THE SOLUTION -->
+                    <div class="slide theme-dark" data-index="2">
+                        <div class="pill">The Platform</div>
+                        <h1>ANMC 2026 <br>Breakthrough.</h1>
+                        <div class="feature-card">
+                            <div class="icon-circle"><i data-lucide="monitor" style="width:18px"></i></div>
+                            100% Online Exam from Home
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-circle" style="background:var(--secondary); color:#000;"><i data-lucide="star" style="width:18px"></i></div>
+                            National Interview Round
+                        </div>
+                        <p style="margin-top:20px; font-size: 14px; color:#aaa;">Organized by AICTSD National Board.</p>
+                        <div class="progress-bar">
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div></div></div><div class="segment"><div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 4: REWARDS -->
+                    <div class="slide theme-clean" data-index="3">
+                        <div class="pill">Prizes</div>
+                        <h1>Earn While <br>You Compete.</h1>
+                        <div class="feature-card">
+                            <div class="icon-circle" style="background:var(--accent-blue)"><i data-lucide="award" style="width:18px"></i></div>
+                            ₹1,00,000 for AIR #1
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-circle" style="background:var(--accent-pink)"><i data-lucide="medallion" style="width:18px"></i></div>
+                            National Rank Certificates
+                        </div>
+                        <div class="progress-bar">
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div></div></div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 5: CTA -->
+                    <div class="slide theme-pop" data-index="4">
+                        <div class="pill">Action</div>
+                        <h1>Start Your <br>Journey.</h1>
+                        <p>Join thousands of students competing for India's most prestigious title.</p>
+                        <div style="margin-top:auto; background: #fff; color: #000; padding: 20px; border-radius: 24px; text-align: center; font-weight: 800; font-size: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2)">
+                            Apply @ myark.in
+                        </div>
+                        <div class="progress-bar">
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                            <div class="segment"><div class="fill" style="width:100%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLS SECTION -->
+        <div class="controls">
+            <div class="card">
+                <h3><i data-lucide="download-cloud" style="width:16px"></i> Export Assets</h3>
+                <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 20px;">Download high-resolution (2x Retina) PNGs for your Instagram grid.</p>
+                
+                <button class="btn" onclick="exportCurrent()">
+                    Download Current Slide
+                    <i data-lucide="image" style="width:18px"></i>
+                </button>
+                
+                <button class="btn btn-outline" onclick="exportAll()">
+                    Batch Export All (5 Slides)
+                    <i data-lucide="layers" style="width:18px"></i>
+                </button>
+            </div>
+
+            <div class="card">
+                <h3><i data-lucide="settings" style="width:16px"></i> Post Settings</h3>
+                <div style="display:flex; flex-direction:column; gap:8px; font-size:12px; color:var(--text-dim);">
+                    <div style="display:flex; align-items:center; gap:8px"><i data-lucide="check" style="width:12px; color:var(--p-main)"></i> Ratio: 4:5 Portrait</div>
+                    <div style="display:flex; align-items:center; gap:8px"><i data-lucide="check" style="width:12px; color:var(--p-main)"></i> Scale: 2.0x High Res</div>
+                    <div style="display:flex; align-items:center; gap:8px"><i data-lucide="check" style="width:12px; color:var(--p-main)"></i> Branding: Myark Verified</div>
+                </div>
+            </div>
+
+            <div class="footer-credit">
+                Built by Myark Creative Labs
+            </div>
+        </div>
+    </div>
+
+    <div id="status" class="export-status">
+        <i data-lucide="loader-2" class="spin" style="width:18px"></i>
+        <span>Preparing Image...</span>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const carousel = document.getElementById('carousel');
+        const status = document.getElementById('status');
+
+        carousel.addEventListener('scroll', () => {
+            const hint = document.querySelector('.scroll-hint');
+            if (carousel.scrollLeft > 50 && hint) {
+                hint.style.display = 'none';
+            }
+        });
+
+        async function captureSlide(idx) {
+            const slides = document.querySelectorAll('.slide');
+            const target = slides[idx];
+            
+            const frame = document.createElement('div');
+            frame.className = 'ig-frame';
+            frame.style.width = '420px';
+            frame.style.position = 'fixed';
+            frame.style.top = '-2000px';
+            frame.style.left = '0';
+            document.body.appendChild(frame);
+
+            const header = document.querySelector('.ig-header').cloneNode(true);
+            frame.appendChild(header);
+
+            const clone = target.cloneNode(true);
+            clone.style.minWidth = '420px';
+            frame.appendChild(clone);
+
+            await new Promise(r => setTimeout(r, 150));
+
+            const canvas = await html2canvas(frame, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                logging: false
+            });
+
+            const link = document.createElement('a');
+            link.download = `myark_anmc_post_${idx + 1}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            document.body.removeChild(frame);
+        }
+
+        async function exportCurrent() {
+            status.style.display = 'flex';
+            status.innerHTML = '<i data-lucide="loader-2" style="animation: spin 1s linear infinite"></i><span>Capturing...</span>';
+            lucide.createIcons();
+
+            const idx = Math.round(carousel.scrollLeft / 420);
+            await captureSlide(idx);
+
+            status.innerHTML = '<i data-lucide="smile"></i><span>Downloaded!</span>';
+            setTimeout(() => status.style.display = 'none', 3000);
+            lucide.createIcons();
+        }
+
+        async function exportAll() {
+            status.style.display = 'flex';
+            const count = document.querySelectorAll('.slide').length;
+
+            for (let i = 0; i < count; i++) {
+                status.innerHTML = `<i data-lucide="loader-2" style="animation: spin 1s linear infinite"></i><span>Exporting ${i+1}/${count}...</span>`;
+                lucide.createIcons();
+                await captureSlide(i);
+                await new Promise(r => setTimeout(r, 1000)); 
+            }
+
+            status.innerHTML = '<i data-lucide="party-popper"></i><span>All Posts Saved!</span>';
+            setTimeout(() => status.style.display = 'none', 4000);
+            lucide.createIcons();
+        }
+    </script>
+
+    <style>
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+
+</body>
+
+</html>

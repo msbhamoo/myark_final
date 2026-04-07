@@ -4,15 +4,29 @@ import { Logo } from '@/components/Logo';
 import Link from 'next/link';
 
 // Home Components
-import { HomeHero } from '@/components/home/HomeHero';
-import { ClosingSoonStrip } from '@/components/home/ClosingSoonStrip';
-import { CategoryExplorer } from '@/components/home/CategoryExplorer';
-import { LatestFeed } from '@/components/home/LatestFeed';
+import { HomeHeroV2 } from '@/components/home/HomeHeroV2';
+import { OpportunityFeedV2 } from '@/components/home/OpportunityFeedV2';
 import { CareerExplorerHome } from '@/components/home/CareerExplorerHome';
-import { JourneySection } from '@/components/home/JourneySection';
-import { TrustSection } from '@/components/home/TrustSection';
+import { SuccessStories } from '@/components/home/SuccessStories';
+import { GlobalShareButton } from '@/components/home/GlobalShareButton';
+import { OpportunityStatsStrip } from '@/components/home/OpportunityStatsStrip';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: "Myark — Discover Scholarships, Olympiads & Careers for Indian Students | Class 1–12",
+  description: "India's premier discovery platform for K-12 students. Find verified scholarships, olympiads, coding competitions, and career roadmaps. All-in-one guide for student excellence.",
+  alternates: {
+    canonical: 'https://myark.in',
+  },
+  openGraph: {
+    title: "Myark — Make your Mark. Discover Opportunities for Indian Students",
+    description: "Verified scholarships, olympiads, and career roadmaps for students in India. Start your excellence journey today.",
+    url: 'https://myark.in',
+    type: 'website',
+  },
+};
 
 export default async function Home() {
   const supabase = createServerClient();
@@ -21,65 +35,119 @@ export default async function Home() {
   const [
     { data: categoriesData },
     { data: latestData },
-    { data: featuredCareersData },
-    { count: oppCount }
+    { data: featuredCareersData }
   ] = await Promise.all([
     supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-    supabase.from('opportunities').select('*, category:categories(*), organiser:organisers(*)').eq('is_published', true).order('created_at', { ascending: false }).limit(20),
-    supabase.from('career_directory').select('*').eq('is_published', true).order('rarity_level', { ascending: false }).limit(4),
-    supabase.from('opportunities').select('id', { count: 'exact', head: true }).eq('is_published', true)
+    supabase.from('opportunities').select('*, category:categories(*), organiser:organisers(*)').eq('is_published', true).order('created_at', { ascending: false }).limit(200),
+    supabase.from('career_directory').select('*').eq('is_published', true).order('rarity_level', { ascending: false }).limit(4)
   ]);
 
   const categories: Category[] = categoriesData || [];
   const latest: Opportunity[] = latestData || [];
   const featuredCareers: Career[] = (featuredCareersData as unknown as Career[]) || [];
-  const activeOppCount = oppCount || 0;
 
-  // Fetch Closing Soon data
-  const today = new Date().toISOString().split('T')[0];
-  const threeWeeksFromNow = new Date();
-  threeWeeksFromNow.setDate(threeWeeksFromNow.getDate() + 21);
-  const closingDate = threeWeeksFromNow.toISOString().split('T')[0];
+  // 1. Define styling for known categories
+  const categoryStyles: Record<string, { title: string; subtitle: string; badge: string; accent: 'emerald' | 'blue' | 'indigo' | 'amber' }> = {
+    'scholarship': { 
+      title: "High Value Scholarships.", 
+      subtitle: "Direct funding for your education. Verified and currently accepting applications.",
+      badge: "Direct Funding",
+      accent: "blue"
+    },
+    'olympiad': { 
+      title: "Top National Olympiads.", 
+      subtitle: "Test your excellence against the best. Pathway to international certificates.",
+      badge: "National Excellence",
+      accent: "indigo"
+    },
+    'coding': { 
+      title: "Next-Gen Coding & Tech.", 
+      subtitle: "Master the skills of the future. Hackathons, coding contests, and tech bootcamps.",
+      badge: "Tech & Dev",
+      accent: "emerald"
+    },
+    'innovation': { 
+      title: "Innovation & Research.", 
+      subtitle: "For the thinkers and creators. Science fairs, research grants, and novelty awards.",
+      badge: "Future Ready",
+      accent: "amber"
+    },
+    'competition': { 
+      title: "Elite Student Competitions.", 
+      subtitle: "Win big and grow faster. Case studies, quizzes, and skill-based contests.",
+      badge: "Win & Grow",
+      accent: "indigo"
+    }
+  };
 
-  const { data: closingSoonData } = await supabase
-    .from('opportunities')
-    .select('title, slug, deadline')
-    .eq('is_published', true)
-    .eq('is_ongoing', false)
-    .gte('deadline', today)
-    .lte('deadline', closingDate)
-    .order('deadline', { ascending: true })
-    .limit(3);
+  // 2. Identify all categories present in the current 'latest' data (published and active)
+  const availableCategories = Array.from(new Set(latest.map(o => o.category?.id).filter(Boolean)));
+  
+  // 3. Shuffle and pick 2 random categories that have at least 1 opportunity
+  // We'll use a simple deterministic-looking shuffle for each request (force-dynamic)
+  const shuffledIds = availableCategories.sort(() => 0.5 - Math.random());
+  const selectedCategoryIds = shuffledIds.slice(0, 2);
 
-  const closingSoon = closingSoonData || [];
+  // 4. Map them to display sections
+  const dynamicSections = selectedCategoryIds.map(id => {
+    const sectionOpps = latest.filter(o => o.category?.id === id).slice(0, 6);
+    const categoryName = sectionOpps[0]?.category?.label || 'Featured';
+    const slug = sectionOpps[0]?.category?.label.toLowerCase() || '';
+
+    // Find style or use fallback
+    const styleKey = Object.keys(categoryStyles).find(k => slug.includes(k));
+    const style = styleKey ? categoryStyles[styleKey] : {
+      title: `Top ${categoryName} Picks.`,
+      subtitle: `Verified programs in ${categoryName} for school students in India.`,
+      badge: "Verified Access",
+      accent: "emerald" as const
+    };
+
+    return {
+      opps: sectionOpps,
+      name: categoryName,
+      slug: slug,
+      ...style
+    };
+  });
+
+  const trending = latest.slice(0, 8);
 
   return (
-    <div className="flex flex-col items-center">
-      {/* 1. Hero Section — The first impression */}
-      <HomeHero 
+    <div className="flex flex-col items-center w-full">
+      <HomeHeroV2 
         categories={categories} 
       />
 
-      {/* 2. Urgency Layer */}
-      <ClosingSoonStrip items={closingSoon} />
+      {/* 1.5 Stats Bar — Instant Trust */}
+      <OpportunityStatsStrip />
 
-      {/* 4. Categorical Discovery */}
-      <CategoryExplorer categories={categories} />
-
-      {/* 5. The Live Feed — Linear staggered layout */}
-      <LatestFeed 
-        latest={latest} 
-        activeOppCount={activeOppCount} 
+      {/* 2. Trending Feed — Dynamic Class Filter */}
+      <OpportunityFeedV2 
+        initialOpportunities={trending} 
+        title="Trending For Your Class."
       />
 
-      {/* 6. Career Explorer — The Premium Dark Experience */}
+      {/* 3 & 4. Randomized Dynamic Sections */}
+      {dynamicSections.map((section, idx) => (
+        <OpportunityFeedV2 
+          key={section.slug + idx}
+          initialOpportunities={section.opps} 
+          title={section.title}
+          subtitle={section.subtitle}
+          badge={section.badge}
+          accentColor={section.accent}
+          showGradeFilter={false}
+          limit={6}
+          viewAllLink={`/opportunities/category/${section.slug.replace(/\s+/g, '-')}`}
+        />
+      ))}
+
+      {/* 5. Success Stories — Proof */}
+      <SuccessStories />
+
+      {/* 5. Career Explorer — Depth */}
       <CareerExplorerHome featuredCareers={featuredCareers} />
-
-      {/* 7. Journey Path */}
-      <JourneySection />
-
-      {/* 8. Trust Matrix */}
-      <TrustSection />
 
       {/* 9. Final Multi-Action CTA */}
       <section className="w-full bg-[#0a0f0a] py-24 md:py-32 lg:py-40 relative overflow-hidden">
@@ -104,12 +172,7 @@ export default async function Home() {
             >
               Browse Opportunities
             </Link>
-            <Link 
-              href="/student/dashboard" 
-              className="inline-flex items-center justify-center h-16 px-12 rounded-[20px] bg-white/[0.04] border border-white/[0.1] text-[#f0ede5] font-bold text-[17px] hover:bg-white/[0.08] transition-all backdrop-blur-md active:scale-95"
-            >
-              Student Dashboard
-            </Link>
+            <GlobalShareButton />
           </div>
           
           <p className="mt-12 text-[12px] font-bold text-[#6a6a64] uppercase tracking-[0.2em]">

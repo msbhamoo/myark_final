@@ -61,6 +61,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  alternates: {
+    canonical: siteUrl,
+  },
   icons: {
     icon: '/icon.svg',
     apple: '/icon.svg',
@@ -131,7 +134,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${dmSans.variable}`}>
+    <html lang="en-IN" className={`${bricolage.variable} ${dmSans.variable}`}>
       <head>
         <script
           type="application/ld+json"

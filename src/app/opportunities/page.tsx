@@ -1,17 +1,26 @@
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { SidebarFilter } from '@/components/SidebarFilter';
 import { Category, Opportunity } from '@/lib/types';
-import { CLASS_RANGES, SITE_NAME } from '@/lib/constants';
+import { CLASS_RANGES } from '@/lib/constants';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: `Directory — ${SITE_NAME}`,
-  description: 'Browse the complete directory of olympiads, scholarships, exchange programs, and competitions for Indian school students.',
+  title: `All Student Opportunities — Scholarships, Olympiads & Competitions for Class 1–12 India`,
+  description: 'Browse 100+ verified scholarships, olympiads, coding competitions, and exchange programs for Indian school students. Filter by class, category, deadline. Free and updated daily.',
+  alternates: {
+    canonical: 'https://myark.in/opportunities',
+  },
+  openGraph: {
+    title: 'All Student Opportunities — Scholarships, Olympiads & Competitions | Myark',
+    description: 'Browse 100+ verified opportunities for Indian school students. Filter by class, category, deadline.',
+    url: 'https://myark.in/opportunities',
+    type: 'website',
+  },
 };
 
-export const revalidate = 3600;
 
 export default async function OpportunitiesPage({
   searchParams,

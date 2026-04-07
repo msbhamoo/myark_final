@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { CareerCard } from '@/components/CareerCard';
 import { Career } from '@/lib/types';
 

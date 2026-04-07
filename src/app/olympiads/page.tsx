@@ -1,14 +1,24 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { OlympiadCard } from '@/components/OlympiadCard';
 import { Olympiad } from '@/lib/types';
 
 export const revalidate = 86400; // ISR for 24 hours
 
 export const metadata: Metadata = {
-  title: "All Olympiads for School Students in India 2026 — Complete List | Myark",
-  description: "Discover every olympiad available to school students in India. From SOF to HBCSE pathway (IMO, IPhO, IChO) – filters by class, subject, and level.",
+  title: "Complete Olympiad List for Class 1–12 India 2025–26 | Myark",
+  description: "Discover every verified olympiad for school students in India. From SOF to HBCSE pathway (IMO, IPhO, IChO). Find eligibility, registration dates, and prep tips.",
+  alternates: {
+    canonical: 'https://myark.in/olympiads',
+  },
+  openGraph: {
+    title: "Complete Olympiad List for Class 1–12 Students India | Myark",
+    description: "Browse 50+ olympiads available to Indian students. From Science and Math to Astronomy and Computer Science.",
+    url: 'https://myark.in/olympiads',
+    type: 'website',
+  },
 };
 
 interface OlympiadsPageProps {

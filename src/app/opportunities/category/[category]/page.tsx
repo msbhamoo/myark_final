@@ -2,28 +2,43 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+import { supabase as supabaseAnon } from '@/lib/supabase';
 import { OpportunityCard } from '@/components/OpportunityCard';
 import { Category, Opportunity } from '@/lib/types';
-import { categoryPageTitle } from '@/lib/seo';
-import { SITE_NAME } from '@/lib/constants';
+import { categoryPageTitle, generateBreadcrumbJsonLd } from '@/lib/seo';
+import { SITE_NAME, SITE_URL } from '@/lib/constants';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateMetadata(
   { params }: { params: { category: string } }
 ): Promise<Metadata> {
-  const supabase = createServerClient();
-  const { data } = await supabase
+  const { data } = await supabaseAnon
     .from('categories')
-    .select('label')
+    .select('slug, label')
     .eq('slug', params.category)
     .single();
 
   if (!data) return { title: 'Not Found' };
 
+  const isScholarship = data.slug === 'scholarship';
+  const path = `/opportunities/category/${data.slug}`;
+
   return {
-    title: categoryPageTitle(data.label),
-    description: `Browse all verified K-12 ${data.label} opportunities for Indian students. Discover your eligibility and apply before the deadline on ${SITE_NAME}.`,
+    title: isScholarship 
+      ? `Scholarships for School Students in India 2025–26 — Private & Govt | Myark`
+      : categoryPageTitle(data.label),
+    description: isScholarship
+      ? `Discover 50+ verified private and government scholarships for Indian school students (Class 1-12). Find eligibility, registration dates, and application links.`
+      : `Browse all verified K-12 ${data.label} opportunities for Indian students. Discover your eligibility and apply on ${SITE_NAME}.`,
+    alternates: { canonical: `${SITE_URL}${path}` },
+    openGraph: {
+       title: isScholarship ? "Scholarships for Students India | Myark" : `${data.label} Opportunities | Myark`,
+       description: isScholarship ? "Verified scholarships for K-12 Indian students." : `Discover verified ${data.label} programs.`,
+       url: `${SITE_URL}${path}`,
+       type: 'website',
+    }
   };
 }
 
@@ -53,8 +68,15 @@ export default async function CategoryPage({ params }: { params: { category: str
 
   const opportunities: Opportunity[] = (oppsData as Opportunity[]) || [];
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Opportunities', href: '/opportunities' },
+    { name: category.label, href: `/opportunities/category/${category.slug}` },
+  ]);
+
   return (
     <div className="min-h-[80vh] bg-bg py-12 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="container-main">
         <div className="flex items-center gap-2 mb-6 text-sm text-[rgba(17,17,16,0.6)]">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>

@@ -1,10 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase-server';
+export const dynamic = 'force-dynamic';
 import { OlympiadCard } from '@/components/OlympiadCard';
 import { Olympiad } from '@/lib/types';
+import { generateBreadcrumbJsonLd } from '@/lib/seo';
+import { CLASS_RANGES, SITE_URL, SITE_NAME } from '@/lib/constants';
 
 export const revalidate = 86400; // 24 hours
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return CLASS_RANGES.map((range) => ({
+    range: range.slug,
+  }));
+}
 
 interface ClassFilterPageProps {
   params: {
@@ -13,10 +23,25 @@ interface ClassFilterPageProps {
 }
 
 export async function generateMetadata({ params }: ClassFilterPageProps): Promise<Metadata> {
-  const range = params.range.replace('-', '–');
+  const rangeConfig = CLASS_RANGES.find(r => r.slug === params.range);
+  const label = rangeConfig?.label || params.range.replace('-', '–');
+  const path = `/olympiads/class/${params.range}`;
+
   return {
-    title: `Olympiads for Class ${range} Students India 2026 — Complete List | Myark`,
-    description: `Discover all competitive olympiads available for Class ${range} students in India. Filters for science, maths, and english olympiads.`,
+    title: `Olympiads for Class ${label} Students India 2025–26 | Complete List`,
+    description: `Browse every competitive olympiad for Class ${label} students in India. Filters for science, maths, astronomy and english olympiads. Verified dates and guide.`,
+    alternates: { canonical: `${SITE_URL}${path}` },
+    openGraph: {
+      title: `Olympiads for Class ${label} Students | ${SITE_NAME}`,
+      description: `Complete list of olympiads for school students. Register and prepare for exams.`,
+      url: `${SITE_URL}${path}`,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Olympiads for Class ${label} | ${SITE_NAME}`,
+      description: `Complete list of olympiads for schools students.`,
+    }
   };
 }
 
@@ -56,8 +81,18 @@ export default async function ClassFilterPage({ params }: ClassFilterPageProps) 
     }))
   };
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Olympiads', href: '/olympiads' },
+    { name: `Class ${rangeLabel}`, href: `/olympiads/class/${params.range}` },
+  ]);
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
