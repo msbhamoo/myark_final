@@ -55,7 +55,7 @@ export default function ForOrganisersPage() {
           </div>
 
           <div className="bg-surface p-8 rounded-[24px] border border-default shadow-sm text-center">
-            <h3 className="text-4xl font-black text-green-500 mb-2">40%</h3>
+            <h3 className="text-4xl font-black text-blue-500 mb-2">40%</h3>
             <p className="font-bold text-heading text-[14px] uppercase tracking-wider mb-1">Click-Through</p>
             <span className="text-[12px] text-muted">Average listing CTR</span>
           </div>

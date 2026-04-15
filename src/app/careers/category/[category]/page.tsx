@@ -53,14 +53,14 @@ export default async function CareerCategoryPage({ params }: { params: { categor
     <div className="bg-[var(--color-bg)] min-h-screen">
         <section className="bg-[#0a0f0a] text-white py-20 px-4 md:py-32">
             <div className="container-main max-w-[1240px] px-4">
-                <nav className="flex items-center gap-2 mb-8 text-[11px] font-bold text-[#4ade80] uppercase tracking-widest">
+                <nav className="flex items-center gap-2 mb-8 text-[11px] font-bold text-[#70A5FF] uppercase tracking-widest">
                     <Link href="/careers" className="hover:underline">Careers</Link>
                     <span>/</span>
                     <span className="text-white/40">Category</span>
                 </nav>
                 <h1 className="text-[36px] md:text-[60px] font-heading font-extrabold text-[#f0ede5] leading-[1.1] mb-6">
                     Careers in <br />
-                    <span className="text-[#4ade80]">{rawCat.charAt(0).toUpperCase() + rawCat.slice(1)}</span>
+                    <span className="text-[#70A5FF]">{rawCat.charAt(0).toUpperCase() + rawCat.slice(1)}</span>
                 </h1>
                 <p className="text-[17px] md:text-[20px] text-[#8a8a84] font-medium max-w-2xl leading-relaxed">
                     Explore all {careers.length} career options in {rawCat}. From common mainstream roles to high-paying rare opportunities.

@@ -11,11 +11,11 @@
 @layer base {
   :root {
     /* Brand Colors */
-    --color-primary: #1b5e28;
-    /* Forest Green */
-    --color-primary-hover: #14461e;
-    --color-accent: #4ade80;
-    /* Accent Green */
+    --color-primary: #1F58CB;
+    /* Refined Brand Blue */
+    --color-primary-hover: #1646B1;
+    --color-accent: #B3CBFE;
+    /* Refined Light Blue */
 
     /* Backgrounds */
     --color-bg: #fdfdfc;
@@ -42,8 +42,8 @@
     --color-warning-text: #c2410c;
     --color-standard-bg: #f3f4f6;
     --color-standard-text: #4b5563;
-    --color-ongoing-bg: #dcfce7;
-    --color-ongoing-text: #15803d;
+    --color-ongoing-bg: rgba(31, 88, 203, 0.1);
+    --color-ongoing-text: #1F58CB;
 
     /* Category - Semantic defaults */
     --color-cat-bg: #f3f4f6;
@@ -78,9 +78,9 @@
 
   /* ── Dark Mode (class-based toggle) ─────────────────────── */
   .dark {
-    --color-primary: #22c55e;
-    --color-primary-hover: #16a34a;
-    --color-accent: #4ade80;
+    --color-primary: #3D8BFF;
+    --color-primary-hover: #1F75FF;
+    --color-accent: #70A5FF;
 
     --color-bg: #0a0a0a;
     --color-surface: #161616;
@@ -100,8 +100,8 @@
     --color-warning-text: #fdba74;
     --color-standard-bg: rgba(255, 255, 255, 0.06);
     --color-standard-text: #9ca3af;
-    --color-ongoing-bg: rgba(22, 163, 74, 0.15);
-    --color-ongoing-text: #86efac;
+    --color-ongoing-bg: rgba(0, 102, 255, 0.15);
+    --color-ongoing-text: #3D8BFF;
 
     --color-cat-bg: rgba(255, 255, 255, 0.06);
     --color-cat-text: #d1d5db;

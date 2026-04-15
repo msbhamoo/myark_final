@@ -70,7 +70,7 @@ export function ApplyButtonWrapper({
     <button 
       onClick={handleApplyClick}
       className={`w-full py-4 text-white font-bold rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 ${
-        hasApplied ? 'bg-[#1b5e28] hover:bg-[#14461e]' : 'bg-[#dc2626] hover:bg-[#b01e1e]'
+        hasApplied ? 'bg-[#0066FF] hover:bg-[#0050CC]' : 'bg-[#dc2626] hover:bg-[#b01e1e]'
       } ${className}`}
     >
       {hasApplied ? (
@@ -155,7 +155,7 @@ export function ApplyButtonWrapper({
                Official Website
             </span>
              {daysLeft !== null && (
-               <span className={`text-[10px] font-bold ${daysLeft <= 7 ? 'text-[#dc2626] dark:text-red-400' : 'text-[#16a34a] dark:text-green-400'}`}>
+               <span className={`text-[10px] font-bold ${daysLeft <= 7 ? 'text-[#dc2626] dark:text-red-400' : 'text-[#1F75FF] dark:text-blue-400'}`}>
                  {daysLeft} days left
                </span>
              )}
@@ -163,7 +163,7 @@ export function ApplyButtonWrapper({
           <button 
             onClick={handleApplyClick}
             className={`w-full py-2.5 text-[13px] text-white font-bold rounded-xl transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 ${
-              hasApplied ? 'bg-[#1b5e28] hover:bg-[#14461e]' : 'bg-[#dc2626] hover:bg-[#b01e1e]'
+              hasApplied ? 'bg-[#0066FF] hover:bg-[#0050CC]' : 'bg-[#dc2626] hover:bg-[#b01e1e]'
             }`}
           >
             {hasApplied ? (
@@ -183,7 +183,7 @@ export function ApplyButtonWrapper({
           <div className="lg:hidden bg-[#fdf2f2] border border-[#fecaca] rounded-xl p-4 mb-6 sticky top-20 z-[30]">
              <p className="text-[14px] font-bold text-heading mb-3 text-center">Important: Did you successfully apply?</p>
              <div className="flex gap-2">
-               <button onClick={() => handleFeedback('applied')} className="flex-1 py-2.5 bg-[#1b5e28] text-white text-xs font-bold rounded-lg shrink-0">YES</button>
+               <button onClick={() => handleFeedback('applied')} className="flex-1 py-2.5 bg-[#0066FF] text-white text-xs font-bold rounded-lg shrink-0">YES</button>
                <button onClick={() => handleFeedback('not_applied')} className="flex-1 py-2.5 bg-white border border-[#e5e7eb] text-heading text-xs font-bold rounded-lg">NO</button>
                <button onClick={() => handleFeedback('not_relevant')} className="flex-1 py-2.5 bg-white border border-[#e5e7eb] text-heading text-xs font-bold rounded-lg capitalize">other</button>
              </div>

@@ -32,7 +32,7 @@ export default async function QuizHubPage() {
                         </div>
                         <div className="hidden md:block w-px h-12 bg-white/10"></div>
                         <div className="text-center">
-                            <div className="text-3xl font-black text-green-400 animate-pulse">Live</div>
+                            <div className="text-3xl font-black text-blue-400 animate-pulse">Live</div>
                             <div className="text-xs text-gray-400 uppercase tracking-wider font-bold mt-1">Real-time Stats</div>
                         </div>
                         <div className="hidden md:block w-px h-12 bg-white/10"></div>

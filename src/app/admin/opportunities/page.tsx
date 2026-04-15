@@ -72,13 +72,13 @@ export default async function OpportunitiesPage({
         <div>
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Opportunities</h1>
-            <span className="px-2 py-0.5 bg-[#1b5e28]/10 dark:bg-green-500/10 text-[#1b5e28] dark:text-green-400 text-[10px] font-black rounded uppercase tracking-wider border border-[#1b5e28]/10 dark:border-green-500/20">Active Database</span>
+            <span className="px-2 py-0.5 bg-[#0066FF]/10 dark:bg-blue-500/10 text-[#0066FF] dark:text-blue-400 text-[10px] font-black rounded uppercase tracking-wider border border-[#0066FF]/10 dark:border-blue-500/20">Active Database</span>
           </div>
           <p className="text-gray-500 dark:text-gray-400 text-sm font-medium italic">Curate and refine the best student listings across India.</p>
         </div>
         <div className="flex items-center gap-4 w-full md:w-auto">
           <BulkImportModal />
-          <Link href="/admin/opportunities/new" className="h-14 px-8 bg-[#1b5e28] hover:bg-[#14461e] text-white rounded-2xl shadow-lg shadow-green-900/10 transition-all flex items-center justify-center font-black text-xs uppercase tracking-widest gap-2 group">
+          <Link href="/admin/opportunities/new" className="h-14 px-8 bg-[#0066FF] hover:bg-[#0050CC] text-white rounded-2xl shadow-lg shadow-blue-900/10 transition-all flex items-center justify-center font-black text-xs uppercase tracking-widest gap-2 group">
              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-90 transition-transform"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
              Add Entry
           </Link>
@@ -130,7 +130,7 @@ export default async function OpportunitiesPage({
                   </td>
                   <td className="px-6 py-5 text-center">
                     <div className="inline-flex flex-col items-center">
-                      <span className="text-lg font-bold text-[#1b5e28] dark:text-green-400 leading-none">
+                      <span className="text-lg font-bold text-[#0066FF] dark:text-blue-400 leading-none">
                         {viewsMap[opp.id] || 0}
                       </span>
                       <span className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Total Views</span>
@@ -139,7 +139,7 @@ export default async function OpportunitiesPage({
                   <td className="px-6 py-5">
                     <div className="flex flex-col gap-1.5">
                        {opp.is_published ? (
-                        <span className="inline-flex items-center w-fit px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 dark:bg-green-500/10 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-500/20 uppercase">PUBLISHED</span>
+                        <span className="inline-flex items-center w-fit px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 dark:bg-blue-500/10 text-blue-800 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 uppercase">PUBLISHED</span>
                       ) : (
                         <span className="inline-flex items-center w-fit px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 dark:bg-white/10 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-white/10 uppercase">DRAFT</span>
                       )}
@@ -150,7 +150,7 @@ export default async function OpportunitiesPage({
                   </td>
                   <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-3 items-center opacity-40 group-hover:opacity-100 transition-opacity">
-                      <Link href={`/admin/opportunities/${opp.id}/edit`} className="text-[#1b5e28] dark:text-green-400 hover:text-[#14461e] dark:hover:text-green-300 font-bold text-sm">Update</Link>
+                      <Link href={`/admin/opportunities/${opp.id}/edit`} className="text-[#0066FF] dark:text-blue-400 hover:text-[#0050CC] dark:hover:text-blue-300 font-bold text-sm">Update</Link>
                       <span className="text-gray-300 dark:text-gray-700">/</span>
                       <DeleteButton id={opp.id} />
                     </div>

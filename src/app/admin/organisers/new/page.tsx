@@ -36,7 +36,7 @@ export default function NewOrganiserPage() {
           </div>
 
           <div className="pt-6 border-t border-gray-200 flex justify-end">
-            <button type="submit" className="btn btn-primary px-8 bg-[#1b5e28] hover:bg-[#14461e] text-white">Save Organiser</button>
+            <button type="submit" className="btn btn-primary px-8 bg-[#0066FF] hover:bg-[#0050CC] text-white">Save Organiser</button>
           </div>
         </form>
       </div>

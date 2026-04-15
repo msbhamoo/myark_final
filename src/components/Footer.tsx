@@ -5,7 +5,7 @@ import { createServerClient } from '@/lib/supabase-server';
 
 export async function Footer() {
   const supabase = createServerClient();
-  
+
   // Fetch up to 12 popular/recent opportunities for the dynamic SEO tag cloud
   const { data: popularOpps } = await supabase
     .from('opportunities')
@@ -18,15 +18,15 @@ export async function Footer() {
   const popularSearches = popularOpps && popularOpps.length > 0
     ? popularOpps.map(opp => ({ label: opp.title, href: `/opportunities/${opp.slug}` }))
     : [
-        { label: "NTSE Scholarship", href: "/opportunities?q=NTSE" },
-        { label: "SOF Olympiad", href: "/opportunities?q=SOF" },
-        { label: "Coding Competition Class 8", href: "/opportunities?q=Coding" },
-      ];
+      { label: "NTSE Scholarship", href: "/opportunities?q=NTSE" },
+      { label: "SOF Olympiad", href: "/opportunities?q=SOF" },
+      { label: "Coding Competition Class 8", href: "/opportunities?q=Coding" },
+    ];
 
   return (
     <footer className="w-full bg-surface border-t border-default pt-12 pb-24 md:pb-12">
       <div className="container-main">
-        
+
         {/* SEO Tag Cloud Row */}
         <div className="mb-14 pb-8 border-b border-default">
           <h3 className="text-sm font-bold text-heading mb-4 uppercase tracking-wider">Popular Searches:</h3>
@@ -44,7 +44,7 @@ export async function Footer() {
 
         {/* Main 6-Column Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-16">
-          
+
           {/* Brand & SEO Description */}
           <div className="lg:col-span-1">
             <Link href="/" className="block mb-6">
@@ -86,7 +86,7 @@ export async function Footer() {
               <li><Link href="/careers/stream/science-pcm" className="text-muted hover:text-primary transition-colors">After Science</Link></li>
               <li><Link href="/careers/stream/commerce" className="text-muted hover:text-primary transition-colors">After Commerce</Link></li>
               <li><Link href="/careers/stream/arts" className="text-muted hover:text-primary transition-colors">After Arts</Link></li>
-              <li><Link href="/careers/category/unusual-careers" className="text-muted hover:text-primary transition-colors font-bold text-[#4ade80]">Unusual Careers</Link></li>
+              <li><Link href="/careers/category/unusual-careers" className="text-muted hover:text-primary transition-colors font-bold text-[#70A5FF]">Unusual Careers</Link></li>
             </ul>
           </div>
 
@@ -94,10 +94,10 @@ export async function Footer() {
           <div>
             <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">By Class</h3>
             <ul className="space-y-3.5 text-[14px]">
-              <li><Link href="/opportunities/class/1-5" className="text-muted hover:text-primary transition-colors">Class 1–5</Link></li>
-              <li><Link href="/opportunities/class/6-8" className="text-muted hover:text-primary transition-colors">Class 6–8</Link></li>
-              <li><Link href="/opportunities/class/9-10" className="text-muted hover:text-primary transition-colors">Class 9–10</Link></li>
-              <li><Link href="/opportunities/class/11-12" className="text-muted hover:text-primary transition-colors">Class 11–12</Link></li>
+              <li><Link href="/opportunities/class/class-1-5" className="text-muted hover:text-primary transition-colors">Class 1–5</Link></li>
+              <li><Link href="/opportunities/class/class-6-8" className="text-muted hover:text-primary transition-colors">Class 6–8</Link></li>
+              <li><Link href="/opportunities/class/class-9-10" className="text-muted hover:text-primary transition-colors">Class 9–10</Link></li>
+              <li><Link href="/opportunities/class/class-11-12" className="text-muted hover:text-primary transition-colors">Class 11–12</Link></li>
             </ul>
           </div>
 
@@ -106,6 +106,7 @@ export async function Footer() {
             <h3 className="text-sm font-bold text-heading mb-6 uppercase tracking-wider">Platform</h3>
             <ul className="space-y-3.5 text-[14px]">
               <li><Link href="/about" className="text-muted hover:text-primary transition-colors">About</Link></li>
+              <li><Link href="/blog" className="text-muted hover:text-primary transition-colors">Blog</Link></li>
               <li><Link href="/submit-opportunity" className="text-muted hover:text-primary transition-colors font-medium">Submit</Link></li>
               <li><Link href="/contact" className="text-muted hover:text-primary transition-colors">Contact</Link></li>
               <li><Link href="/privacy" className="text-muted hover:text-primary transition-colors">Privacy</Link></li>
@@ -123,8 +124,8 @@ export async function Footer() {
             <span>Made with <span className="text-red-500">♥</span> in India</span>
             <span className="hidden sm:inline mx-1.5 text-default">•</span>
             <div className="flex gap-3">
-              <a href="https://instagram.com/myarkin" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">Instagram</a>
-              <a href="https://linkedin.com/company/myarkin" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">LinkedIn</a>
+              <a href="https://instagram.com/myark.in" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">Instagram</a>
+              <a href="https://linkedin.com/company/getmyark" target="_blank" rel="noopener noreferrer" className="hover:text-heading transition-colors">LinkedIn</a>
             </div>
           </div>
         </div>

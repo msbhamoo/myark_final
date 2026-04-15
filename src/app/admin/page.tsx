@@ -25,23 +25,23 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 p-6 rounded-xl shadow-sm transition-colors">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1 uppercase tracking-tight">Opportunities</p>
-          <p className="text-3xl font-bold text-[#1b5e28] dark:text-green-400">{oppsCount || 0}</p>
+          <p className="text-3xl font-bold text-[#0066FF] dark:text-blue-400">{oppsCount || 0}</p>
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 p-6 rounded-xl shadow-sm transition-colors">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1 uppercase tracking-tight">Olympiads</p>
-          <p className="text-3xl font-bold text-[#1b5e28] dark:text-green-400">{olymCount || 0}</p>
+          <p className="text-3xl font-bold text-[#0066FF] dark:text-blue-400">{olymCount || 0}</p>
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 p-6 rounded-xl shadow-sm transition-colors">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1 uppercase tracking-tight">Careers</p>
-          <p className="text-3xl font-bold text-[#1b5e28] dark:text-green-400">{careerCount || 0}</p>
+          <p className="text-3xl font-bold text-[#0066FF] dark:text-blue-400">{careerCount || 0}</p>
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 p-6 rounded-xl shadow-sm transition-colors">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1 uppercase tracking-tight">Students</p>
-          <p className="text-3xl font-bold text-[#1b5e28] dark:text-green-400">{studentsCount || 0}</p>
+          <p className="text-3xl font-bold text-[#0066FF] dark:text-blue-400">{studentsCount || 0}</p>
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 p-6 rounded-xl shadow-sm transition-colors">
           <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-1 uppercase tracking-tight">Registrations</p>
-          <p className="text-3xl font-bold text-[#1b5e28] dark:text-green-400">{regsCount || 0}</p>
+          <p className="text-3xl font-bold text-[#0066FF] dark:text-blue-400">{regsCount || 0}</p>
         </div>
       </div>
 

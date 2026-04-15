@@ -47,7 +47,7 @@ export default function NewCategoryPage() {
           </div>
 
           <div className="pt-6 border-t border-gray-200 flex justify-end">
-            <button type="submit" className="btn btn-primary px-8 bg-[#1b5e28] hover:bg-[#14461e] text-white">Save Category</button>
+            <button type="submit" className="btn btn-primary px-8 bg-[#0066FF] hover:bg-[#0050CC] text-white">Save Category</button>
           </div>
         </form>
       </div>

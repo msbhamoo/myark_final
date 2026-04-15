@@ -309,7 +309,7 @@ function CaptionCard({
             onClick={handleCopy}
             className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-bold transition-all
               ${copied
-                ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400'
+                ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400'
                 : 'bg-gray-900 dark:bg-white/10 text-white hover:bg-gray-700 dark:hover:bg-white/15'
               }`}
           >
@@ -321,7 +321,7 @@ function CaptionCard({
 
       {/* Caption body */}
       <div className="p-5">
-        <pre className="whitespace-pre-wrap font-sans text-[13.5px] leading-[1.7] text-gray-700 dark:text-gray-300 selection:bg-green-200 dark:selection:bg-green-500/30 max-h-[400px] overflow-y-auto custom-scrollbar">
+        <pre className="whitespace-pre-wrap font-sans text-[13.5px] leading-[1.7] text-gray-700 dark:text-gray-300 selection:bg-blue-200 dark:selection:bg-blue-500/30 max-h-[400px] overflow-y-auto custom-scrollbar">
           {caption}
         </pre>
       </div>
@@ -403,7 +403,7 @@ export function SocialPostGenerator({ closingSoon, thisWeek, allPublished }: Pro
       {/* ── Page Header ── */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white shadow-lg shadow-green-500/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
             <SparklesIcon />
           </div>
           <div>
@@ -437,7 +437,7 @@ export function SocialPostGenerator({ closingSoon, thisWeek, allPublished }: Pro
               <div className="text-[12px] font-medium text-gray-500 dark:text-gray-500 truncate">{tab.label}</div>
             </div>
             {activeTab === tab.key && (
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-green-500" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-blue-500" />
             )}
           </button>
         ))}
@@ -522,7 +522,7 @@ export function SocialPostGenerator({ closingSoon, thisWeek, allPublished }: Pro
                     </div>
                     <button
                       onClick={() => setSpotlightIdx(prev => (prev + 1) % spotlightPool.length)}
-                      className="text-[12px] font-bold text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-500/10"
+                      className="text-[12px] font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10"
                     >
                       <SparklesIcon />
                       Shuffle next
@@ -537,7 +537,7 @@ export function SocialPostGenerator({ closingSoon, thisWeek, allPublished }: Pro
                         onClick={() => setSpotlightIdx(i)}
                         className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all border
                           ${spotlightIdx === i
-                            ? 'bg-green-100 dark:bg-green-500/15 text-green-800 dark:text-green-300 border-green-300 dark:border-green-500/30'
+                            ? 'bg-blue-100 dark:bg-blue-500/15 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-500/30'
                             : 'bg-gray-50 dark:bg-white/[0.03] text-gray-600 dark:text-gray-400 border-gray-200 dark:border-white/[0.06] hover:border-gray-300 dark:hover:border-white/10'
                           }`}
                       >

@@ -88,7 +88,7 @@ export function QuizResultClient({ quiz }: { quiz: { id: string, slug: string, t
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
                     <div className="bg-black/50 rounded-2xl p-4 border border-white/5 text-center shadow-inner">
-                        <div className="text-3xl font-black text-green-400 mb-1 drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]">{stats.correctCount || 0}</div>
+                        <div className="text-3xl font-black text-blue-400 mb-1 drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]">{stats.correctCount || 0}</div>
                         <div className="text-xs text-gray-500 font-bold uppercase tracking-wider">Correct</div>
                     </div>
                     <div className="bg-black/50 rounded-2xl p-4 border border-white/5 text-center shadow-inner">
@@ -132,9 +132,9 @@ export function QuizResultClient({ quiz }: { quiz: { id: string, slug: string, t
                 
                 <div className="space-y-4">
                     {results.map((item: { id: string, correct: boolean, originalQuestion?: { question: string, option_a: string, option_b: string, option_c: string, option_d: string } & Record<string, string>, is_correct: boolean, question: string, explanation: string, correct_option: string, user_answer_text: string, correct_answer_text: string }) => (
-                        <div key={item.id} className={`p-6 md:p-8 rounded-[2rem] border-2 shadow-lg backdrop-blur-sm ${item.correct ? 'bg-green-500/5 border-green-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
+                        <div key={item.id} className={`p-6 md:p-8 rounded-[2rem] border-2 shadow-lg backdrop-blur-sm ${item.correct ? 'bg-blue-500/5 border-blue-500/20' : 'bg-red-500/5 border-red-500/20'}`}>
                             <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
-                                <div className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-black text-2xl shadow-inner ${item.correct ? 'bg-gradient-to-br from-green-400 to-green-600 text-white' : 'bg-gradient-to-br from-red-400 to-red-600 text-white'}`}>
+                                <div className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-black text-2xl shadow-inner ${item.correct ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white' : 'bg-gradient-to-br from-red-400 to-red-600 text-white'}`}>
                                     {item.correct ? '✓' : '✗'}
                                 </div>
                                 <div className="flex-1 mb-2">
@@ -142,7 +142,7 @@ export function QuizResultClient({ quiz }: { quiz: { id: string, slug: string, t
                                     
                                     <div className="bg-black/60 rounded-xl p-5 border border-white/5 mb-5 shadow-inner">
                                         <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-2">Correct Answer</div>
-                                        <div className="text-lg font-black text-green-400">{item.originalQuestion?.[`option_${item.correct_option.toLowerCase()}`] || item.correct_option}</div>
+                                        <div className="text-lg font-black text-blue-400">{item.originalQuestion?.[`option_${item.correct_option.toLowerCase()}`] || item.correct_option}</div>
                                     </div>
                                     
                                     {item.explanation && (

@@ -17,7 +17,7 @@ export function HeroSearch() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex items-center w-full bg-white/[0.05] backdrop-blur-xl border border-white/[0.1] rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#4ade80]/15 focus-within:border-[#4ade80]/25 transition-all shadow-xl shadow-black/15 h-[48px] md:h-[56px]"
+      className="relative flex items-center w-full bg-white/[0.05] backdrop-blur-xl border border-white/[0.1] rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-[#70A5FF]/15 focus-within:border-[#70A5FF]/25 transition-all shadow-xl shadow-black/15 h-[48px] md:h-[56px]"
     >
       <div className="pl-4 md:pl-5 text-[#6a6a64]">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -36,7 +36,7 @@ export function HeroSearch() {
 
       <button
         type="submit"
-        className="hidden md:flex bg-[#22c55e] text-[#0a0f0a] h-[calc(100%-8px)] my-1 mr-1 px-7 items-center justify-center font-bold rounded-xl hover:bg-[#16a34a] transition-colors text-[14px] shrink-0"
+        className="hidden md:flex bg-[#3D8BFF] text-[#0a0f0a] h-[calc(100%-8px)] my-1 mr-1 px-7 items-center justify-center font-bold rounded-xl hover:bg-[#1F75FF] transition-colors text-[14px] shrink-0"
       >
         Search
       </button>

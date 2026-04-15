@@ -272,3 +272,24 @@ export interface QuizBadge {
   created_at: string;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  cover_image: string | null;
+  category: string;
+  tags: string[];
+  author: string;
+  is_published: boolean;
+  is_featured: boolean;
+  meta_title: string | null;
+  meta_description: string | null;
+  read_time_minutes: number;
+  views: number;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+

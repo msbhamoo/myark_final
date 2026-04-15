@@ -53,7 +53,7 @@ export function SidebarFilter({ categories, categoryCounts }: SidebarFilterProps
                 <div className="flex items-center gap-3">
                   <div className={cn(
                     "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors",
-                    isActive ? "bg-[#1b5e28] border-[#1b5e28]" : "border-[var(--color-border-default)] bg-[var(--color-bg)] group-hover:border-[var(--color-border-hover)]"
+                    isActive ? "bg-[#0066FF] border-[#0066FF]" : "border-[var(--color-border-default)] bg-[var(--color-bg)] group-hover:border-[var(--color-border-hover)]"
                   )}>
                     {isActive && <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
                   </div>
@@ -89,7 +89,7 @@ export function SidebarFilter({ categories, categoryCounts }: SidebarFilterProps
                 className={cn(
                   "w-[46px] h-[46px] rounded-full border flex flex-col items-center justify-center text-[11px] leading-tight font-medium transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary",
                   isActive 
-                    ? "bg-[#1b5e28] border-[#1b5e28] text-white" 
+                    ? "bg-[#0066FF] border-[#0066FF] text-white" 
                     : "bg-surface border-[var(--color-border-default)] text-body hover:border-[var(--color-border-hover)]"
                 )}
               >
@@ -105,11 +105,11 @@ export function SidebarFilter({ categories, categoryCounts }: SidebarFilterProps
         <h4 className="text-[11px] font-bold tracking-[0.15em] text-[#9ca3af] uppercase mb-4">Entry Fee</h4>
         <div className="space-y-3.5">
           <label className="flex items-center gap-3 cursor-pointer group">
-            <div className="w-4 h-4 rounded-[4px] border bg-[#1b5e28] border-[#1b5e28] flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div className="w-4 h-4 rounded-[4px] border bg-[#0066FF] border-[#0066FF] flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <span className="text-[13.5px] text-heading font-medium">Free to enter</span>
           </label>
           <label className="flex items-center gap-3 cursor-pointer group">
-            <div className="w-4 h-4 rounded-[4px] border bg-[#1b5e28] border-[#1b5e28] flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div className="w-4 h-4 rounded-[4px] border bg-[#0066FF] border-[#0066FF] flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
             <span className="text-[13.5px] text-heading font-medium">Under ₹500</span>
           </label>
           <label className="flex items-center gap-3 cursor-pointer group">

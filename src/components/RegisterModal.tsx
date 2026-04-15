@@ -194,7 +194,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
               <input 
                 required
                 type="text" 
-                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#1b5e28] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
+                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#0066FF] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
                 placeholder="E.g. Aryan Sharma"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -208,7 +208,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
                 <label className="block text-[13px] font-bold text-heading mb-1.5 ml-1">Class</label>
                 <select 
                   required
-                  className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#1b5e28] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] appearance-none cursor-pointer"
+                  className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#0066FF] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] appearance-none cursor-pointer"
                   style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%23a1a1aa\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.2em 1.2em', paddingRight: '2.5rem' }}
                   value={studentClass}
                   onChange={(e) => setStudentClass(e.target.value)}
@@ -227,7 +227,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
                 type="tel" 
                 pattern="[0-9]{10}"
                 title="10-digit mobile number"
-                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#1b5e28] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
+                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#0066FF] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
                 placeholder="10-digit number"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
@@ -241,7 +241,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
               <input 
                 required
                 type="text" 
-                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#1b5e28] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
+                className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#0066FF] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
                 placeholder="E.g. DPS R.K. Puram, New Delhi"
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
@@ -257,7 +257,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
               required
               type="password" 
               minLength={4}
-              className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#1b5e28] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
+              className="w-full bg-[#f4f4f5] dark:bg-white/5 border border-transparent rounded-[14px] px-4 py-3.5 outline-none focus:border-[#0066FF] focus:bg-white dark:focus:bg-black/50 transition-all text-heading text-[15px] placeholder-gray-400"
               placeholder={mode === 'signup' ? "Min 4 chars (for future login)" : "Enter your password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -268,7 +268,7 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className="w-full bg-[#1b5e28] text-white hover:bg-[#14461e] font-bold rounded-[14px] py-4 shadow-sm transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 text-[15px]"
+              className="w-full bg-[#0066FF] text-white hover:bg-[#0050CC] font-bold rounded-[14px] py-4 shadow-sm transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 text-[15px]"
             >
               {isSubmitting ? 'Authenticating...' : 'Continue to Official Site'}
               {!isSubmitting && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>}
@@ -280,14 +280,14 @@ export function RegisterModal({ opportunity, isOpen, onClose }: RegisterModalPro
               {mode === 'signup' ? (
                 <p className="text-[13px] font-medium text-heading">
                   Already registered?{' '}
-                  <button type="button" onClick={() => setMode('login')} className="text-[#1b5e28] dark:text-green-400 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">
+                  <button type="button" onClick={() => setMode('login')} className="text-[#0066FF] dark:text-blue-400 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">
                     Login here
                   </button>
                 </p>
               ) : (
                 <p className="text-[13px] font-medium text-heading">
                   New to Myark?{' '}
-                  <button type="button" onClick={() => setMode('signup')} className="text-[#1b5e28] dark:text-green-400 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">
+                  <button type="button" onClick={() => setMode('signup')} className="text-[#0066FF] dark:text-blue-400 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">
                     Create an account
                   </button>
                 </p>

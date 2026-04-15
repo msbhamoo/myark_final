@@ -7,7 +7,7 @@ export function JourneySection() {
       icon: '🔍',
       title: 'Search & Discover',
       desc: 'Browse by category, class, or keyword. Every program is manually verified and updated daily.',
-      color: 'bg-emerald-500'
+      color: 'bg-blue-500'
     },
     {
       id: 2,

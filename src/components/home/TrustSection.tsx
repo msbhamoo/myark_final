@@ -10,8 +10,8 @@ export function TrustSection() {
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
       ),
-      bgColor: 'bg-[#dcfce7] dark:bg-emerald-500/10',
-      iconColor: 'text-emerald-700 dark:text-emerald-500'
+      bgColor: 'bg-[#dcfce7] dark:bg-blue-500/10',
+      iconColor: 'text-blue-700 dark:text-blue-500'
     },
     {
       title: 'Zero Data Selling',

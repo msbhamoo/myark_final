@@ -57,22 +57,22 @@ export default async function CareersHubPage({
     <div className="bg-[#fafafa] dark:bg-gray-950 min-h-screen font-sans text-gray-900 dark:text-gray-100 transition-colors">
       
       {/* HERO SECTION - Responsive Dark Mode styling */}
-      <section className="w-full bg-gradient-to-br from-[#e0f2fe] via-[#f0fdf4] to-[#fbf8cc] dark:from-sky-950/80 dark:via-emerald-950/40 dark:to-indigo-950/40 pt-24 pb-32 relative overflow-hidden border-b border-gray-200 dark:border-gray-800 transition-colors">
+      <section className="w-full bg-gradient-to-br from-[#e0f2fe] via-[#f0fdf4] to-[#fbf8cc] dark:from-sky-950/80 dark:via-blue-950/40 dark:to-indigo-950/40 pt-24 pb-32 relative overflow-hidden border-b border-gray-200 dark:border-gray-800 transition-colors">
         
         {/* Soft background accents */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/40 dark:bg-sky-500/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#4ade80]/10 dark:bg-emerald-500/10 blur-3xl rounded-full translate-y-1/2 -translate-x-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#70A5FF]/10 dark:bg-blue-500/10 blur-3xl rounded-full translate-y-1/2 -translate-x-1/4"></div>
 
         <div className="container-main max-w-[1240px] px-4 relative z-10 text-center">
             
             <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full px-5 py-2 mb-8 shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-[#1B4332] dark:bg-emerald-400 animate-pulse"></span>
-                <span className="text-[12px] font-bold text-[#1B4332] dark:text-emerald-300 uppercase tracking-[0.1em]">Myark Explorer</span>
+                <span className="w-2 h-2 rounded-full bg-[#1B4332] dark:bg-blue-400 animate-pulse"></span>
+                <span className="text-[12px] font-bold text-[#1B4332] dark:text-blue-300 uppercase tracking-[0.1em]">Myark Explorer</span>
             </div>
             
             <h1 className="text-[40px] md:text-[64px] font-heading font-extrabold text-[#1B4332] dark:text-white leading-[1.1] mb-6 tracking-tight max-w-4xl mx-auto">
                 Discover Your Perfect Path. <br className="hidden md:block" />
-                <span className="text-[#4ade80] dark:text-emerald-400">Explore 150+ Careers.</span>
+                <span className="text-[#70A5FF] dark:text-blue-400">Explore 150+ Careers.</span>
             </h1>
             
             <p className="text-[18px] md:text-[22px] text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
@@ -111,7 +111,7 @@ export default async function CareersHubPage({
                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                       </div>
                       <div>
-                          <h2 className="text-[24px] md:text-[32px] font-heading font-extrabold text-[#1B4332] dark:text-emerald-400">Hidden Gems</h2>
+                          <h2 className="text-[24px] md:text-[32px] font-heading font-extrabold text-[#1B4332] dark:text-blue-400">Hidden Gems</h2>
                           <p className="text-gray-500 dark:text-gray-400 font-medium text-[15px]">Careers you&apos;ve probably never heard of, but pay incredibly well.</p>
                       </div>
                   </div>
@@ -128,7 +128,7 @@ export default async function CareersHubPage({
             
             <div className="flex justify-between items-center mb-10 border-b border-gray-200 dark:border-gray-800 pb-6">
                 <div>
-                    <h2 className="text-[24px] md:text-[28px] font-heading font-extrabold text-[#1B4332] dark:text-emerald-300">
+                    <h2 className="text-[24px] md:text-[28px] font-heading font-extrabold text-[#1B4332] dark:text-blue-300">
                         {searchParams.q ? `Search Results for "${searchParams.q}"` : 
                          searchParams.category && searchParams.category !== 'All' ? `${searchParams.category} Careers` : 
                          'Explore All Paths'}

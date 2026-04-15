@@ -161,7 +161,7 @@ export function RichTextEditor({ name, defaultValue = '', placeholder = '' }: Ri
       {/* Status Bar */}
       <div className="px-4 py-2 bg-gray-50/50 dark:bg-white/[0.02] border-t border-gray-100 dark:border-white/5 flex justify-between items-center text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400">
         <div className="flex items-center gap-2">
-           <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+           <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
            WYSIWYG Mode
         </div>
         <div className="group-hover/editor:text-primary transition-colors italic">

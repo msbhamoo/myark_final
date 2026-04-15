@@ -128,8 +128,8 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
           <p className="text-[16px] md:text-[18px] text-[#8a8a84] font-medium max-w-2xl">
             Complete list of competitive {subjectTitle} olympiads. Compare eligibility, fees, and pathways to pick the right one.
           </p>
-          <div className="mt-8 flex items-center gap-4 text-[13px] font-bold text-[#4ade80]">
-              <span className="bg-[#4ade80]/10 px-3 py-1 rounded-full">{olympiads.length} Olympiads Listed</span>
+          <div className="mt-8 flex items-center gap-4 text-[13px] font-bold text-[#70A5FF]">
+              <span className="bg-[#70A5FF]/10 px-3 py-1 rounded-full">{olympiads.length} Olympiads Listed</span>
               <span className="bg-white/5 px-3 py-1 rounded-full text-white/60">Sorted by Difficulty</span>
           </div>
         </div>
@@ -265,7 +265,7 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
                       const isCurrent = step.includes(olympiad.short_name);
                       return (
                         <div key={i} className="flex items-center gap-2 md:gap-4">
-                          <div className={`px-4 py-2 rounded-xl text-[12px] md:text-[14px] font-bold border ${isCurrent ? 'bg-green-600 border-green-700 text-white shadow-md' : 'bg-[var(--color-bg)] border-[var(--color-border-default)] text-muted'}`}>
+                          <div className={`px-4 py-2 rounded-xl text-[12px] md:text-[14px] font-bold border ${isCurrent ? 'bg-blue-600 border-blue-700 text-white shadow-md' : 'bg-[var(--color-bg)] border-[var(--color-border-default)] text-muted'}`}>
                             {step}
                           </div>
                           {i < pathwaySteps.length - 1 && (
@@ -310,14 +310,14 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="flex flex-col gap-8 sticky top-[100px]">
               
-              <div className={`p-6 rounded-2xl border ${relatedOpp ? 'bg-green-600 border-green-700 text-white shadow-lg' : 'bg-surface border-[var(--color-border-default)] shadow-sm'}`}>
+              <div className={`p-6 rounded-2xl border ${relatedOpp ? 'bg-blue-600 border-blue-700 text-white shadow-lg' : 'bg-surface border-[var(--color-border-default)] shadow-sm'}`}>
                 {relatedOpp ? (
                   <>
                     <h3 className="text-[18px] font-bold mb-2">Registration Open Now</h3>
                     <p className="text-[14px] mb-6 opacity-90">Applications for {olympiad.short_name} 2026 are currently being accepted on the official portal.</p>
                     <Link 
                       href={`/opportunities/${relatedOpp.slug}`}
-                      className="w-full inline-flex items-center justify-center h-12 rounded-xl bg-white text-green-700 font-bold text-[15px] hover:bg-gray-100 transition-all"
+                      className="w-full inline-flex items-center justify-center h-12 rounded-xl bg-white text-blue-700 font-bold text-[15px] hover:bg-gray-100 transition-all"
                     >
                       Apply on Myark →
                     </Link>
@@ -357,7 +357,7 @@ export default async function GenericOlympiadsPage({ params }: PageProps) {
               </div>
 
               <div className="flex gap-2">
-                  <button className="flex-grow flex items-center justify-center gap-2 h-11 rounded-xl bg-green-500/10 text-green-600 font-bold text-[13px] border border-green-500/20 hover:bg-green-500/20 transition-all">
+                  <button className="flex-grow flex items-center justify-center gap-2 h-11 rounded-xl bg-blue-500/10 text-blue-600 font-bold text-[13px] border border-blue-500/20 hover:bg-blue-500/20 transition-all">
                       Share
                   </button>
                   <button className="px-4 h-11 rounded-xl bg-surface border border-[var(--color-border-default)] text-[13px] font-bold hover:bg-muted/5 transition-all">

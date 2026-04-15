@@ -26,7 +26,7 @@ export default async function AdminLayout({
       <aside className="w-64 bg-gray-900 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 border-r border-gray-800">
         <div className="h-16 flex items-center px-6 border-b border-gray-800 shrink-0">
           <Link href="/admin" className="flex items-center gap-2">
-            <Logo size="md" variant="dark" />
+            <Logo size="md" variant="white" />
             <span className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
           </Link>
         </div>
@@ -77,6 +77,10 @@ export default async function AdminLayout({
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
             Social Posts
           </Link>
+          <Link href="/admin/blog" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><line x1="12" y1="6" x2="16" y2="6"></line><line x1="12" y1="10" x2="16" y2="10"></line></svg>
+            Blog
+          </Link>
         </nav>
         
         <div className="p-4 border-t border-gray-800 mt-auto shrink-0 space-y-2">
@@ -94,7 +98,7 @@ export default async function AdminLayout({
       <main className="flex-1 flex flex-col min-w-0">
         <header className="h-16 bg-gray-900 border-b border-gray-800 md:hidden flex items-center justify-between px-4">
           <Link href="/admin" className="flex items-center gap-2">
-            <Logo size="sm" variant="dark" />
+            <Logo size="sm" variant="white" />
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">Admin</span>
           </Link>
           <div className="w-40">

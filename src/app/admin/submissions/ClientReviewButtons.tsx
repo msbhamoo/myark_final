@@ -11,7 +11,7 @@ export function ClientReviewButtons({ submission }: { submission: Submission }) 
   const currentStatus = submission.status;
 
   if (currentStatus === 'Approved') {
-    return <span className="text-xs font-bold text-green-600 block pt-1">Approved ✔</span>;
+    return <span className="text-xs font-bold text-blue-600 block pt-1">Approved ✔</span>;
   }
   if (currentStatus === 'Rejected') {
     return <span className="text-xs font-bold text-red-600 block pt-1">Rejected ✕</span>;
@@ -114,7 +114,7 @@ export function ClientReviewButtons({ submission }: { submission: Submission }) 
               <button 
                 onClick={handleApprove}
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl font-bold text-sm text-white bg-green-600 hover:bg-green-700 transition shadow-sm disabled:opacity-50"
+                className="px-5 py-2.5 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 transition shadow-sm disabled:opacity-50"
               >
                 Approve & Publish
               </button>

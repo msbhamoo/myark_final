@@ -39,7 +39,7 @@ export function OpportunityQuickView({ opportunity, isOpen, onClose }: Opportuni
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header / Banner area (Subtle) */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 via-primary to-indigo-500"></div>
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 via-primary to-indigo-500"></div>
 
             {/* Close Button */}
             <button
@@ -53,7 +53,7 @@ export function OpportunityQuickView({ opportunity, isOpen, onClose }: Opportuni
               {/* Title Section */}
                <div className="mb-8 md:mb-10 pr-12">
                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${isFree ? 'bg-emerald-50 text-emerald-600 border border-emerald-100/50' : 'bg-amber-50 text-amber-600 border border-amber-100/50'}`}>
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${isFree ? 'bg-blue-50 text-blue-600 border border-blue-100/50' : 'bg-amber-50 text-amber-600 border border-amber-100/50'}`}>
                       {isFree ? 'Free Access' : 'Paid Program'}
                     </span>
                     <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-indigo-50 text-indigo-600 border border-indigo-100/50">

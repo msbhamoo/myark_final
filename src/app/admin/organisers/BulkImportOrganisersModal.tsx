@@ -139,7 +139,7 @@ export function BulkImportOrganisersModal() {
                 <button onClick={downloadTemplate} className="btn bg-white border border-gray-300 text-gray-700 font-medium shadow-sm hover:bg-gray-50">
                   📄 Download CSV Template
                 </button>
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-[#1b5e28] hover:bg-green-50/30 transition-colors cursor-pointer" onClick={() => fileRef.current?.click()}>
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-[#0066FF] hover:bg-blue-50/30 transition-colors cursor-pointer" onClick={() => fileRef.current?.click()}>
                   <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleFile} />
                   <div className="text-4xl mb-3">📁</div>
                   <p className="text-sm font-bold text-gray-900 mb-1">Click to upload your CSV file</p>
@@ -159,8 +159,8 @@ export function BulkImportOrganisersModal() {
                   </div>
                 )}
                 {validationErrors.length === 0 && (
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                    <p className="text-sm font-bold text-green-800">✅ All {rows.length} row(s) passed validation</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <p className="text-sm font-bold text-blue-800">✅ All {rows.length} row(s) passed validation</p>
                   </div>
                 )}
                 <div className="border border-gray-200 rounded-xl overflow-hidden">
@@ -195,9 +195,9 @@ export function BulkImportOrganisersModal() {
             {step === 'result' && importResult && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-                    <p className="text-3xl font-bold text-green-700">{importResult.success}</p>
-                    <p className="text-sm text-green-600 font-medium">Imported</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
+                    <p className="text-3xl font-bold text-blue-700">{importResult.success}</p>
+                    <p className="text-sm text-blue-600 font-medium">Imported</p>
                   </div>
                   <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
                     <p className="text-3xl font-bold text-red-700">{importResult.failed}</p>
@@ -220,12 +220,12 @@ export function BulkImportOrganisersModal() {
               {step === 'preview' ? '← Back' : 'Close'}
             </button>
             {step === 'preview' && (
-              <button onClick={handleImport} disabled={isImporting || validationErrors.some(e => e.startsWith('Missing'))} className="btn btn-primary bg-[#1b5e28] text-white hover:bg-[#14461e] disabled:opacity-50 px-8">
+              <button onClick={handleImport} disabled={isImporting || validationErrors.some(e => e.startsWith('Missing'))} className="btn btn-primary bg-[#0066FF] text-white hover:bg-[#0050CC] disabled:opacity-50 px-8">
                 {isImporting ? 'Importing...' : `Import ${rows.length} Organisers`}
               </button>
             )}
             {step === 'result' && (
-              <button onClick={() => { reset(); setIsOpen(false); window.location.reload(); }} className="btn btn-primary bg-[#1b5e28] text-white hover:bg-[#14461e] px-8">Done</button>
+              <button onClick={() => { reset(); setIsOpen(false); window.location.reload(); }} className="btn btn-primary bg-[#0066FF] text-white hover:bg-[#0050CC] px-8">Done</button>
             )}
           </div>
         </div>

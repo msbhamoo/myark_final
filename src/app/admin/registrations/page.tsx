@@ -85,7 +85,7 @@ export default async function RegistrationsPage() {
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-xl p-5 shadow-sm transition-colors">
           <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Applied</p>
-          <p className="text-3xl font-bold text-green-600 dark:text-green-400">{statusCounts.applied}</p>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{statusCounts.applied}</p>
         </div>
         <div className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-xl p-5 shadow-sm transition-colors">
           <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Total Views</p>
@@ -104,12 +104,12 @@ export default async function RegistrationsPage() {
                 <div key={id} className="flex items-center gap-3">
                   <span className="text-xs font-bold text-gray-400 dark:text-gray-500 w-5 shrink-0">{i + 1}.</span>
                   <div className="flex-1 min-w-0">
-                    <Link href={`/opportunities/${opp.slug}`} className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-[#1b5e28] dark:hover:text-green-400 truncate block">
+                    <Link href={`/opportunities/${opp.slug}`} className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-[#0066FF] dark:hover:text-blue-400 truncate block">
                       {opp.title}
                     </Link>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="flex-1 h-2 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-[#1b5e28] dark:bg-green-500 rounded-full" style={{ width: `${(opp.count / maxRegCount) * 100}%` }}></div>
+                        <div className="h-full bg-[#0066FF] dark:bg-blue-500 rounded-full" style={{ width: `${(opp.count / maxRegCount) * 100}%` }}></div>
                       </div>
                       <span className="text-xs font-bold text-gray-500 dark:text-gray-400 shrink-0">{opp.count}</span>
                     </div>
@@ -200,7 +200,7 @@ export default async function RegistrationsPage() {
                       href={`/opportunities/${reg.opportunity?.slug}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs text-[#1b5e28] dark:text-green-400 hover:underline mt-0.5 inline-block transition-colors"
+                      className="text-xs text-[#0066FF] dark:text-blue-400 hover:underline mt-0.5 inline-block transition-colors"
                     >
                       View page ↗
                     </a>
@@ -212,7 +212,7 @@ export default async function RegistrationsPage() {
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                      (reg.feedback_status === 'applied' || reg.feedback_status === 'APPLIED') ? 'bg-green-100 dark:bg-green-100/10 text-green-700 dark:text-green-400' :
+                      (reg.feedback_status === 'applied' || reg.feedback_status === 'APPLIED') ? 'bg-blue-100 dark:bg-blue-100/10 text-blue-700 dark:text-blue-400' :
                       (reg.feedback_status === 'NOT_APPLIED' || reg.feedback_status === 'not_applied') ? 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400' :
                       'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300'
                     }`}>

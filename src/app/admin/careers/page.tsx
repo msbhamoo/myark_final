@@ -22,7 +22,7 @@ export default async function AdminCareersPage() {
           <p className="text-gray-500 dark:text-gray-400 text-sm pb-0">Manage India&apos;s most detailed career database.</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/careers/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e] px-4 py-2 rounded-lg font-bold">
+          <Link href="/admin/careers/new" className="btn btn-primary shadow-sm bg-[#0066FF] text-white hover:bg-[#0050CC] px-4 py-2 rounded-lg font-bold">
             + Add Career
           </Link>
         </div>
@@ -56,18 +56,18 @@ export default async function AdminCareersPage() {
                   <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                     {career.stream_required}
                   </td>
-                  <td className="px-6 py-4 font-bold text-[#1b5e28] dark:text-green-400">
+                  <td className="px-6 py-4 font-bold text-[#0066FF] dark:text-blue-400">
                     {career.salary_entry}
                   </td>
                   <td className="px-6 py-4">
                     {career.is_published ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-100/10 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-400/20 transition-colors">Published</span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-100/10 text-blue-800 dark:text-blue-400 border border-blue-200 dark:border-blue-400/20 transition-colors">Published</span>
                     ) : (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-300 border border-gray-200 dark:border-white/10 transition-colors">Draft</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-3 items-center font-bold text-[#1b5e28] dark:text-green-400 hover:text-green-500 transition-colors">
+                    <div className="flex justify-end gap-3 items-center font-bold text-[#0066FF] dark:text-blue-400 hover:text-blue-500 transition-colors">
                         <Link href={`/admin/careers/${career.id}/edit`}>Edit</Link>
                     </div>
                   </td>

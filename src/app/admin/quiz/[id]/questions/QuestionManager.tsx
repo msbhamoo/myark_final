@@ -143,7 +143,7 @@ export function QuestionManager({ quiz, questions }: { quiz: { subject_id: strin
                               <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                                   {editingId === q.id ? (
                                       <div className="flex items-center justify-end gap-4 min-w-[120px]">
-                                          <button disabled={loading} onClick={saveEdit} className="text-green-600 dark:text-green-400 hover:text-green-900 transition-colors bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded">Save</button>
+                                          <button disabled={loading} onClick={saveEdit} className="text-blue-600 dark:text-blue-400 hover:text-blue-900 transition-colors bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded">Save</button>
                                           <button disabled={loading} onClick={() => setEditingId(null)} className="text-gray-600 hover:text-gray-900 dark:text-gray-400 transition-colors">Cancel</button>
                                       </div>
                                   ) : (

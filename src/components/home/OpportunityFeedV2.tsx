@@ -11,7 +11,7 @@ interface OpportunityFeedV2Props {
   title?: string;
   subtitle?: string;
   badge?: string;
-  accentColor?: 'emerald' | 'blue' | 'indigo' | 'amber';
+  accentColor?: 'blue' | 'blue' | 'indigo' | 'amber';
   showGradeFilter?: boolean;
   viewAllLink?: string;
   limit?: number;
@@ -22,7 +22,7 @@ export function OpportunityFeedV2({
   title = "Top Trending For Your Class.",
   subtitle = "We've analyzed thousands of programs. Here are the top picks specifically for your academic level.",
   badge = "Curated Intelligence",
-  accentColor = "emerald",
+  accentColor = "blue",
   showGradeFilter = true,
   viewAllLink = "/opportunities",
   limit = 6
@@ -42,12 +42,12 @@ export function OpportunityFeedV2({
 
   const colors = {
     emerald: {
-      bg: 'bg-emerald-50 dark:bg-emerald-950/20',
-      border: 'border-emerald-100 dark:border-emerald-800/30',
-      dot: 'bg-emerald-500',
-      text: 'text-emerald-600 dark:text-emerald-400',
-      primary: 'text-emerald-500',
-      btn: 'bg-emerald-500 shadow-[0_3px_0_0_#1b5e28]'
+      bg: 'bg-blue-50 dark:bg-blue-950/20',
+      border: 'border-blue-100 dark:border-blue-800/30',
+      dot: 'bg-blue-500',
+      text: 'text-blue-600 dark:text-blue-400',
+      primary: 'text-blue-500',
+      btn: 'bg-blue-500 shadow-[0_3px_0_0_#0066FF]'
     },
     blue: {
       bg: 'bg-blue-50 dark:bg-blue-950/20',
@@ -124,7 +124,7 @@ export function OpportunityFeedV2({
                 <div className="flex flex-wrap justify-center gap-1.5 md:gap-2">
                   <button
                     onClick={() => setSelectedGrade(null)}
-                    className={`px-3 md:px-5 h-8 md:h-10 rounded-[12px] md:rounded-xl flex items-center justify-center text-[10px] md:text-[12px] font-black transition-all active:scale-95 border-2 shadow-[0_2px_0_0_rgba(0,0,0,0.03)] active:translate-y-[1px] active:shadow-none ${!selectedGrade ? `${c.btn.replace('3px', '2px')} text-white` : 'bg-white dark:bg-[#1a1c1e] border-slate-100 dark:border-white/10 text-slate-400 hover:border-emerald-500/40'}`}
+                    className={`px-3 md:px-5 h-8 md:h-10 rounded-[12px] md:rounded-xl flex items-center justify-center text-[10px] md:text-[12px] font-black transition-all active:scale-95 border-2 shadow-[0_2px_0_0_rgba(0,0,0,0.03)] active:translate-y-[1px] active:shadow-none ${!selectedGrade ? `${c.btn.replace('3px', '2px')} text-white` : 'bg-white dark:bg-[#1a1c1e] border-slate-100 dark:border-white/10 text-slate-400 hover:border-blue-500/40'}`}
                   >
                     All Classes
                   </button>
@@ -132,7 +132,7 @@ export function OpportunityFeedV2({
                     <button
                       key={grade}
                       onClick={() => setSelectedGrade(grade)}
-                      className={`w-8 h-8 md:w-10 md:h-10 rounded-[12px] md:rounded-xl flex items-center justify-center text-[12px] md:text-[14px] font-black transition-all active:scale-95 border-2 shadow-[0_2px_0_0_rgba(0,0,0,0.03)] active:translate-y-[1px] active:shadow-none ${selectedGrade === grade ? `${c.btn.replace('3px', '2px')} text-white` : 'bg-white dark:bg-[#1a1c1e] border-slate-100 dark:border-white/10 text-slate-400 hover:border-emerald-500/40'}`}
+                      className={`w-8 h-8 md:w-10 md:h-10 rounded-[12px] md:rounded-xl flex items-center justify-center text-[12px] md:text-[14px] font-black transition-all active:scale-95 border-2 shadow-[0_2px_0_0_rgba(0,0,0,0.03)] active:translate-y-[1px] active:shadow-none ${selectedGrade === grade ? `${c.btn.replace('3px', '2px')} text-white` : 'bg-white dark:bg-[#1a1c1e] border-slate-100 dark:border-white/10 text-slate-400 hover:border-blue-500/40'}`}
                     >
                       {grade}
                     </button>

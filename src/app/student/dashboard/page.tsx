@@ -118,7 +118,7 @@ export default async function StudentDashboard() {
                           {reg.opportunity?.title}
                         </Link>
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          reg.feedback_status === 'applied' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 
+                          reg.feedback_status === 'applied' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 
                           reg.feedback_status === 'pending' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
                           'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
                         }`}>
@@ -199,9 +199,9 @@ export default async function StudentDashboard() {
             </div>
 
             {/* Support/Contact Box */}
-            <div className="bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/10 dark:border-green-800/50 rounded-2xl p-6">
+            <div className="bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-blue-900/10 dark:border-blue-800/50 rounded-2xl p-6">
                <h4 className="text-[14px] font-bold text-heading mb-2">Need help?</h4>
-               <p className="text-[12px] text-[#166534] dark:text-green-400 leading-relaxed mb-4">Have questions about an opportunity or your profile? Our team is here to help you build your future.</p>
+               <p className="text-[12px] text-[#166534] dark:text-blue-400 leading-relaxed mb-4">Have questions about an opportunity or your profile? Our team is here to help you build your future.</p>
                <button className="w-full bg-[var(--color-primary)] text-[var(--color-bg)] font-bold text-[12px] py-2 rounded-lg hover:opacity-90 transition-opacity">Contact Support</button>
             </div>
           </div>

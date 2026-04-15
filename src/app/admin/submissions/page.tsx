@@ -128,7 +128,7 @@ export default async function SubmissionsPage() {
                           Rejected
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800">
                           Approved
                         </span>
                       )}

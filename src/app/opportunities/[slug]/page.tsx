@@ -106,7 +106,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
 
       <div className="bg-white dark:bg-[#0a0f0a] min-h-screen relative overflow-hidden">
         {/* Geometric Accents (Matching Home Hero) */}
-        <div className="absolute top-10 right-[-10%] w-64 h-64 bg-emerald-50 dark:bg-emerald-900/10 rounded-[64px] rotate-12 -z-0 opacity-50"></div>
+        <div className="absolute top-10 right-[-10%] w-64 h-64 bg-blue-50 dark:bg-blue-900/10 rounded-[64px] rotate-12 -z-0 opacity-50"></div>
         <div className="absolute bottom-20 left-[-5%] w-80 h-80 bg-indigo-50 dark:bg-indigo-900/10 rounded-full -z-0 opacity-50"></div>
 
         <div className="container-main max-w-[1240px] px-6 relative z-10 pt-10 pb-20">
@@ -120,7 +120,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
           {/* Massive Header Section */}
           <div className="max-w-4xl mb-12">
             <div className="flex items-center gap-3 mb-6">
-               <span className="px-3 py-1 rounded-lg bg-emerald-500 text-white text-[11px] font-black uppercase tracking-widest border-b-4 border-emerald-700">
+               <span className="px-3 py-1 rounded-lg bg-blue-500 text-white text-[11px] font-black uppercase tracking-widest border-b-4 border-blue-700">
                   {opportunity.category?.label || 'Direct Entry'}
                </span>
                <span className="text-slate-400 font-black tracking-widest uppercase text-[11px]">
@@ -136,17 +136,17 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-14">
                {[
                  { label: 'Eligibility', value: formatClassRange(opportunity.eligibility_classes), icon: '🎓', color: 'slate' },
-                 { label: 'Entry Fee', value: opportunity.fee_text, icon: '💰', color: opportunity.fee_text.toLowerCase().includes('free') ? 'emerald' : 'slate' },
+                 { label: 'Entry Fee', value: opportunity.fee_text, icon: '💰', color: opportunity.fee_text.toLowerCase().includes('free') ? 'blue' : 'slate' },
                  { label: 'Deadline', value: formatDate(opportunity.deadline), icon: '📅', color: (daysLeft !== null && daysLeft <= 14) ? 'red' : 'indigo' },
                  { label: 'Mode', value: 'Online', icon: '⚡', color: 'amber' }
                ].map((stat) => (
                  <div 
                    key={stat.label} 
-                   className={`flex flex-col p-4 md:p-5 rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1a1c1e] border-[3px] shadow-[0_4px_0_0_rgba(0,0,0,0.02)] transition-all ${stat.color === 'emerald' ? 'border-emerald-100' : stat.color === 'red' ? 'border-red-100' : 'border-slate-100 dark:border-white/5'}`}
+                   className={`flex flex-col p-4 md:p-5 rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1a1c1e] border-[3px] shadow-[0_4px_0_0_rgba(0,0,0,0.02)] transition-all ${stat.color === 'blue' ? 'border-blue-100' : stat.color === 'red' ? 'border-red-100' : 'border-slate-100 dark:border-white/5'}`}
                  >
                     <div className="text-2xl md:text-3xl mb-3">{stat.icon}</div>
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</div>
-                    <div className={`text-[15px] font-black truncate ${stat.color === 'emerald' ? 'text-emerald-500' : stat.color === 'red' ? 'text-red-500' : 'text-heading'}`}>
+                    <div className={`text-[15px] font-black truncate ${stat.color === 'blue' ? 'text-blue-500' : stat.color === 'red' ? 'text-red-500' : 'text-heading'}`}>
                        {stat.value}
                     </div>
                  </div>
@@ -161,7 +161,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                {/* 1. Program Brief */}
                <section>
                   <h2 className="text-[28px] font-black text-heading mb-6 flex items-center gap-3">
-                     The Brief. <span className="w-12 h-1 bg-emerald-500 rounded-full"></span>
+                     The Brief. <span className="w-12 h-1 bg-blue-500 rounded-full"></span>
                   </h2>
                   <div 
                     className="prose-hub max-w-none text-[18px] leading-[1.8] text-body font-medium [&_p]:mb-6 [&_strong]:font-black [&_strong]:text-heading [&_ul]:list-disc [&_ul]:ml-6 [&_ul]:mb-6 [&_li]:mb-2 [&_h2]:text-[26px] [&_h2]:font-black [&_h2]:mt-10"
@@ -225,7 +225,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
             {/* Sticky Action Hub (Sidebar) */}
             <div className="lg:col-span-4 sticky top-24 space-y-6">
               <div className="p-8 rounded-[40px] bg-white dark:bg-[#1a1c1e] border-[4px] border-slate-100 dark:border-white/10 shadow-[0_10px_0_0_rgba(0,0,0,0.04)] text-center">
-                 <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm">🚀</div>
+                 <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm">🚀</div>
                  <h4 className="text-[24px] font-black text-heading mb-2 leading-tight">Ready to start?</h4>
                  <p className="text-[13px] font-medium text-slate-500 mb-10 px-4 leading-relaxed">Click to open the verified official application host.</p>
                  
@@ -249,7 +249,7 @@ export default async function OpportunityDetail({ params }: { params: { slug: st
                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 px-2">More for your Path</h4>
                    <div className="space-y-3">
                       {related.map(opp => (
-                        <Link key={opp.id} href={`/opportunities/${opp.slug}`} className="block p-5 rounded-[24px] bg-white dark:bg-[#1a1c1e] border-2 border-transparent hover:border-emerald-500/30 transition-all group">
+                        <Link key={opp.id} href={`/opportunities/${opp.slug}`} className="block p-5 rounded-[24px] bg-white dark:bg-[#1a1c1e] border-2 border-transparent hover:border-blue-500/30 transition-all group">
                            <span className="text-[9px] font-black text-primary uppercase tracking-widest">{opp.category?.label}</span>
                            <h5 className="text-[14px] font-black text-heading leading-[1.3] group-hover:text-primary transition-colors mt-1 line-clamp-2">{opp.title}</h5>
                         </Link>

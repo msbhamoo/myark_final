@@ -47,7 +47,7 @@ export function QuoteLoader({ isOpen }: { isOpen: boolean }) {
               className="mb-12"
             >
               <div className="text-white text-[32px] font-black tracking-tighter">
-                Myark<span className="text-[#4ade80]">.</span>
+                Myark<span className="text-[#70A5FF]">.</span>
               </div>
             </motion.div>
 
@@ -58,7 +58,7 @@ export function QuoteLoader({ isOpen }: { isOpen: boolean }) {
               transition={{ delay: 0.2 }}
               className="space-y-4"
             >
-              <div className="text-[#4ade80] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
+              <div className="text-[#70A5FF] text-[11px] font-black uppercase tracking-[0.2em] mb-2">
                 Getting it ready...
               </div>
               <p className="text-white text-[18px] font-black leading-tight tracking-tight">
@@ -76,7 +76,7 @@ export function QuoteLoader({ isOpen }: { isOpen: boolean }) {
                   repeat: Infinity,
                   ease: "linear"
                 }}
-                className="w-full h-full bg-[#4ade80] shadow-[0_0_10px_#4ade80]"
+                className="w-full h-full bg-[#70A5FF] shadow-[0_0_10px_#70A5FF]"
               />
             </div>
 

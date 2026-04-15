@@ -78,7 +78,7 @@ export default async function AdminAttemptsPage({ params }: { params: { id: stri
                 <td className="px-6 py-4 whitespace-nowrap">
                    <div className="text-sm font-bold text-gray-900 dark:text-gray-200 mb-0.5">{att.time_taken_seconds} <span className="text-gray-500 font-normal">seconds</span></div>
                    <div className="text-xs font-medium">
-                      <span className="text-green-600 dark:text-green-500">{att.correct_answers}✓</span> / 
+                      <span className="text-blue-600 dark:text-blue-500">{att.correct_answers}✓</span> / 
                       <span className="text-red-600 dark:text-red-500 ml-1">{att.wrong_answers}✗</span> / 
                       <span className="text-yellow-600 dark:text-yellow-500 ml-1">+{att.speed_bonus}s.b</span>
                    </div>

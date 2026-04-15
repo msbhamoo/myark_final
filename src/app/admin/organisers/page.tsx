@@ -20,7 +20,7 @@ export default async function OrganisersPage() {
         </div>
         <div className="flex gap-3">
           <BulkImportOrganisersModal />
-          <Link href="/admin/organisers/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
+          <Link href="/admin/organisers/new" className="btn btn-primary shadow-sm bg-[#0066FF] text-white hover:bg-[#0050CC]">
             + Add Organiser
           </Link>
         </div>
@@ -48,7 +48,7 @@ export default async function OrganisersPage() {
                 </td>
                 <td className="px-6 py-4">
                   {org.website_url ? (
-                    <a href={org.website_url} target="_blank" rel="noopener noreferrer" className="text-primary dark:text-green-400 hover:underline text-xs flex items-center gap-1">
+                    <a href={org.website_url} target="_blank" rel="noopener noreferrer" className="text-primary dark:text-blue-400 hover:underline text-xs flex items-center gap-1">
                       {new URL(org.website_url).hostname}
                       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                     </a>

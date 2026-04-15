@@ -78,11 +78,11 @@ export function CareerFilters() {
                     placeholder="Search careers, e.g. 'Doctor', 'Game Developer'..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-800 dark:text-gray-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#1B4332]/20 dark:focus:ring-emerald-500/30 focus:border-[#1B4332]/30 dark:focus:border-emerald-500/50 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                    className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-800 dark:text-gray-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#1B4332]/20 dark:focus:ring-blue-500/30 focus:border-[#1B4332]/30 dark:focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                 />
                 {isPending && (
                     <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                        <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-[#1B4332] dark:border-t-emerald-400 rounded-full animate-spin"></div>
+                        <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-[#1B4332] dark:border-t-blue-400 rounded-full animate-spin"></div>
                     </div>
                 )}
             </div>
@@ -102,8 +102,8 @@ export function CareerFilters() {
                                 onClick={() => updateFilters({ stream: s })}
                                 className={`px-5 py-2.5 rounded-full text-[13px] font-bold transition-all border ${
                                     isActive 
-                                    ? 'bg-[#1B4332] dark:bg-emerald-600 border-[#1B4332] dark:border-emerald-500 text-white shadow-md transform -translate-y-0.5' 
-                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-[#1B4332]/30 dark:hover:border-emerald-500/50 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                    ? 'bg-[#1B4332] dark:bg-blue-600 border-[#1B4332] dark:border-blue-500 text-white shadow-md transform -translate-y-0.5' 
+                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-[#1B4332]/30 dark:hover:border-blue-500/50 hover:bg-gray-50 dark:hover:bg-gray-700'
                                 }`}
                             >
                                 {s}
@@ -128,7 +128,7 @@ export function CareerFilters() {
                                 onClick={() => updateFilters({ category: c })} 
                                 className={`px-4 py-2 rounded-xl text-[13px] font-semibold transition-all border ${
                                     isActive 
-                                    ? 'bg-[#4ade80]/20 dark:bg-emerald-500/20 text-[#1B4332] dark:text-emerald-300 border-[#4ade80]/50 dark:border-emerald-500/50 shadow-sm' 
+                                    ? 'bg-[#70A5FF]/20 dark:bg-blue-500/20 text-[#1B4332] dark:text-blue-300 border-[#70A5FF]/50 dark:border-blue-500/50 shadow-sm' 
                                     : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700'
                                 }`}
                             >

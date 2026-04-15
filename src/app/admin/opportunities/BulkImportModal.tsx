@@ -246,12 +246,12 @@ export function BulkImportModal() {
                 )}
 
                 {validationErrors.length === 0 && (
-                  <div className="bg-green-50 dark:bg-green-500/5 border border-green-200 dark:border-green-500/10 rounded-2xl p-6 flex items-center justify-between">
+                  <div className="bg-blue-50 dark:bg-blue-500/5 border border-blue-200 dark:border-blue-500/10 rounded-2xl p-6 flex items-center justify-between">
                     <div>
-                      <p className="text-base font-bold text-green-800 dark:text-green-400">All Checks Passed</p>
-                      <p className="text-xs text-green-700/70 dark:text-green-400/60 font-medium">Ready to import {rows.length} records into the database.</p>
+                      <p className="text-base font-bold text-blue-800 dark:text-blue-400">All Checks Passed</p>
+                      <p className="text-xs text-blue-700/70 dark:text-blue-400/60 font-medium">Ready to import {rows.length} records into the database.</p>
                     </div>
-                    <div className="w-10 h-10 bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-xl">✓</div>
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl">✓</div>
                   </div>
                 )}
 
@@ -292,7 +292,7 @@ export function BulkImportModal() {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl p-8 text-center transition-all hover:scale-[1.02]">
-                    <div className="text-4xl font-black text-green-600 dark:text-green-400 mb-1">{importResult.success}</div>
+                    <div className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-1">{importResult.success}</div>
                     <p className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Successful</p>
                   </div>
                   <div className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-3xl p-8 text-center transition-all hover:scale-[1.02]">
@@ -331,7 +331,7 @@ export function BulkImportModal() {
               <button
                 onClick={handleImport}
                 disabled={isImporting || validationErrors.some(e => e.startsWith('Missing'))}
-                className="px-8 h-12 bg-[#1b5e28] text-white font-bold rounded-xl text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#14461e] shadow-xl hover:shadow-[#1b5e28]/20 transition-all flex items-center justify-center gap-2"
+                className="px-8 h-12 bg-[#0066FF] text-white font-bold rounded-xl text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#0050CC] shadow-xl hover:shadow-[#0066FF]/20 transition-all flex items-center justify-center gap-2"
               >
                 {isImporting ? (
                   <span className="flex items-center gap-2">

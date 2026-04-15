@@ -110,13 +110,13 @@ export default function StudentAuthPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0f0a] p-4 relative overflow-hidden">
       {/* Aurora bg */}
-      <div className="absolute top-[-20%] left-[40%] w-[600px] h-[600px] rounded-full bg-[#22c55e]/[0.06] blur-[100px]"></div>
-      <div className="absolute bottom-[-10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#4ade80]/[0.04] blur-[80px]"></div>
+      <div className="absolute top-[-20%] left-[40%] w-[600px] h-[600px] rounded-full bg-[#3D8BFF]/[0.06] blur-[100px]"></div>
+      <div className="absolute bottom-[-10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#70A5FF]/[0.04] blur-[80px]"></div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 flex flex-col items-center">
-          <Logo size="lg" variant="dark" />
+          <Logo size="lg" variant="white" />
           <p className="text-[#8a8a84] mt-3 text-sm">
             {mode === 'login' ? 'Welcome back! Sign in to your account.' : 'Create your free student account.'}
           </p>
@@ -126,13 +126,13 @@ export default function StudentAuthPage() {
         <div className="flex bg-white/[0.04] border border-white/[0.08] rounded-xl p-1 mb-6">
           <button
             onClick={() => { setMode('login'); setError(''); }}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${mode === 'login' ? 'bg-[#22c55e] text-[#0a0f0a]' : 'text-[#8a8a84] hover:text-white'}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${mode === 'login' ? 'bg-[#3D8BFF] text-[#0a0f0a]' : 'text-[#8a8a84] hover:text-white'}`}
           >
             Login
           </button>
           <button
             onClick={() => { setMode('signup'); setError(''); }}
-            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${mode === 'signup' ? 'bg-[#22c55e] text-[#0a0f0a]' : 'text-[#8a8a84] hover:text-white'}`}
+            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${mode === 'signup' ? 'bg-[#3D8BFF] text-[#0a0f0a]' : 'text-[#8a8a84] hover:text-white'}`}
           >
             Sign Up
           </button>
@@ -158,7 +158,7 @@ export default function StudentAuthPage() {
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 focus:ring-1 focus:ring-[#4ade80]/10 transition-all"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 focus:ring-1 focus:ring-[#70A5FF]/10 transition-all"
               />
             </div>
             <div>
@@ -169,13 +169,13 @@ export default function StudentAuthPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 focus:ring-1 focus:ring-[#4ade80]/10 transition-all"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 focus:ring-1 focus:ring-[#70A5FF]/10 transition-all"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#22c55e] text-[#0a0f0a] font-bold py-3 rounded-xl hover:bg-[#16a34a] transition-colors disabled:opacity-50 text-sm mt-2"
+              className="w-full bg-[#3D8BFF] text-[#0a0f0a] font-bold py-3 rounded-xl hover:bg-[#1F75FF] transition-colors disabled:opacity-50 text-sm mt-2"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -193,7 +193,7 @@ export default function StudentAuthPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 focus:ring-1 focus:ring-[#4ade80]/10 transition-all"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 focus:ring-1 focus:ring-[#70A5FF]/10 transition-all"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -203,7 +203,7 @@ export default function StudentAuthPage() {
                   value={studentClass}
                   onChange={(e) => setStudentClass(e.target.value)}
                   required
-                  className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] text-sm outline-none focus:border-[#4ade80]/30 transition-all appearance-none cursor-pointer"
+                  className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] text-sm outline-none focus:border-[#70A5FF]/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="" disabled className="bg-[#1a1a1a] text-white">Select</option>
                   {[...Array(12)].map((_, i) => (
@@ -221,7 +221,7 @@ export default function StudentAuthPage() {
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
                   required
-                  className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 transition-all"
+                  className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 transition-all"
                 />
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function StudentAuthPage() {
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
                 required
-                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 transition-all"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 transition-all"
               />
             </div>
             <div>
@@ -245,13 +245,13 @@ export default function StudentAuthPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={4}
-                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#4ade80]/30 transition-all"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-4 py-3 text-[#f0ede5] placeholder-[#555550] text-sm outline-none focus:border-[#70A5FF]/30 transition-all"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#22c55e] text-[#0a0f0a] font-bold py-3 rounded-xl hover:bg-[#16a34a] transition-colors disabled:opacity-50 text-sm mt-2"
+              className="w-full bg-[#3D8BFF] text-[#0a0f0a] font-bold py-3 rounded-xl hover:bg-[#1F75FF] transition-colors disabled:opacity-50 text-sm mt-2"
             >
               {loading ? 'Creating account...' : 'Create Free Account'}
             </button>

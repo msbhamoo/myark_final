@@ -145,13 +145,13 @@ export function AuthDrawer({ isOpen, onClose }: AuthDrawerProps) {
         <div className="flex bg-gray-100 dark:bg-white/[0.04] p-1.5 rounded-2xl mb-8">
           <button
             onClick={() => { setMode('login'); setError(''); }}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'login' ? 'bg-white dark:bg-[#22c55e] text-[#0a0f0a] shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'login' ? 'bg-white dark:bg-[#3D8BFF] text-[#0a0f0a] shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
           >
             Login
           </button>
           <button
             onClick={() => { setMode('signup'); setError(''); }}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'signup' ? 'bg-white dark:bg-[#22c55e] text-[#0a0f0a] shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'signup' ? 'bg-white dark:bg-[#3D8BFF] text-[#0a0f0a] shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
           >
             Sign Up
           </button>

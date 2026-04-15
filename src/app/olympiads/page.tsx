@@ -130,7 +130,7 @@ export default async function OlympiadsPage({ searchParams }: OlympiadsPageProps
           <div className="max-w-2xl">
             <h1 className="text-[36px] md:text-[52px] font-heading font-extrabold leading-tight mb-4 text-[#f0ede5]">
               Every olympiad. <br />
-              <span className="text-[#4ade80]">One place.</span>
+              <span className="text-[#70A5FF]">One place.</span>
             </h1>
             <p className="text-[16px] md:text-[19px] text-[#8a8a84] mb-10 leading-relaxed font-medium">
               From your first SOF olympiad to representing India at IMO — discover every competition available to you.
@@ -201,7 +201,7 @@ export default async function OlympiadsPage({ searchParams }: OlympiadsPageProps
                     })}
                     <Link
                         href={`/olympiads?${new URLSearchParams({ ...searchParams, free: searchParams.free === 'true' ? 'false' : 'true' }).toString()}`}
-                        className={`px-4 py-1.5 rounded-full text-[13px] font-bold transition-all whitespace-nowrap ${searchParams.free === 'true' ? 'bg-green-600 text-white' : 'bg-[var(--color-bg)] border border-[var(--color-border-default)] text-muted hover:border-primary'}`}
+                        className={`px-4 py-1.5 rounded-full text-[13px] font-bold transition-all whitespace-nowrap ${searchParams.free === 'true' ? 'bg-blue-600 text-white' : 'bg-[var(--color-bg)] border border-[var(--color-border-default)] text-muted hover:border-primary'}`}
                     >
                         Free Only
                     </Link>

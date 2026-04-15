@@ -14,7 +14,7 @@ const cards: FloatingCard[] = [
   {
     title: 'National Merit Scholarship',
     category: 'Scholarship',
-    catColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    catColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     deadline: 'Closes in 12 days',
     detail: '₹1,00,000 p.a. · Class 9–12',
   },
@@ -85,7 +85,7 @@ function CardShell({ card }: { card: FloatingCard }) {
 
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-white/[0.06] pt-2.5">
-        <span className="text-[10px] font-medium text-[#4ade80]">{card.deadline}</span>
+        <span className="text-[10px] font-medium text-[#70A5FF]">{card.deadline}</span>
         <span className="text-[10px] text-[#6a6a64]">View →</span>
       </div>
     </div>

@@ -206,7 +206,7 @@ export default async function EditOpportunityPage({ params }: { params: { id: st
 
           <div className="pt-10 mt-10 border-t border-gray-100 dark:border-white/5 flex flex-col-reverse md:flex-row justify-end gap-4">
             <Link href="/admin/opportunities" className="px-8 h-12 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-widest">Discard</Link>
-            <button type="submit" className="px-10 h-14 bg-[#1b5e28] hover:bg-[#14461e] text-white font-black rounded-2xl shadow-xl shadow-green-900/10 transition-all uppercase tracking-widest text-xs">Save Changes</button>
+            <button type="submit" className="px-10 h-14 bg-[#0066FF] hover:bg-[#0050CC] text-white font-black rounded-2xl shadow-xl shadow-blue-900/10 transition-all uppercase tracking-widest text-xs">Save Changes</button>
           </div>
         </form>
       </div>

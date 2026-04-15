@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { createServerClient } from '@/lib/supabase-server';
 
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createServerClient();
   const baseUrl = 'https://myark.in';
@@ -20,6 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
     { url: `${baseUrl}/submit-opportunity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   ];
 
   // ── Class filter pages ────────────────────────────────────────────
@@ -55,6 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let categoryRoutes: MetadataRoute.Sitemap = [];
   let olympiadRoutes: MetadataRoute.Sitemap = [];
   let careerRoutes: MetadataRoute.Sitemap = [];
+  let blogRoutes: MetadataRoute.Sitemap = [];
 
   try {
     // Opportunities
@@ -115,6 +119,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       }));
     }
+
+    // Blog Posts
+    const { data: blogPosts } = await supabase
+      .from('blog_posts')
+      .select('slug, updated_at, published_at')
+      .eq('is_published', true);
+
+    if (blogPosts) {
+      blogRoutes = blogPosts.map((bp) => ({
+        url: `${baseUrl}/blog/${bp.slug}`,
+        lastModified: new Date(bp.updated_at || bp.published_at || new Date()),
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      }));
+    }
   } catch (error) {
     console.error('Sitemap fetch error:', error);
   }
@@ -128,5 +147,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...opportunityRoutes,
     ...olympiadRoutes,
     ...careerRoutes,
+    ...blogRoutes,
   ];
 }

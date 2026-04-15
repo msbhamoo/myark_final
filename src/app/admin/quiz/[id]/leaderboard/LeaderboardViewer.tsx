@@ -75,7 +75,7 @@ export function LeaderboardViewer({ quiz, periods, initialPeriodId, initialLeade
                         </button>
                     ) : (
                         <div className="flex items-center gap-3">
-                            <span className="px-3 py-1 inline-flex items-center bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400 rounded-full text-sm font-medium">✨ Revealed</span>
+                            <span className="px-3 py-1 inline-flex items-center bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-400 rounded-full text-sm font-medium">✨ Revealed</span>
                             <button 
                                 onClick={handleUnreveal} 
                                 disabled={loading}
@@ -106,7 +106,7 @@ export function LeaderboardViewer({ quiz, periods, initialPeriodId, initialLeade
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">#{entry.rank}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{entry.student_name}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.school}, {entry.city}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600 dark:text-green-400">{entry.final_score} pts</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600 dark:text-blue-400">{entry.final_score} pts</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.time_taken_seconds}s</td>
                                 </tr>
                             ))}

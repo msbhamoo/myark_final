@@ -19,7 +19,7 @@ export default async function AdminOlympiadsPage() {
           <p className="text-gray-500 dark:text-gray-400 text-sm pb-0">Manage the evergreen olympiad landscape.</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/olympiads/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e] px-4 py-2 rounded-lg font-bold">
+          <Link href="/admin/olympiads/new" className="btn btn-primary shadow-sm bg-[#0066FF] text-white hover:bg-[#0050CC] px-4 py-2 rounded-lg font-bold">
             + Add Olympiad
           </Link>
         </div>
@@ -58,7 +58,7 @@ export default async function AdminOlympiadsPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-3 items-center font-bold text-[#1b5e28] dark:text-green-400 hover:text-green-500 transition-colors">
+                    <div className="flex justify-end gap-3 items-center font-bold text-[#0066FF] dark:text-blue-400 hover:text-blue-500 transition-colors">
                         <Link href={`/admin/olympiads/${olym.id}/edit`}>Edit</Link>
                     </div>
                   </td>

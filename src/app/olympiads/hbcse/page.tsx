@@ -50,17 +50,17 @@ export default async function HBCSEPathwayPage() {
       {/* Hero Section */}
       <section className="bg-[#0a0f0a] text-white py-20 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#22c55e] blur-[150px] rounded-full"></div>
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#3D8BFF] blur-[150px] rounded-full"></div>
         </div>
         <div className="container-main max-w-[1000px] px-4 relative z-10">
-            <nav className="flex items-center gap-2 mb-8 text-[13px] font-bold text-[#4ade80] uppercase tracking-widest">
+            <nav className="flex items-center gap-2 mb-8 text-[13px] font-bold text-[#70A5FF] uppercase tracking-widest">
                 <Link href="/olympiads" className="hover:underline">Olympiads</Link>
                 <span>/</span>
                 <span className="text-white/40">HBCSE Pathway</span>
             </nav>
             <h1 className="text-[32px] md:text-[56px] font-heading font-extrabold leading-tight mb-6 text-[#f0ede5]">
                 The Gold Standard: <br />
-                <span className="text-[#4ade80]">HBCSE Olympiads</span>
+                <span className="text-[#70A5FF]">HBCSE Olympiads</span>
             </h1>
             <p className="text-[16px] md:text-[20px] text-[#8a8a84] max-w-2xl leading-relaxed font-medium">
                 The official and only pathway to represent India at the International Olympiads. Organised by HBCSE, IAPT, and HBCSE-authorised bodies.
@@ -79,7 +79,7 @@ export default async function HBCSEPathwayPage() {
                     { stage: "Stage 2", name: "INOs", desc: "Indian National Olympiads (INPhO, INChO, etc.)", color: "bg-purple-500" },
                     { stage: "Stage 3", name: "OCSC", desc: "Orientation-cum-Selection Camp at HBCSE Mumbai", color: "bg-orange-500" },
                     { stage: "Stage 4", name: "PDT", desc: "Pre-departure Training Camp", color: "bg-pink-500" },
-                    { stage: "Stage 5", name: "International", desc: "Represent India at IMO, IPhO, IChO, etc.", color: "bg-green-600" }
+                    { stage: "Stage 5", name: "International", desc: "Represent India at IMO, IPhO, IChO, etc.", color: "bg-blue-600" }
                 ].map((s, i) => (
                     <div key={i} className="flex flex-col items-center">
                         <div className={`w-12 h-12 rounded-full ${s.color} text-white font-bold flex items-center justify-center mb-4 shadow-lg`}>

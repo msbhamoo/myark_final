@@ -17,7 +17,7 @@ export default async function CategoriesPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Manage Categories</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm pb-0">Add, edit, or remove opportunity categories.</p>
         </div>
-        <Link href="/admin/categories/new" className="btn btn-primary shadow-sm bg-[#1b5e28] text-white hover:bg-[#14461e]">
+        <Link href="/admin/categories/new" className="btn btn-primary shadow-sm bg-[#0066FF] text-white hover:bg-[#0050CC]">
           + Add Category
         </Link>
       </div>

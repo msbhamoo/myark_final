@@ -179,7 +179,7 @@ export function QuizAttemptClient({ quiz }: { quiz: { id: string, slug: string, 
             {/* Progress Bar */}
             <div className="flex gap-2 mb-12 shrink-0">
                 {questions.map((_, i) => (
-                    <div key={i} className={`h-2 rounded-full flex-1 transition-all duration-500 ${i < currentIndex ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : i === currentIndex ? 'bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.8)] scale-y-150' : 'bg-white/10'}`} />
+                    <div key={i} className={`h-2 rounded-full flex-1 transition-all duration-500 ${i < currentIndex ? 'bg-blue-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : i === currentIndex ? 'bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.8)] scale-y-150' : 'bg-white/10'}`} />
                 ))}
             </div>
 
@@ -236,7 +236,7 @@ export function QuizAttemptClient({ quiz }: { quiz: { id: string, slug: string, 
             
             <div className="shrink-0 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] pt-6 border-t border-white/10">
                 <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse shadow-[0_0_5px_rgba(34,197,94,1)]"></span>
+                    <span className="w-2 h-2 rounded-full bg-blue-500 inline-block animate-pulse shadow-[0_0_5px_rgba(34,197,94,1)]"></span>
                     Arena Mode Active
                 </div>
                 <div>Player ID: <span className="text-gray-400">{sessionId.substring(5, 12)}</span></div>

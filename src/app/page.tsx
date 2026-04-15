@@ -47,7 +47,7 @@ export default async function Home() {
   const featuredCareers: Career[] = (featuredCareersData as unknown as Career[]) || [];
 
   // 1. Define styling for known categories
-  const categoryStyles: Record<string, { title: string; subtitle: string; badge: string; accent: 'emerald' | 'blue' | 'indigo' | 'amber' }> = {
+  const categoryStyles: Record<string, { title: string; subtitle: string; badge: string; accent: 'blue' | 'blue' | 'indigo' | 'amber' }> = {
     'scholarship': { 
       title: "High Value Scholarships.", 
       subtitle: "Direct funding for your education. Verified and currently accepting applications.",
@@ -64,7 +64,7 @@ export default async function Home() {
       title: "Next-Gen Coding & Tech.", 
       subtitle: "Master the skills of the future. Hackathons, coding contests, and tech bootcamps.",
       badge: "Tech & Dev",
-      accent: "emerald"
+      accent: "blue"
     },
     'innovation': { 
       title: "Innovation & Research.", 
@@ -100,7 +100,7 @@ export default async function Home() {
       title: `Top ${categoryName} Picks.`,
       subtitle: `Verified programs in ${categoryName} for school students in India.`,
       badge: "Verified Access",
-      accent: "emerald" as const
+      accent: "blue" as const
     };
 
     return {
@@ -157,9 +157,9 @@ export default async function Home() {
         }}></div>
         
         <div className="relative container-main max-w-[800px] px-4 text-center z-10">
-          <Logo size="lg" variant="dark" className="mx-auto mb-8 transform scale-125" />
+          <Logo size="lg" variant="white" className="mx-auto mb-8 transform scale-125" />
           <h2 className="text-[32px] md:text-[48px] font-heading font-extrabold text-[#f0ede5] mb-6 tracking-tight leading-[1.1]">
-            Your journey to <span className="text-[#4ade80] italic">extraordinary</span> starts here.
+            Your journey to <span className="text-[#70A5FF] italic">extraordinary</span> starts here.
           </h2>
           <p className="text-[17px] md:text-[19px] text-[#a8a8a0] max-w-lg mx-auto mb-12 leading-relaxed font-medium">
             Join thousands of ambitious students and parents discovering world-class opportunities they never knew existed.
@@ -168,7 +168,7 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <Link 
               href="/opportunities" 
-              className="inline-flex items-center justify-center h-16 px-12 rounded-[20px] bg-[#22c55e] text-[#0a0f0a] font-black text-[17px] hover:bg-[#16a34a] transition-all shadow-2xl shadow-[#22c55e]/30 hover:scale-[1.05] active:scale-95"
+              className="inline-flex items-center justify-center h-16 px-12 rounded-[20px] bg-[#3D8BFF] text-[#0a0f0a] font-black text-[17px] hover:bg-[#1F75FF] transition-all shadow-2xl shadow-[#3D8BFF]/30 hover:scale-[1.05] active:scale-95"
             >
               Browse Opportunities
             </Link>

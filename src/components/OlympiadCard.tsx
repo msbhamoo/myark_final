@@ -34,7 +34,7 @@ export function OlympiadCard({ olympiad }: OlympiadCardProps) {
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border-default)]">
           <span className="text-[11px] font-semibold text-body">Reg: {olympiad.registration_month}</span>
         </div>
-        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${isFree ? 'bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400' : 'bg-[var(--color-bg)] border-[var(--color-border-default)] text-body'}`}>
+        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border ${isFree ? 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-[var(--color-bg)] border-[var(--color-border-default)] text-body'}`}>
           <span className="text-[11px] font-semibold">{isFree ? 'Free' : olympiad.fee?.split(' ')[0]}</span>
         </div>
         {olympiad.is_individual_registration && (
@@ -48,7 +48,7 @@ export function OlympiadCard({ olympiad }: OlympiadCardProps) {
         {olympiad.related_opportunity_slug ? (
           <Link 
             href={`/opportunities/${olympiad.related_opportunity_slug}`}
-            className="w-full inline-flex items-center justify-center h-10 px-4 rounded-xl bg-green-600 text-white font-bold text-[13px] hover:bg-green-700 transition-colors"
+            className="w-full inline-flex items-center justify-center h-10 px-4 rounded-xl bg-blue-600 text-white font-bold text-[13px] hover:bg-blue-700 transition-colors"
           >
             Apply Now →
           </Link>

@@ -41,7 +41,7 @@ export function Navbar() {
 
             {/* Logo */}
             <Link href="/" className="shrink-0 focus:outline-none block transition-transform active:scale-95">
-              <Logo size="sm" showPulse={false} variant="light" />
+              <Logo size="sm" variant="brand" />
             </Link>
 
             {/* Desktop Navigation & Actions */}
@@ -51,6 +51,7 @@ export function Navbar() {
                    { label: 'Explore', href: '/opportunities' },
                    { label: 'Scholarships', href: '/opportunities?category=scholarship' },
                    { label: 'Olympiads', href: '/opportunities?category=olympiad' },
+                   { label: 'Blog', href: '/blog' },
                  ].map((link) => (
                     <Link 
                       key={link.label}

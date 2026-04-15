@@ -70,7 +70,7 @@ export function QuizLandingClient({ quiz }: { quiz: { id: string, title: string,
                 <h3 className="font-bold text-white !text-white text-base">Rules of the Arena</h3>
                 <ul className="space-y-2 list-disc list-inside">
                     <li>You&apos;ll get <strong className="text-white">{quiz.questions_per_attempt} random questions</strong> from the bank.</li>
-                    <li>Each correct answer is <strong className="text-green-400">10 points</strong>. Wrong answers are <strong className="text-red-400">0 points</strong> (no negative marking).</li>
+                    <li>Each correct answer is <strong className="text-blue-400">10 points</strong>. Wrong answers are <strong className="text-red-400">0 points</strong> (no negative marking).</li>
                     <li>Answer fast to earn up to <strong className="text-yellow-400">15 Speed Bonus points</strong>!</li>
                     <li><strong className="text-white">Streak Bonus:</strong> Get a perfect run for a massive point boost.</li>
                     {quiz.quiz_type === 'Competition' && (

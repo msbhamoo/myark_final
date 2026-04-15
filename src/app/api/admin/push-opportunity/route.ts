@@ -3,6 +3,70 @@ import { createClient } from '@supabase/supabase-js';
 
 const API_SECRET = process.env.MYARK_API_SECRET || 'fallback-secret-for-now';
 
+export async function GET(req: Request) {
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder'
+  );
+
+  // 1. Authenticate Request
+  const authHeader = req.headers.get('Authorization');
+  if (authHeader !== `Bearer ${API_SECRET}`) {
+    return NextResponse.json({ error: 'Unauthorized: Invalid API Key' }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const url = searchParams.get('url');
+    const title = searchParams.get('title');
+
+    // Case 1: Search for specific existence
+    if (url || title) {
+      let query = supabaseAdmin
+        .from('opportunities')
+        .select('id, title, slug, registration_url');
+
+      if (url) {
+        query = query.eq('registration_url', url);
+      }
+      
+      if (title) {
+        query = query.ilike('title', title);
+      }
+
+      const { data, error } = await query.maybeSingle();
+
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      return NextResponse.json({
+        exists: !!data,
+        opportunity: data || null
+      });
+    }
+
+    // Case 2: List current opportunities (Recent)
+    const { data: opportunities, error } = await supabaseAdmin
+      .from('opportunities')
+      .select('id, title, slug, registration_url, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({
+      opportunities
+    });
+
+  } catch (err) {
+    console.error('Unhandled GET API Error:', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   // Initialize Supabase ONLY when called to avoid build-time errors
   const supabaseAdmin = createClient(
@@ -22,6 +86,21 @@ export async function POST(req: Request) {
     // 2. Validate Minimum Fields
     if (!payload.title || !payload.sourceUrl) {
       return NextResponse.json({ error: 'Missing required fields: title or sourceUrl' }, { status: 400 });
+    }
+
+    // 2.5 Check for existing by sourceUrl (Prevent direct Duplicates)
+    const { data: existing } = await supabaseAdmin
+      .from('opportunities')
+      .select('id')
+      .eq('registration_url', payload.sourceUrl)
+      .maybeSingle();
+
+    if (existing) {
+       return NextResponse.json({ 
+         success: false, 
+         message: 'Opportunity already exists',
+         id: existing.id
+       }, { status: 409 });
     }
 
     // 3. Transform Scanner Data to Myark Database Structure

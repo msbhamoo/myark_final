@@ -73,12 +73,12 @@ function getCategoryTheme(categoryLabel: string) {
   
   const themes: Record<string, { bg: string, border: string, text: string, dot: string, accent: string, gradient: string }> = {
     'scholarship': { 
-      bg: 'bg-emerald-50 dark:bg-emerald-950/20', 
-      border: 'border-emerald-200/60 dark:border-emerald-800/40', 
-      text: 'text-emerald-700 dark:text-emerald-400',
-      dot: 'bg-emerald-500',
-      accent: 'emerald',
-      gradient: 'from-emerald-400 to-emerald-600'
+      bg: 'bg-blue-50 dark:bg-blue-950/20', 
+      border: 'border-blue-200/60 dark:border-blue-800/40', 
+      text: 'text-blue-700 dark:text-blue-400',
+      dot: 'bg-blue-500',
+      accent: 'blue',
+      gradient: 'from-blue-400 to-blue-600'
     },
     'competition': { 
       bg: 'bg-blue-50 dark:bg-blue-950/20', 
@@ -269,7 +269,7 @@ export function OpportunityCard({
                         window.open(`https://wa.me/?text=${encodeURIComponent(randomTemplate)}`, '_blank');
                      }}
                      title="Share on WhatsApp"
-                     className="p-2 md:p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 active:scale-95 transition-all"
+                     className="p-2 md:p-2.5 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20 active:scale-95 transition-all"
                   >
                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="md:w-[18px] md:h-[18px]"><path d="M12.031 2c-5.511 0-9.997 4.486-9.997 9.998 0 1.761.458 3.411 1.258 4.846l-1.292 4.717 4.827-1.266c1.392.756 2.979 1.196 4.67 1.196 5.511 0 9.998-4.487 9.998-9.998 0-5.511-4.487-9.998-9.998-9.998zm0 18.286c-1.579 0-3.045-.436-4.301-1.191l-.307-.181-2.859.749.762-2.784-.198-.315c-.838-1.328-1.314-2.899-1.314-4.566 0-4.569 3.717-8.286 8.286-8.286 4.568 0 8.286 3.717 8.286 8.286s-3.718 8.286-8.286 8.286zM15.54 13.91c-.191-.096-1.13-.559-1.304-.623-.175-.064-.301-.096-.427.096-.127.191-.493.623-.604.752-.111.127-.223.143-.414.048-.191-.096-.807-.297-1.537-.95-.568-.507-.951-1.135-1.063-1.326-.111-.191-.012-.294.084-.39s.191-.223.286-.335c.096-.111.127-.191.191-.319.064-.127.032-.239-.016-.335-.048-.096-.427-1.031-.585-1.411-.154-.373-.323-.322-.442-.322l-.377-.008c-.131 0-.342.049-.523.242-.181.193-.69.674-.69 1.644 0 .97.705 1.905.803 2.039.098.134 1.388 2.119 3.363 2.973.47.203.836.324 1.122.415.471.15.9.129 1.239.078.378-.057 1.13-.462 1.289-.908.159-.447.159-.831.111-.911-.048-.08-.175-.127-.366-.223z"/></svg>
                   </button>
@@ -290,7 +290,7 @@ export function OpportunityCard({
                <div className="flex flex-col gap-1">
                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Eligibility</span>
                   <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold text-[12px] md:text-[14px]">
-                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></div>
+                     <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></div>
                      Class {formatClassRange(opportunity.eligibility_classes).replace('Class', '').trim()}
                   </div>
                </div>
@@ -319,7 +319,7 @@ export function OpportunityCard({
                >
                   <Link 
                      href={`/opportunities/${opportunity.slug}`}
-                     className={`w-full h-11 md:h-12 flex items-center justify-center rounded-[16px] md:rounded-[18px] bg-primary text-white font-black text-[13px] md:text-[14px] shadow-[0_3px_0_0_#14461e] active:shadow-none active:translate-y-[2px] transition-all hover:brightness-110`}
+                     className={`w-full h-11 md:h-12 flex items-center justify-center rounded-[16px] md:rounded-[18px] bg-primary text-white font-black text-[13px] md:text-[14px] shadow-[0_3px_0_0_#0050CC] active:shadow-none active:translate-y-[2px] transition-all hover:brightness-110`}
                   >
                      See Details
                   </Link>
@@ -347,7 +347,7 @@ export function OpportunityCard({
               {opportunity.category?.label || 'Program'}
             </span>
             {badgeType && (
-              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg text-white ${badgeType === 'new' ? 'bg-emerald-500 shadow-md shadow-emerald-500/10' : 'bg-orange-500 shadow-md shadow-orange-500/10'}`}>
+              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg text-white ${badgeType === 'new' ? 'bg-blue-500 shadow-md shadow-blue-500/10' : 'bg-orange-500 shadow-md shadow-orange-500/10'}`}>
                 {badgeType}
               </span>
             )}

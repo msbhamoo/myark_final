@@ -103,8 +103,8 @@ const websiteSchema = {
       "availableLanguage": "English"
     },
     "sameAs": [
-      "https://instagram.com/myarkin",
-      "https://linkedin.com/company/myarkin",
+      "https://instagram.com/myark.in",
+      "https://linkedin.com/company/getmyark",
       "https://twitter.com/myarkin"
     ]
   }
@@ -152,6 +152,18 @@ export default function RootLayout({
                   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "vzm89tc7ku");
+            `
+          }}
+        />
+        {/* Google Analytics (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RT9R2ZZ3LF" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-RT9R2ZZ3LF');
             `
           }}
         />
